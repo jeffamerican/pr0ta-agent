@@ -48,5 +48,6 @@ jobs:
             gh release upload "v${VERSION}" dist/pr0ta.plugin dist/pr0ta-skills.zip dist/pr0ta-codex-plugin.zip --clobber
           else
             gh release create "v${VERSION}" dist/pr0ta.plugin dist/pr0ta-skills.zip dist/pr0ta-codex-plugin.zip \
-              --title "PR0TA skills ${VERSION}" \
-              --notes "Generated from the live PR0TA skill manifest."
+              --title "ProtaFilm|maker Skills ${VERSION}" \
+              --notes "Generated from the live ProtaFilm|maker Skills manifest."
+          fi
