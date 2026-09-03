@@ -1,10 +1,10 @@
-# Privacy Policy -- PR0TA Agent Skills
+# Privacy Policy -- ProtaFilm|maker Skills
 
 **Last updated:** April 29, 2026
 
 ## Overview
 
-The PR0TA Agent Skills distributions provide local instructions and reference documentation that help supported AI assistants work with PR0TA creative production workflows.
+The ProtaFilm|maker Skills distributions provide local instructions and reference documentation that help supported AI assistants work with ProtaFilm|maker creative production workflows.
 
 ## Data Collection
 
