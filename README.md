@@ -1,4 +1,4 @@
-# PR0TA agent skills
+# ProtaFilm|maker Skills
 
 Public, generated distributions for connecting tool-capable AI assistants to
 [ProtaFilm|maker](https://www.protafilmmaker.com/downloads/skills/).

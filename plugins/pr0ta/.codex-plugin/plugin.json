@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "PR0TA",
-    "shortDescription": "Creative media production workflows for PR0TA.",
+    "displayName": "ProtaFilm|maker Skills",
+    "shortDescription": "Agentic production workflows for ProtaFilm|maker.",
     "longDescription": "Guides Codex through PR0TA app and API workflows for project memory, generating images, videos, voiceovers, music, and sound effects, then assembling, reviewing, downloading, and refining production timelines.",
     "developerName": "Jeffery Lando",
     "category": "Productivity",

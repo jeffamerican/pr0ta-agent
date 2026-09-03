@@ -1,7 +1,7 @@
 {
   "name": "pr0ta-codex",
   "interface": {
-    "displayName": "PR0TA Codex Plugins"
+    "displayName": "ProtaFilm|maker Skills"
   },
   "plugins": [
     {

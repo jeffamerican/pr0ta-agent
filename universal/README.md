@@ -1,4 +1,4 @@
-# PR0TA skills
+# ProtaFilm|maker Skills
 
 This host-neutral package is for tool-capable AI clients that can load Markdown
 skill files or connect to a remote MCP server.
