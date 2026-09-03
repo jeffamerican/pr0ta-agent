@@ -175,9 +175,9 @@ Not all roles have access to all tools. The registry enforces access per role.
 
 ## MCP Server Setup
 
-### Codex Plugin Setup
+### Packaged Client Setup
 
-The PR0TA Codex plugin bundles the remote MCP connector. The plugin manifest contains:
+PR0TA's Codex and Claude packages bundle the remote MCP connector. The universal package includes the same configuration for other remote-MCP-capable hosts:
 
 ```json
 {
@@ -198,21 +198,9 @@ The bundled `.mcp.json` points at production:
 }
 ```
 
-After installing or updating the plugin, restart/reload Codex. The user still authorizes PR0TA through the host's normal remote MCP/OAuth flow. If PR0TA tool names are not callable after loading the skill, the connector is not exposed in that session; reconnect the bundled MCP server before falling back to REST.
+After installing or updating, restart or reload the host if it retains the original tool inventory. The user authorizes PR0TA through the host's remote MCP/OAuth flow. If PR0TA tool names are not callable, reconnect `https://app.pr0ta.com/api/mcp/mcp` using the host-specific helper or instructions bundled with the distribution before falling back to REST.
 
-If PR0TA tools are not visible after restart, the agent should launch the connect canary instead of only telling the user to do it manually:
-
-```bash
-plugins/pr0ta/scripts/connect-mcp.sh
-```
-
-If the helper path is not available in the current install, run:
-
-```bash
-./scripts/connect_pr0ta_mcp.sh
-```
-
-Expected behavior: the helper configures file-backed MCP OAuth storage so Codex CLI and Codex Desktop share the credential on macOS, enables every Prep/Production operation as the Codex tool profile, then Codex opens or prints a PR0TA authorization URL. If it prints the URL, surface that URL to the user and ask them to complete browser approval. Complete the browser login, fully quit and reopen Codex, start a new task, then check `tool_search` for `list_projects`. Resuming an existing task preserves its original tool inventory. If Codex reports `No authorization support detected`, the host could not discover OAuth from the MCP endpoint; verify the live authorization metadata includes `token_endpoint_auth_methods_supported` with `none`, and redeploy PR0TA before retrying. If `/mcp` reports `Auth: OAuth` and lists the tools but the model still says they are unavailable, the server setup succeeded and the remaining defect is Codex host-side tool admission. Do not replace MCP with PAT/REST/browser automation for that case.
+Expected behavior: the host opens or prints a PR0TA authorization URL. Complete the browser login, start a fresh session when required, then search for `list_projects`. If the host reports that it cannot discover OAuth, verify the live authorization metadata includes `token_endpoint_auth_methods_supported` with `none`, and redeploy PR0TA before retrying. If the host lists authenticated PR0TA tools but the model still cannot call them, the server setup succeeded and the remaining defect is host-side tool admission. Do not replace MCP with PAT/REST/browser automation for that case.
 
 ### Local Development Prerequisites
 

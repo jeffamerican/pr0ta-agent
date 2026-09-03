@@ -1,10 +1,315 @@
 {
   "schema_version": 1,
-  "skills_version": "5.21.2",
+  "skills_version": "5.22.0",
   "released_at": "2026-09-03",
-  "source_revision": "released-v5.21.2",
-  "bundle_sha256": "1ece1d7d19c710aa6423edfe5302ca394e693b3e7dae2ca9c7201fcdeaf77782",
-  "minimum_platform_version": "1.19.1512",
+  "source_revision": "v5.22.0",
+  "minimum_platform_version": "1.19.1513",
+  "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
-  "documentation_url": "https://www.protafilmmaker.com/downloads/skills/"
+  "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
+  "distributions": {
+    "codex": "https://github.com/jeffamerican/pr0ta-agent",
+    "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
+    "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
+  },
+  "platform_revision": "pr0ta-platform-03737-ciy",
+  "bundle_sha256": "ceb8fdf384279cac295b6558952e2b59a8c5cb49cb5d51529a889f1860cdc339",
+  "skills": [
+    {
+      "name": "pr0ta",
+      "description": "PR0TA orchestration hub for creative media production on app.pr0ta.com. Use first for multi-asset productions, AI video/image/audio/music workflows, timeline assembly, review, and final export; then load only the specific companion skill needed for the next action.",
+      "content_sha256": "aca8653bb211d8fba5c9ce1d2aef6c4e5f3482df5f78c8936a1ac1c506c95c50",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3700b982856180d1a80db8c180bfed7ce07a36d0437fd629641edc28ed3ab777"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-api",
+      "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
+      "content_sha256": "a8792951184a6850da09de85209fa17b6cb010decb4f4f02eb84bf3ec007e422",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d490e4eaab27c12c5b294f365b99797185fd6bfaa9d6474be31f854a222a8820"
+        },
+        {
+          "path": "reference/asset-management.md",
+          "sha256": "bc8cf6809553b0f7fe914aea810d41ba4df67d015910cbfb8ded63d2899dd48a"
+        },
+        {
+          "path": "reference/asset-tags-and-analysis.md",
+          "sha256": "b5526b472682599ba579d04b0747946123fcdba7cd8f9434c04a137c177f1136"
+        },
+        {
+          "path": "reference/batch-and-events.md",
+          "sha256": "a8e27373594d4da1b3ba684646fd6471440d17f43c15e3d81cdf4e9f24ab09dd"
+        },
+        {
+          "path": "reference/editorial-primitives.md",
+          "sha256": "f39425137422eb29c4957e58b94f52cfcf66d1b5336fc0a5d6dd69c7230cbf5e"
+        },
+        {
+          "path": "reference/image-upload.md",
+          "sha256": "b78f2935e1ba91663660fe344fe58100b1407e3662c96d1f741c23b938ec11fa"
+        },
+        {
+          "path": "reference/mcp-server.md",
+          "sha256": "6d6e6184ba328db4b0ac8b1acabaae20179f8945b092a46013191413f9dc437c"
+        },
+        {
+          "path": "reference/music-analysis.md",
+          "sha256": "fa8df8957d8680b826711d827f105af315d7cb13f7b06fa84bb340fd91b56ea9"
+        },
+        {
+          "path": "reference/narration-timeline-api.md",
+          "sha256": "b5887f67f205c600497201e3e3538062062e8b3436e1a488fca888129909fcc9"
+        },
+        {
+          "path": "reference/post-production-api.md",
+          "sha256": "7c2f811804958e69530fee913c8c8a89bd31ef2986d14313e03dd5690c6d138c"
+        },
+        {
+          "path": "reference/projects-models-resources.md",
+          "sha256": "1c059b90db55af687ae79599d1d2e689a947262dc22c93287ea350351eef5f99"
+        },
+        {
+          "path": "reference/python-client.py",
+          "sha256": "9e3645281f313f70e6dbf4e15b53f511a1fb5e8f3391b26c07d40082170b94e5"
+        },
+        {
+          "path": "reference/reliability-contract.md",
+          "sha256": "6730ef88dca044ce45f18913deab8fba83508ee2174521e1fff2daeceb0d3160"
+        },
+        {
+          "path": "reference/review-room-api.md",
+          "sha256": "b6e1bc9e0b39922890608c8eea18a35c68cc1eac4f88f3b50fda17c0837d4e00"
+        },
+        {
+          "path": "reference/source-shortfalls-and-fit-to-fill.md",
+          "sha256": "37080af963a2cf5201c859db3fe375001f7f768b2841d8d4111cb91b048022a0"
+        },
+        {
+          "path": "reference/task-polling.md",
+          "sha256": "4e09bdb589c864fa31853d642e5040fad309cad737d74581242d56eb395c271c"
+        },
+        {
+          "path": "reference/timeline-api.md",
+          "sha256": "a947da5c2bd9031f140c2272d0925ffe21cbb42c2d1e2c7ee67110df7954e7d8"
+        },
+        {
+          "path": "reference/unified-generation.md",
+          "sha256": "a85ba0860d542e0fdafd2f0c2718d9cc52c3e34b3cc6d2916c3dda202c1aa8b3"
+        },
+        {
+          "path": "reference/voice-and-transcription.md",
+          "sha256": "581923900e3288f8023016238d2df3ac6d968f4adce84393f96f58e66871f44b"
+        },
+        {
+          "path": "reference/voice-v2.md",
+          "sha256": "ef5bb4d519107a246918669e46a498c9a1f53a0acebfcd53b5b8ad35b6754e47"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-audio",
+      "description": "PR0TA audio workflows for TTS, voice cloning/design, speech-to-speech, transcription, and mandatory time-indexing before timeline editing. Read when generating or analyzing narration, dialogue, voice, or any speech-bearing asset.",
+      "content_sha256": "03f0debf095cc3215a1570c67b62d10630a8c59abdddd938044d6733d7339a38",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0563ba597480b317e2a4e35d7e1088d0247462ac73c04fe1cb165ece7f56ba9b"
+        },
+        {
+          "path": "reference/elevenlabs-v3-audio-tags.md",
+          "sha256": "06a30069f3ec51786a6287ce73fb238f636a76f8321047ae3d8c435a55694b6d"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-consistency",
+      "description": "PR0TA visual consistency for recurring characters, locations, props, global visual bibles, Seedance storyboard chunks, and multi-shot continuity. Read when creating or using Kling Elements, Seedance Characters, consistency bundles, reference pipelines, or repeat-subject generation.",
+      "content_sha256": "50fc778e8cb884f3fe75fb3afa7f4c9d56838e5a369fbd565f9e26a2e93d0c54",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2c1c46e0e4f9bb8813172bdca42f6b2be247bd3fb6d13691d3f6b8ed8c76b847"
+        },
+        {
+          "path": "reference/provider-consistency-systems.md",
+          "sha256": "be006392593517a792674370119d817174244825bac81f763a590343457d07b3"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-downloading",
+      "description": "PR0TA asset download/export guide. Read when downloading generated images, videos, or audio; handling signed URLs/storage_uri fallback; detecting 0-byte files; bulk exporting; or tracking asset provenance.",
+      "content_sha256": "9be4511a7f4e5b6a0d4228537c09a0ee42357ffab8cdd1c42f234e37ac07e369",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "590a94ed25cba8443a88149b7d9f4b0af8c2226bc8cd15b0651a38ec1aebba33"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-editorial",
+      "description": "PR0TA editorial discipline for cutting, pacing, asset curation, review, ship criteria, and render verification. Read before edit passes, client review fixes, final export, or calling a cut done.",
+      "content_sha256": "6be94190fef5a1d4a9f37b746da661bdac153c9726910420afe256d8a4af3472",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "32e0e9c4b147605205ce9941893d60bd5d5ce2656cca87a583809601f4a67ade"
+        },
+        {
+          "path": "reference/verification-protocol.md",
+          "sha256": "d494f24b25d977dc952ec86359196dfaf3c4acb75640d756d34af7a91a5a24a0"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-image",
+      "description": "PR0TA image generation and editing for key frames, references, posters/title cards, stills, and character sheets. Read when generating, editing, uploading, or choosing image models.",
+      "content_sha256": "9952d7216e7e60e3010e968e91adf2b24eda864af112a9f233ee63d6b1cf18b3",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3cb9dbbe6975d92fc4952b81b5d1acd0c2a54659e0ae7c958c50a0d6087adab7"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-music",
+      "description": "PR0TA music and SFX generation for scores, ambient beds, point effects, foley, music prompts, composition workspace, and beat analysis. Read when scoring or generating non-speech audio.",
+      "content_sha256": "0c2eb992a13d2d3c3a6f489a5e3c4c96b6a0793a2ea73aea8faf007eed9bb4e4",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9436a89f71cf51b9f91de471e88bb71a21b0d7eb0e1f561debc615cc5f3e59ac"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-prompting",
+      "description": "PR0TA prompting guide and router for image, video, speech, audio, music, and humanoid motion prompts; model-and-modality techniques; prompt bibles; controlled references; anti-patterns; and multi-shot consistency. Read before writing generation prompts.",
+      "content_sha256": "04139e561db8a22de9f9df053b1f31b9c487146477478abf55396585fb98ad8f",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ef558116f45e7ea5754cbcadaf247d54c28b154688cbab2ff83b386b8927ad4e"
+        },
+        {
+          "path": "reference/anti-patterns.md",
+          "sha256": "abfbf9f7b6a7281be25b7833c0d550d2926632876bd6ea1c6cd198b54f3ad015"
+        },
+        {
+          "path": "reference/designed-world-reference-image.md",
+          "sha256": "c47ad56a9bdeeb2bd8bd10ec12b6060ba4b168bccd6f20da8256efc9f06cb143"
+        },
+        {
+          "path": "reference/marble-world-generation.md",
+          "sha256": "1cadd873cc7da0bdf640684e73565f8b1ffb520f4b5e2526e495dbf4ec110ce3"
+        },
+        {
+          "path": "reference/model-modality-guides.md",
+          "sha256": "fe04ba005eb7410fa5526c3e88fe94b8ff6d32e92c17d57f0061df7d4d599522"
+        },
+        {
+          "path": "reference/motion-prompting.md",
+          "sha256": "23c457968560e0a0dde0d7accd22ba03434602f1e6661ffba9271b8a0b4ba5c3"
+        },
+        {
+          "path": "reference/reference-design-bootstrap.md",
+          "sha256": "d0e09b19b847a95c441f3cf8bfc54f6824097668779e90bfb17ab3b6d63a964a"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-sync",
+      "description": "PR0TA audio-visual sync and production planning. Read for cue sheets, timing plans, narration-first or visual-first strategy, narration timeline workflows, montage planning, and re-transcription after audio changes.",
+      "content_sha256": "e7f3a467380c38d4a407010272fa8eddea790c5f5404cf647124608b85b90a95",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5c982b7aabed03f386bc7db5246166e65352bf3e4f4bef05a094169c79fa0884"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-timeline",
+      "description": "PR0TA post-production timeline guide for clip/track editing, Ken Burns, audio mix, preview/render, snapshots, editorial primitives, source shortfalls, fitToFill, and frame-aware diagnostics. Read when assembling or editing a cut.",
+      "content_sha256": "8ee2788410af779105aeb070be0eed060140e0b38bf3ced854287633fcae9ae4",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "13929cb98b671ade36f82eeed55cc36d17cc551017c0fffeda9b362a39610032"
+        }
+      ]
+    },
+    {
+      "name": "pr0ta-video",
+      "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
+      "content_sha256": "58371667bf46e5e366ec3b4fe879c608b5a8e030fa923a6d0eb744d979a6dc0e",
+      "documents": [
+        {
+          "path": "SKILL.md",
+          "sha256": "db664a3eee766d99883eff6f6dbd4c3f692ebe33b0309ed7ffae83e89916edfa"
+        },
+        {
+          "path": "reference/flux-3.md",
+          "sha256": "2eb7caa3a28cf97852e1b37766e685f054bcef959354484e740e69d1c6357188"
+        },
+        {
+          "path": "reference/gemini-omni-flash-1.1.md",
+          "sha256": "3d4d1528b610cd94e804216c8f03a7c5a31cc041e52c6fd67de8d5f7a1e4540d"
+        },
+        {
+          "path": "reference/generative-typography.md",
+          "sha256": "098f65514f81ac8f845cfde6fd9166aecfe3cfe3ceab95cbfd239fe4f6c9abcd"
+        },
+        {
+          "path": "reference/hailuo-h3.md",
+          "sha256": "79cb73cdc3547ae9a1b85fbd1e1acfbbf44cd0220f014206a5beae66b1c698b2"
+        },
+        {
+          "path": "reference/kling-prompting.md",
+          "sha256": "317d62dd95ff5ef96b4d4bb0b8762b57fd420cbb6eedef57a2848009ec300d9a"
+        },
+        {
+          "path": "reference/ltx-2.5.md",
+          "sha256": "bf8cbf0222b1121ce4bfabf20f7712e8d316bf136fe4af75856956ca346ec37b"
+        },
+        {
+          "path": "reference/native-audio.md",
+          "sha256": "5a33ba2a0eb04203a5ec5b8bc65f043a2c44fda937698fa10307e3fe338b2e96"
+        },
+        {
+          "path": "reference/provider-recovery.md",
+          "sha256": "82fd01fe4ef159b4749dd491df0a0afb8c7b932281731bf800bdc04239d7bfda"
+        },
+        {
+          "path": "reference/seedance-2.5.md",
+          "sha256": "df6f8f71f20438b3b1da4d5b2a482fd16e693d989a48189869dfa0adb287efc1"
+        },
+        {
+          "path": "reference/seedance-global-storyboard.md",
+          "sha256": "2e15ffb5fc4912e75341394509f2d182f6fcd8b687ab42be7a8207d1359e4e8d"
+        },
+        {
+          "path": "reference/seedance-omni.md",
+          "sha256": "367a49b5f6bee8c373fa759dcf062e2c75f352df36aaa265638d481d52669988"
+        },
+        {
+          "path": "reference/video-reference-field-matrix.md",
+          "sha256": "8dad14b5bf42f27394287fc730c4522c695d87e3452887e40317ae9287d729eb"
+        },
+        {
+          "path": "reference/wan-3.0.md",
+          "sha256": "270917ebd7020e10f2cb8dfd28be959da0d30bdf659e2b32157267e372475cca"
+        }
+      ]
+    }
+  ]
 }

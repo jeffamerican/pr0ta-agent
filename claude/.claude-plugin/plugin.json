@@ -1,6 +1,6 @@
 {
   "name": "pr0ta",
-  "version": "5.21.2",
+  "version": "5.22.0",
   "description": "Automate creative media production on PR0TA -- ProtaFilm|memory, AI image, video (Seedance 2.0/2.5, Wan 3.0, Hailuo H3, FLUX 3, Kling, LTX 2.5), voice, music, client review rooms, timeline assembly, and bundled PR0TA MCP connector for MCP-first agent workflows.",
   "author": {
     "name": "Jeffery Lando"

@@ -9,7 +9,7 @@ This reference covers the PR0TA MCP tool surface and REST API endpoints availabl
 
 ## Agent Execution Default: MCP First
 
-The Claude Code plugin bundles the PR0TA remote MCP connector in `.mcp.json` at the plugin root, pointing at `https://app.pr0ta.com/api/mcp/mcp`.
+PR0TA distributions bundle the remote MCP connector or its setup details, pointing at `https://app.pr0ta.com/api/mcp/mcp`.
 
 For agent workflows, prefer MCP tools over ad hoc REST/curl calls whenever an MCP tool exists. Use REST for routes not yet exposed through MCP, high-volume scripts, and direct file downloads from MCP-provided links.
 
@@ -71,7 +71,7 @@ Do not flatten memory into anonymous prose. Preserve citations and claim IDs whe
 
 PR0TA supports remote MCP OAuth for hosted connectors and PAT bearer auth for REST/local stdio fallback.
 
-For Claude Code plugin installs, run `scripts/connect-mcp.sh` (relative to the plugin root) when PR0TA tools are not discoverable. The helper registers the MCP URL with `claude mcp add` if needed; the user then completes OAuth by running `/mcp` in Claude Code and selecting **pr0ta**. If the host cannot detect PR0TA OAuth support, check the live PR0TA OAuth metadata before falling back to REST; public PKCE clients require `token_endpoint_auth_methods_supported` to include `none`. If `/mcp` shows `Auth: OAuth` and the tools but the model still says they are unavailable, the remaining fault is host-side tool admission, not PR0TA auth/schema exposure.
+When PR0TA tools are not discoverable, connect `https://app.pr0ta.com/api/mcp/mcp` through the host's remote MCP settings and complete browser OAuth. Use the host-specific helper or instructions included in the installed distribution when available. Start a fresh session if the host retains its original tool inventory. If the host cannot detect PR0TA OAuth, check the live metadata before falling back to REST; public PKCE clients require `token_endpoint_auth_methods_supported` to include `none`. If the host lists the authenticated tools but the model cannot call them, the remaining fault is host-side tool admission, not PR0TA auth/schema exposure.
 
 ### Personal Access Tokens (REST and Local Stdio Fallback)
 
@@ -375,8 +375,8 @@ PR0TA provides an MCP server that exposes project-scoped tools to external agent
 
 Essential facts:
 
-- **Claude Code setup:** bundled by this plugin through `.claude-plugin/plugin.json` → `mcpServers: "./.mcp.json"`.
-- **Remote connectors:** `https://app.pr0ta.com/api/mcp/mcp` with PR0TA OAuth. Works with Claude Code, Claude connectors, Codex, ChatGPT, and Cursor-style remote MCP clients when the host supports remote MCP.
+- **Packaged setup:** Codex, Claude, and universal distributions include host-specific connection instructions.
+- **Remote connectors:** `https://app.pr0ta.com/api/mcp/mcp` with PR0TA OAuth. It works with tool-capable LLM hosts that support remote MCP.
 - **Local setup:** `python mcp_server.py` (stdio transport). Configure in `.claude/mcp.json` (Claude Code) or `.cursor/mcp.json` (Cursor) only for repo-local development.
 - **Auth:** Local clients use `PR0TA_MCP_ACCESS_TOKEN` env var or per-call `access_token`. Remote connectors use OAuth bearer.
 - **All project-scoped MCP tools require `project_id`.** `create_project` and `list_projects` are the two project-independent tools; use them to establish the project before project-scoped work.
