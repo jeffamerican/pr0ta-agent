@@ -17,12 +17,14 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+API_BASE_URL = os.getenv("PR0TA_API_BASE_URL", "https://api.pr0ta.com")
 MANIFEST_URL = os.getenv(
     "PR0TA_SKILLS_MANIFEST_URL",
-    "https://app.pr0ta.com/api/skills/manifest",
+    f"{API_BASE_URL}/api/skills/manifest",
 )
-PLATFORM_VERSION_URL = "https://app.pr0ta.com/api/system-status/version"
-SOURCE_BASE_URL = "https://app.pr0ta.com/api/skills/source"
+PLATFORM_VERSION_URL = f"{API_BASE_URL}/api/system-status/version"
+SOURCE_BASE_URL = f"{API_BASE_URL}/api/skills/source"
+REQUEST_HEADERS = {"User-Agent": "ProtaFilmmaker-Skills-Publisher/1.0"}
 SKILL_DESTINATIONS = (
     ROOT / "plugins" / "pr0ta" / "skills",
     ROOT / "claude" / "skills",
@@ -32,7 +34,8 @@ SKILL_DESTINATIONS = (
 
 def fetch_json(url: str) -> dict[str, Any]:
     try:
-        with urllib.request.urlopen(url, timeout=30) as response:
+        request = urllib.request.Request(url, headers=REQUEST_HEADERS)
+        with urllib.request.urlopen(request, timeout=30) as response:
             payload = json.load(response)
     except (OSError, urllib.error.HTTPError, json.JSONDecodeError) as error:
         raise RuntimeError(f"Could not read PR0TA release source: {url}") from error
@@ -50,7 +53,8 @@ def fetch_document(skill: str, document: dict[str, str]) -> bytes:
             urllib.parse.quote(path, safe="/"),
         )
     )
-    with urllib.request.urlopen(url, timeout=30) as response:
+    request = urllib.request.Request(url, headers=REQUEST_HEADERS)
+    with urllib.request.urlopen(request, timeout=30) as response:
         content = response.read()
     digest = hashlib.sha256(content).hexdigest()
     if digest != document["sha256"]:
