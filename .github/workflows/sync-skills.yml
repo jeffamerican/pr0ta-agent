@@ -1,0 +1,52 @@
+name: Sync PR0TA skills
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17,47 * * * *"
+
+concurrency:
+  group: sync-pr0ta-skills
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate distributions from live canonical source
+        run: python3 scripts/sync_from_pr0ta.py
+      - name: Detect source changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit generated source
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "PR0TA skill publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add .
+          VERSION="$(python3 -c 'import json; print(json.load(open("release-manifest.json"))["skills_version"])')"
+          git commit -m "release: PR0TA skills ${VERSION}"
+          git push
+      - name: Publish release files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(python3 -c 'import json; print(json.load(open("release-manifest.json"))["skills_version"])')"
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            gh release upload "v${VERSION}" dist/pr0ta.plugin dist/pr0ta-skills.zip dist/pr0ta-codex-plugin.zip --clobber
+          else
+            gh release create "v${VERSION}" dist/pr0ta.plugin dist/pr0ta-skills.zip dist/pr0ta-codex-plugin.zip \
+              --title "PR0TA skills ${VERSION}" \
+              --notes "Generated from the live PR0TA skill manifest."

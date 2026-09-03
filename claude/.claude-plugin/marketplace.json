@@ -1,0 +1,17 @@
+{
+  "name": "pr0ta",
+  "owner": {
+    "name": "Jeffery Lando",
+    "url": "https://github.com/jeffamerican"
+  },
+  "metadata": {
+    "description": "Official PR0TA skills for creative media production on app.pr0ta.com."
+  },
+  "plugins": [
+    {
+      "name": "pr0ta",
+      "source": "./",
+      "description": "Automate creative media production on PR0TA: project memory, AI image, video, voice, music, client review rooms, downloads, and timeline workflows."
+    }
+  ]
+}

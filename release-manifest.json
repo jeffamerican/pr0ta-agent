@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "skills_version": "5.21.2",
+  "released_at": "2026-09-03",
+  "source_revision": "released-v5.21.2",
+  "bundle_sha256": "1ece1d7d19c710aa6423edfe5302ca394e693b3e7dae2ca9c7201fcdeaf77782",
+  "minimum_platform_version": "1.19.1512",
+  "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
+  "documentation_url": "https://www.protafilmmaker.com/downloads/skills/"
+}
