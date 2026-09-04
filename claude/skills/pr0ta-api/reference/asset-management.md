@@ -89,13 +89,21 @@ def find_asset_by_name(project_id: str, pat: str, name: str) -> dict | None:
 
 **Tip:** For productions with dozens or hundreds of assets, maintain a local `assets.json` map (see the `pr0ta` hub skill) so you don't need to re-iterate the listing every time you look up an ID.
 
+### Get One Asset
+
+```
+GET /api/v2/projects/{project_id}/assets/{asset_id}
+```
+
+Returns the canonical `AssetRead` object directly. The asset must belong to the project, and normal project authorization applies.
+
 ### Download Asset
 
 ```
 GET /api/v2/projects/{project_id}/assets/{asset_id}/download
 ```
 
-This endpoint requires project authorization through a PAT/JWT bearer token or a scoped `asset_token` handoff and works reliably for all asset types (image, video, audio).
+This endpoint requires project authorization through a PAT/JWT bearer token or a scoped `asset_token` handoff and works reliably for all asset types (image, video, audio). A newly completed task can briefly precede object-store visibility; in that case the endpoint returns `202`, `Retry-After: 2`, and `{"status":"materializing"}` instead of a false durable 404. Retry the same authenticated URL after the indicated delay.
 
 **Defense-in-depth fallback:** If a download ever returns 0 bytes, use the authenticated `storage_uri` fallback (this bug was fixed April 2026, but the fallback is good practice):
 

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.22.0",
+  "skills_version": "5.22.1",
   "released_at": "2026-09-03",
-  "source_revision": "v5.22.0",
-  "minimum_platform_version": "1.19.1513",
+  "source_revision": "v5.22.1",
+  "minimum_platform_version": "1.19.1514",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03737-ciy",
-  "bundle_sha256": "ceb8fdf384279cac295b6558952e2b59a8c5cb49cb5d51529a889f1860cdc339",
+  "platform_revision": "pr0ta-platform-03740-jiw",
+  "bundle_sha256": "6c72c86781591b38d2d4c53b057ffaeb00cc110d1e609e026b5750575e5eacd8",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,15 +29,15 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "a8792951184a6850da09de85209fa17b6cb010decb4f4f02eb84bf3ec007e422",
+      "content_sha256": "2e7b0b7a03f8fba5b3541c5f1bfbba1081f513288a0d2c5fac6d8f36ca3de405",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "d490e4eaab27c12c5b294f365b99797185fd6bfaa9d6474be31f854a222a8820"
+          "sha256": "26055412a1677ae4ff5f04cf908af7c2a5f3661e828753202bcdc5d9e1f9fd28"
         },
         {
           "path": "reference/asset-management.md",
-          "sha256": "bc8cf6809553b0f7fe914aea810d41ba4df67d015910cbfb8ded63d2899dd48a"
+          "sha256": "f6c667c4ccc371d18b706478a5a9cf80f53addbffdb99fdee0624d267ea9ac7d"
         },
         {
           "path": "reference/asset-tags-and-analysis.md",
@@ -101,7 +101,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "a85ba0860d542e0fdafd2f0c2718d9cc52c3e34b3cc6d2916c3dda202c1aa8b3"
+          "sha256": "5d6a6c2da0a22a1d59ef1fcc12552181ebc30f42d12aee14c3705636361b39d8"
         },
         {
           "path": "reference/voice-and-transcription.md",
@@ -251,7 +251,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "58371667bf46e5e366ec3b4fe879c608b5a8e030fa923a6d0eb744d979a6dc0e",
+      "content_sha256": "6ce897fabf8893f0bd85f56bad06523da8104aaa173b2e36fc7626519777476a",
       "documents": [
         {
           "path": "SKILL.md",
@@ -263,7 +263,7 @@
         },
         {
           "path": "reference/gemini-omni-flash-1.1.md",
-          "sha256": "3d4d1528b610cd94e804216c8f03a7c5a31cc041e52c6fd67de8d5f7a1e4540d"
+          "sha256": "690da01129db85c24adeabf8de758d3eddd42a1cdc816611d4edb90d80400a4a"
         },
         {
           "path": "reference/generative-typography.md",
@@ -291,7 +291,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "df6f8f71f20438b3b1da4d5b2a482fd16e693d989a48189869dfa0adb287efc1"
+          "sha256": "12bdb798dd9989ac13921f821d7f1c3ca90a6ef2870e1807da9e5010d7de80ce"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

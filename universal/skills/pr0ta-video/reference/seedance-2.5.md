@@ -168,7 +168,7 @@ Edit requires a source video and accepts up to 30 optional image references and 
 Use the source clip as the authority for identity, composition, motion, and timing. [One focused transformation]. Use the supplied image references for [identity/style/detail role] and the supplied audio references for [sound role]. Preserve [actions, framing, timing, and sounds that must remain]. The result ends with [observable state].
 ```
 
-Set `generate_audio=false` when the original source-video audio should be preserved. Request one coherent edit rather than a full scene rewrite.
+Set `generate_audio=false` when the original source-video audio should be preserved. PR0TA forwards that flag exactly, but provider runs have preserved the original audio inconsistently; inspect or correlate the delivered soundtrack before accepting it. Request one coherent edit rather than a full scene rewrite.
 
 ## Video Extend
 
@@ -192,7 +192,8 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 
 - Seedance 2.5 has no provider character-token field in the current MuAPI schema. Repeat defining identity/wardrobe traits and supply clear, compatible images. Use Seedance 2.0 Omni when a trained character resource is required.
 - Audio references are documented as mood/pacing guidance. They are not a documented verbatim dialogue or lip-sync input on these routes.
-- Every Seedance 2.5 route returns audio-bearing video. T2V, I2V, first/last, Omni, Spicy, and International expose no audio opt-out. Edit and Extend expose `generate_audio`; Edit preserves source audio when it is disabled.
+- Every Seedance 2.5 route returns audio-bearing video. T2V, I2V, first/last, Omni, Spicy, and International expose no audio opt-out. Edit and Extend expose `generate_audio`; disabling it requests source-audio preservation, but the delivered result still requires verification.
+- Seedance 2.5 enforces a four-second minimum and can pad shorter requested material at native speed. Trim the completed asset to the intended duration; do not retime the padded output.
 - Audio references are conditioning inputs, not the reason the output has audio and not a guarantee of verbatim reproduction. Time-index and verify every speech-bearing result before editorial use.
 
 ## Common Failures and Repairs

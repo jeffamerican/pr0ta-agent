@@ -2,6 +2,12 @@
 
 The primary way to trigger all generation programmatically. A single submission route dispatches to the appropriate generation backend. This file documents the full request/response contract for every generator/mode combination.
 
+## Retry safety
+
+Every paid submission should carry a stable `idempotency_key` (maximum 200 characters). Reuse the same key when retrying after a timeout; PR0TA claims it before remote media validation and provider submission, preventing a second generation or charge. An in-progress retry returns a typed `409`; after acceptance, retrying returns the existing task. REST callers may alternatively send the standard `Idempotency-Key` header. When neither is supplied, `metadata.operation_instance_id` is promoted into a stable operation-scoped key.
+
+For batch REST submissions, an `Idempotency-Key` header is the stable batch key. PR0TA derives one indexed key per item before replay validation. An item's explicit body `idempotency_key` takes precedence when supplied.
+
 ## Overview
 
 ### Submit Generation (Auth Required)

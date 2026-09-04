@@ -7,7 +7,7 @@ Use the exact Fal IDs:
 - `google/gemini-omni-flash/v1.1/reference-to-video`
 - `google/gemini-omni-flash/v1.1/edit`
 
-The three generation routes produce native audiovisual video. They accept 3–10 whole seconds, default to 8 seconds, and expose `360p`, `720p`, `1080p`, and `4k` resolution with `16:9` or `9:16` aspect ratio. The Edit route instead accepts a source video plus a natural-language instruction; it exposes only `resolution`, defaulting to `720p`, and does not document duration, aspect-ratio, or audio controls.
+The three generation routes produce native audiovisual video. They accept 3–10 whole seconds, default to 8 seconds, and expose `360p`, `720p`, `1080p`, and `4k` resolution with `16:9` or `9:16` aspect ratio. The Edit route instead accepts a source video plus a natural-language instruction; it exposes only `resolution`, defaulting to `720p`, and does not document duration, aspect-ratio, or audio controls. Current provider observations show that Edit returns audio-bearing output regardless of an unsupported `sound=off` alias. It has also inserted a four-frame mosaic near 5.33 seconds in longer edits, so inspect that boundary explicitly before using the result.
 
 ## Route Contracts
 
@@ -37,7 +37,7 @@ For I2V, let the supplied image own appearance and composition; describe motion 
 
 For R2V, finalize each array before writing the prompt. Bind images with zero-based `<IMAGE_REF_N>` tags and videos with zero-based `<VIDEO_REF_N>` tags; for example, `<IMAGE_REF_0> controls identity` and `<VIDEO_REF_0> controls camera motion`. PR0TA compiles these tags from the structured reference plan. Do not invent `@imageN`, one-based `Image N`, or reference-audio bindings.
 
-For Edit, make the source clip authoritative. Request one focused transformation, locate it in space and time when needed, and state the identity, motion, timing, framing, and scene elements that must remain unchanged. Do not send generation-only fields that the Edit schema does not expose.
+For Edit, make the source clip authoritative. Request one focused transformation, locate it in space and time when needed, and state the identity, motion, timing, framing, and scene elements that must remain unchanged. Do not send generation-only fields that the Edit schema does not expose. Google moderation has rejected face-identifying prompt language and the word `drone` in provider runs; preserve the blocked receipt as moderation evidence rather than labeling it an outage.
 
 Every speech-bearing result must pass the Scribe V2 transcription gate before editorial use. Inspect actual duration, resolution, reference adherence, dialogue, and sync.
 
