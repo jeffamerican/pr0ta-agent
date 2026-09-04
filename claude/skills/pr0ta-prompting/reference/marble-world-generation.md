@@ -4,6 +4,8 @@ Use this reference when a Set Designer or other agent must choose, prompt, creat
 
 Marble creates a persistent navigable 3D environment. It is not a still-image prompt, a shot prompt, or a substitute for camera blocking. The visual environment is delivered primarily as Gaussian splats; the collider GLB is a coarse physics surface, not the beauty mesh.
 
+A finished world is a structure authority only. To use its collider, splats, and camera captures as geometry references while approved plates carry appearance, read `pr0ta-hybrid` → `reference/world-anchored-references.md`.
+
 ## Choose the input modality
 
 | Modality | Use it when | Source discipline |
