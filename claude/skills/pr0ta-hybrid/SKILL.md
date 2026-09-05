@@ -1,6 +1,6 @@
 ---
 name: pr0ta-hybrid
-description: "PR0TA hybrid production for live-action plates and 3D worlds: Beeble SwitchX background swap/relight, matte and alpha sourcing, reference-plate authoring, and world-anchored structure references. Read when a shot starts from footage, a scan, or a Marble world instead of a blank prompt."
+description: "PR0TA hybrid production in Post for edited sequences, cut segmentation, coverage-angle grouping, background continuity, and individual live-action plates or 3D worlds. Read for SwitchX/Seedance hybrid edits, mattes, reference plates, and world-anchored backgrounds."
 ---
 
 # PR0TA Hybrid Production
@@ -21,10 +21,15 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 
 ## Mandatory Steps
 
+**Edited sequence with cuts:** read `reference/hybrid-sequences.md` first. Import,
+review cuts/coverage/continuity states, and materialize individual shots before
+using the continuous-shot steps below. Provider-length chunks are not editorial
+shots. Never chain a generated last frame across a cut into a different angle.
+
 1. **Read project memory first.** Call `memory_context_pack` for the scene, location, and shot. Approved location plates, set environments, and world decisions are the source of truth for what may change and what must stay.
-2. **Probe the plate before you plan.** Inspect the source asset's duration, frame rate, pixel dimensions, and codec. SwitchX accepts at most 240 frames and 2,770,000 pixels in one generation and needs a constant frame rate. PR0TA chunks a longer plate automatically: one Beeble job per chunk, each billed on its own, stitched back into one render and one alpha, with the plan recorded in the task's `metadata.switchx_chunks`. Chunk boundaries can show a seam, so cut at a motivated edit yourself when the shot allows it.
+2. **Probe the plate before you plan.** Inspect the source asset's duration, frame rate, pixel dimensions, and codec. SwitchX accepts at most 240 frames and 2,770,000 pixels in one generation and needs a constant frame rate. PR0TA chunks a longer plate automatically: one Beeble job per chunk, each billed on its own, stitched back into one render and one alpha. The plan lives in `metadata.switchx_chunks`; PR0TA feeds the final rendered frame of each chunk to the next as its look reference and records that lineage under `reference_chain`. Keep `chain_chunk_references` on unless you are running a controlled comparison; a long evolving background can still benefit from a motivated edit.
 3. **Decide the matte before the look.** Choose `auto`, `fill`, `select`, or `custom` from `reference/matte-and-alpha.md`. A wrong matte cannot be fixed by a better prompt. `auto` locks onto the subject in the first frames, so a plate that opens on an empty frame, a prop, or an occluded actor, and any plate PR0TA will chunk, needs a `custom` matte from BiRefNet; in a production test `auto` regenerated the couple as different people in the first chunk while the same plate with a BiRefNet matte kept them.
-4. **Author the look as a plate, not a sentence.** For any background swap, build or approve a reference image that matches the plate's lens, horizon, camera height, and subject scale, then let the prompt describe lighting and mood. Read `reference/reference-plate-authoring.md`.
+4. **Author the look as a plate, not a sentence.** For any background swap, build or approve a reference image that matches the plate's lens, horizon, camera height, and subject scale, then let the prompt describe lighting and mood. When a 3D world is available, select it in Previs, keep the shot camera fixed, use World registration plus the frame-zero plate blend to reposition the world, and choose Render first-frame BG. Use that image as `reference_image_asset_ids[0]`. Read `reference/reference-plate-authoring.md`.
 5. **Keep structure and appearance authorities separate.** A splat, collider, depth pass, or clay render controls geometry and camera only. Approved location plates control palette, material, light, and atmosphere. Never let a grayscale or neutral pass carry appearance authority. Read `reference/world-anchored-references.md`.
 6. **Review every output against the source.** Compare faces, hands, hair edges, contact shadows, and camera motion frame by frame. SwitchX identity preservation can vary across identical runs, so review before editorial approval and rerun rather than accept drift.
 7. **Record the decision.** After a take is approved, call `memory_record_decision` with the plate, matte, and reference asset IDs so later shots reuse the same authorities.
@@ -95,10 +100,11 @@ Still reference plate from an extracted frame:
 Field rules:
 
 - `video_asset_id` (or `video_url`) is the plate. `image_asset_id` is the plate for stills. At least one of `prompt` or a reference image is required.
-- `reference_image_asset_ids[0]` is the look reference. Only the first reference is used.
+- `reference_image_asset_ids[0]` is the look reference. Only the first reference is used. For a world composite, pass the asset produced by Previs → Render first-frame BG after registering the world against the source plate.
 - `alpha_mode` is `auto` (detect and track the main subject), `fill` (keep the whole frame and relight it), `select` (one grayscale keyframe image that Beeble propagates), or `custom` (a full-length grayscale matte video). Stills treat `select` as `custom`.
 - `alpha_asset_id` is a project matte asset; PR0TA resolves it to a signed `alpha_uri`, infers `alpha_media_kind` from the asset, and conforms it to the prepared source. Pass `alpha_uri` only for media that is not a project asset.
 - `max_resolution` is `720` or `1080`. PR0TA downscales the source to fit both the cap and the pixel budget.
+- `chain_chunk_references` defaults to `true` for long plates. If continuity-frame extraction, preservation, or upload fails, PR0TA stops before submitting the next billed chunk rather than falling back to the original look reference.
 - The task result carries `asset_id` for the render, `alpha_asset_id` for Beeble's own matte, and `source_asset_id` for the preprocessed source. Reuse `alpha_asset_id` as the `custom` matte on later takes of the same plate.
 
 Read `reference/switchx.md` for the alpha-mode semantics, camera-motion caveats, timing rules, output handling, and failure repairs. Use REST only when MCP is unavailable: `POST /api/v2/projects/{project_id}/generate` with the same request body, documented in `pr0ta-api/reference/unified-generation.md`.
@@ -139,6 +145,7 @@ Recurring locations stay consistent when every shot draws geometry from the same
 
 - **Collider to structure passes:** `set_environment_collider_materialize` turns a Marble world's collider mesh into a Blender source, and `blender_job_submit` with `source_world_asset_id` renders `flat_structural` and `depth_normalized` passes from the shot camera for the designed-world prompt profile.
 - **World-only previs guide:** the previs stage can render the Marble world alone along the camera path, tagged `guide_role: world_structure_reference`, for use as a clay-render video reference with zero appearance authority.
+- **Registered first-frame background:** the previs stage stores a persistent world translation, orientation, and uniform scale while leaving the plate camera fixed. Render first-frame BG produces an image tagged `guide_role: world_first_frame_background`; use it as the single look reference accepted by SwitchX or another reference-image workflow.
 - **Pose-bearing captures:** a reference shot from a splat, pano, or mesh view stores its camera pose, lens, and world identity in `world_capture` labels so the same view can be re-rendered as a structure pass.
 - **Camera-take import:** a recorded camera-performance take can drive the previs camera, so a real camera move produces the structure guide.
 
@@ -171,6 +178,9 @@ If any check fails, change the matte or the reference before changing the prompt
 
 ## Deep References
 
+- `reference/hybrid-sequences.md` — Post sequence import, cut review, coverage setups, continuity states, representative approval, resumable groups, and original-audio reassembly.
+
+- `reference/hybrid-shot-studio.md` — visual workspace, saved skill handoffs, alignment, background editing, and model-specific generation controls.
 - `reference/switchx.md` — Beeble SwitchX contract, alpha modes, limits, outputs, and repairs.
 - `reference/matte-and-alpha.md` — matte sources, keyframe authoring, timing rules, and edge hygiene.
 - `reference/reference-plate-authoring.md` — building angle-matched look references from a plate.

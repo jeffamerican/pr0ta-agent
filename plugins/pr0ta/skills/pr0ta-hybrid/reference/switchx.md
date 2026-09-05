@@ -50,8 +50,8 @@ White keeps the source; black is regenerated. For stills PR0TA sends `custom` fo
 
 Before submission:
 
-1. Resolves `video_asset_id`, `reference_image_asset_ids`, and `alpha_asset_id` to signed provider-readable URLs.
-2. Probes the source and counts its frames exactly when the estimate is near or over 240. A longer plate is cut into contiguous near-equal chunks of at most 240 frames, each chunk is verified frame-exact, and each runs as its own Beeble job in order with its own idempotency key. A `custom` matte is cut with the same plan; a `select` keyframe is chained by extracting the last alpha frame of the previous chunk. The plan, job ids, and chunk asset ids are written to `metadata.switchx_chunks` as the job advances.
+1. Resolves `video_asset_id`, `reference_image_asset_ids`, and `alpha_asset_id` to signed provider-readable URLs. For a 3D-world composite, first register the world against frame zero in Previs and use the Render first-frame BG image as `reference_image_asset_ids[0]`; SwitchX receives the baked view, not the world transform.
+2. Probes the source and counts its frames exactly when the estimate is near or over 240. A longer plate is cut into contiguous near-equal chunks of at most 240 frames, each chunk is verified frame-exact, and each runs as its own Beeble job in order with its own idempotency key. A `custom` matte is cut with the same plan; a `select` keyframe is chained from the previous alpha; and the previous rendered tail frame becomes the next chunk's look reference. The plan, job ids, chunk asset ids, and durable chain-reference asset ids are written to `metadata.switchx_chunks` as the job advances. `chain_chunk_references` defaults on; if a chain frame cannot be prepared, the next billed chunk is not submitted.
 3. Downscales and transcodes the source to fit `max_resolution` and the pixel budget, and registers the prepared file as a normalized asset.
 4. Conforms the reference image to the prepared source dimensions.
 5. Conforms a `custom` matte to the prepared source. The frame count must match exactly; a matte with the right frames but different frame-rate or duration metadata (BiRefNet writes 24 fps for a 23.976 fps source) is re-stamped frame-for-frame, never resampled. A matte with a different frame count is rejected.
@@ -101,7 +101,8 @@ Custom, full matte video:
 
 | Symptom | Repair |
 |---|---|
-| Visible seam at a chunk boundary | Chunks are generated independently; split the plate yourself at a motivated cut, or keep more foreground unmasked so the kept pixels hide the join |
+| Visible seam at a chunk boundary | Confirm `metadata.switchx_chunks.reference_chain.enabled` and its completed count. Chaining carries the prior rendered look forward but cannot prevent every change in a long evolving background; split at a motivated cut or keep more foreground unmasked if the seam remains |
+| First frame has the wrong horizon or world position | Reopen the Previs scene, select the world, align it with Plate blend while leaving the shot camera fixed, render a new first-frame BG, and replace `reference_image_asset_ids[0]` |
 | Chunk rejected for frame drift | The source has a variable frame rate; conform it to a constant frame rate and resubmit |
 | Custom matte rejected for timing | Regenerate the matte from the prepared source asset (`result_refs.source_asset_id` or the normalized asset), not from the original upload |
 | Background slides on a pan | Keep more foreground unmasked, switch to a Seedance edit with a reference video, or generate the background as a separate plate and composite |

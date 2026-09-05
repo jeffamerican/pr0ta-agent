@@ -20,10 +20,11 @@ The reference image is the strongest control SwitchX has. It decides what the re
 ## Workflow
 
 1. Extract the plate's first frame with the Video Editor's frame tools or `saveFreezeFrame`, and use it as the edit source so the geometry is inherited.
-2. Edit the frame into the target world with an image edit model from `pr0ta-image`, holding the camera and subject placement and changing only the environment. Nano Banana 2 is the default; use Seedream or GPT Image 2 when adherence to a supplied location still matters.
-3. When an approved location still exists, attach it as a reference to the edit and give it appearance authority only; when a Marble world exists, shoot the reference from the matching camera in the world viewer and use the capture as the structure source, as described in `reference/world-anchored-references.md`.
-4. Fan out three to five candidates and pick the one whose light direction, horizon, and scale agree with the plate. Reject candidates that moved the camera.
-5. Save the chosen reference as a project asset, tag it with `assets_annotations_update` as a location reference, and record it in memory once approved.
+2. When a Marble world is available, attach it in Previs and select the world row. Switch to Camera view, raise Plate blend, and change World registration position, orientation, and uniform scale until its horizon, ground plane, and landmark placement match the plate. Do not move the shot camera to compensate for a misplaced world. Choose Render first-frame BG; the uploaded image records frame zero, the camera, the world asset, and its alignment transform and is directly usable as `reference_image_asset_ids[0]` by SwitchX and other one-image reference routes.
+3. Edit the frame into the target world with an image edit model from `pr0ta-image`, holding the camera and subject placement and changing only the environment. Nano Banana 2 is the default; use Seedream or GPT Image 2 when adherence to a supplied location still matters.
+4. When an approved location still exists, attach it as a reference to the edit and give it appearance authority only. A direct world render carries the source world's appearance provisionally; use the approved plate to author the final look when the splat itself is not the approved appearance authority.
+5. Fan out three to five candidates and pick the one whose light direction, horizon, and scale agree with the plate. Reject candidates that moved the camera.
+6. Save the chosen reference as a project asset, tag it with `assets_annotations_update` as a location reference, and record it in memory once approved.
 
 ## Lighting as the Relighting Decision
 

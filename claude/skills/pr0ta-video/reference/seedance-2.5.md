@@ -1,6 +1,6 @@
 # Seedance 2.5 on MuAPI
 
-Use this reference for the Seedance 2.5 routes installed in PR0TA. **Seedance 2.5 Omni Reference (`muapi/seedance-2.5-omni-reference`) is the preferred production route for video generation.** Begin with one or more approved image, video, or audio references; choose T2V, I2V, first/last, Edit, or Extend only when its narrower contract is the actual requirement. Every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID. MuAPI's public pages currently disagree about whether 1080p is native or endpoint-upscaled, so do not promise a particular internal render lineage; treat the selected route and delivered dimensions as authoritative. Spicy and International are currently curated at 720p for text-to-video and image-to-video. Every current route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
+Use this reference for the Seedance 2.5 routes installed in PR0TA. **Seedance 2.5 Omni Reference (`muapi/seedance-2.5-omni-reference`) is the preferred production route for video generation.** Begin with one or more approved image, video, or audio references; choose T2V, I2V, first/last, Edit, or Extend only when its narrower contract is the actual requirement. Every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID. MuAPI documents native 1080p across all six modalities as of 2026-09-04; 4K remains upscaled from 720p. Standard, Spicy, and International 1080p routes are curated in each corresponding modality; the existing 720p Spicy/International T2V and I2V routes remain available. Every current route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
 
 ## Contents
 
@@ -45,6 +45,8 @@ Start at Omni Reference. The remaining rows are explicit exceptions: prompt-only
 | `muapi/seedance-2.5-video-extend-1080p` | 1080p tier | Deliver a continuation to a Full HD pipeline |
 | `muapi/seedance-2.5-video-extend-4k` | 4K tier | Deliver a continuation to a 4K pipeline |
 
+Native 1080p variants use `muapi/seedance-2.5-{intl|spicy}-{mode}-1080p` for all six modes. Native 1080p Edit/Extend send `video_url`; Edit references use `images_list`/`audios_list`, and Extend uses optional `last_image`. See [current provider documentation](https://muapi.ai/seedance-2.5).
+
 Spicy uses the same request shape as standard 720p generation but favors more expressive motion and higher-contrast creative interpretation with reduced moderation. International uses MuAPI's international-region deployment for traffic outside mainland China. Neither variant adds an audio toggle, last-frame, resolution, or camera-fixed control to these text/image routes; their outputs still include native audio.
 
 ## Current Standard Contract
@@ -56,7 +58,7 @@ The standard sixteen T2V, I2V, first/last, and Omni routes plus the four curated
 - Aspect ratio `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, or `9:21`; default `16:9`.
 - Optional integer `seed`; `-1` means random.
 - Optional boolean `high_bitrate`; default `false`. Enable it for final-quality output when better fine-detail and compression fidelity justify a larger file.
-- Resolution tier is fixed by model ID: unsuffixed route is 720p, while `-480p`, `-1080p`, and `-4k` select those output tiers. MuAPI's current public pages conflict about 1080p render lineage; do not describe it as definitively native or upscaled without current route-specific proof.
+- Resolution tier is fixed by model ID: unsuffixed route is 720p, while `-480p`, `-1080p`, and `-4k` select those output tiers. MuAPI's family page now verifies native 1080p for all six modalities (2026-09-04); 4K is upscaled from 720p.
 - Audio-bearing output with no audio opt-out field.
 
 The standard routes do not expose `resolution`, `negative_prompt`, `sound`, `generate_audio`, `camera_fixed`, `character_id`, `character_ids`, CFG/strength, FPS, or output-format controls. Do not send those fields.
@@ -162,7 +164,7 @@ ByteDance's 2.5 launch examples demonstrate these creative intents, but the live
 
 ## Video Edit
 
-Edit requires a source video and accepts up to 30 optional image references and 10 optional audio references. In PR0TA, supply assets through `video_url`, `reference_image_urls`, and `reference_audio_urls`; the provider adapter maps them to MuAPI's `video`, `reference_images`, and `reference_audios` fields.
+Edit requires a source video and accepts up to 30 optional image references and 10 optional audio references. In PR0TA, supply assets through `video_url`, `reference_image_urls`, and `reference_audio_urls`; the provider adapter maps them to `video_url`, `images_list`, and `audios_list` on native 1080p endpoints (the existing other tiers retain `video`, `reference_images`, and `reference_audios`).
 
 ```text
 Use the source clip as the authority for identity, composition, motion, and timing. [One focused transformation]. Use the supplied image references for [identity/style/detail role] and the supplied audio references for [sound role]. Preserve [actions, framing, timing, and sounds that must remain]. The result ends with [observable state].

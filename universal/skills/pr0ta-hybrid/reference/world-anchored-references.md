@@ -8,8 +8,9 @@ Recurring locations stay consistent when every shot draws geometry from one pers
 - What PR0TA provides
 - Recipe A: collider to structure passes to a designed-world still
 - Recipe B: world-only previs guide as a clay-render video reference
-- Recipe C: pose-bearing reference captures
-- Recipe D: camera-take import
+- Recipe C: registered first-frame background for image-reference providers
+- Recipe D: pose-bearing reference captures
+- Recipe E: camera-take import
 - Building the world from the location itself
 - Roles and permissions
 - What is pending
@@ -34,6 +35,7 @@ Never bend this for convenience. A prompt that lets a gray render "inspire the l
 | Structure passes from the shot camera | `blender_job_submit` with `source_world_asset_id` or `source_asset_id` and passes `flat_structural` plus `depth_normalized` | Trusted guidance passes with package identity, depth normalization, and QC metadata |
 | Controlled still from structure plus appearance | `agent_chat_orchestrate_prompt` with `prompt_profile: "designed_world_reference_image"` | Generation package with the authority clause enforced |
 | World-only previs guide | Previs stage, Render world only | Video asset with `guide_role: world_structure_reference` |
+| Registered first-frame background | Previs stage, World registration, Render first-frame BG | Image asset with `guide_role: world_first_frame_background`, world alignment, and frame-zero camera metadata |
 | Pose-bearing capture | Image Editor world viewer, Shoot reference | Reference image with `world_capture` labels |
 | Camera-take import | Previs stage, Import camera take | Camera keyframes from a recorded camera-performance track |
 
@@ -41,7 +43,7 @@ Never bend this for convenience. A prompt that lets a gray render "inspire the l
 
 1. Find the world asset and the set environment with `set_environments_get` for the scene.
 2. Call `set_environment_collider_materialize` with `environment_id` and `world_asset_id`. It downloads the collider once, registers it as a project GLB, links it as `blender_source`, and reuses the same asset on later calls.
-3. Call `blender_job_submit` with `request.environment_id`, `request.source_world_asset_id`, a `scene_plan.camera` that matches the intended shot camera, and `render: {"kind": "still", "passes": ["flat_structural", "depth_normalized"]}`. Both passes are mandatory together and only stills are allowed for guidance renders. `source_world_asset_id` and `source_asset_id` are mutually exclusive.
+3. Call `blender_job_submit` with `request.environment_id`, `request.source_world_asset_id`, a `scene_plan.camera` that matches the intended shot camera, and `render: {"kind": "still", "passes": ["flat_structural", "depth_normalized"]}`. When the imported collider needs registration, set `scene_plan.world_alignment` with `location`, degree-based `rotation`, and `uniform_scale`; Blender parents the source world under that transform without moving the declared camera. Both passes are mandatory together and only stills are allowed for guidance renders. `source_world_asset_id` and `source_asset_id` are mutually exclusive.
 4. Poll with `tasks_get`. The result lists `guidance_packages` with both pass asset IDs and their metadata.
 5. Call `agent_chat_orchestrate_prompt` with `prompt_profile: "designed_world_reference_image"`, the guidance package, and an approved location still as the `appearance` reference. Generate only from a `generation_package`.
 6. Use the resulting still as the SwitchX reference plate or as an Omni image reference.
@@ -57,11 +59,21 @@ The collider is coarse, which is acceptable: the flat pass only needs silhouette
 
 The normal guide with mannequins remains the motion reference; the world-only guide is a structure reference. Keep both if the shot needs both.
 
-## Recipe C: Pose-Bearing Reference Captures
+## Recipe C: Registered First-Frame Background
+
+1. In Previs, attach the canonical Marble world and select its world row. The shot camera remains the plate camera; all registration edits apply to the world.
+2. Switch to Camera view and use Plate blend to compare against the selected source video's frame zero. Translate, rotate, and uniformly scale the world until horizon, floor contact, landmark position, and coverage agree.
+3. Choose Render first-frame BG. PR0TA renders the full-resolution splat through the frame-zero shot camera and registers a PNG with its world asset, alignment transform, camera transform, focal length, and render dimensions.
+4. Use that asset as `reference_image_asset_ids[0]` for SwitchX or any current provider that accepts a single background/look reference image. The provider receives baked pixels, not a 3D transform.
+5. For a chunked SwitchX plate, this is the base reference for the first chunk. PR0TA's tail-frame reference chain then carries the rendered appearance into each later chunk; it does not give SwitchX direct 3D awareness, so review every join and use a motivated cut or a structure-aware video route if geometry still drifts.
+
+The world registration is persistent. When it or the world/camera changes, PR0TA clears any stale rendered first-frame reference so it cannot silently survive a new alignment.
+
+## Recipe D: Pose-Bearing Reference Captures
 
 Shooting a reference from a splat, pano, or mesh view in the Image Editor now saves the camera with the image. The freeze-frame asset carries a `world_capture` label containing a JSON object with `mode`, `position`, `yaw`, `pitch` or `quaternion`, `focalLengthMm`, `fovDegrees`, `sensorHeightMm`, `coordinateSystem`, `worldAssetId`, `worldId`, `projectId`, and `capturedAt`, plus flat `world_capture_mode`, `world_focal_length_mm`, `world_asset_id`, and `world_id` labels for filtering. Use the stored pose to build the matching `scene_plan.camera` for Recipe A so the structure passes and the captured view agree. Captures from a library world carry `worldId` only, because there is no project asset yet.
 
-## Recipe D: Camera-Take Import
+## Recipe E: Camera-Take Import
 
 A camera-performance take records position, quaternion, and focal length samples in the previs coordinate frame. Import it from the previs stage to replace the shot camera's keyframes; pre-roll samples and samples without tracking are dropped, other targets keep their animation, and the take's focal length maps one to one onto the previs lens. Then render a world-only guide from that camera for Recipe B.
 

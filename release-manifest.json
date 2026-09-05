@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.23.0",
-  "released_at": "2026-09-03",
-  "source_revision": "v5.23.0",
-  "minimum_platform_version": "1.19.1515",
+  "skills_version": "5.24.0",
+  "released_at": "2026-09-04",
+  "source_revision": "v5.24.0",
+  "minimum_platform_version": "1.20.0",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03749-hix",
-  "bundle_sha256": "dcdf964a382f05dd96caa9596089abad089b16f42a75c133b10e334e82d15cd0",
+  "platform_revision": "pr0ta-platform-03754-rip",
+  "bundle_sha256": "c8a685a5260160c4660041b84adcfc32b00cfef0e0ab6572ddd20293ceadf0cb",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "f0dbfe4abc0dee2c552ff7a003cdd34420acb246fb507aad92865ad4da500e87",
+      "content_sha256": "13ca1106ed770fa94393925bbe4aff22c7c0c2c8f77446c03b3d24bdc8dd34d1",
       "documents": [
         {
           "path": "SKILL.md",
@@ -101,7 +101,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "f58816ea973b990c297f89abc1956726a28db6666cfea51423a3efabaad4d027"
+          "sha256": "4efb5708a47e5ce8bd1b221fc629324058997160a9cc0f11892dcb80dc648a1f"
         },
         {
           "path": "reference/voice-and-transcription.md",
@@ -171,12 +171,20 @@
     },
     {
       "name": "pr0ta-hybrid",
-      "description": "PR0TA hybrid production for live-action plates and 3D worlds: Beeble SwitchX background swap/relight, matte and alpha sourcing, reference-plate authoring, and world-anchored structure references. Read when a shot starts from footage, a scan, or a Marble world instead of a blank prompt.",
-      "content_sha256": "af1f1d6a133118c5428866d69814f2278dc2f582264acc2a3d4a1a747531d222",
+      "description": "PR0TA hybrid production in Post for edited sequences, cut segmentation, coverage-angle grouping, background continuity, and individual live-action plates or 3D worlds. Read for SwitchX/Seedance hybrid edits, mattes, reference plates, and world-anchored backgrounds.",
+      "content_sha256": "5d14219dbce08a7aa84e09be12e65d1ef0b9127900cb7aaad730a8c89c4e6629",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ed0e081c103c5884c23bff5c4f8c31f94b2fea5aa5fe548e06b16b134e30ee44"
+          "sha256": "622d7a9bbe833314a4a77556858d33f8c9a85a92400e72da1110fb29c0062b08"
+        },
+        {
+          "path": "reference/hybrid-sequences.md",
+          "sha256": "4165681cbf1bebf74d953edf62c32c6570c51299a20d101b48e89da7c1d54a38"
+        },
+        {
+          "path": "reference/hybrid-shot-studio.md",
+          "sha256": "6d8f3dbf7925888f184d0f2aabdded3856db779870d2fd11dc90f5b6e79cb20b"
         },
         {
           "path": "reference/matte-and-alpha.md",
@@ -184,7 +192,7 @@
         },
         {
           "path": "reference/reference-plate-authoring.md",
-          "sha256": "10d49f78d72943f87aea5a17e12b6fd0ae5327d90ee2fa0089e437c93a4f570f"
+          "sha256": "bed0cd87879534744b185bf51839cfb3e5485ee2be83573d137306285002a297"
         },
         {
           "path": "reference/route-selection.md",
@@ -192,11 +200,11 @@
         },
         {
           "path": "reference/switchx.md",
-          "sha256": "54cf3ce32e4c7b67426db06f6bfbde57e46a332fb7a256dd96d3ef1699c2770f"
+          "sha256": "43fc726e8526cf8daa7dcd1872cc50f60a5c643b226342d3e40e5d681095843a"
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "4637473c75861593f832ddef10875af2d64b069e09bcfcd4a236b6773d75ba4c"
+          "sha256": "10a3e114802da2cb1717eea0e76fa6590b87e58b337765582ed53bdb1392dbc0"
         }
       ]
     },
@@ -282,7 +290,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "c0751b5f2f1335ab6035d6f3953f52c4fb56429817c7b016f37f637446a2f4ab",
+      "content_sha256": "384fc4260e2c5045e34631c11305708aa7a871a2b705fe047acfccd0cebea917",
       "documents": [
         {
           "path": "SKILL.md",
@@ -302,7 +310,7 @@
         },
         {
           "path": "reference/hailuo-h3.md",
-          "sha256": "79cb73cdc3547ae9a1b85fbd1e1acfbbf44cd0220f014206a5beae66b1c698b2"
+          "sha256": "c44a2c891e62a34a95178accea965c8c2caa9759e995e0ab2230dcea8ce96fb0"
         },
         {
           "path": "reference/kling-prompting.md",
@@ -322,7 +330,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "12bdb798dd9989ac13921f821d7f1c3ca90a6ef2870e1807da9e5010d7de80ce"
+          "sha256": "a59ebb9b9fda6d8ba0761140e3d0b416e8d3f54a6ba7eb9f14542c7ffef65260"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
