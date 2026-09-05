@@ -15,6 +15,11 @@ from pathlib import Path, PurePosixPath
 from collections.abc import Callable
 from typing import Any
 
+try:
+    from .connector_config import CodexConnectorConfig
+except ImportError:  # Direct execution by the publishing workflow.
+    from connector_config import CodexConnectorConfig
+
 
 ROOT = Path(__file__).resolve().parents[1]
 API_BASE_URL = os.getenv("PR0TA_API_BASE_URL", "https://api.pr0ta.com")
@@ -157,6 +162,7 @@ def write_archive(path: Path, source: Path, prefix: str = "") -> None:
 
 
 def build_archives() -> None:
+    CodexConnectorConfig(ROOT / "plugins/pr0ta").synchronize()
     destination = ROOT / "dist"
     write_archive(destination / "pr0ta.plugin", ROOT / "claude", "pr0ta")
     write_archive(destination / "pr0ta-skills.zip", ROOT / "universal")

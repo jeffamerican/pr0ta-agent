@@ -93,6 +93,7 @@
   "save_scene_shotlist",
   "script_supervisor_read_generate",
   "set_environment_asset_link",
+  "set_environment_collider_materialize",
   "set_environment_upsert",
   "set_environments_get",
   "shotlist_generate",
