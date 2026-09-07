@@ -65,6 +65,8 @@ The standard routes do not expose `resolution`, `negative_prompt`, `sound`, `gen
 
 The current Omni route also accepts `omni_reference_task_type` with `auto`, `reference`, `edit`, or `extend`. Use `reference` for PR0TA's normal reference-led generation path, `edit` only when the attached video is source material to transform, and `extend` only when continuing it. Use `auto` when intent is genuinely ambiguous. This is a routing hint, not prompt prose or a substitute for the dedicated Video Edit or Extend route contracts. The provider still re-derives task type from the prompt, so a mismatch can fail asynchronously.
 
+Omni edits preserve the requested integer duration of 4–30 seconds. Do not send `duration=-1`: the [live MuAPI OpenAPI schema](https://api.muapi.ai/openapi.json), verified 2026-09-07, rejects that older sentinel. PR0TA sets `aspect_ratio=adaptive` for Omni edit/extend intent.
+
 Use 480p to validate prompt, staging, and motion. Re-run the selected prompt on the matching 720p, 1080p, or 4K route only when that tier fits the delivery pipeline and price. A seed can aid repeatability within a route, but it does not turn 480p into a deterministic preview of another route and is not an identity lock.
 
 The Edit and Extend families use the same prompt, duration, aspect-ratio, seed, and `high_bitrate` contract. They additionally expose `generate_audio` and require a source video. Their resolution is selected by model ID. Do not send a separate `resolution` value.
