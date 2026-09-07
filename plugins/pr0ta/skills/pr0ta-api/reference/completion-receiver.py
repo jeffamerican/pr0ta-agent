@@ -67,7 +67,7 @@ class CompletionReceiver:
     def drain_once(self):
         with self.connect() as connection:
             rows = connection.execute(
-                "SELECT event_id,payload,handled FROM inbox WHERE acknowledged=0 AND next_attempt<=? LIMIT 100",
+                "SELECT event_id,payload,handled FROM inbox WHERE acknowledged=0 AND handled!=2 AND next_attempt<=? LIMIT 100",
                 (self.clock(),),
             ).fetchall()
         for event_id, raw, handled in rows:
@@ -75,11 +75,15 @@ class CompletionReceiver:
             try:
                 binding = self.bindings[payload["subscription_id"]]
                 if not handled:
-                    self.resume(binding, payload)
+                    accepted = self.resume(binding, payload)
+                    if accepted is False:
+                        self._update(event_id, handled=2)
+                        continue
                     self._update(event_id, handled=1)
                 self.acknowledge(binding, payload)
                 self._update(event_id, acknowledged=1)
-            except Exception:
+            except Exception as exc:
+                logging.getLogger(__name__).warning("Completion handoff retry: %s (%s)", event_id, type(exc).__name__)
                 self._update(event_id, next_attempt=self.clock() + 30)
 
     def _update(self, event_id, **fields):
@@ -92,6 +96,11 @@ class CompletionReceiver:
 
     @staticmethod
     def _resume(binding, payload):
+        if binding.get("host") == "codex":
+            from codex_completion_adapter import CodexCompletionAdapter
+            return CodexCompletionAdapter(binding.get("codex_command")).deliver(binding, payload)
+        if binding.get("host") not in (None, "command"):
+            raise ValueError("Unsupported completion host")
         command = binding["resume_command"]
         if not isinstance(command, list) or not command or not all(isinstance(arg, str) for arg in command):
             raise ValueError("Configure resume_command as an argv list")

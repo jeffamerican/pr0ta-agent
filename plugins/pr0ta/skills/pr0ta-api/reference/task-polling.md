@@ -2,9 +2,9 @@
 
 Full polling contract: routes, in-progress / succeeded / failed response shapes, the error-reason taxonomy, cancellation, and the `result` vs `result_refs` canonical contract.
 
-## Task Polling (Primary Completion Signal)
+## Task Status and Polling Fallback
 
-**Task polling is the primary completion signal.** Poll until the task reaches a terminal state, then extract the asset ID from the response.
+**Task status is authoritative.** With a configured completion subscription, await the notification, acknowledge actual pickup, and read `tasks_get` to reconcile its result. Without a receiver, or during recovery, poll until terminal state. See [completion notifications](task-completion.md).
 
 ### Get Task Status
 
@@ -24,7 +24,7 @@ When a generation reaches the provider but fails there (e.g. insufficient provid
 - `error` — human-readable message (e.g. `"Insufficient credits"`)
 - `error_detail` — full provider payload for diagnosis
 
-These failures are **asynchronous** — the initial `POST /generate` returns 200 + `task_id` + `"running"` before the provider rejects the job. You will only see the error by polling the task to terminal state. **Always poll to terminal; never assume a 200 on submission means the generation will succeed.**
+These failures are **asynchronous** — the initial `POST /generate` returns 200 + `task_id` + `"running"` before the provider rejects the job. Completion subscriptions report failures as well as success. Read the terminal task for details; never assume a 200 on submission means the generation will succeed.
 
 Example in-progress response:
 ```json
@@ -155,4 +155,3 @@ The backend normalizes both `canceled` and `cancelled` terminal states — compl
 5. If both providers stall, surface the status to the user before degrading to a Ken Burns push on the still — motion vs. no-motion is a creative call, not an infrastructure call.
 
 ---
-

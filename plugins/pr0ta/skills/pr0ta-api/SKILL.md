@@ -212,7 +212,7 @@ Poll the returned task with `tasks_get`.
 - **Seedance storyboard sheets:** for advanced Omni chunks, list chunks with `storyboard_chunks_list`, generate sheet variations with `storyboard_reference_sheet_generate`, poll with `tasks_get`, then list/select sheets with `storyboard_reference_sheets_list`. Use the approved sheet as a normal image reference in the later `generation_submit` video request.
 - **Audio output and audio controls are separate contracts.** Send `sound` only when live defaults expose it. Seedance 2.5 and Hailuo H3 always return audio-bearing video despite having no standard `sound` field. FLUX 3 and LTX 2.5 generation default to synchronized audio and expose schema-level `generate_audio`.
 - **Video extension is first-class:** use `generator=video`, `mode=extend_video`, a source `video_url` or `video_asset_id`, a prompt, and an extension-capable model such as `muapi/seedance-2.5-video-extend`, `fal-ai/pixverse/v6/extend`, `fal-ai/veo3.1/extend-video`, `fal-ai/vidu/q2/video-extension/pro`, `fal-ai/magi/extend-video`, or `kling/v3/video-extend`. Seedance 2.5 Extend uses model-ID resolution variants and exposes `generate_audio` plus optional `last_image_url`.
-- **Submission returns a task**, never a finished asset. Extract `task_id` and poll — do not assume 200 on submit means the job succeeds. Async provider errors surface only at terminal polling. The initial task may have `provider: null` / `model_id: null`; this is normal, not a failure.
+- **Submission returns a task**, never a finished asset. Retain `task_id`, await its bound completion notification (or poll when no receiver is configured), then read `tasks_get` to reconcile the terminal result. A 200 on submit is not success. The initial task may have `provider: null` / `model_id: null`; this is normal, not a failure.
 - **Make submission retries idempotent.** Supply the same `request.idempotency_key` to MCP, or the same body `idempotency_key` / `Idempotency-Key` header to REST, for every retry of one logical generation. PR0TA reserves that key before remote media checks and provider submission, so a gateway timeout cannot create or bill a duplicate. An in-progress retry returns a typed `409`; after acceptance, retrying returns the existing task. Requests carrying `metadata.operation_instance_id` automatically derive a stable key when no explicit key is supplied.
 
 **Full contract — request/response shapes for every generator, model-capability matrix, image resolution constraints, multi-prompt and camera-control fields, asset-ID resolution rules, submission response fields:** Read `reference/unified-generation.md`.
@@ -223,7 +223,7 @@ For the full endpoint specs covering **batch generation** (`generation_batch_sub
 
 Essential facts:
 
-- **Events are an acceleration path, not the primary completion signal.** Image events in particular are best-effort and sometimes empty even after completion. Always use task polling (below) as the authoritative completion signal.
+- **The legacy generation event queue is best-effort**, especially for images. It is separate from durable completion subscriptions in `reference/task-completion.md`. Use subscriptions for wake-up and `tasks_get` for canonical results; poll when no receiver is configured or for recovery.
 - **`POST /api/v2/projects/{id}/generate/batch` is the first-class fan-out mechanism.** One request can carry multiple generation payloads (up to **10** items per batch). Validation happens up front; submissions are processed item-by-item; partial-success reporting can occur if an early item is accepted and a later one fails. Oversized batches return `413`.
 - **Batch vs. loop:** Use the batch route when you have N distinct payloads you want to queue in a single round-trip. Use independent `/generate` calls in a loop when you want finer-grained retry/cancel logic or when submissions are driven by incremental decisions.
 - **Rate limits apply at the global per-minute tier level** (see "Authentication" section). There is no dedicated generate-only concurrency limit; 3–5 parallel generations is well within normal limits for any authenticated tier, but "well within limits" is not a certified concurrency guarantee.
@@ -233,7 +233,7 @@ For the full request/response shapes, Read the reference file.
 
 ## Task Polling — Reference
 
-**Task polling is the primary completion signal.** Always poll a submitted task to terminal state — a 200 from `POST /generate` only means queued, not succeeded. Async provider errors (insufficient credits, model unavailable, provider timeout) surface only at terminal status.
+**Task status is authoritative; repeated polling is the fallback.** With a configured completion subscription, await its notification, acknowledge actual pickup, and read `tasks_get` to reconcile the result. Otherwise poll to terminal state. A 200 from `POST /generate` only means queued; asynchronous failures surface at terminal status.
 
 **MCP tools:**
 ```

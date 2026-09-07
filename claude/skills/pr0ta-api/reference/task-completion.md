@@ -5,6 +5,12 @@ generation. A host receiver is required: skill text alone cannot wake a stopped
 conversation. Without a configured receiver and host-resume integration, use
 `tasks_get` / `tasks_batch_get`; do not claim push delivery is active.
 
+For Codex, read [Codex receiver setup](codex-completion.md). A built-in adapter
+uses `codex queue --thread <UUID>`; it does not require writing a resume command.
+When asked to configure push delivery, perform that setup within the user's
+authorized scope. A scheduled polling automation is a different mechanism;
+do not substitute it and report webhook setup complete.
+
 ## Register the exact conversation
 
 Call `tasks_subscribe` with `project_id` and `request`:

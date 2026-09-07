@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "skills_version": "5.24.1",
+  "skills_version": "5.24.2",
   "released_at": "2026-09-07",
-  "source_revision": "v5.24.1",
+  "source_revision": "v5.24.2",
   "minimum_platform_version": "1.21.6",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03825-wim",
-  "bundle_sha256": "568fa1e26bcf11f66c5d4e442783fb1e99319d62b966f7bfce366d65cb984092",
+  "platform_revision": "pr0ta-platform-03834-fuj",
+  "bundle_sha256": "4caee6334e35aec537a912a7d657b5ab3e17824b4ead98f2bddb9b9bc7de8014",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "357a18a7379149af751473f93b48cf0892365672b6ad518f7ef76c67021bd40c",
+      "content_sha256": "954c43e7b3485914acad0b3da57ea6d376c75ed9e28293e12c2ec9f147ac97b9",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "94167e041f23ebf8f34448cd4c49764a35957e5678606cd36fbb31055a01ee5b"
+          "sha256": "592b9096dbe5badfc27810b9522542aed396a827973bb1ead1e0ce510a39197a"
         },
         {
           "path": "reference/asset-management.md",
@@ -48,8 +48,20 @@
           "sha256": "a8e27373594d4da1b3ba684646fd6471440d17f43c15e3d81cdf4e9f24ab09dd"
         },
         {
+          "path": "reference/codex-completion.md",
+          "sha256": "f3c7a136e1f04b4ab11345063a4bccfc276ee45c170c86de5e1b4474d0ba19db"
+        },
+        {
+          "path": "reference/codex_completion_adapter.py",
+          "sha256": "6bde083993f3bb0868c3fda37ef9a862cf01f88c79742a3156122f7987412866"
+        },
+        {
           "path": "reference/completion-receiver.py",
-          "sha256": "67022d2cdf1f92de989adc5602e05c7b6c27d1cdcf743e692e8ec735a063cd00"
+          "sha256": "2238b8436594deb34442f2bacf562b83476515ef73f6a378d1de7d9ed56cc8a7"
+        },
+        {
+          "path": "reference/completion_client.py",
+          "sha256": "019ba5f096af3917e472241f496351e71fa94f548f0740d9741f860c6cd397a0"
         },
         {
           "path": "reference/editorial-primitives.md",
@@ -97,11 +109,11 @@
         },
         {
           "path": "reference/task-completion.md",
-          "sha256": "1238092a5af31df7ecbdaadb13ff539c67903773c7c17f4a91d06817c141903f"
+          "sha256": "268c4cd578c8d7f845a07d6332403e50a5c5c1d42ee28171d1f4a847f2f5b1a2"
         },
         {
           "path": "reference/task-polling.md",
-          "sha256": "4e09bdb589c864fa31853d642e5040fad309cad737d74581242d56eb395c271c"
+          "sha256": "d68e0e69d16552428540ad15595e3ac5b6a815f5b05506a9501677c909a7b689"
         },
         {
           "path": "reference/timeline-api.md",
