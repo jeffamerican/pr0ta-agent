@@ -49,6 +49,14 @@ class ConnectorConfigTests(unittest.TestCase):
                 sync_from_pr0ta.build_archives()
         self.assertFalse((self.root / "dist").exists())
 
+    def test_missing_completion_tool_prevents_publishing_an_unusable_connector(self):
+        for name in ("tasks_subscribe", "tasks_watch", "tasks_completion_events",
+                     "tasks_acknowledge", "tasks_unsubscribe"):
+            with self.subTest(tool=name):
+                self.write_profile([tool for tool in self.profile if tool != name])
+                with self.assertRaisesRegex(ValueError, name):
+                    CodexConnectorConfig(self.plugin).synchronize()
+
     def test_duplicate_and_malformed_profiles_are_rejected(self):
         for profile in (self.profile + self.profile, {}, [None]):
             with self.subTest(profile=profile):

@@ -124,5 +124,10 @@
   "voices_design_commit",
   "voices_list",
   "voices_speech_to_speech",
-  "world_generation_submit"
+  "world_generation_submit",
+  "tasks_subscribe",
+  "tasks_watch",
+  "tasks_completion_events",
+  "tasks_acknowledge",
+  "tasks_unsubscribe"
 ]

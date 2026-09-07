@@ -11,6 +11,8 @@ class CodexConnectorConfig:
         "post_export_start", "assets_get_download_link", "review_submit_assets",
         "transcription_start", "transcription_get", "blender_job_submit",
         "world_generation_submit", "set_environment_collider_materialize",
+        "tasks_subscribe", "tasks_watch", "tasks_completion_events",
+        "tasks_acknowledge", "tasks_unsubscribe",
     }
 
     def __init__(self, plugin: Path):
