@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03754-rip",
-  "bundle_sha256": "c8a685a5260160c4660041b84adcfc32b00cfef0e0ab6572ddd20293ceadf0cb",
+  "platform_revision": "pr0ta-platform-03819-xir",
+  "bundle_sha256": "7f85a08cf7660c53802695af361d2d8f247e0f8a9382da3788eca604b99c2d94",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "13ca1106ed770fa94393925bbe4aff22c7c0c2c8f77446c03b3d24bdc8dd34d1",
+      "content_sha256": "2eb29d736bab346208f059415cdc8df8ee8a9680dceb5c0580e6b6eeabf57595",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "26055412a1677ae4ff5f04cf908af7c2a5f3661e828753202bcdc5d9e1f9fd28"
+          "sha256": "86624a51a9d17730ae8872fcc78091634439487140595c920c1309551c2a5dc5"
         },
         {
           "path": "reference/asset-management.md",
@@ -57,7 +57,7 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "96dc0f9c6300e4a27dd6cff287f3bf142ff04e71b5a9f1985d0bbfbc718eb0a8"
+          "sha256": "153eedd34a9a7cd507a766b26c24fa60acb73d879a1026e892dd3462e4296ade"
         },
         {
           "path": "reference/music-analysis.md",

@@ -371,3 +371,9 @@ When `agent_tools.enabled` is `false`, the system falls back to the existing ful
 - **Tools return empty results:** Verify `project_id` via `list_projects`. Check that the Producer/Director/Script Supervisor reads have been run — tools wrap existing services.
 - **Function calling not working (internal agents):** Verify `agent_tools.enabled` is `true`, the role is in `roles_with_tools`, the provider is BytePlus, Google, or OpenRouter, and the selected catalog model advertises tool support.
 - **MCP tool calls failing:** All project-scoped MCP tools require `project_id`. `create_project` and `list_projects` are project-independent; internal project tools get the ID from the execution context, while external MCP calls need it explicitly.
+
+### Native trim, music analysis, and reporting
+
+The connected prep/production tool profile includes `assets_trim`, `music_analyze`, and `bug_report_create`. All use the existing authenticated MCP connection and project context. `assets_trim` requires project editor access and accepts `asset_id`, `asset_type` (`audio` or `video`), `in_point`, and `out_point` in seconds. Audio derivatives are PCM WAV, bounded to the requested duration, with measured output metadata and source labels retained in provenance. It returns `asset.id` synchronously. `music_analyze` returns the native analysis task response; `bug_report_create` returns `bug_report.id`.
+
+After updating an existing Codex connection, refresh its `enabled_tools` profile with `scripts/connect_pr0ta_mcp.sh` and start a fresh session to reload tool discovery. A local allowlist cannot expose a tool until its server implementation is deployed.
