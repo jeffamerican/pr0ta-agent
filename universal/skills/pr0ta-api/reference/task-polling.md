@@ -6,6 +6,11 @@ Full polling contract: routes, in-progress / succeeded / failed response shapes,
 
 **Task status is authoritative.** With a configured completion subscription, await the notification, acknowledge actual pickup, and read `tasks_get` to reconcile its result. Without a receiver, or during recovery, poll until terminal state. See [completion notifications](task-completion.md).
 
+If a subscribed task finishes during active work and you accept its result through
+a status read, reconcile and acknowledge its completion event now; do not wait for
+a queued notification to take another turn. Follow
+[active-work pickup](task-completion.md#results-picked-up-during-active-work).
+
 ### Get Task Status
 
 Two equivalent routes — prefer the project-scoped path so the project context is explicit:

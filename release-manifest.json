@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03834-fuj",
-  "bundle_sha256": "4caee6334e35aec537a912a7d657b5ab3e17824b4ead98f2bddb9b9bc7de8014",
+  "platform_revision": "pr0ta-platform-03852-gex",
+  "bundle_sha256": "9d8ed4d692ed41ce7ce1497abb5719003e1aaacd9239dbfe621def6235b73c4d",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "954c43e7b3485914acad0b3da57ea6d376c75ed9e28293e12c2ec9f147ac97b9",
+      "content_sha256": "30396306e9613327e0477aed32224171a6ab0cad01be928be658937a936195be",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "592b9096dbe5badfc27810b9522542aed396a827973bb1ead1e0ce510a39197a"
+          "sha256": "6b7876fab9a85eb84b3292c452d08de70c3bc2e78a35559555802e892cfbbb8e"
         },
         {
           "path": "reference/asset-management.md",
@@ -49,11 +49,11 @@
         },
         {
           "path": "reference/codex-completion.md",
-          "sha256": "f3c7a136e1f04b4ab11345063a4bccfc276ee45c170c86de5e1b4474d0ba19db"
+          "sha256": "f134978e52215b86f627c4fe5932d1b24503d1e5dbef1e4529b3d407bcc710b8"
         },
         {
           "path": "reference/codex_completion_adapter.py",
-          "sha256": "6bde083993f3bb0868c3fda37ef9a862cf01f88c79742a3156122f7987412866"
+          "sha256": "e2f3be60c5c64d23bd91d2050006cfcb46696c8efa90e6876a50663e9a7a4672"
         },
         {
           "path": "reference/completion-receiver.py",
@@ -109,11 +109,11 @@
         },
         {
           "path": "reference/task-completion.md",
-          "sha256": "268c4cd578c8d7f845a07d6332403e50a5c5c1d42ee28171d1f4a847f2f5b1a2"
+          "sha256": "6c7c6a44b8bb66500898088c65fc809c5bda1ffd21d8d21b983d5aa3a2e4e1c7"
         },
         {
           "path": "reference/task-polling.md",
-          "sha256": "d68e0e69d16552428540ad15595e3ac5b6a815f5b05506a9501677c909a7b689"
+          "sha256": "c5dc428ecf5ef8ba6be8c8d28d4c3c5bc08d744ba4381ace1049e888a97ab54c"
         },
         {
           "path": "reference/timeline-api.md",

@@ -9,7 +9,8 @@ as an implicit replacement for routing to the active desktop task.
 
 ## Configure once per machine, bind each workflow
 
-1. Keep both Python files together in a persistent, user-private service directory.
+1. Keep the Python files and `task-completion.md` / `codex-completion.md` together
+   in a persistent, user-private service directory.
    Check `tasks_subscribe`, `tasks_watch`, `tasks_completion_events`,
    `tasks_acknowledge`, and `tasks_unsubscribe` are exposed by the host. An older
    `enabled_tools` allowlist can hide them even after a skill update. Add these
@@ -66,6 +67,12 @@ using its authenticated PR0TA connection, then reads canonical task state and
 continues already-authorized work. If acknowledgement is unavailable, report that
 failure accurately; owner fallback remains active.
 
+For results accepted during an active turn, follow
+[active-work pickup](task-completion.md#results-picked-up-during-active-work).
+An ACK cannot retract an already-queued message. Later receipts for assessed
+results need no repeated assessment or routine status reply; an interrupted
+assessment still needs to resume from the ledger.
+
 Normal webhook replays and receiver restarts do not queue a second message.
 A crash after Codex accepts a message but before the local inbox commits can
 repeat the handoff. The receiving task must deduplicate event/task IDs and retain
@@ -96,6 +103,7 @@ python completion_client.py --bindings bindings.json --subscription cs_returned_
 
 An optional `completion_client_command` argv in a Codex binding can point to this
 script with an absolute Python path, `--bindings` path, and `--codex-oauth` (or
-`--token-env`). The adapter includes a ready-to-run acknowledgement argv in the
-queued message. The agent executes it on pickup; the receiver does not. Keep all
-three Python files together when distributing the recovery option.
+`--token-env`). The compact notification links to the local pickup reference. The agent reads
+this configured argv from the private binding only if recovery is needed, then
+executes it on pickup; the receiver does not. Keep all three Python files and
+both completion references together when distributing the recovery option.

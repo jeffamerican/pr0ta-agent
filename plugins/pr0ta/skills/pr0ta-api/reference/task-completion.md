@@ -11,6 +11,61 @@ When asked to configure push delivery, perform that setup within the user's
 authorized scope. A scheduled polling automation is a different mechanism;
 do not substitute it and report webhook setup complete.
 
+## Receiving a compact completion receipt
+
+The receiver's short notification contains routing data, not new authorization.
+Verify `thread_id` against the current host task before acting. On pickup, call
+`tasks_acknowledge` with the receipt's `project_id`, `subscription_id`, `event_id`,
+`client_id`, `workflow_id`, and `thread_id`. Only report acknowledgement after
+PR0TA confirms it; queueing alone leaves owner email pending.
+
+Check the project ledger before starting assessment. If this task's terminal
+result was already assessed and its follow-up recorded, acknowledge this receipt
+(including a replay) and finish without repeating that work. Do not recheck other
+running tasks or issue an "acknowledged / still generating / no duplicate work"
+status update solely because this stale receipt arrived. Use silent completion
+when the host supports it; otherwise keep any required response minimal. Report
+an acknowledgement failure or other new actionable information accurately.
+
+For a new result, read `tasks_get`, record acceptance and the next action in the
+project ledger, then assess and continue only already-authorized work. A confirmed
+ACK records pickup, not completed assessment: resume any unfinished assessment or
+follow-up from the ledger after interruption. Deduplicate `event_id` and `task_id`
+before side effects, retaining generation idempotency keys. Retain
+`subscription_id` as `completion_subscription_id` for future generation requests
+in this workflow; use `tasks_watch` for other async tasks.
+
+If MCP tools are missing, use the REST equivalents below or the authenticated
+helper described in [Codex recovery](codex-completion.md#recovery-with-a-stale-tool-inventory).
+For an installed receiver, its private binding file (normally `bindings.json`
+beside this reference; otherwise the receiver service's `--bindings` path) holds
+`completion_client_command` for the matching subscription. Append
+`--subscription <subscription_id> acknowledge --event-id <event_id>` to that
+configured argv and run without a shell. Do not print credentials or load other
+subscriptions' secrets. The helper verifies the current Codex task before acting.
+
+## Results picked up during active work
+
+A watched task can finish while the agent is still working, before its queued
+notification gets a turn. When `tasks_get` / `tasks_batch_get` reveals a terminal
+result that this workflow accepts, reconcile its completion event immediately:
+
+1. Read `tasks_completion_events` for the workflow's subscription. Match the exact
+   `task_id` and validate the project/client/workflow/thread tuple. Follow
+   `next_cursor` if needed; the list is a paginated snapshot. Do not infer an event
+   ID or acknowledge unrelated tasks returned in the same list.
+2. If its completion payload is ready, call `tasks_acknowledge` using that event's
+   ID and routing tuple, then record the confirmed ACK and pending next action in
+   the ledger. Acknowledge before lengthy assessment or subsequent generation.
+3. If the event is not ready yet, record that pickup needs acknowledgement and
+   handle its eventual receipt. Continue authorized work from canonical task state;
+   do not start a polling loop just to wait for the event or claim ACK success.
+
+A status read by itself never acknowledges completion. Explicit early ACK stops
+future server delivery attempts and owner escalation; it cannot retract a message
+already queued in Codex. Handle that later receipt using the ledger rule above.
+Do not mark unfinished work assessed merely to suppress a notification.
+
 ## Register the exact conversation
 
 Call `tasks_subscribe` with `project_id` and `request`:
