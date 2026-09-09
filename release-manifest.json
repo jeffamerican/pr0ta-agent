@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.25.0",
+  "skills_version": "5.25.1",
   "released_at": "2026-09-09",
-  "source_revision": "v5.25.0",
-  "minimum_platform_version": "1.21.10",
+  "source_revision": "v5.25.1",
+  "minimum_platform_version": "1.21.11",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03877-zin",
-  "bundle_sha256": "0dea8904f3853419fc281b2b676a518a48c1b6ae7ad38d4fb8e36cba39cdf5da",
+  "platform_revision": "pr0ta-platform-03883-yar",
+  "bundle_sha256": "54a5ef3e6506d31ca05d1b5ef0020f63a85af177b1f52bfa4e451151a80c5cd5",
   "skills": [
     {
       "name": "pr0ta",
@@ -192,11 +192,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production in Post for edited sequences, cut segmentation, coverage-angle grouping, background continuity, and individual live-action plates or 3D worlds. Read for SwitchX/Seedance hybrid edits, mattes, reference plates, and world-anchored backgrounds.",
-      "content_sha256": "d62d5f75e724a53ed1ed30db56da6bb7cfcc9c75a21ff220d3ed30f48eaded2a",
+      "content_sha256": "511c99734a11c77b641d4e4e59d0036e770a6349d4cd7ebaff86da2c1273084d",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "622d7a9bbe833314a4a77556858d33f8c9a85a92400e72da1110fb29c0062b08"
+          "sha256": "4444b20891935ec00fab84effe33c794eb35160e6e36f6a1597f24ad32897fe7"
         },
         {
           "path": "reference/hybrid-sequences.md",
@@ -219,8 +219,12 @@
           "sha256": "33de5928848e250a9fdcc31573772a62b8c76011415ac8635d77962c3bbcb904"
         },
         {
+          "path": "reference/switchx-2.md",
+          "sha256": "211a09cd29b915a7d03b45c07016d9b9adb4eca8de9db8680aa860f15d840bc3"
+        },
+        {
           "path": "reference/switchx.md",
-          "sha256": "43fc726e8526cf8daa7dcd1872cc50f60a5c643b226342d3e40e5d681095843a"
+          "sha256": "8654688f2832f319f4dff1ab1eae161e778199adacee93f805da8d4377e45c99"
         },
         {
           "path": "reference/world-anchored-references.md",
@@ -314,11 +318,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "72efb0742a56ab7eb91d85f2e9066f84824fab347be00857a00e223ee9d3c244",
+      "content_sha256": "035457307a29230fc8e4ed1cb1514a6c0f7438a4add5dc83c3acb38c5d32fc23",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "9e7b0fe4f180c0077960091b08cd6742a7037457b89d7aa02f8ce553f2bad777"
+          "sha256": "3b2a66de102010231f3978bc2267e365c3e70a0662f644b4557374bc35b9479e"
         },
         {
           "path": "reference/flux-3.md",

@@ -57,6 +57,11 @@ Rules:
 
 ## SwitchX Contract
 
+For SwitchX 2.0, native 4K, 10-bit MOV, longer shots, or Finish requests, read
+`reference/switchx-2.md` first. The 2026-09-09 cloud announcement does not
+establish availability through PR0TA's developer API integration. The limits
+below describe that integration, including Resolve and Premiere.
+
 Prefer MCP. Submit with `generation_submit`, poll with `tasks_get`, and inspect the finished asset before editorial use.
 
 Video background swap with a project matte:

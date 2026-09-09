@@ -1,5 +1,9 @@
 # Beeble SwitchX in PR0TA
 
+For the SwitchX 2.0 announcement, 480-frame shots, native 4K Finish, and 10-bit
+MOV workflow, read [switchx-2.md](switchx-2.md). The limits here describe the
+currently documented developer API, not the new Beeble cloud capabilities.
+
 Use this reference for `beeble/switchx` (video) and `beeble/switchx-image` (still). SwitchX is Beeble's video-to-video compositing and relighting model: the source pixels drive the output, the masked region is regenerated from a reference image and prompt, and the kept subject is relit to match. Beeble's developer API exposes only SwitchX and uploads; Background Remover, VFX Pass Generator, 3D Relight, SDR to HDR, and Canvas are app-only tools, so PR0TA supplies its own equivalents for mattes, depth, and relighting.
 
 ## Contents

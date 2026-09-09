@@ -122,7 +122,7 @@ Choose the narrowest operation that fixes the defect:
 - Preserve the source but alter style/action: Edit or video-to-video.
 - Correct framing: Reframe.
 - Remove/replace a background: Roto Bg.
-- Replace or relight a background behind a live-action subject while keeping the plate's pixels: Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid`.
+- Replace or relight a background behind a live-action subject while keeping the plate's pixels: Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid`; for SwitchX 2.0, 4K Finish, or 10-bit output, also read its `reference/switchx-2.md` for the cloud/API availability boundary.
 - Repair resolution, noise, cadence, or compression without creative reconstruction: a matching Topaz utility route.
 
 For Topaz video enhancement, query live defaults for the exact endpoint. Use `topaz/upscale/video/precision` for faithful general enhancement, `topaz/denoise/video` for noise reduction, and other cataloged variants only when their declared tradeoff is intentional. Do not treat a generative reconstruction route as a lossless utility.
