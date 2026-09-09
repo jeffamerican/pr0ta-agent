@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.24.2",
-  "released_at": "2026-09-07",
-  "source_revision": "v5.24.2",
-  "minimum_platform_version": "1.21.6",
+  "skills_version": "5.25.0",
+  "released_at": "2026-09-09",
+  "source_revision": "v5.25.0",
+  "minimum_platform_version": "1.21.10",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,28 +12,28 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03852-gex",
-  "bundle_sha256": "9d8ed4d692ed41ce7ce1497abb5719003e1aaacd9239dbfe621def6235b73c4d",
+  "platform_revision": "pr0ta-platform-03877-zin",
+  "bundle_sha256": "0dea8904f3853419fc281b2b676a518a48c1b6ae7ad38d4fb8e36cba39cdf5da",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA orchestration hub for creative media production on app.pr0ta.com. Use first for multi-asset productions, AI video/image/audio/music workflows, timeline assembly, review, and final export; then load only the specific companion skill needed for the next action.",
-      "content_sha256": "04caa7f2c1c7b6c81e131d05648d67837b2833b0b1b9c1b6947653daf268dd4b",
+      "content_sha256": "ed92f506d674c3b80f9ed64cf06acb12588b563f17bafce73cb61fc3a29a4eac",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "b525587252963e2f041720e91d4ac552a5fd68b53811905ae4b9ae03f67ebff2"
+          "sha256": "43cb2fe8d164daf6101f2c2607a6ed4f0ea587b6d4d9baf8a2e6afc642c075fa"
         }
       ]
     },
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "30396306e9613327e0477aed32224171a6ab0cad01be928be658937a936195be",
+      "content_sha256": "b9d277a8578bfe3888f4f48f74992b3eea537be201592298d3c496c39f301673",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "6b7876fab9a85eb84b3292c452d08de70c3bc2e78a35559555802e892cfbbb8e"
+          "sha256": "888122b0e87f227f95b9abba0287f04b86c2b4242c14c5ea70b7bf655bc48b0d"
         },
         {
           "path": "reference/asset-management.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/projects-models-resources.md",
-          "sha256": "1c059b90db55af687ae79599d1d2e689a947262dc22c93287ea350351eef5f99"
+          "sha256": "8e7a0e80447b5809338662e9d72de4743dc8f026d2f0585cc0b1f6c1759eb999"
         },
         {
           "path": "reference/python-client.py",
@@ -121,7 +121,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "4efb5708a47e5ce8bd1b221fc629324058997160a9cc0f11892dcb80dc648a1f"
+          "sha256": "1681f6cf87f836cf32fe4a6033679e398461864f3ba8ae63668d2f6b10fcfc2a"
         },
         {
           "path": "reference/voice-and-transcription.md",
@@ -151,15 +151,15 @@
     {
       "name": "pr0ta-consistency",
       "description": "PR0TA visual consistency for recurring characters, locations, props, global visual bibles, Seedance storyboard chunks, and multi-shot continuity. Read when creating or using Kling Elements, Seedance Characters, consistency bundles, reference pipelines, or repeat-subject generation.",
-      "content_sha256": "f665446f67b71e26d6b110a1839b03231e4d44680e265ee14ca02bdd589b5271",
+      "content_sha256": "fd172fcbdc04e1258e85690107fb44fbc1a20565e676733f28f5ddb0b4ddc2a1",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "547eb11ac56c88b3780156df506f1942e87c56e1ca723674ebc47445c8f12dc7"
+          "sha256": "78e7e25ecd708b283702dcfa7138125cf81466851716a7dc0fcb5de8cf85cc0b"
         },
         {
           "path": "reference/provider-consistency-systems.md",
-          "sha256": "be006392593517a792674370119d817174244825bac81f763a590343457d07b3"
+          "sha256": "c6c1f59aa9b39511b47cf00c111d0e1d81a5a7b84376c3ec3483bc359564199b"
         }
       ]
     },
@@ -192,7 +192,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production in Post for edited sequences, cut segmentation, coverage-angle grouping, background continuity, and individual live-action plates or 3D worlds. Read for SwitchX/Seedance hybrid edits, mattes, reference plates, and world-anchored backgrounds.",
-      "content_sha256": "5d14219dbce08a7aa84e09be12e65d1ef0b9127900cb7aaad730a8c89c4e6629",
+      "content_sha256": "d62d5f75e724a53ed1ed30db56da6bb7cfcc9c75a21ff220d3ed30f48eaded2a",
       "documents": [
         {
           "path": "SKILL.md",
@@ -212,7 +212,7 @@
         },
         {
           "path": "reference/reference-plate-authoring.md",
-          "sha256": "bed0cd87879534744b185bf51839cfb3e5485ee2be83573d137306285002a297"
+          "sha256": "e2f917d9828cd0f31f4a9316b96e4acee357c1c19e905e540e41dfe7cfc9e4e4"
         },
         {
           "path": "reference/route-selection.md",
@@ -231,11 +231,11 @@
     {
       "name": "pr0ta-image",
       "description": "PR0TA image generation and editing for key frames, references, posters/title cards, stills, and character sheets. Read when generating, editing, uploading, or choosing image models.",
-      "content_sha256": "9952d7216e7e60e3010e968e91adf2b24eda864af112a9f233ee63d6b1cf18b3",
+      "content_sha256": "a2533981b9a809c6de8e5109c25920844064993ebdde238566e42eeab22573eb",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3cb9dbbe6975d92fc4952b81b5d1acd0c2a54659e0ae7c958c50a0d6087adab7"
+          "sha256": "4d1fdcf8199a63aa33273227a0bfd83f2abc906ab7bd75dd71d69195e485c046"
         }
       ]
     },
@@ -253,11 +253,11 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompting guide and router for image, video, speech, audio, music, and humanoid motion prompts; model-and-modality techniques; prompt bibles; controlled references; anti-patterns; and multi-shot consistency. Read before writing generation prompts.",
-      "content_sha256": "706b94491208434b63b32ada89e5c3ac4d09159c43ae329dbab20a92b1efafac",
+      "content_sha256": "4c61694286442713fec1d23ec4c810727caf2f9a3ce95affe2a076f6bfdafc5f",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ef558116f45e7ea5754cbcadaf247d54c28b154688cbab2ff83b386b8927ad4e"
+          "sha256": "f9708e73a9297bd83920bf9349e4157b55c2c4c573a693249e004199f6902737"
         },
         {
           "path": "reference/anti-patterns.md",
@@ -268,12 +268,16 @@
           "sha256": "c47ad56a9bdeeb2bd8bd10ec12b6060ba4b168bccd6f20da8256efc9f06cb143"
         },
         {
+          "path": "reference/gpt-image-25.md",
+          "sha256": "6ef739ed8ad593fcfa13d1b4c53f144f3c21a17a058c1e9c8f0e9f9f4d1a6d94"
+        },
+        {
           "path": "reference/marble-world-generation.md",
           "sha256": "8358c0e029d6c33112ba9e4b5c01e90d1708434d54d8de1fa74906a472826a4e"
         },
         {
           "path": "reference/model-modality-guides.md",
-          "sha256": "fe04ba005eb7410fa5526c3e88fe94b8ff6d32e92c17d57f0061df7d4d599522"
+          "sha256": "54c881339a2647c4268e2d9787c065af2ed3885c5f2b07105130f056e7e5ba67"
         },
         {
           "path": "reference/motion-prompting.md",
@@ -310,7 +314,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "e256d326a99aa65d70dbed14217a3617e40fbb81dd91ee090c433a1bfca1ac47",
+      "content_sha256": "72efb0742a56ab7eb91d85f2e9066f84824fab347be00857a00e223ee9d3c244",
       "documents": [
         {
           "path": "SKILL.md",
@@ -326,7 +330,7 @@
         },
         {
           "path": "reference/generative-typography.md",
-          "sha256": "098f65514f81ac8f845cfde6fd9166aecfe3cfe3ceab95cbfd239fe4f6c9abcd"
+          "sha256": "1e3a083bbda410721874dca0eb0608bd302a6eb14ece66cdcff4a67d1d8feb5c"
         },
         {
           "path": "reference/hailuo-h3.md",
@@ -354,7 +358,7 @@
         },
         {
           "path": "reference/seedance-global-storyboard.md",
-          "sha256": "2e15ffb5fc4912e75341394509f2d182f6fcd8b687ab42be7a8207d1359e4e8d"
+          "sha256": "e2cc1cd6ba3ae9b7cb501e464b33a78af2a4293fde1acf3051c8265ca4b955d0"
         },
         {
           "path": "reference/seedance-omni.md",

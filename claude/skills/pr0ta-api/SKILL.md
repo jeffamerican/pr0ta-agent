@@ -163,7 +163,7 @@ Essential facts for any call:
 
 - **Project endpoints require auth** (PAT bearer or JWT); project asset `/download` and `/thumbnail` also accept scoped `asset_token` delivery URLs. Model discovery (`GET /api/v2/models`) is public.
 - **Project ID is required in the path** for every project-scoped endpoint. Use `GET /api/v2/projects` to list, then pick the one you need.
-- **Default image model: Nano Banana 2** (`nano_banana_2`) — fast and cost-effective. Escalate to **GPT Image 2** (`openai/gpt-image-2` / `openai/gpt-image-2/edit`) for challenging prompt adherence or character consistency edits. Use `GET /api/crew/model_defaults?model_id={model_id}` for authoritative parameter schemas.
+- **Default image model: Nano Banana 2** (`nano_banana_2`) — fast and cost-effective. Choose **GPT Image 2.5 Sunburst with `quality: "max"`** (`openai/gpt-image-2.5/sunburst/text-to-image` / `openai/gpt-image-2.5/sunburst/edit`) for challenging prompt adherence or character consistency edits. Use `GET /api/crew/model_defaults?model_id={model_id}` for authoritative parameter schemas.
 - **Elements** are reusable image bundles for Kling. **Characters** are reusable MuAPI identities for Seedance. Do not mix.
 - **Character consistency bundles** — before multi-shot character generation, read `GET /characters/{id}/consistency` or `GET /characters/consistency?name=...` to get all approved references, Kling Elements, Seedance tokens, and provider-ready payloads in one call. Tag approved portraits/sheets with `reference_type: "character_reference"` via `PATCH /annotations`. See `reference/projects-models-resources.md` → "Character Consistency Bundles" and `pr0ta-consistency` → "Character Consistency Bundles".
 - **Set-active-project** is a separate endpoint (`POST /api/v2/projects/{id}/select`) and must be called before generations that rely on the active-project context.
@@ -227,7 +227,7 @@ Essential facts:
 - **`POST /api/v2/projects/{id}/generate/batch` is the first-class fan-out mechanism.** One request can carry multiple generation payloads (up to **10** items per batch). Validation happens up front; submissions are processed item-by-item; partial-success reporting can occur if an early item is accepted and a later one fails. Oversized batches return `413`.
 - **Batch vs. loop:** Use the batch route when you have N distinct payloads you want to queue in a single round-trip. Use independent `/generate` calls in a loop when you want finer-grained retry/cancel logic or when submissions are driven by incremental decisions.
 - **Rate limits apply at the global per-minute tier level** (see "Authentication" section). There is no dedicated generate-only concurrency limit; 3–5 parallel generations is well within normal limits for any authenticated tier, but "well within limits" is not a certified concurrency guarantee.
-- **Cost is model-dependent.** Image fan-out across Nano Banana 2 / GPT Image 2 / Ideogram is cheap enough to treat as a first-class editorial tool. Video fan-out across Kling or Seedance can add up quickly — use it deliberately, not reflexively.
+- **Cost is model-dependent.** Image fan-out across Nano Banana 2 / GPT Image 2.5 Sunburst / Ideogram is cheap enough to treat as a first-class editorial tool. Video fan-out across Kling or Seedance can add up quickly — use it deliberately, not reflexively.
 
 For the full request/response shapes, Read the reference file.
 

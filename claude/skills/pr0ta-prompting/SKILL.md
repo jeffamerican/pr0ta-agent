@@ -9,7 +9,7 @@ This skill routes and explains effective generation prompts across PR0TA media m
 
 ## Required Model and Modality Routing
 
-Before writing a prompt for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, GPT-Image-02, Grok Imagine Image 2.0, Nano Banana Pro/2, Seedream 5, Midjourney, Kling O3/V3, Meshy v7, Gemini Omni, ElevenLabs V3, Gemini TTS, Seed Audio 1.0, or Lyria, read `reference/model-modality-guides.md`.
+Before writing a prompt for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, GPT Image 2.5, Grok Imagine Image 2.0, Nano Banana Pro/2, Seedream 5, Midjourney, Kling O3/V3, Meshy v7, Gemini Omni, ElevenLabs V3, Gemini TTS, Seed Audio 1.0, or Lyria, read `reference/model-modality-guides.md`.
 
 Resolve the exact `model_id` and active operation first. T2V, I2V, audio-to-video, first/last, Omni/reference, video Edit/Extend, image generation/editing, image-to-3D, TTS, audio-reference, and music routes have different prompt contracts even within one family. Never transfer tokens or grammar between sibling versions. Use current endpoint discovery for payload fields.
 
@@ -51,8 +51,8 @@ For every identity, style, location, prop, or composition reference:
 
 1. Select the exact approved project asset ID; do not infer a file name or substitute a storage URL.
 2. Put the edit base in `image_asset_id` when it is the image being transformed. Put additional ordered identity/style references in `reference_image_asset_ids`.
-3. Bind every attached image in the provider prompt using that model's documented syntax and its final one-based order. For GPT Image 2 Edit, use natural role language such as `Image 1, the attached approved BUG portrait, is the identity reference; preserve its facial structure, freckles, hair, and pale hazel-green eyes.` For Seedance 2.0, use its literal positional `@image1` syntax. Do not transfer a token grammar to a model that does not support it.
-4. Submit requested geometry as structured fields as well: for 9:16 GPT Image 2 Edit, set `aspect_ratio: "9:16"` and `image_size: "portrait_16_9"` (or explicit vertical dimensions). Never rely on prompt prose for dimensions.
+3. Bind every attached image in the provider prompt using that model's documented syntax and its final one-based order. For GPT Image 2.5 Sunburst Edit, use natural role language such as `Image 1, the attached approved BUG portrait, is the identity reference; preserve its facial structure, freckles, hair, and pale hazel-green eyes.` For Seedance 2.0, use its literal positional `@image1` syntax. Do not transfer a token grammar to a model that does not support it.
+4. Submit requested geometry as structured fields as well: for 9:16 GPT Image 2.5 Sunburst Edit, set `aspect_ratio: "9:16"` and `image_size: "portrait_16_9"` (or explicit vertical dimensions). Never rely on prompt prose for dimensions.
 
 If no exact approved asset is available, say so and generate without claiming reference preservation. A reference mention without its attached asset ID is a failed generation contract, not a harmless prompt omission.
 
@@ -408,9 +408,9 @@ Seedance 2.0's positional tokens are real and lowercase: `@image1..9`, `@video1.
 
 Use a clear subject, environment, photographic lighting/lens description, style, and positive constraints. Raise thinking level for complex layouts, precise text, or character sheets; keep exact recurring descriptions unchanged. Use the Line-Locked Poster technique above for critical copy and read `pr0ta-image` for current controls, fan-out, reference-sheet, and safety guidance.
 
-### OpenAI GPT Image 2 (Escalation Model)
+### OpenAI GPT Image 2.5 (First-Class Production Image Models)
 
-GPT Image 2 is the escalation model for difficult prompt adherence and identity-preserving edits. Write natural detailed prose, keep the Line-Locked Poster and glyph-QC rules for critical copy, and query live defaults rather than assuming width/height fields. Read `pr0ta-image` for current endpoint controls and fan-out strategy.
+GPT Image 2.5 Sunburst with `quality: "max"` is the preferred GPT image model for difficult prompt adherence and identity-preserving edits. Write natural detailed prose, keep the Line-Locked Poster and glyph-QC rules for critical copy, and query live defaults rather than assuming width/height fields. Read [GPT Image 2.5 production prompting](reference/gpt-image-25.md) for Fal controls, premium request examples, and reference-edit QC. Use GPT Image 2 only when explicitly requested.
 
 ## Prompt Anti-Patterns (What Breaks Consistency)
 

@@ -29,7 +29,7 @@ Behavior:
 
 | Generator | Mode | Description |
 |-----------|------|-------------|
-| `image` | `txt_to_img` | Text-to-image (Nano Banana 2 default, GPT Image 2 for prompt adherence / character consistency) |
+| `image` | `txt_to_img` | Text-to-image (Nano Banana 2 default, GPT Image 2.5 Sunburst for prompt adherence / character consistency) |
 | `image` | `img_to_img` | Prompt-based image editing |
 | `image` | `ref_to_img` | Reference-driven image generation |
 | `image` | `edit_img` | Direct image editing |

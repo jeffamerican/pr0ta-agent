@@ -91,8 +91,8 @@ Use `model_defaults` to discover the authoritative parameter list and types for 
 
 | Generator | UI Display Name | API `model` string |
 |-----------|----------------|-------------------|
-| **Image** | **GPT Image 2** | **`openai/gpt-image-2`** |
-| **Image Edit** | **GPT Image 2 Edit** | **`openai/gpt-image-2/edit`** |
+| **Image** | **GPT Image 2.5 Sunburst** | **`openai/gpt-image-2.5/sunburst/text-to-image`** |
+| **Image Edit** | **GPT Image 2.5 Sunburst Edit** | **`openai/gpt-image-2.5/sunburst/edit`** |
 | Image | Nano Banana 2 | `nano_banana_2` |
 | Image Edit | Nano Banana 2 Edit | `fal-ai/nano-banana-2/edit` |
 | Image | Midjourney Niji 7 | `muapi/midjourney-niji` |
@@ -111,7 +111,7 @@ Use `model_defaults` to discover the authoritative parameter list and types for 
 | Audio | Eleven v3 fallback | `eleven_v3` |
 | Music | Eleven Music | `music-v1` |
 
-**Default recommendation:** For image work, **Nano Banana 2** (`nano_banana_2` for T2I, `fal-ai/nano-banana-2/edit` for editing) is the default — fast and cost-effective. Escalate to **GPT Image 2** (`openai/gpt-image-2` / `openai/gpt-image-2/edit`) for challenging prompt adherence or character consistency edits where GPT Image 2's superior identity preservation is needed.
+**Default recommendation:** For image work, **Nano Banana 2** (`nano_banana_2` for T2I, `fal-ai/nano-banana-2/edit` for editing) is the default — fast and cost-effective. Choose **GPT Image 2.5 Sunburst with `quality: "max"`** (`openai/gpt-image-2.5/sunburst/text-to-image` / `openai/gpt-image-2.5/sunburst/edit`) for challenging prompt adherence or character consistency edits where preserving likeness is essential.
 
 For video work, **Seedance 2.5 Omni Reference** (`muapi/seedance-2.5-omni-reference`) is the preferred default. Supply at least one approved image, video, or audio reference. Use another endpoint only for a capability the preferred route does not provide, such as an exact first/last bridge, source Edit/Extend, Seedance 2.0 trained character IDs, H3 native 2K, or Kling's structured multi-shot/camera controls.
 

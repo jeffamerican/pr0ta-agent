@@ -12,7 +12,7 @@ Capability does not remove the acceptance test. Exact copy may still mutate, fli
 
 ### Premium image candidates
 
-- **GPT Image 2:** use for professional image generation/editing, instruction adherence, and text-bearing marketing or design assets.
+- **GPT Image 2.5 Sunburst:** use for professional image generation/editing, instruction adherence, and text-bearing marketing or design assets.
 - **Nano Banana 2 / current Gemini image family:** use for fast text-bearing stills and iterative edits; current Gemini image guidance explicitly supports advanced text rendering.
 - **Seedream 5.0 Pro:** use for dense layouts, multilingual typography, posters, interfaces, and information visualization when exposed by the live catalog.
 - **Current FLUX image routes:** use when the live model catalog exposes a typography-capable FLUX operation.

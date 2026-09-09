@@ -5,29 +5,28 @@ description: "PR0TA image generation and editing for key frames, references, pos
 
 # Image Generator Reference
 
-> **See also:** For using generated images as Element/Character source material for multi-shot consistency, read `pr0ta-consistency`. For prompt engineering, read `pr0ta-prompting`; for GPT-Image-02, Nano Banana Pro/2, Seedream 5, Midjourney, or Kling O3/V3, first select the exact generation/edit/reference branch in `pr0ta-prompting/reference/model-modality-guides.md`.
+> **See also:** For using generated images as Element/Character source material for multi-shot consistency, read `pr0ta-consistency`. For prompt engineering, read `pr0ta-prompting`; for GPT Image 2.5, Nano Banana Pro/2, Seedream 5, Midjourney, or Kling O3/V3, first select the exact generation/edit/reference branch in `pr0ta-prompting/reference/model-modality-guides.md`.
 
 Before generating or editing images for an existing project, call `memory_context_pack` with the relevant scene, character, asset, or department scope. Use approved visual decisions, references, continuity constraints, and conflicts when choosing the model and writing the prompt. After selecting a hero still, rejecting a take, or establishing a new visual rule, record it with `memory_record_decision` or `memory_record_note`.
 
-## Model Selection: Nano Banana 2 is the Default
+## Model Selection: GPT Image 2.5 Is the Preferred GPT Family
 
-**Nano Banana 2 is the default image model in PR0TA** — fast, cost-effective, and produces excellent results for the vast majority of shots. API model string: **`"nano_banana_2"`** (underscore, not hyphen). Best combination of speed, dimension control, and value. Default to Nano Banana 2 for both generation and editing unless you hit one of the escalation triggers below.
+**GPT Image 2.5 supersedes GPT Image 2 (GPT-Image-02 / GPT-02) in every generation, edit, reference, and fan-out recommendation. Use the old `openai/gpt-image-2` or `openai/gpt-image-2/edit` endpoints only when the user expressly requests them.** Preserve explicit user model and quality choices; do not silently downgrade to GPT Image 2 on a failed request.
 
-**Escalate to GPT Image 2 when:**
-- **Challenging prompt adherence** — complex compositions where Nano Banana 2 isn't capturing the detail you need. GPT Image 2 follows dense prose prompts more faithfully.
-- **Character consistency image edits** — `img_to_img` and `ref_to_img` operations where preserving identity across edits matters. GPT Image 2 (`openai/gpt-image-2/edit`) is far superior at maintaining character likeness through edit passes.
-- **Fan-out for hard shots** — include GPT Image 2 in the fan-out model list for text-heavy or high-stakes shots (see "Fan-Out and Pick" below).
+- **Sunburst + `quality: "max"`** is the first-class premium choice for final stills, hero frames, character sheets, identity-sensitive edits, dense typography, and complex compositions. Select it directly when quality matters; a Nano Banana trial is not a prerequisite.
+- **Flare** is the GPT Image 2.5 option for speed-sensitive iteration. It also supports `max`; choose a lower quality only when compatible with the user's quality and latency requirements.
+- **Nano Banana 2** remains useful for economical general image work (`nano_banana_2` for generation, `fal-ai/nano-banana-2/edit` for edits). It does not change the GPT 2.5-over-2 preference.
 
-API model strings for GPT Image 2: **`"openai/gpt-image-2"`** for text-to-image, **`"openai/gpt-image-2/edit"`** for image editing. These are Fal queue endpoint IDs. (This is *GPT Image 2*, not the legacy GPT-2 text LM.)
+Read [GPT Image 2.5 production prompting](../pr0ta-prompting/reference/gpt-image-25.md) before authoring these prompts. Use Fal endpoint IDs, not direct OpenAI API model names. Set `quality: "max"` in the request for highest-quality work: `high`, `auto`, or the word “maximum” in prose do not select the highest level. Re-query defaults and pricing before submission.
 
 **Fall back to other models when:**
-- An otherwise allowed image prompt is falsely rejected by Nano Banana 2 or GPT Image 2 → preserve the provider error, then try Flux 2 PRO / Flux 2 MAX, GPT Image 1.5, or another model listed for the needed mode
+- An otherwise allowed image prompt is falsely rejected by Nano Banana 2 or GPT Image 2.5 Sunburst → preserve the provider error, then try Flux 2 PRO / Flux 2 MAX, GPT Image 1.5, or another model listed for the needed mode
 - You need specialized reasoning-based image generation → GLM Image
 - You need premium anime or manga aesthetics → Midjourney Niji 7 (`muapi/midjourney-niji`)
 - You need Midjourney visual development or campaign-grade key art → Midjourney V8 (`muapi/midjourney-v8`), with V7 (`muapi/midjourney-v7`) as an alternative
 - Budget is extremely tight → use `models_list` to identify current candidates, then query `GET /api/crew/model_pricing?model_id={model_id}` for each candidate before comparing costs; do not assume a historically inexpensive model is still cheapest
 
-For most reference images, key frames, and production stills — **default to Nano Banana 2**. Escalate to GPT Image 2 for character consistency edits and challenging prompt adherence.
+For most reference images, key frames, and production stills — **default to Nano Banana 2**. Choose GPT Image 2.5 Sunburst for character consistency edits and challenging prompt adherence.
 
 **⚠️ Nano Banana 2 outputs native resolution (~768px wide), not the requested pixel dimensions.** That's fine — the post-production timeline normalizes every clip to the delivery resolution automatically when you add it (`POST /timeline/clips`). You do not need to pre-upscale before adding a still to the timeline. If you need the still at delivery resolution *outside* the timeline (e.g. as a thumbnail), regenerate with the target aspect ratio and accept the native resolution.
 
@@ -69,26 +68,28 @@ curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
     "format": "png"
   }'
 
-# Character consistency edit via API (GPT Image 2 Edit — best for identity preservation)
+# Character consistency edit via API (GPT Image 2.5 Sunburst Edit — premium identity work)
 curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
   -H "Authorization: Bearer $PR0TA_PAT" \
   -H "Content-Type: application/json" \
   -d '{
     "generator": "image",
     "mode": "img_to_img",
-    "model": "openai/gpt-image-2/edit",
+    "model": "openai/gpt-image-2.5/sunburst/edit",
+    "quality": "max",
     "prompt": "Keep the subject, relight as moody neon noir portrait with blue rim light.",
     "image_asset_id": "uuid-source-image"
   }'
 
-# GPT Image 2 text-to-image (for challenging prompt adherence)
+# GPT Image 2.5 Sunburst text-to-image (for challenging prompt adherence)
 curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
   -H "Authorization: Bearer $PR0TA_PAT" \
   -H "Content-Type: application/json" \
   -d '{
     "generator": "image",
     "mode": "txt_to_img",
-    "model": "openai/gpt-image-2",
+    "model": "openai/gpt-image-2.5/sunburst/text-to-image",
+    "quality": "max",
     "prompt": "Dark navy infographic showing global market growth, gold accent text, clean vector style."
   }'
 
@@ -96,7 +97,7 @@ curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
 # Poll task, then download via result.asset_id (see pr0ta-api)
 ```
 
-**For Nano Banana 2 via API, always use `width`/`height` in pixels** (e.g., 1920x1080). The `image_size` parameter behavior is inconsistent across models — `width`/`height` is the reliable path. For GPT Image 2, use `image_size`, `quality`, `num_images`, and `output_format` — check `model_defaults` for the full parameter list.
+**For Nano Banana 2 via API, always use `width`/`height` in pixels** (e.g., 1920x1080). The `image_size` parameter behavior is inconsistent across models — `width`/`height` is the reliable path. For GPT Image 2.5 Sunburst, use `image_size`, `quality`, `num_images`, and `output_format` — check `model_defaults` for the full parameter list.
 
 Pricing is intentionally omitted from skill documentation because it changes independently of the skill bundle. Use `models_list` for current candidate IDs and availability, then query `GET /api/crew/model_pricing?model_id={model_id}` for each candidate immediately before cost-sensitive selection.
 
@@ -104,8 +105,10 @@ Pricing is intentionally omitted from skill documentation because it changes ind
 |-----------------|------------|-----------|------|
 | `nano_banana_2` | **Nano Banana 2** | image | txt_to_img |
 | `fal-ai/nano-banana-2/edit` | **Nano Banana 2 Edit** | image | img_to_img |
-| `openai/gpt-image-2` | GPT Image 2 | image | txt_to_img |
-| `openai/gpt-image-2/edit` | GPT Image 2 Edit | image | img_to_img, ref_to_img, edit_img |
+| `openai/gpt-image-2.5/sunburst/text-to-image` | GPT Image 2.5 Sunburst | image | txt_to_img |
+| `openai/gpt-image-2.5/sunburst/edit` | GPT Image 2.5 Sunburst Edit | image | img_to_img, ref_to_img, edit_img |
+| `openai/gpt-image-2.5/flare/text-to-image` | GPT Image 2.5 Flare | image | txt_to_img |
+| `openai/gpt-image-2.5/flare/edit` | GPT Image 2.5 Flare Edit | image | img_to_img, ref_to_img, edit_img |
 | `muapi/midjourney-niji` | Midjourney Niji 7 | image | txt_to_img, img_to_img, ref_to_img |
 | `muapi/midjourney-v8` | Midjourney V8 | image | txt_to_img, img_to_img, ref_to_img |
 | `muapi/midjourney-v7` | Midjourney V7 | image | txt_to_img, img_to_img, ref_to_img |
@@ -117,13 +120,13 @@ Pricing is intentionally omitted from skill documentation because it changes ind
 ### 1. Txt to Img (Text-to-Image)
 Generate images from text prompts.
 
-**Default model: Nano Banana 2** — fast, cost-effective, and strong at dimension control. Escalate to GPT Image 2 for challenging prompt adherence or character consistency edits.
+**Default model: Nano Banana 2** — fast, cost-effective, and strong at dimension control. Choose GPT Image 2.5 Sunburst for challenging prompt adherence or character consistency edits.
 
 **Key parameters:** prompt, ratio (auto, 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, etc.), resolution (1K, 2K, 4K), seed (optional, for reproducibility), number of images (default: 1), format (jpeg, png, webp), tolerance (1-6 range, default 4; some models cap at 5 -- controls prompt adherence and content-safety filtering). Use tolerance only for allowed content and preserve the provider error when a false-positive rejection occurs. If a policy-compliant tolerance retry still rejects, switch to a different image model that supports the needed mode; query the live model list rather than relying on stale labels. See `pr0ta-video` → "Provider False-Positive Fallback Ladder" for the same pattern on the video side.
 
 **Available Txt-to-Img models:** Query the live catalog for current availability and price before choosing among these capability examples.
 - **Nano Banana 2** — **recommended default** for speed and dimension control
-- OpenAI GPT Image 2 — escalate for challenging prompt adherence or character consistency edits
+- OpenAI GPT Image 2.5 Sunburst — preferred for challenging prompt adherence or character consistency edits
 - Midjourney Niji 7 — anime, manga, character key art, optional reference image
 - Midjourney V8 — premium concept art and highest-quality Midjourney output
 - Midjourney V7 — artistic visual development and reference-guided exploration
@@ -153,7 +156,7 @@ Not all models support the full range of aspect ratios. Check constraints before
 ### 2. Img to Img (Image-to-Image)
 Transform existing images with a prompt.
 
-**Default model: Nano Banana 2 Edit** (`fal-ai/nano-banana-2/edit`) for general edits. **Escalate to GPT Image 2 Edit** (`openai/gpt-image-2/edit`) for character consistency edits where preserving identity through the edit is critical — GPT Image 2 is far superior at maintaining likeness.
+**Default model: Nano Banana 2 Edit** (`fal-ai/nano-banana-2/edit`) for general edits. **Choose GPT Image 2.5 Sunburst Edit** (`openai/gpt-image-2.5/sunburst/edit`) for character consistency edits where preserving identity through the edit is critical — GPT Image 2.5 Sunburst is the preferred model for maintaining likeness.
 
 **Key parameters:** reference images (with reference strength 0-140%+), image URLs, plus the same prompt and settings as Txt to Img.
 
@@ -351,7 +354,7 @@ PROMPT = """<your Line-Locked Poster prompt here>"""
 
 MODELS = [
     "nano_banana_2",         # default
-    "openai/gpt-image-2",   # escalate for prompt adherence / character consistency
+    "openai/gpt-image-2.5/sunburst/text-to-image",   # premium production candidate
     "gpt_image_1_5",
     "ideogram",
     "kling_v3",              # image mode
@@ -364,6 +367,7 @@ for model in MODELS:
         "generator": "image",
         "mode": "txt_to_img",
         "model": model,
+        **({"quality": "max"} if model.startswith("openai/gpt-image-2.5/") else {}),
         "prompt": PROMPT,
         "aspect_ratio": "9:16",
     })

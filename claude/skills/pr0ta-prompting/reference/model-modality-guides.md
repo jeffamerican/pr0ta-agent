@@ -145,16 +145,24 @@ Official sources: [Gemini Omni prompt guide](https://deepmind.google/models/gemi
 
 ## Image Models
 
-### GPT-Image-02
+### GPT Image 2.5
+
+PR0TA policy: GPT Image 2.5 supersedes GPT Image 2 / GPT-Image-02. Prefer Sunburst with `quality: "max"` for production quality; use Flare for speed-sensitive iteration. Use GPT Image 2 only on explicit user request, never as an automatic fallback. This preference does not override the user's selected model or quality.
 
 | Operation | Prompt order | Critical rule |
 |---|---|---|
-| T2I | background/scene → subject → details → composition → style/light → constraints and intended use | Use short labeled sections for complex layouts. |
-| Edit/reference | exact change → target → preserved identity/composition/style/text → intended result | Say “change only…” and “keep everything else the same.” |
+| T2I | intended deliverable → scene/subject → visible detail → composition → light/materials → exact copy and constraints | Use a clear production brief; place quality and dimensions in structured fields. |
+| Edit/reference | ordered input roles → requested change → protected identity/layout/text → final result | Bind Image 1, Image 2, etc. to actual attachments; name what must survive the edit. |
 
-Name multiple inputs by index and role. Quote literal text and specify placement and typography. Iterate with small changes.
+Highest quality is the literal request value `quality: "max"`; Fal defaults to `high`. Both variants also accept `auto`, `low`, `medium`, `high`, and `xhigh`. Quality is separate from pixel dimensions and output compression. Keep explicit user settings. Do not claim higher settings guarantee a better take.
 
-Official source: [OpenAI GPT Image prompting guide](https://developers.openai.com/cookbook/examples/multimodal/image-gen-models-prompting-guide).
+Read [GPT Image 2.5 production prompting](gpt-image-25.md) for exact Fal routes, a premium still/edit recipe, supported controls, and QC. Use natural numbered image roles rather than Seedance's `@image1` grammar. Preserve authored copy and current project authority during enhancement.
+
+Official sources: [OpenAI image prompting](https://developers.openai.com/api/docs/guides/image-prompting), [Fal Sunburst edit](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api).
+
+### GPT-Image-02
+
+Legacy compatibility guidance, only when the user explicitly requests GPT Image 2. Use its original Fal endpoint and schema; do not send GPT 2.5-only `xhigh` or `max` values. Write scene, subject, composition, lighting, exact text, and constraints; for edits assign numbered image roles and preserve identity, layout, and copy. Never switch an expressly requested GPT Image 2 job to GPT 2.5 silently.
 
 ### Nano Banana Pro and Nano Banana 2
 

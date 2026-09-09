@@ -52,7 +52,7 @@ storyboard_reference_sheet_generate({
 })
 ```
 
-Use approved PR0TA cast, set, prop, wardrobe, and style assets as `reference_asset_ids` whenever possible. With references, the default image model is `openai/gpt-image-2/edit`; without references, it is `openai/gpt-image-2`. The tool returns a task; poll with `tasks_get`.
+Use approved PR0TA cast, set, prop, wardrobe, and style assets as `reference_asset_ids` whenever possible. With references, the default image model is `openai/gpt-image-2.5/sunburst/edit`; without references, it is `openai/gpt-image-2.5/sunburst/text-to-image`. Pass `quality` to preserve a chosen quality level; only omitted GPT Image 2.5 requests default to `max`. The tool returns a task; poll with `tasks_get`.
 
 ### 3. Select the Approved Sheet
 

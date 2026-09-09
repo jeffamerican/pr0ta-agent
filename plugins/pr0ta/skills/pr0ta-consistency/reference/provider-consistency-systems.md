@@ -70,7 +70,7 @@ You can also pass inline Elements for one-off references:
 2. **Reuse the same Elements across all generations** -- this is the primary Kling consistency mechanism.
 3. **Use Refs slider at 140%+** -- higher values mean stronger visual fidelity to references.
 4. **Four reference images per character is ideal** -- frontal + profile + 3/4 + back.
-5. **Generate reference images first** -- use Nano Banana 2 by default, or GPT Image 2 for character consistency edits.
+5. **Generate reference images first** -- use Nano Banana 2 by default, or GPT Image 2.5 Sunburst for character consistency edits.
 6. **Upload real-world references when available** -- actor headshots, product photos, location scouts, or storyboard scans can be ingested through direct image upload, then reused in Elements and generation payloads.
 7. **Do multiple takes** -- generate 4-6+ variations of every reference image and select the strongest. The quality of your references sets the ceiling for the entire production.
 

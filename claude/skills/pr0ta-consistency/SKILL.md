@@ -143,7 +143,7 @@ After creating the missing resource, re-read the bundle — it will now include 
 ## Quick Reference: Consistency Workflow
 
 1. **Resolve existing context:** Call `production_context_get` for the target scene/shot and use existing breakdown, casting, character-sheet/contact-sheet, set, prop, and look references first.
-2. **Fill gaps only:** Generate multiple takes (4-6+) only for missing character/location/prop references with Nano Banana 2 (or GPT Image 2 for character consistency edits). Select the best.
+2. **Fill gaps only:** Generate multiple takes (4-6+) only for missing character/location/prop references with Nano Banana 2 (or GPT Image 2.5 Sunburst for character consistency edits). Select the best.
 3. **Tag approved references:** Use `PATCH /annotations` with `reference_type: "character_reference"` and `category: "portrait"` or `"character_sheet"` on each approved image.
 4. **Register resources:** Create Element bundles (Kling) and Character profiles (Seedance) via project API. Train Seedance tokens if needed.
 5. **Read the consistency bundle:** `GET /characters/{id}/consistency` or `GET /characters/consistency?name=...` — returns all references, Elements, tokens, and provider-ready payloads in one call.
