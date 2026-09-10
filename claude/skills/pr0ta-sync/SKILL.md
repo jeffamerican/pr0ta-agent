@@ -395,3 +395,7 @@ Before delivering any assembled video from the post-production timeline, run thr
 - `pr0ta-video` — Seedance 2.0 Omni and Kling V3/O3 multi-shot for video generation.
 - `pr0ta-image` — Nano Banana 2 for stills, title cards, and flash cards.
 - `pr0ta-consistency` — Multi-shot character and style continuity across generations.
+
+## Seedance 2.5 sung-performance handoff
+
+Use the [qualified reference recipe](../pr0ta-video/reference/seedance-2.5-sync-sound.md) when continuous music conditions native generated performance. Choose one audible authority, preserve exact source ranges and relative lyrics/timings, and keep accepted native sound paired with picture. Review worst-case phrase drift and actual mouth/instrument sync before expanding.

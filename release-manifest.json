@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.25.1",
-  "released_at": "2026-09-09",
-  "source_revision": "v5.25.1",
-  "minimum_platform_version": "1.21.11",
+  "skills_version": "5.26.0",
+  "released_at": "2026-09-10",
+  "source_revision": "v5.26.0",
+  "minimum_platform_version": "1.22.2",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03883-yar",
-  "bundle_sha256": "54a5ef3e6506d31ca05d1b5ef0020f63a85af177b1f52bfa4e451151a80c5cd5",
+  "platform_revision": "pr0ta-platform-03913-naf",
+  "bundle_sha256": "aca1da0702d07a992328d130b369dbf13be9f5d2ba58b00d0fec40f569e6b32e",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST API reference for auth, agent tool calls, raw endpoint schemas, task polling, assets, model discovery, timeline/debug APIs, review-room APIs, and MCP setup. Read when a domain skill does not include the exact route contract or when debugging API failures.",
-      "content_sha256": "b9d277a8578bfe3888f4f48f74992b3eea537be201592298d3c496c39f301673",
+      "content_sha256": "dd13701aba7d326f9762c7f43c335efe04b98834fcda28c908c14801ee5f9675",
       "documents": [
         {
           "path": "SKILL.md",
@@ -73,7 +73,7 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "153eedd34a9a7cd507a766b26c24fa60acb73d879a1026e892dd3462e4296ade"
+          "sha256": "9a89a30141e772f6c17c0d332e7722c0a76253247a4b84794f90c9e7b173a4ff"
         },
         {
           "path": "reference/music-analysis.md",
@@ -136,11 +136,11 @@
     {
       "name": "pr0ta-audio",
       "description": "PR0TA audio workflows for TTS, voice cloning/design, speech-to-speech, transcription, and mandatory time-indexing before timeline editing. Read when generating or analyzing narration, dialogue, voice, or any speech-bearing asset.",
-      "content_sha256": "03f0debf095cc3215a1570c67b62d10630a8c59abdddd938044d6733d7339a38",
+      "content_sha256": "a41cf9398d11521ef6d04740d692977a0f052f5b12bf82565b5e46752de9e75e",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "0563ba597480b317e2a4e35d7e1088d0247462ac73c04fe1cb165ece7f56ba9b"
+          "sha256": "6f7d6fda8332d8574168082797d034f2370afa087a1b9609067225da41d85ec4"
         },
         {
           "path": "reference/elevenlabs-v3-audio-tags.md",
@@ -177,11 +177,11 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline for cutting, pacing, asset curation, review, ship criteria, and render verification. Read before edit passes, client review fixes, final export, or calling a cut done.",
-      "content_sha256": "6be94190fef5a1d4a9f37b746da661bdac153c9726910420afe256d8a4af3472",
+      "content_sha256": "0ca3a2548309a50d651b238f835c6d42aeffe2b9c6f574edf59247e032914a69",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "32e0e9c4b147605205ce9941893d60bd5d5ce2656cca87a583809601f4a67ade"
+          "sha256": "4d7f9ea3a77b3d183a0e6a838ad52327bc73f91ff7ca85e70ff880db8edce6ce"
         },
         {
           "path": "reference/verification-protocol.md",
@@ -257,11 +257,11 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompting guide and router for image, video, speech, audio, music, and humanoid motion prompts; model-and-modality techniques; prompt bibles; controlled references; anti-patterns; and multi-shot consistency. Read before writing generation prompts.",
-      "content_sha256": "4c61694286442713fec1d23ec4c810727caf2f9a3ce95affe2a076f6bfdafc5f",
+      "content_sha256": "ebbe236b0be5d37ff7bde8d6dc078773c134675df617f5dc4fd2f82af289428a",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "f9708e73a9297bd83920bf9349e4157b55c2c4c573a693249e004199f6902737"
+          "sha256": "8cf8b214986e21b61e21917b74293d79ac949ddcbcfc8231becd8fec34e6592c"
         },
         {
           "path": "reference/anti-patterns.md",
@@ -296,11 +296,11 @@
     {
       "name": "pr0ta-sync",
       "description": "PR0TA audio-visual sync and production planning. Read for cue sheets, timing plans, narration-first or visual-first strategy, narration timeline workflows, montage planning, and re-transcription after audio changes.",
-      "content_sha256": "e7f3a467380c38d4a407010272fa8eddea790c5f5404cf647124608b85b90a95",
+      "content_sha256": "faacaeb0aae6b9ebaaf0c265b81ccaae8d10ee1afc8d0c2b6d895bc1a17b5b0d",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "5c982b7aabed03f386bc7db5246166e65352bf3e4f4bef05a094169c79fa0884"
+          "sha256": "c73a0741af5f7cf582daf665213f9d2801f66f4da0901503040ccb7785dbcb56"
         }
       ]
     },
@@ -318,7 +318,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "035457307a29230fc8e4ed1cb1514a6c0f7438a4add5dc83c3acb38c5d32fc23",
+      "content_sha256": "62fd4e26cb90db19043d57103995b9b5975710a447d084cd76e56cdf2a26f7a2",
       "documents": [
         {
           "path": "SKILL.md",
@@ -357,8 +357,12 @@
           "sha256": "82fd01fe4ef159b4749dd491df0a0afb8c7b932281731bf800bdc04239d7bfda"
         },
         {
+          "path": "reference/seedance-2.5-sync-sound.md",
+          "sha256": "332d06d5a875d1d51a11b9db8b65374be29e775f334eadd516c8b2a4c438ef59"
+        },
+        {
           "path": "reference/seedance-2.5.md",
-          "sha256": "7fa790d0cece7e720e45704b7b43f054ea77836d044128c8c10eee69a5c9cc6a"
+          "sha256": "2b648d6f4171ce948ae0cfe02b7dbb676132569d164df11dbed3c06ccd6faf1c"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

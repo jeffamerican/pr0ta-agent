@@ -236,3 +236,7 @@ MuAPI family pages and older blog posts may describe capabilities that are not p
 4. Older marketing or launch posts.
 
 Query `models_get_defaults` immediately before a production pass because Seedance 2.5 remains early access.
+
+## Sung performance and competing reference audio
+
+Before combining a song with continuity video, follow the [qualified sync-sound recipe](seedance-2.5-sync-sound.md): explicitly choose one audible musical authority, prepare silent continuity derivatives, verify the black-video carrier, preserve reference order and native output sound, and review a canary. The recipe distinguishes the 15-second audio-array budget, the demonstrated 30-second carrier, and the output limit.

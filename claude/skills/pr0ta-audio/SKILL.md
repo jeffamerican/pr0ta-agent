@@ -441,3 +441,7 @@ The editorial intent is identical — time-aligned anchor streams that downstrea
 - For dialogue, generate each character's lines separately with their specific voice, then combine on the Timeline
 - ElevenLabs v3 is an "Alpha" model -- it excels at natural dialogue but may occasionally need regeneration for tricky pronunciations
 - Use the Snap toggle for precise trimming aligned to time markers
+
+## Competing audio in video references
+
+For Seedance 2.5 sung performance, follow the [reference-preparation recipe](../pr0ta-video/reference/seedance-2.5-sync-sound.md). Explicitly choose the intended audio authority before muting continuity-only derivatives. Verify silence, carrier duration and decoded source timing; transcript agreement alone does not measure lip sync.

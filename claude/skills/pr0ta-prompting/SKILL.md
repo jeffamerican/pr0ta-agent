@@ -430,3 +430,7 @@ For the full list of 11 anti-patterns with bad/good examples, see `reference/ant
 2. Load the exact model reference, then write the route-specific prompt structure.
 3. Verify self-containment, chronology, reference roles, identity/style consistency, and positive end states.
 4. Remove ambiguity, redundant references, unsupported fields, conflicting camera/action instructions, and unnecessary prose.
+
+## Seedance 2.5 sync-sound prompts
+
+Follow the [qualified sync-sound recipe](../pr0ta-video/reference/seedance-2.5-sync-sound.md): assign silent continuity and black-song-carrier roles in natural language, include exact lyrics and relative phrase timings, and direct the entire duration. Prose calling an audible reference visual-only is insufficient. Reference conditioning does not guarantee verbatim music or timing.

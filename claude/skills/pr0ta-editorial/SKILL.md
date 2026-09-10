@@ -391,3 +391,7 @@ Before the final export, ask yourself this single question and answer it honestl
 If the answer is anything other than a clean "no," the cut is not done. Go back to the appropriate pass.
 
 This is the entire skill, compressed into one sentence. If you forget everything else, remember this question and answer it honestly every time.
+
+## Native sung-performance review
+
+The [Seedance 2.5 sync-sound recipe](../pr0ta-video/reference/seedance-2.5-sync-sound.md) requires native sound and ordered reference provenance to survive timeline handoff. Review lyrics, worst-case timing drift, perceived music fidelity, mouths, instrument attacks and seams separately. Never blindly replace native sound with a master over a visibly different performance.
