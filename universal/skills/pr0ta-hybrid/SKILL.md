@@ -55,6 +55,21 @@ Rules:
 - For price-sensitive choices, query `models_list`, then `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate and requested output configuration. Do not infer live cost from this document.
 - Query `models_get_defaults` or `GET /api/crew/model_defaults?model_id={model_id}` before production calls; alpha fields and resolution caps are model-specific.
 
+## Resolve reference workspace
+
+In Resolve plugin 1.1.0 and later, use the References area beneath the viewer to
+attach or replace inputs. Its picker offers Timeline, Media Pool, PR0TA Library,
+and Computer. For a world or 3D reference, choose PR0TA Library → Worlds & 3D,
+select the asset, then use Align world to capture the aligned image. Generation
+receives that image, not the 3D asset or its transform.
+
+Source, Reference, Result, and Compare are separate viewer modes. Closing a
+reference preview keeps it attached; use Remove to detach it. Choosing a frame
+from a timeline shot stays within the shot's source range. Model-incompatible
+references are kept aside and excluded from generation until a compatible model
+restores them or the user discards them. These UI instructions apply to Resolve;
+Premiere has its own controls.
+
 ## SwitchX Contract
 
 For SwitchX 2.0, native 4K, 10-bit MOV, longer shots, or Finish requests, read

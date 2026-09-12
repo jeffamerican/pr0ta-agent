@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "skills_version": "5.26.0",
-  "released_at": "2026-09-10",
-  "source_revision": "v5.26.0",
+  "skills_version": "5.26.1",
+  "released_at": "2026-09-12",
+  "source_revision": "v5.26.1",
   "minimum_platform_version": "1.22.2",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03913-naf",
-  "bundle_sha256": "aca1da0702d07a992328d130b369dbf13be9f5d2ba58b00d0fec40f569e6b32e",
+  "platform_revision": "pr0ta-platform-03941-dam",
+  "bundle_sha256": "f8e034a43e93eaa033bdcbb431af16c405ca65549d6652a542b9a7c64d44409e",
   "skills": [
     {
       "name": "pr0ta",
@@ -192,11 +192,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production in Post for edited sequences, cut segmentation, coverage-angle grouping, background continuity, and individual live-action plates or 3D worlds. Read for SwitchX/Seedance hybrid edits, mattes, reference plates, and world-anchored backgrounds.",
-      "content_sha256": "511c99734a11c77b641d4e4e59d0036e770a6349d4cd7ebaff86da2c1273084d",
+      "content_sha256": "610643b495a250a030373c7cd27897ef86ac6bd272f595b7e94cf9dcde37d731",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "4444b20891935ec00fab84effe33c794eb35160e6e36f6a1597f24ad32897fe7"
+          "sha256": "349eb0d78aa7e9b47d921d71b237c2c6c37c8147f760e172733cdf018d0622e8"
         },
         {
           "path": "reference/hybrid-sequences.md",
