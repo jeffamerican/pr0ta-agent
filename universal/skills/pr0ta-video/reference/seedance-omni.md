@@ -18,7 +18,7 @@ Seedance 2.0 Omni is a quad-modal audiovisual model. It accepts text plus option
 - Duration: any whole second from 4 through 15.
 - Aspect ratio: `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, or `9:16`.
 - Images: JPEG/PNG/WebP, up to 9.
-- Videos: MP4, up to 3, at most 15 seconds each.
+- Videos: MP4, up to 3, at most 15 seconds each. The VIP 1080p route additionally enforces a **15-second combined video-reference budget**; two 14-second clips are invalid. Trim or select references before submission. This constraint is specific to Seedance 2.0, not the separate 2.5 contract.
 - Audio: MP3 or WAV, up to 3 files and 15 seconds total.
 - Reference capacity: up to 15 files total by the per-modality ceilings: 9 image + 3 video + 3 audio.
 
@@ -238,3 +238,13 @@ Seedance 2.5's current MuAPI routes do not expose 2.0's character tokens or docu
 - [MuAPI Seedance 2 VIP Extend](https://muapi.ai/playground/seedance-2-vip-extend)
 
 PR0TA defaults are synchronized to the live provider schemas. Re-check `models_get_defaults` before production because provider contracts can change.
+
+### Source-video remasters
+
+Selecting a video without image references does not select a trained replacement
+character from the project. Source-preserving remasters keep the source cast.
+If a trained character is intentionally required, explicitly select its approved
+token in `topic.required_tokens` (or `topic.omni_character_tokens`); the token
+must still be an available approved project resource. Intermediate department
+ledgers and the executable prompt have different shapes: a compiler expansion
+failure must not suppress repair of an otherwise compact typed candidate.

@@ -251,10 +251,12 @@ The profile defaults to `muapi/seedream-5.0-pro-edit` with
 model's live schema requires it; never invent provider fields.
 
 Blender-worker outputs store the same package metadata in each asset's
-`designed_world_guidance` labels. For external uploads, attach those labels to
-each pass through the normal asset upload/finalize metadata surface; the
-orchestrator resolves project asset IDs and treats stored guidance metadata as
-authoritative over caller restatements.
+`designed_world_guidance` labels. Flat/depth guidance packages currently require
+PR0TA Blender-worker provenance. External uploads, including local Blender
+renders with these labels, are not supported as trusted flat/depth passes.
+Render both passes together through the PR0TA Blender worker and submit its
+returned project asset IDs. The orchestrator validates provenance and package
+metadata before running departments; upload labels cannot establish trust.
 
 ## Acceptance Gate
 

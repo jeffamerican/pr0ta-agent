@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03941-dam",
-  "bundle_sha256": "f8e034a43e93eaa033bdcbb431af16c405ca65549d6652a542b9a7c64d44409e",
+  "platform_revision": "pr0ta-platform-03959-xin",
+  "bundle_sha256": "64582243b7f112aef89fb2e5cddafd6b1456bc08c3313c97c2f412f779a26d9e",
   "skills": [
     {
       "name": "pr0ta",
@@ -257,7 +257,7 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompting guide and router for image, video, speech, audio, music, and humanoid motion prompts; model-and-modality techniques; prompt bibles; controlled references; anti-patterns; and multi-shot consistency. Read before writing generation prompts.",
-      "content_sha256": "ebbe236b0be5d37ff7bde8d6dc078773c134675df617f5dc4fd2f82af289428a",
+      "content_sha256": "2d48309963d5709be728767f5b524e69c4b4ed1cbaa1f5f07b5c920ac02ca181",
       "documents": [
         {
           "path": "SKILL.md",
@@ -269,7 +269,7 @@
         },
         {
           "path": "reference/designed-world-reference-image.md",
-          "sha256": "c47ad56a9bdeeb2bd8bd10ec12b6060ba4b168bccd6f20da8256efc9f06cb143"
+          "sha256": "4209c80467c2f77afc97d512489ffc36ab1a85eab1204d27657b5de905aeebb3"
         },
         {
           "path": "reference/gpt-image-25.md",
@@ -318,7 +318,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "62fd4e26cb90db19043d57103995b9b5975710a447d084cd76e56cdf2a26f7a2",
+      "content_sha256": "49963038fc2ecd1929b3697a8d109f39a90572a67962c8863321880537cb6835",
       "documents": [
         {
           "path": "SKILL.md",
@@ -370,7 +370,7 @@
         },
         {
           "path": "reference/seedance-omni.md",
-          "sha256": "367a49b5f6bee8c373fa759dcf062e2c75f352df36aaa265638d481d52669988"
+          "sha256": "24fb9b833fad7340bf59a7e2cbad673ecb72a5952e62b3967844d471842d4446"
         },
         {
           "path": "reference/video-reference-field-matrix.md",
