@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.26.1",
-  "released_at": "2026-09-12",
-  "source_revision": "v5.26.1",
-  "minimum_platform_version": "1.22.2",
+  "skills_version": "5.26.2",
+  "released_at": "2026-09-15",
+  "source_revision": "v5.26.2",
+  "minimum_platform_version": "1.23.2",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03959-xin",
-  "bundle_sha256": "64582243b7f112aef89fb2e5cddafd6b1456bc08c3313c97c2f412f779a26d9e",
+  "platform_revision": "pr0ta-platform-03966-paw",
+  "bundle_sha256": "1cd61d8d095dc315109f1024e2bf6e2330ce67cc284f2a428632df95ab800578",
   "skills": [
     {
       "name": "pr0ta",
@@ -318,7 +318,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "49963038fc2ecd1929b3697a8d109f39a90572a67962c8863321880537cb6835",
+      "content_sha256": "cc11d01ee4c86a1ee2c2a148113c9668cf766b38a033a82f0c1606b4a67ed536",
       "documents": [
         {
           "path": "SKILL.md",
@@ -370,7 +370,7 @@
         },
         {
           "path": "reference/seedance-omni.md",
-          "sha256": "24fb9b833fad7340bf59a7e2cbad673ecb72a5952e62b3967844d471842d4446"
+          "sha256": "ab84cda50f2b7cf82dcb48a63d5ee9e714fcb77661cfb0c0472a8bd90e5d6f68"
         },
         {
           "path": "reference/video-reference-field-matrix.md",

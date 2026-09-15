@@ -18,7 +18,7 @@ Seedance 2.0 Omni is a quad-modal audiovisual model. It accepts text plus option
 - Duration: any whole second from 4 through 15.
 - Aspect ratio: `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, or `9:16`.
 - Images: JPEG/PNG/WebP, up to 9.
-- Videos: MP4, up to 3, at most 15 seconds each. The VIP 1080p route additionally enforces a **15-second combined video-reference budget**; two 14-second clips are invalid. Trim or select references before submission. This constraint is specific to Seedance 2.0, not the separate 2.5 contract.
+- Videos: MP4, up to 3, at most 15 seconds each, and a **15-second combined video-reference budget** on every Seedance 2.0 omni route (720p, fast, mini, 1080p and 4K alike, per BytePlus LAS docs); two 14-second clips are invalid. PR0TA rejects oversized bundles before any charge on the VIP 1080p route; other routes fail at the provider. Trim or select references before submission. This constraint is specific to Seedance 2.0; the separate Seedance 2.5 contract allows 30 seconds combined.
 - Audio: MP3 or WAV, up to 3 files and 15 seconds total.
 - Reference capacity: up to 15 files total by the per-modality ceilings: 9 image + 3 video + 3 audio.
 
