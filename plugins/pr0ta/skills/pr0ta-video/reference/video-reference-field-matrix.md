@@ -33,7 +33,7 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `muapi/seedance-2-vip-text-to-video` | `txt_to_vid` only | Required | None | No structured refs | Pure T2V; prompt-level `@character:<request_id>` can select character mode |
 | `muapi/seedance-2-vip-image-to-video` | Image-to-video | Required | 1–9 images | Image fields only | No structured video/audio/character fields; prompt-level `@character:<request_id>` and `@omni-character:<character_id>` are supported |
 | `muapi/seedance-2-vip-omni-reference` | All video modes | Required | ≥1 omni ref in PR0TA `ref_to_vid`; provider accepts prompt-only | **All** image fields + `reference_video_urls[]`, `reference_audio_urls[]`, `references[]`, `element_ids[]`, `elements[]`, `character_id`, `character_ids[]` | Use dedicated T2V for prompt-only work |
-| `muapi/seedance-2.5-text-to-video*` | `txt_to_vid` | Required | None | No refs | 480p/720p/1080p/4K selected by model ID; public pages conflict on 1080p lineage |
+| `muapi/seedance-2.5-text-to-video*` | `txt_to_vid` | Required | None | No refs | 480p/720p/native 1080p/native 4K selected by model ID |
 | `muapi/seedance-2.5-image-to-video*` | I2V | Required | Exactly 1 image | Start-image fields | Dedicated first/last route owns terminal keyframes |
 | `muapi/seedance-2.5-first-last-frame*` | FFLF | Required | Exactly 2 ordered images | `images_list[]` after unified resolution | First then last |
 | `muapi/seedance-2.5-omni-reference*` | Reference video | Required | ≥1 reference | Up to 30 image, 10 video, 10 audio refs (50 total) | Audio-only and video-only accepted; no character IDs |
@@ -61,6 +61,8 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `blackforestlabs/flux-3/first-last-frame-to-video*` | FFLF | Required | Exactly 2 ordered images | `start_image_url`, `end_image_url` | Explicit 5–20s duration required |
 | `blackforestlabs/flux-3/keyframes-to-video*` | Timed keyframes | Required | 1–10 images | `keyframes[]` objects with `image_url` + unique `frame_index` | Positions use the 24 fps output timeline, not seconds |
 | `blackforestlabs/flux-3/extend-video*` | Extension | Required | Source video | `video_url` | Continue source camera/motion/audio; standard and Draft routes |
+| `blackforestlabs/flux-3/edit-video` | `video_to_video` | Required | Source video | `video_url`; optional `safety_tolerance` | Fast 720p rewrite; preserve motion, timing, and framing; MP4 under 50 MB and 15 seconds |
+| `minimax/h3-max/lip-sync/image-to-video` | Lipsync | None | Still + soundtrack | `image_url`, `audio_url` | Duration follows clipped audio (5–14.8s); 480P–2K |
 | `lightricks/ltx-2.5/image-to-video/*` | I2V / optional end frame | Required | Opening image | `image_url`; optional `end_image_url` | Not a multi-reference orchestration target; do not combine auto duration with an end image |
 | `lightricks/ltx-2.5/audio-to-video/*` | Audio-driven video | Conditional | Required source audio; optional image | `audio_url`; optional `image_url` | Prompt required without image; A2V does not inherit I2V resolution/FPS/camera/end-image fields |
 | `muapi/seedance-2-character` | Character-construction path | Not enforced | ≥1 image ref (up to 3) | Image fields only | **Character-sheet training.** Requires `character_name` + `outfit_description`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. |

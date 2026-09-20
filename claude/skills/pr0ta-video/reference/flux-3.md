@@ -25,6 +25,7 @@ Use this reference for every `blackforestlabs/flux-3/` video route in PR0TA. FLU
 | Bridge exact opening and ending images | `blackforestlabs/flux-3/first-last-frame-to-video` |
 | Place 1–10 visual targets at exact frame positions | `blackforestlabs/flux-3/keyframes-to-video` |
 | Continue an existing source clip | `blackforestlabs/flux-3/extend-video` |
+| Edit an existing source clip | `blackforestlabs/flux-3/edit-video` |
 
 ### Draft routes
 
@@ -135,6 +136,25 @@ Finalize the `keyframes` array first. In the prompt, describe causal motion betw
 
 ```text
 Frames 0–143: begin from the opening target; the dancer advances through one controlled turn as the camera arcs clockwise. Frames 144–239: pass through the second target, continuing the same momentum while the blue backlight warms. Frames 240–287: decelerate naturally and land on the final target. Preserve face, costume, stage geometry, and musical tempo.
+```
+
+### Edit
+
+Treat `video_url` as motion, timing, and framing authority. Ask for one focused change. Current Fal Fast schema accepts only `prompt`, `video_url`, and `safety_tolerance`; source MP4 must be under 50 MB and under 15 seconds.
+
+```json
+{
+  "generator": "video",
+  "mode": "video_to_video",
+  "model": "blackforestlabs/flux-3/edit-video",
+  "prompt": "Make it snow heavily; keep the camera path and subject blocking.",
+  "video_url": "https://example.com/source.mp4",
+  "safety_tolerance": 2
+}
+```
+
+```text
+Rewrite the source clip with a heavy snowfall and a colder winter palette. Preserve the existing camera path, subject blocking, and cut timing.
 ```
 
 ### Extend

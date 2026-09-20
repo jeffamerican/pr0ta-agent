@@ -1,6 +1,6 @@
 # Seedance 2.5 on MuAPI
 
-Use this reference for the Seedance 2.5 routes installed in PR0TA. **Seedance 2.5 Omni Reference (`muapi/seedance-2.5-omni-reference`) is the preferred production route for video generation.** Begin with one or more approved image, video, or audio references; choose T2V, I2V, first/last, Edit, or Extend only when its narrower contract is the actual requirement. Every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID. MuAPI documents native 1080p across all six modalities as of 2026-09-04; 4K remains upscaled from 720p. Standard, Spicy, and International 1080p routes are curated in each corresponding modality; the existing 720p Spicy/International T2V and I2V routes remain available. Every current route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
+Use this reference for the Seedance 2.5 routes installed in PR0TA. **Seedance 2.5 Omni Reference (`muapi/seedance-2.5-omni-reference`) is the preferred production route for video generation.** Begin with one or more approved image, video, or audio references; choose T2V, I2V, first/last, Edit, or Extend only when its narrower contract is the actual requirement. Every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID. MuAPI documents native 1080p and native 4K across all six modalities as of 2026-09-19. Standard, Spicy, and International 1080p and 4K routes are curated in each corresponding modality; the existing 720p Spicy/International T2V and I2V routes remain available. Every current route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
 
 ## Contents
 
@@ -20,32 +20,32 @@ Start at Omni Reference. The remaining rows are explicit exceptions: prompt-only
 | `muapi/seedance-2.5-spicy-text-to-video` | 720p | Favor bolder, more expressive motion and higher-contrast interpretation |
 | `muapi/seedance-2.5-intl-text-to-video` | 720p | Route global text generation through MuAPI's international-region deployment |
 | `muapi/seedance-2.5-text-to-video-480p` | 480p | Draft and iterate a text prompt cheaply |
-| `muapi/seedance-2.5-text-to-video-1080p` | 1080p tier | Deliver to a Full HD pipeline |
-| `muapi/seedance-2.5-text-to-video-4k` | 4K tier | Deliver to a 4K pipeline |
+| `muapi/seedance-2.5-text-to-video-1080p` | Native 1080p | Deliver to a Full HD pipeline |
+| `muapi/seedance-2.5-text-to-video-4k` | Native 4K | Deliver to a 4K pipeline |
 | `muapi/seedance-2.5-image-to-video` | 720p | Animate one approved first image |
 | `muapi/seedance-2.5-spicy-image-to-video` | 720p | Animate one image with bolder, more expressive motion |
 | `muapi/seedance-2.5-intl-image-to-video` | 720p | Route global image animation through MuAPI's international-region deployment |
 | `muapi/seedance-2.5-image-to-video-480p` | 480p | Draft an I2V motion prompt |
-| `muapi/seedance-2.5-image-to-video-1080p` | 1080p tier | Deliver an image-led shot to a Full HD pipeline |
-| `muapi/seedance-2.5-image-to-video-4k` | 4K tier | Deliver an image-led shot to a 4K pipeline |
+| `muapi/seedance-2.5-image-to-video-1080p` | Native 1080p | Deliver an image-led shot to a Full HD pipeline |
+| `muapi/seedance-2.5-image-to-video-4k` | Native 4K | Deliver an image-led shot to a 4K pipeline |
 | `muapi/seedance-2.5-first-last-frame` | 720p | Bridge two ordered approved keyframes |
 | `muapi/seedance-2.5-first-last-frame-480p` | 480p | Draft a first/last transition |
-| `muapi/seedance-2.5-first-last-frame-1080p` | 1080p tier | Deliver a keyframe transition to a Full HD pipeline |
-| `muapi/seedance-2.5-first-last-frame-4k` | 4K tier | Deliver a keyframe transition to a 4K pipeline |
+| `muapi/seedance-2.5-first-last-frame-1080p` | Native 1080p | Deliver a keyframe transition to a Full HD pipeline |
+| `muapi/seedance-2.5-first-last-frame-4k` | Native 4K | Deliver a keyframe transition to a 4K pipeline |
 | `muapi/seedance-2.5-omni-reference` | 720p | Guide the shot with images, videos, and/or audio |
 | `muapi/seedance-2.5-omni-reference-480p` | 480p | Draft a multimodal reference shot |
-| `muapi/seedance-2.5-omni-reference-1080p` | 1080p tier | Deliver a multimodal reference shot to a Full HD pipeline |
-| `muapi/seedance-2.5-omni-reference-4k` | 4K tier | Deliver a multimodal reference shot to a 4K pipeline |
+| `muapi/seedance-2.5-omni-reference-1080p` | Native 1080p | Deliver a multimodal reference shot to a Full HD pipeline |
+| `muapi/seedance-2.5-omni-reference-4k` | Native 4K | Deliver a multimodal reference shot to a 4K pipeline |
 | `muapi/seedance-2.5-video-edit` | 720p | Modify a source video while preserving its content and motion |
 | `muapi/seedance-2.5-video-edit-480p` | 480p | Draft and iterate a video edit cheaply |
-| `muapi/seedance-2.5-video-edit-1080p` | 1080p tier | Deliver a video edit to a Full HD pipeline |
-| `muapi/seedance-2.5-video-edit-4k` | 4K tier | Deliver a video edit to a 4K pipeline |
+| `muapi/seedance-2.5-video-edit-1080p` | Native 1080p | Deliver a video edit to a Full HD pipeline |
+| `muapi/seedance-2.5-video-edit-4k` | Native 4K | Deliver a video edit to a 4K pipeline |
 | `muapi/seedance-2.5-video-extend` | 720p | Continue a source video from its last frame |
 | `muapi/seedance-2.5-video-extend-480p` | 480p | Draft and iterate a continuation cheaply |
-| `muapi/seedance-2.5-video-extend-1080p` | 1080p tier | Deliver a continuation to a Full HD pipeline |
-| `muapi/seedance-2.5-video-extend-4k` | 4K tier | Deliver a continuation to a 4K pipeline |
+| `muapi/seedance-2.5-video-extend-1080p` | Native 1080p | Deliver a continuation to a Full HD pipeline |
+| `muapi/seedance-2.5-video-extend-4k` | Native 4K | Deliver a continuation to a 4K pipeline |
 
-Native 1080p variants use `muapi/seedance-2.5-{intl|spicy}-{mode}-1080p` for all six modes. Native 1080p Edit/Extend send `video_url`; Edit references use `images_list`/`audios_list`, and Extend uses optional `last_image`. See [current provider documentation](https://muapi.ai/seedance-2.5).
+Native 1080p and 4K variants use `muapi/seedance-2.5-{intl|spicy}-{mode}-{1080p|4k}` for all six modes. Live MuAPI edit/extend schemas send `video_url`; Edit references use `images_list`/`audios_list`, and Extend uses optional `last_image`. PR0TA also sends `resolution` matching the model-ID suffix because dedicated high-resolution routes now default to 720p in the live OpenAPI schema. See [current provider documentation](https://muapi.ai/seedance-2.5).
 
 Spicy uses the same request shape as standard 720p generation but favors more expressive motion and higher-contrast creative interpretation with reduced moderation. International uses MuAPI's international-region deployment for traffic outside mainland China. Neither variant adds an audio toggle, last-frame, resolution, or camera-fixed control to these text/image routes; their outputs still include native audio.
 
@@ -58,10 +58,10 @@ The standard sixteen T2V, I2V, first/last, and Omni routes plus the four curated
 - Aspect ratio `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, or `9:21`; default `16:9`.
 - Optional integer `seed`; `-1` means random.
 - Optional boolean `high_bitrate`; default `false`. Enable it for final-quality output when better fine-detail and compression fidelity justify a larger file.
-- Resolution tier is fixed by model ID: unsuffixed route is 720p, while `-480p`, `-1080p`, and `-4k` select those output tiers. MuAPI's family page now verifies native 1080p for all six modalities (2026-09-04); 4K is upscaled from 720p.
+- Resolution tier is selected by model ID: unsuffixed route is 720p, while `-480p`, `-1080p`, and `-4k` select those output tiers. MuAPI verifies native 1080p and native 4K for all six modalities (2026-09-19). PR0TA derives and sends the matching `resolution` value; do not pick a different tier with a raw `resolution` field.
 - Audio-bearing output with no audio opt-out field.
 
-The standard routes do not expose `resolution`, `negative_prompt`, `sound`, `generate_audio`, `camera_fixed`, `character_id`, `character_ids`, CFG/strength, FPS, or output-format controls. Do not send those fields.
+The standard routes do not expose a user-facing `resolution` picker, `negative_prompt`, `sound`, `generate_audio`, `camera_fixed`, `character_id`, `character_ids`, CFG/strength, FPS, or output-format controls. Choose resolution by model ID.
 
 The current Omni route also accepts `omni_reference_task_type` with `auto`, `reference`, `edit`, or `extend`. Use `reference` for PR0TA's normal reference-led generation path, `edit` only when the attached video is source material to transform, and `extend` only when continuing it. Use `auto` when intent is genuinely ambiguous. This is a routing hint, not prompt prose or a substitute for the dedicated Video Edit or Extend route contracts. The provider still re-derives task type from the prompt, so a mismatch can fail asynchronously.
 
@@ -204,15 +204,15 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 
 | Failure | Repair |
 |---|---|
-| Unsupported field on T2V, I2V, first/last, or Omni | Remove `resolution`, `negative_prompt`, `sound`, `generate_audio`, camera-fixed, character, CFG, and FPS fields |
-| Unsupported field on Edit or Extend | Remove `resolution`, `negative_prompt`, `sound`, camera-fixed, character, CFG, and FPS fields; retain `generate_audio` only when the endpoint schema exposes it |
+| Unsupported field on T2V, I2V, first/last, or Omni | Remove caller-supplied `resolution`, `negative_prompt`, `sound`, `generate_audio`, camera-fixed, character, CFG, and FPS fields; choose 480p/720p/1080p/4K by model ID |
+| Unsupported field on Edit or Extend | Remove caller-supplied `resolution`, `negative_prompt`, `sound`, camera-fixed, character, CFG, and FPS fields; retain `generate_audio` only when the endpoint schema exposes it |
 | I2V ignores desired motion | Replace "bring to life" with explicit subject, environment, camera, and end-state motion |
 | First/last morphs badly | Use compatible frames and describe the observable physical bridge |
 | Omni follows the wrong reference | State each modality's role in prose and remove redundant inputs |
 | Omni reference claims unseen authority | Supply an image where the claimed face/object/state is visible, narrow the declared role, or resolve continuity before orchestration |
 | Identity drifts | Use clearer images, repeat defining traits, or switch to a trained-character workflow on Seedance 2.0 Omni |
 | Long clip meanders | Reduce beats; preserve one causal arc and explicit end state |
-| 4K route or audio control rejected | Select 1080p/4K with the suffixed model ID, not a `resolution` field; omit audio controls on standard routes and use `generate_audio` only on Edit/Extend. The absence of a control does not mean silent output |
+| 4K route or audio control rejected | Select native 1080p/4K with the suffixed model ID; PR0TA sends the matching `resolution`. Omit audio controls on standard routes and use `generate_audio` only on Edit/Extend. The absence of a control does not mean silent output |
 | Positional reference label is ignored | Replace upstream UI labels with explicit natural-language roles unless the exact MuAPI route documents token binding |
 | Edit changes too much | Request one focused transformation and list preserved source traits |
 | Extend restarts or jumps | Continue the in-progress action and preserve screen direction, camera, light, and sound character |
@@ -226,7 +226,7 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 - [Official ByteDance Seedance 2.5 launch and prompt examples](https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5)
 - [MuAPI Seedance 2.5 family page](https://muapi.ai/seedance-2.5)
 - [MuAPI Seedance 2.5 Omni Reference API playground](https://muapi.ai/playground/seedance-2.5-intl-omni-reference/api)
-- [MuAPI OpenAPI](https://api.muapi.ai/openapi.json), live contract verified 2026-08-23
+- [MuAPI OpenAPI](https://api.muapi.ai/openapi.json), live contract verified 2026-09-19
 
 MuAPI family pages and older blog posts may describe capabilities that are not present on the current standard endpoints. For PR0TA payloads, authority order is:
 

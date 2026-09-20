@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "5.26.2",
-  "released_at": "2026-09-15",
-  "source_revision": "v5.26.2",
-  "minimum_platform_version": "1.23.2",
+  "skills_version": "5.26.3",
+  "released_at": "2026-09-20",
+  "source_revision": "v5.26.3",
+  "minimum_platform_version": "1.23.12",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-03966-paw",
-  "bundle_sha256": "1cd61d8d095dc315109f1024e2bf6e2330ce67cc284f2a428632df95ab800578",
+  "platform_revision": "pr0ta-platform-03992-vip",
+  "bundle_sha256": "804f82c007e85f60174b12ec729eb3dcd71f1290f43edd51cbd6c370217e5f88",
   "skills": [
     {
       "name": "pr0ta",
@@ -318,15 +318,15 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation guide for Seedance 2.0/2.5, Wan 3.0/Prime, Hailuo H3, FLUX 3, LTX 2.5, Kling, references, storyboard chunks, multi-shot continuity, extension, camera/audio control, duration limits, typography, and provider fallback. Read when generating, extending, or troubleshooting video.",
-      "content_sha256": "cc11d01ee4c86a1ee2c2a148113c9668cf766b38a033a82f0c1606b4a67ed536",
+      "content_sha256": "b59d2890530d97f5b640e909344d07f45ac5ede9f81ca17dd919c386e42d7867",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3b2a66de102010231f3978bc2267e365c3e70a0662f644b4557374bc35b9479e"
+          "sha256": "3fad827f3706936007871cb45ff4d5dc6064e3f060a3a4ec0faecee5faceb8d3"
         },
         {
           "path": "reference/flux-3.md",
-          "sha256": "2eb7caa3a28cf97852e1b37766e685f054bcef959354484e740e69d1c6357188"
+          "sha256": "77ab9efe3284a74a09e99631265ddfd67ec20bc9c0ab22c9805554382db21d6f"
         },
         {
           "path": "reference/gemini-omni-flash-1.1.md",
@@ -338,7 +338,7 @@
         },
         {
           "path": "reference/hailuo-h3.md",
-          "sha256": "c44a2c891e62a34a95178accea965c8c2caa9759e995e0ab2230dcea8ce96fb0"
+          "sha256": "21094f7c767e04c3b49f12408b70e6ea4fd1b60e200de87e9b45c55ca589ed23"
         },
         {
           "path": "reference/kling-prompting.md",
@@ -362,7 +362,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "2b648d6f4171ce948ae0cfe02b7dbb676132569d164df11dbed3c06ccd6faf1c"
+          "sha256": "1d522a1f64ff2e2202505ca5db72481e8ef2846adce4a6ca66004fede4a9a9f8"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
@@ -374,7 +374,7 @@
         },
         {
           "path": "reference/video-reference-field-matrix.md",
-          "sha256": "ef6ae5c14ddaedc7e94c5b68a64ec63693dfa485abb30a67430e67a4a8c6a0c9"
+          "sha256": "7e867d6fb2fab85829079ecc99d21dae608189c1d5907486d626233dc53ae09d"
         },
         {
           "path": "reference/wan-3.0.md",
