@@ -215,7 +215,7 @@ the tool listing in your MCP client.
 - `production_queue_refresh`(**asset_uids**, reset_analysis, full_reconstruct): Refresh Queue items from Storyboarding, optionally resetting analysis or reconstructing the full queue.
 - `production_queue_regenerate`(**asset_uid**, **generation_params**, generation_prompt, batch_id, batch_label): Queue generation or regeneration for one Production Queue item and return a task id.
 - `production_queue_regenerate_batch`(**asset_uids**, **generation_params**): Queue generation or regeneration for multiple Production Queue items.
-- `production_queue_take_favorite`(**asset_uid**, **take_id**): Favorite a generated take for one Queue item.
+- `production_queue_take_favorite`(**asset_uid**, **take_id**, favorite): Favorite a generated take for one Queue item, or remove the favorite with favorite=false.
 - `production_queue_take_select`(**asset_uid**, take_id, take_type): Select or clear a generated image, video, or audio take for one Queue item.
 - `production_queue_upload_retry`(**asset_id**): Retry permanent-storage recovery for one failed Production Queue asset.
 
@@ -269,7 +269,7 @@ the tool listing in your MCP client.
 - `storyboard_reference_sheet_generate`(**chunk_id**, variation_count, quality, model, reference_asset_ids, reference_image_urls, include_chunk_reference_urls, storyboard_sheet_prompt): Generate a GPT Image 2.5 Sunburst optimized Seedance storyboard reference sheet for one beat chunk.
 - `storyboard_reference_sheets_list`(chunk_id, limit, offset, include_download): List generated Seedance storyboard reference sheet assets.
 - `storyboard_sequences_get`(): List the manual and generated Storyboarding sequence records used by the Storyboarding and Queue pages.
-- `storyboard_sequences_save`(**sequences**, replace_scene_numbers): Upsert Storyboarding sequence records, including selected sheets, prompts, and references.
+- `storyboard_sequences_save`(**sequences**, replace_scene_numbers): Update Storyboarding sequence records (selected sheets, prompts, references).
 
 ## style
 

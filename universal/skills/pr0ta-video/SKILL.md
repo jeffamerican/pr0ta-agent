@@ -48,8 +48,8 @@ Use these only when the user asks for the capability; they are not a ranking.
 - **Single takes up to 30 seconds:** Seedance 2.5 routes (4–30 s) and Wan 3.0 / Prime (2–30 s).
 - **Audio owns the timing:** LTX 2.5 audio-to-video builds picture around a required source track; lip-sync routes animate a still or clip to finished dialogue.
 - **Performance transfer from a driving video:** motion-control routes; read `reference/motion-transfer.md`.
-- **Native 4K:** Seedance 2.5 `-4k` routes, Gemini Omni Flash 1.1 (`4k`), Kling V3/O3 4K routes.
-- **Colour-critical 10-bit 1080p or MOV 4:4:4:** `byteplus/seedance-2.5` (ModelArk).
+- **Native 4K:** Gemini Omni Flash 1.1 (`4k`), Kling V3/O3 4K routes. Seedance 2.5 `-4k` routes are MuAPI upscales of a native 1080p-class render.
+- **Colour-critical 10-bit 1080p or MOV 4:4:4:** the BytePlus ModelArk Seedance 2.5 routes (`byteplus/seedance-2.5` and its image-to-video, first/last, edit, and extend task routes).
 - **Many reference images with tagged roles:** Grok Imagine Video 1.5 reference-to-video (1–7 images tagged `<IMAGE_0>`…), Seedance 2.5 Omni (up to 30 images, 10 videos, 10 audios).
 
 ## Model References
@@ -121,6 +121,7 @@ Input orientation does not guarantee output orientation. Always set `aspect_rati
 
 ## Continuity Workflows
 
+- **Shots within a scene:** generate a scene's shots in order and chain them. When the resolved model accepts reference videos (check `models_get_defaults` or `reference/video-reference-field-matrix.md`), pass the previous shot's circled take from the same scene as a continuity reference video, and say in the prompt what it carries (wardrobe, props, lighting, screen direction, where the characters stand) and that it is not footage to repeat. Wait for that take before submitting the next shot. Do not chain across a scene boundary; a new scene starts from its own references.
 - **Seedance 2.0 storyboard chunks:** one approved global visual bible plus one chronological sheet per chunk. Use `storyboard_chunks_list`, `storyboard_reference_sheet_generate`, `tasks_get`, and `storyboard_reference_sheets_list`, and select an approved sheet before dispatch. Read `reference/seedance-global-storyboard.md`.
 - **Kling multi-shot:** up to 5 (V3) or 6 (O3) cuts in one generation with shared Elements. Its shot labels and `@Image1` / `@ElementN` tokens are not interchangeable with Seedance. Read `reference/kling-prompting.md`.
 - **Continuing a Seedance 2.0 clip:** Omni Reference with the previous clip as `@video1` is reference-guided continuation. MuAPI's provider-native 2.0 extension routes need the original provider `request_id` and are not in the unified catalog; see `reference/seedance-omni.md`.

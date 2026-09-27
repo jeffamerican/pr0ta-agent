@@ -33,7 +33,7 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `muapi/seedance-2-vip-text-to-video` | `txt_to_vid` only | Required | None | No structured refs | Pure T2V; prompt-level `@character:<request_id>` can select character mode |
 | `muapi/seedance-2-vip-image-to-video` | Image-to-video | Required | 1–9 images | Image fields only | No structured video/audio/character fields; prompt-level `@character:<request_id>` and `@omni-character:<character_id>` are supported |
 | `muapi/seedance-2-vip-omni-reference` | All video modes | Required | ≥1 omni ref in PR0TA `ref_to_vid`; provider accepts prompt-only | **All** image fields + `reference_video_urls[]`, `reference_audio_urls[]`, `references[]`, `element_ids[]`, `elements[]`, `character_id`, `character_ids[]` | Use dedicated T2V for prompt-only work |
-| `muapi/seedance-2.5-text-to-video*` | `txt_to_vid` | Required | None | No refs | 480p/720p/native 1080p/native 4K selected by model ID |
+| `muapi/seedance-2.5-text-to-video*` | `txt_to_vid` | Required | None | No refs | 480p/720p/native 1080p, or 4K (MuAPI upscale), selected by model ID |
 | `muapi/seedance-2.5-image-to-video*` | I2V | Required | Exactly 1 image | Start-image fields | Dedicated first/last route owns terminal keyframes |
 | `muapi/seedance-2.5-first-last-frame*` | FFLF | Required | Exactly 2 ordered images | `images_list[]` after unified resolution | First then last |
 | `muapi/seedance-2.5-omni-reference*` | Reference video | Required | ≥1 reference | Up to 30 image, 10 video, 10 audio refs (50 total) | Audio-only and video-only accepted; no character IDs |
@@ -71,6 +71,10 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `xai/grok-imagine-video/v1.5/image-to-video` | I2V | Required | Exactly 1 image | Image fields | No `aspect_ratio`; output follows the image |
 | `xai/grok-imagine-video/v1.5/reference-to-video` | Reference video | Required | 1–7 images | Image fields in order | Zero-based `<IMAGE_0>` tags; 480p/720p. Read `grok-imagine-video-1.5.md` |
 | `byteplus/seedance-2.5` | T2V / reference / edit / extend | Required | Mode-dependent | Up to 30 image, 10 video, 10 audio refs | `omni_reference_task_type`; 480p/720p/1080p; `mp4`/`mov`. Read `seedance-2.5.md` |
+| `byteplus/seedance-2.5-image-to-video` | I2V | Required | First frame image | Optional last frame | Input image locked as first frame; draft mode |
+| `byteplus/seedance-2.5-first-last-frame` | FFLF | Required | Exactly 2 ordered images | First then last | Draft mode |
+| `byteplus/seedance-2.5-video-edit` | `video_to_video` | Required | Source video | Up to 30 image, 10 audio refs | Keeps source length and ratio (duration -1, adaptive) |
+| `byteplus/seedance-2.5-video-extend` | `extend_video` | Required | Source video | Up to 30 image, 10 audio refs | Say forward or backward in the prompt |
 | `fal-ai/kling-video/v3/standard/motion-control` | `video_to_video` motion transfer | Optional | Character image + driving video | `image_url`, `video_url`, `character_orientation`; one optional Element | Read `motion-transfer.md` |
 | `muapi/seedance-2-character` | Character-construction path | Not enforced | ≥1 image ref (up to 3) | Image fields only | **Character-sheet training.** Requires `character_name` + `outfit_description`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. |
 | `muapi/seedance-2-omni-reference-train` | Omni-token training path | Not enforced | ≥1 image ref | Image fields only | **Single-portrait training.** Requires `character_name`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. Fastest path into Omni when one clean portrait is enough. See `pr0ta-consistency` → `reference/provider-consistency-systems.md` → "Training the Token". |
@@ -355,7 +359,7 @@ Duration is route-specific. Use whole seconds where the route takes an integer a
 | `muapi/seedance-2-vip-image-to-video` | `4`..`15` |
 | `muapi/seedance-2-vip-omni-reference` | `4`..`15` |
 | `muapi/seedance-2.5-*` standard routes | `4`..`30` |
-| `byteplus/seedance-2.5` | `4`..`30` or `-1` (model chooses; edit tasks always `-1`) |
+| `byteplus/seedance-2.5` and its task routes | `4`..`30` or `-1` (model chooses; edit tasks always `-1`) |
 | `muapi/wan3.0-*` | `2`..`30` |
 | `alibaba/wan-3.0-prime/*` | `smart` or `2`..`30`; omitted means `5` |
 | `google/gemini-omni-flash/v1.1/{text,image,reference}-to-video` | `3`..`10` |

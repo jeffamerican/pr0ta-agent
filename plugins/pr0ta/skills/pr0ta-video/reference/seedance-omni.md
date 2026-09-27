@@ -209,7 +209,7 @@ Seedance 2.5 is the family that offers:
 - A 16–30 second single generation.
 - The larger Omni capacity of 30 images, 10 videos, and 10 audios (50 total inputs).
 - Dedicated first/last-frame routing.
-- 480p, 720p, native 1080p, and native 4K routes selected by model ID.
+- 480p, 720p, and native 1080p routes, plus 4K MuAPI upscales, selected by model ID.
 
 Seedance 2.5's current MuAPI routes do not expose 2.0's character tokens or documented positional reference tokens. Do not transfer those features by name.
 
