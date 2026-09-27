@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "skills_version": "6.0.1",
+  "skills_version": "6.0.2",
   "released_at": "2026-09-27",
-  "source_revision": "v6.0.1",
+  "source_revision": "v6.0.2",
   "minimum_platform_version": "1.25.43",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04277-hiv",
-  "bundle_sha256": "f78b9faf960a8f08f3c9cfce9fbc77b676de52fdc1c590f3b626053fcd1bc6dd",
+  "platform_revision": "pr0ta-platform-04289-ced",
+  "bundle_sha256": "b67d4cd4a77e3368367d127b15dd9e70656a2cb92ef79f9e3406f299733a36f8",
   "skills": [
     {
       "name": "pr0ta",
@@ -375,7 +375,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "4f237a5f8023be3e8d7677028d0d00781529c7e558cd593078a3d67b6fae489a",
+      "content_sha256": "a1bce1ed003f4dc6909cf3bc5134fce851d885c77ca59499a0d7ac9376678eb0",
       "documents": [
         {
           "path": "SKILL.md",
@@ -431,7 +431,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "f8f5b8bea75f704784eaf1fdda822c4eb6dc3e9f87086669750dbe55bcd7c9d9"
+          "sha256": "b74204b75c3d1c41d33ba457e7806ec279d710150915acb908c5424b9a26f105"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
