@@ -37,7 +37,8 @@ records; the preview is visual direction, not a finished composite or tracker.
 - Camera/environment changes invalidate stale structure and staging references.
   Render again before using the changed camera as guidance.
 - For **3D-guided extension**, widen the environment view, save its PNG as
-  `structure_asset_id`, choose Nano Banana 2 `plate_edit`, and retain the
+  `structure_asset_id`, choose `plate_edit` with the model whose capability
+  notes accept a structure guide (SwitchX image rejects one), and retain the
   photographic plate as appearance authority. The adapter separates geometry
   from photographic materials and lighting.
 - `inpaint` and ordinary `outpaint` consume `plate_asset_id`, retaining camera,

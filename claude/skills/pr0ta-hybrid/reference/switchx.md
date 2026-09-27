@@ -97,9 +97,45 @@ Custom, full matte video:
 {"prompt": "Golden-hour cliff road behind the car; low sun from camera left; new reflections across the windshield.", "video_asset_id": "plate", "reference_image_asset_ids": ["golden-hour-look"], "alpha_mode": "custom", "alpha_asset_id": "birefnet-matte-video", "alpha_media_kind": "video"}
 ```
 
+A complete `generation_submit` call, video background swap with a project matte:
+
+```json
+{
+  "project_id": "project-uuid-or-slug",
+  "request": {
+    "generator": "video",
+    "mode": "video_to_video",
+    "model": "beeble/switchx",
+    "prompt": "Golden-hour coastal road behind the driver; warm low sun from camera left, soft haze, preserve the driver's face and hands exactly.",
+    "video_asset_id": "plate-asset-id",
+    "reference_image_asset_ids": ["approved-look-plate-asset-id"],
+    "alpha_mode": "custom",
+    "alpha_asset_id": "matte-video-asset-id",
+    "alpha_media_kind": "video",
+    "max_resolution": 1080
+  }
+}
+```
+
 ## Still-Image Edits
 
 `beeble/switchx-image` runs the same engine on one frame through the image-edit path: `generator: "image"`, `mode: "edit_img"`, `image_asset_id` as the plate frame, `reference_image_asset_ids[0]` as the look, optional `alpha_asset_id` as a grayscale image, and `max_resolution`. PR0TA resizes all three inputs to the fitted source size, uploads them, and registers the render plus Beeble's alpha image. Use it to author an angle-matched reference plate from an extracted frame, then feed that plate to the video route.
+
+```json
+{
+  "project_id": "project-uuid-or-slug",
+  "request": {
+    "generator": "image",
+    "mode": "edit_img",
+    "model": "beeble/switchx-image",
+    "prompt": "Replace the studio backdrop with the approved library hall; keep the actor, chair, and lens unchanged.",
+    "image_asset_id": "extracted-frame-asset-id",
+    "reference_image_asset_ids": ["approved-location-still-asset-id"],
+    "alpha_mode": "auto",
+    "max_resolution": 1080
+  }
+}
+```
 
 ## Failures and Repairs
 
@@ -122,4 +158,3 @@ Custom, full matte video:
 - [Beeble SwitchX documentation](https://docs.beeble.ai/beeble/switchx)
 - [Beeble Developer API](https://developer.beeble.ai/docs)
 - [SwitchX research page](https://beeble.ai/research/switchx)
-- Checked-in provider spec: `Documentation/beeble_developer_api_openapi.json`; PR0TA implementation under `services/video/providers/beeble_*.py` and `services/beeble/`.

@@ -44,7 +44,7 @@ Never bend this for convenience. A prompt that lets a gray render "inspire the l
 1. Find the world asset and the set environment with `set_environments_get` for the scene.
 2. Call `set_environment_collider_materialize` with `environment_id` and `world_asset_id`. It downloads the collider once, registers it as a project GLB, links it as `blender_source`, and reuses the same asset on later calls.
 3. Call `blender_job_submit` with `request.environment_id`, `request.source_world_asset_id`, a `scene_plan.camera` that matches the intended shot camera, and `render: {"kind": "still", "passes": ["flat_structural", "depth_normalized"]}`. When the imported collider needs registration, set `scene_plan.world_alignment` with `location`, degree-based `rotation`, and `uniform_scale`; Blender parents the source world under that transform without moving the declared camera. Both passes are mandatory together and only stills are allowed for guidance renders. `source_world_asset_id` and `source_asset_id` are mutually exclusive.
-4. Poll with `tasks_get`. The result lists `guidance_packages` with both pass asset IDs and their metadata.
+4. Poll with `tasks_get`. The task's `result_refs.guidance_packages` lists both pass asset IDs and their metadata.
 5. Call `agent_chat_orchestrate_prompt` with `prompt_profile: "designed_world_reference_image"`, the guidance package, and an approved location still as the `appearance` reference. Generate only from a `generation_package`.
 6. Use the resulting still as the SwitchX reference plate or as an Omni image reference.
 

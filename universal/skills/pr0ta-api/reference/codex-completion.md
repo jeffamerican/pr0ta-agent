@@ -1,5 +1,6 @@
 # Codex completion receiver
 
+
 The bundled `completion-receiver.py` and `codex_completion_adapter.py` support
 Codex installations with `codex queue --thread <UUID> --message <TEXT>`.
 Check the installed CLI with `codex queue --help`; older installations may lack

@@ -12,11 +12,11 @@ Official sources: [MuAPI Wan 3.0 family](https://muapi.ai/wan-3), [text-to-video
 | Image-to-video | `muapi/wan3.0-image-to-video` | `muapi/wan3.0-prime-image-to-video` | `prompt`, opening image | `last_image` terminal frame |
 | Reference-to-video | `muapi/wan3.0-reference-to-video` | `muapi/wan3.0-prime-reference-to-video` | `prompt` | Up to 10 images, 5 videos, and 5 audios |
 
-Fal-native Prime uses `alibaba/wan-3.0-prime/{text,image,reference}-to-video`. Its I2V field is `start_image_url` with optional `end_image_url`; R2V uses `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`. Fal also exposes `audio`, `enable_thinking`, and `enable_prompt_expansion`; optional R2V `file_url` or `web_url` requires `enable_thinking: true`. Keep these routes distinct from MuAPI's `image_url`/`last_image`, `images_list`/`videos_list`/`audios_list`, `enable_audio`, and `thinking_mode` contract.
+Fal-native Prime uses `alibaba/wan-3.0-prime/{text,image,reference}-to-video`. Its I2V field is `start_image_url` with optional `end_image_url`; R2V uses `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`. Fal also exposes `audio`, `enable_thinking: bool`, and `enable_prompt_expansion: bool`; optional R2V `file_url` or `web_url` requires `enable_thinking: true`. Keep these routes distinct from MuAPI's `image_url`/`last_image`, `images_list[]`/`videos_list[]`/`audios_list[]`, `enable_audio: bool`, and `thinking_mode` contract.
 
 Use the dedicated T2V route for prompt-only work even though the provider-native R2V arrays are optional. R2V is the deliberate multimodal-reference branch, not a substitute T2V endpoint.
 
-Prime is a drop-in higher-fidelity tier with the same request shape. Use standard Wan 3.0 while discovering motion, timing, framing, and sound direction; promote an approved prompt and reference package to Prime for hero shots or delivery candidates when sharper detail and steadier motion justify the higher cost.
+Prime is a higher-fidelity tier with the same request shape and prompt grammar.
 
 ## Shared Controls
 
@@ -26,7 +26,7 @@ Prime is a drop-in higher-fidelity tier with the same request shape. Use standar
 | `aspect_ratio` | `16:9`, `9:16`, `1:1`, `4:3`, `3:4` | `16:9` |
 | `duration` | Whole seconds from 2 through 30 | `5` |
 | `thinking_mode` | Boolean; use for genuinely complex prompts | `false` |
-| `enable_audio` | Boolean generated-audio control | `true` |
+| `enable_audio: bool` | Generated-audio control | `true` |
 | `seed` | Integer; `-1` requests a random seed | `-1` |
 
 A fixed seed can support controlled iteration, but do not promise bit-identical reproduction. Wan 3.0 has no documented negative-prompt field. Query `models_get_defaults` before submission rather than treating this prose reference as the live schema.
@@ -94,9 +94,9 @@ After the ledger, write the chronological action, camera, sound relationship, an
 
 Provider limits:
 
-- Up to 10 `images_list` entries.
-- Up to 5 `videos_list` entries.
-- Up to 5 `audios_list` entries.
+- Up to 10 `images_list[]` entries.
+- Up to 5 `videos_list[]` entries.
+- Up to 5 `audios_list[]` entries.
 - Each reference video is 1–15 seconds.
 - Total reference-video duration plus requested output duration must not exceed 30 seconds.
 - Total reference-audio duration must not exceed 15 seconds.
@@ -105,13 +105,13 @@ Do not invent `@imageN`, `@videoN`, `@audioN`, `@ElementN`, trained-character sy
 
 ## Audio Direction
 
-When `enable_audio` is true, describe audible events in playback order beside their visible causes:
+When `enable_audio: true`, describe audible events in playback order beside their visible causes:
 
 - Dialogue: named speaker + short line + emotion + tone + speed + timbre/accent when important.
 - Sound effects: source material + action + resulting sound + surrounding ambience.
 - Music: score presence + style + intended narrative function.
 
-Keep visible-speaker dialogue short and inspect every take for wording, speaker attribution, lip sync, ambience, and mix. Exact scripted wording and phoneme-level lip sync are not reliable enough to promise; use separate TTS plus a verified lip-sync workflow when exact performance is mandatory. Every speech-bearing Wan result must pass the Scribe V2 transcription gate before timeline editing. Instrumental-only results must pass music analysis.
+Keep visible-speaker dialogue short and inspect every take for wording, speaker attribution, lip sync, ambience, and mix. Exact scripted wording and phoneme-level lip sync are not reliable enough to promise; use separate TTS plus a verified lip-sync workflow when exact performance is mandatory. Speech-bearing Wan results follow the `pr0ta-audio` indexing rule before timeline editing; instrumental-only results need music analysis when beat timing matters.
 
 ## Typography and On-Screen Copy
 

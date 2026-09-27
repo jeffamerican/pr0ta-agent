@@ -39,10 +39,10 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `muapi/seedance-2.5-omni-reference*` | Reference video | Required | ≥1 reference | Up to 30 image, 10 video, 10 audio refs (50 total) | Audio-only and video-only accepted; no character IDs |
 | `muapi/seedance-2.5-video-edit*` | `video_to_video` | Required | Source video | `video_url`; optional `reference_image_urls[]`, `reference_audio_urls[]` | Edit references are model-specific; supports `generate_audio` |
 | `muapi/seedance-2.5-video-extend*` | `extend_video` / `video_extend` | Required | Source video | `video_url`; optional `last_image_url` | Target image is the desired final frame; supports `generate_audio` |
-| `muapi/wan3.0-text-to-video`, `muapi/wan3.0-prime-text-to-video` | `txt_to_vid` | Required | None | No refs | 2–30s, 480p/720p/1080p, `enable_audio` defaults on; use T2V for prompt-only work |
+| `muapi/wan3.0-text-to-video`, `muapi/wan3.0-prime-text-to-video` | `txt_to_vid` | Required | None | No refs | 2–30s, 480p/720p/1080p, `enable_audio: bool` defaults on; use T2V for prompt-only work |
 | `muapi/wan3.0-image-to-video`, `muapi/wan3.0-prime-image-to-video` | I2V / optional terminal frame | Required | Exactly 1 opening image | Start-image fields; optional end-image fields map to `last_image` | Same endpoint owns both ordinary I2V and optional terminal-frame guidance |
-| `muapi/wan3.0-reference-to-video`, `muapi/wan3.0-prime-reference-to-video` | Reference video | Required | Provider permits prompt-only; references optional | Up to 10 `images_list`, 5 `videos_list`, and 5 `audios_list` entries | Native audio defaults on; reference video duration plus output must remain at or below 30s; reference audio may total up to 15s |
-| `alibaba/wan-3.0-prime/text-to-video` | `txt_to_vid` | Required | None | No refs | Fal-native route; `audio`, `enable_thinking`, and `enable_prompt_expansion` controls |
+| `muapi/wan3.0-reference-to-video`, `muapi/wan3.0-prime-reference-to-video` | Reference video | Required | Provider permits prompt-only; references optional | Up to 10 `images_list[]`, 5 `videos_list[]`, and 5 `audios_list[]` entries | Native audio defaults on; reference video duration plus output must remain at or below 30s; reference audio may total up to 15s |
+| `alibaba/wan-3.0-prime/text-to-video` | `txt_to_vid` | Required | None | No refs | Fal-native route; `audio`, `enable_thinking: bool`, and `enable_prompt_expansion: bool` controls |
 | `alibaba/wan-3.0-prime/image-to-video` | I2V / optional terminal frame | Optional | Start image | `start_image_url`; optional `end_image_url` | Fal-native field names; audio defaults on |
 | `alibaba/wan-3.0-prime/reference-to-video` | Reference video | Provider-optional | Prompt or a deliberate reference input in PR0TA | 10 `reference_image_urls`, 5 `reference_video_urls`, 5 `reference_audio_urls`; optional `file_url`/`web_url` | File/web context requires `enable_thinking=true` |
 | `google/gemini-omni-flash/v1.1/text-to-video` | `txt_to_vid` | Required | None | No refs | 3–10s, 360p through 4K, native audio |
@@ -54,6 +54,8 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `bria/video/background-removal` | `video_to_video` | None (omit) | Source video | `video_asset_id`/`video_url`; `parameters`: `background_color`, `output_container_and_codec` | RGBA cutout, not a luma matte; `Transparent` requires `webm_vp9` or a ProRes container |
 | `minimax/h3-max/text-to-video` | `txt_to_vid` | Required | None | No refs | 5–15s, 480P/768P, prompt expansion required/defaulted |
 | `minimax/h3-max/image-to-video` | I2V / FFLF | Required | Start image in PR0TA; optional end | `image_url`, optional `end_image_url` | Output aspect follows first image |
+| `minimax/h3-max/multi-angle/image-to-video` | Camera-trajectory I2V | Optional (blank freezes the scene) | One image | `image_url`; optional `camera_trajectory` (2–12 keyframes) | `prompt_expansion_mode` `balanced`/`quality`; 5–15s; 480P/768P/1080P. Read `hailuo-h3.md` |
+| `minimax/h3-max/reference-to-video` | Reference video | Required | Image or video | Up to 9 image, 3 video, 3 audio refs; 12 files total | Audio-only rejected; literal `Image N` roles |
 | `fal-ai/minimax/hailuo-03/text-to-video` | `txt_to_vid` | Required | None | No refs | Fixed 2K, 5–15s |
 | `fal-ai/minimax/hailuo-03/image-to-video` | I2V / FFLF | Required | Start image; optional end | Start/end image fields | Output aspect follows first image |
 | `fal-ai/minimax/hailuo-03/reference-to-video` | Reference video | Required | Image or video | Up to 9 image, 3 video, 3 audio refs | Audio-only rejected; literal `Image N` roles |
@@ -65,19 +67,26 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `minimax/h3-max/lip-sync/image-to-video` | Lipsync | None | Still + soundtrack | `image_url`, `audio_url` | Duration follows clipped audio (5–14.8s); 480P–2K |
 | `lightricks/ltx-2.5/image-to-video/*` | I2V / optional end frame | Required | Opening image | `image_url`; optional `end_image_url` | Not a multi-reference orchestration target; do not combine auto duration with an end image |
 | `lightricks/ltx-2.5/audio-to-video/*` | Audio-driven video | Conditional | Required source audio; optional image | `audio_url`; optional `image_url` | Prompt required without image; A2V does not inherit I2V resolution/FPS/camera/end-image fields |
+| `xai/grok-imagine-video/v1.5/text-to-video` | `txt_to_vid` | Required (≤4,096 chars) | None | No image refs | 1–15s; 480p/720p/1080p |
+| `xai/grok-imagine-video/v1.5/image-to-video` | I2V | Required | Exactly 1 image | Image fields | No `aspect_ratio`; output follows the image |
+| `xai/grok-imagine-video/v1.5/reference-to-video` | Reference video | Required | 1–7 images | Image fields in order | Zero-based `<IMAGE_0>` tags; 480p/720p. Read `grok-imagine-video-1.5.md` |
+| `byteplus/seedance-2.5` | T2V / reference / edit / extend | Required | Mode-dependent | Up to 30 image, 10 video, 10 audio refs | `omni_reference_task_type`; 480p/720p/1080p; `mp4`/`mov`. Read `seedance-2.5.md` |
+| `fal-ai/kling-video/v3/standard/motion-control` | `video_to_video` motion transfer | Optional | Character image + driving video | `image_url`, `video_url`, `character_orientation`; one optional Element | Read `motion-transfer.md` |
 | `muapi/seedance-2-character` | Character-construction path | Not enforced | ≥1 image ref (up to 3) | Image fields only | **Character-sheet training.** Requires `character_name` + `outfit_description`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. |
-| `muapi/seedance-2-omni-reference-train` | Omni-token training path | Not enforced | ≥1 image ref | Image fields only | **Single-portrait training.** Requires `character_name`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. Fastest path into Omni when one clean portrait is enough. See `pr0ta-consistency` → `reference/provider-consistency-systems.md` → "Creating A Seedance Character Token". |
+| `muapi/seedance-2-omni-reference-train` | Omni-token training path | Not enforced | ≥1 image ref | Image fields only | **Single-portrait training.** Requires `character_name`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. Fastest path into Omni when one clean portrait is enough. See `pr0ta-consistency` → `reference/provider-consistency-systems.md` → "Training the Token". |
 | Kling I2V / ref-to-vid (`kling/*`, `fal-ai/kling-video/*`) | `ref_to_vid` / txt/video | Usually | Generic video rules | Image fields, `element_ids[]`, `elements[]`, `references[]` image entries | **Plus** `camera_control` and `voice_ids[]` (Kling only) |
+
+The Modes column names the operation. The `mode` value to send comes from `models_get_defaults(model_id).supported_modes`: text-only rows use `txt_to_vid`; I2V, first/last, and reference rows use `ref_to_vid` (FLUX 3 keyframes document `transition`; see `flux-3.md`); edit and motion-transfer rows use `video_to_video`; extension rows use `extend_video`; LTX 2.5 audio-to-video lists `video_audio_to_video` (its reference uses the accepted alias `audio_to_video`).
 
 ### Validator Rules That Matter In Practice
 
 **1. Generic `ref_to_vid` requires ≥1 image-bearing reference.** Accepted fields: `start_image_asset_id`, `start_image_url`, `image_asset_id`, `image_url`, `reference_image_asset_ids[]`, `reference_image_urls[]`, `element_ids[]`, `elements[]`.
 
-**2. `txt_to_vid` with refs is NOT equivalent to pure text-to-video.** If you include any reference field (image, video, audio, character, element, references[]) on a `txt_to_vid` request, the unified resolver may prefer a reference-capable default model instead of the pure t2v path. If you truly want pure text-to-video, send only `prompt` — no reference fields of any kind.
+**2. `txt_to_vid` with refs is NOT equivalent to pure text-to-video.** A `txt_to_vid` request that carries any reference field (image, video, audio, character, element, references[]) resolves through the reference-to-video modality when no model is named. Name the resolved model and, for pure text-to-video, send only `prompt` and the route's shape fields.
 
 **3. `character_id` / `character_ids[]` are restricted to `muapi/seedance-2-vip-omni-reference`.** The validator rejects stored character refs on every other video model. If you need character continuity, route through Seedance Omni.
 
-**4. `camera_control` and `voice_ids[]` are Kling-only.** The validator rejects them on any non-Kling model.
+**4. `camera_control` and `voice_ids[]` are Kling-only.** The validator rejects them on any non-Kling model. PR0TA's direct Kling builder applies `camera_control` on Kling V3 routes (`kling/v3/*`) and drops it on O3/O1 routes and whenever Elements are attached. Valid shapes are `{"type": "simple", "config": {<axis>: <value>}}` with axes `horizontal`, `vertical`, `zoom`, `tilt`, `roll`, `pan`, or a preset type `down_back`, `forward_up`, `right_turn_forward`, `left_turn_forward`. On Fal Kling routes, check `models_get_defaults` for the field before sending it.
 
 ### Copy-Paste-Safe Payloads
 
@@ -165,7 +174,7 @@ The unified mapper resolves the opening image to provider-native `image_url` and
 
 Prime uses `muapi/wan3.0-prime-reference-to-video` with the same contract. Arrays are provider-optional, but use dedicated T2V for prompt-only work. Preserve final list order before writing ordinal reference roles. Reference-video duration plus output must not exceed 30 seconds; reference audio may total at most 15 seconds.
 
-**Preferred general video path — `muapi/seedance-2.5-omni-reference`:**
+**Seedance 2.5 Omni Reference — `muapi/seedance-2.5-omni-reference`:**
 
 ```json
 {
@@ -179,7 +188,7 @@ Prime uses `muapi/wan3.0-prime-reference-to-video` with the same contract. Array
   "aspect_ratio": "16:9"
 }
 ```
-Use this route first whenever at least one approved image, video, or audio authority exists. It accepts up to 30 images, 10 videos, and 10 audio references, with 50 inputs total. It does not accept Seedance 2.0 character IDs or positional `@` tokens.
+Use it when approved image, video, or audio authority exists. It accepts up to 30 images, 10 videos, and 10 audio references, with 50 inputs total. It does not accept Seedance 2.0 character IDs or positional `@` tokens.
 
 **Trained character-token exception — `muapi/seedance-2-vip-omni-reference`:**
 
@@ -196,7 +205,7 @@ Use this route first whenever at least one approved image, video, or audio autho
   "aspect_ratio": "9:16"
 }
 ```
-Use this older route when a trained `character_id` or Seedance 2.0 positional-token contract is required. It is not the general default.
+This route is the one that accepts a trained `character_id` and the Seedance 2.0 positional-token contract.
 
 **Character-sheet training — `muapi/seedance-2-character`** (use when you have 1-3 approved stills or a real character sheet):
 
@@ -227,23 +236,23 @@ Async. Returns an Omni token in `result_refs.character_id` on completion. `outfi
   "description": "Female lead, black leather jacket, studio portrait, neutral expression"
 }
 ```
-Async. Returns an Omni token in `result_refs.character_id` on completion. Fastest path into Omni Reference when a single clear face-forward image is enough. Persist the returned token via `POST /characters` (provider: `muapi`) for later reuse via `character_ids[]` on `muapi/seedance-2-vip-omni-reference`. See `pr0ta-consistency` → `reference/provider-consistency-systems.md` → "Creating A Seedance Character Token" for the full lifecycle.
+Async. Returns an Omni token in `result_refs.character_id` on completion. Fastest path into Omni Reference when a single clear face-forward image is enough. Persist the returned token via `POST /characters` (provider: `muapi`) for later reuse via `character_ids[]` on `muapi/seedance-2-vip-omni-reference`. See `pr0ta-consistency` → `reference/provider-consistency-systems.md` → "Training the Token" for the full lifecycle.
 
-**Kling image-to-video (cinematic continuation):**
+**Kling V3 image-to-video with structured camera control:**
 
 ```json
 {
   "generator": "video",
   "mode": "ref_to_vid",
-  "model": "kling_o3_pro",
+  "model": "kling/v3/image-to-video",
   "start_image_asset_id": "a73b9aad-...",
   "prompt": "...self-contained scene description...",
-  "camera_control": { "type": "push_in", "strength": 0.4 },
+  "camera_control": { "type": "simple", "config": { "zoom": 5 } },
   "duration": 5,
   "aspect_ratio": "9:16"
 }
 ```
-`camera_control` and `voice_ids[]` are allowed on Kling only.
+`camera_control` and `voice_ids[]` are allowed on Kling only; see rule 4 for where `camera_control` takes effect.
 
 ### Provider-Certified Reference Fields (Source: Provider OpenAPI Specs)
 
@@ -261,18 +270,18 @@ PR0TA's unified fields are convenience fields, not provider-native fields. A uni
 | **Kling V3 Pro (I2V)** | `POST /fal-ai/kling-video/v3/pro/image-to-video` | `start_image_url` | `start_image_url`, `end_image_url`, `elements[]`, `voice_ids[]`, `multi_prompt` |
 | **Kling O3 Pro (I2V)** | `POST /fal-ai/kling-video/o3/pro/image-to-video` | `image_url` | `image_url`, `end_image_url`, `multi_prompt` |
 | **Kling O3 Pro (Ref-to-Video)** | `POST /fal-ai/kling-video/o3/pro/reference-to-video` | prompt + refs | `start_image_url`, `image_urls[]`, `elements[]`, `end_image_url`, `multi_prompt` |
-| **Seedance 2.0 T2V** | `POST /api/v1/seedance-2-vip-text-to-video` | `prompt` | (none) |
-| **Seedance 2.0 I2V** | `POST /api/v1/seedance-2-vip-image-to-video` | `prompt`, `images_list` | `images_list[]` |
-| **Seedance 2.0 Omni Reference** | `POST /api/v1/seedance-2-vip-omni-reference` | `prompt` | `images_list[]`, `video_files[]`, `audio_files[]` |
-| **Seedance 2.0 Video Edit** | `POST /api/v1/seedance-2-video-edit` | `prompt`, `video_urls` | `video_urls[]`, optional `images_list[]` |
+| **Seedance 2.0 T2V** | MuAPI `seedance-2-vip-text-to-video` | `prompt` | (none) |
+| **Seedance 2.0 I2V** | MuAPI `seedance-2-vip-image-to-video` | `prompt`, `images_list[]` | `images_list[]` |
+| **Seedance 2.0 Omni Reference** | MuAPI `seedance-2-vip-omni-reference` | `prompt` | `images_list[]`, `video_files[]`, `audio_files[]` |
+| **Seedance 2.0 Video Edit** | MuAPI `seedance-2-video-edit` | `prompt`, `video_urls` | `video_urls[]`, optional `images_list[]` |
 | **Seedance 2.5 I2V** | MuAPI route selected by model ID | `prompt`, `image_url` | one `image_url` |
-| **Seedance 2.5 First/Last** | MuAPI route selected by model ID | `prompt`, exactly two `images_list` entries | ordered `images_list[]` |
+| **Seedance 2.5 First/Last** | MuAPI route selected by model ID | `prompt`, exactly two `images_list[]` entries | ordered `images_list[]` |
 | **Seedance 2.5 Omni** | MuAPI route selected by model ID | `prompt`, at least one ref in PR0TA | `images_list[]`, `videos_list[]`, `audios_list[]` (10 files; 15 seconds combined) |
 | **Seedance 2.5 Video Edit** | MuAPI route selected by model ID | `prompt`, `video_url` | source `video_url`; optional `reference_image_urls[]`, `reference_audio_urls[]` |
 | **Seedance 2.5 Video Extend** | MuAPI route selected by model ID | `prompt`, `video_url` | source `video_url`; optional `last_image_url` target |
-| **Wan 3.0 / Prime T2V** | `POST /api/v1/wan3.0-text-to-video` or `POST /api/v1/wan3.0-prime-text-to-video` | `prompt` | None |
-| **Wan 3.0 / Prime I2V** | `POST /api/v1/wan3.0-image-to-video` or `POST /api/v1/wan3.0-prime-image-to-video` | `prompt`, `image_url` | optional `last_image` terminal frame |
-| **Wan 3.0 / Prime R2V** | `POST /api/v1/wan3.0-reference-to-video` or `POST /api/v1/wan3.0-prime-reference-to-video` | `prompt` | `images_list[]` (10), `videos_list[]` (5), `audios_list[]` (5) |
+| **Wan 3.0 / Prime T2V** | MuAPI `wan3.0-text-to-video` or MuAPI `wan3.0-prime-text-to-video` | `prompt` | None |
+| **Wan 3.0 / Prime I2V** | MuAPI `wan3.0-image-to-video` or MuAPI `wan3.0-prime-image-to-video` | `prompt`, `image_url` | optional `last_image` terminal frame |
+| **Wan 3.0 / Prime R2V** | MuAPI `wan3.0-reference-to-video` or MuAPI `wan3.0-prime-reference-to-video` | `prompt` | `images_list[]` (10), `videos_list[]` (5), `audios_list[]` (5) |
 | **Wan 3.0 Prime on Fal R2V** | `POST /alibaba/wan-3.0-prime/reference-to-video` | prompt or reference input in PR0TA | `reference_image_urls[]` (10), `reference_video_urls[]` (5), `reference_audio_urls[]` (5), optional `file_url`/`web_url` |
 | **Gemini Omni Flash 1.1 I2V** | `POST /google/gemini-omni-flash/v1.1/image-to-video` | `prompt`, `image_url` | optional `end_image_url` |
 | **Gemini Omni Flash 1.1 R2V** | `POST /google/gemini-omni-flash/v1.1/reference-to-video` | `prompt` plus references in PR0TA | `image_urls[]` (10), `reference_video_urls[]` (3) |
@@ -299,31 +308,20 @@ Do not assume a reference field that works on one Kling endpoint works on anothe
 
 When you need richer reference composition on Kling, the Reference-to-Video endpoint is the correct target — not assumptions layered onto the I2V endpoint.
 
-**3. Seedance I2V uses `images_list`**, not `image_url` or `images_urls`. PR0TA's unified `start_image_asset_id` / `reference_image_asset_ids[]` must resolve and map into `images_list` for the MuAPI Seedance I2V call.
+**3. Seedance I2V uses `images_list[]`**, not `image_url` or `images_urls`. PR0TA's unified `start_image_asset_id` / `reference_image_asset_ids[]` must resolve and map into `images_list[]` for the MuAPI Seedance I2V call.
 
 **4. Seedance Omni Reference provider-native fields are `images_list[]`, `video_files[]`, `audio_files[]`.** These map to PR0TA's unified `reference_image_*`, `reference_video_urls[]`, and `reference_audio_urls[]` respectively.
 
-### The Kling V3 Pro Caveat — RESOLVED (April 2026)
+### Kling V3 Pro Start Image
 
-The previously field-tested failure (`kling_v3_pro` silently accepting `start_image_asset_id` and then failing downstream with `"Invalid reference index 1 for image. Only 0 images provided."`) is **now fixed end-to-end**.
-
-**What changed:**
-- Kling V3 Pro's provider endpoint **requires** `start_image_url`.
-- PR0TA's unified layer now resolves `start_image_asset_id` → provider-native `start_image_url` via `input_asset_resolver.py` → `request_mapper.py` → `fal_request_builder.py`, which preserves the provider-native field name on the outbound Fal submission instead of rewriting it to a `first/last` alias.
-- Targeted regression test coverage (`test_fal_request_builder.py`) now protects this outbound payload shape.
-
-**Operational rule:** Agents may use `start_image_asset_id` (or `start_image_url`) directly on `fal-ai/kling-video/v3/pro/image-to-video`. If asset-backed project media is involved, `start_image_asset_id` is the cleanest unified field. The same fix applies to `end_image_asset_id` → `end_image_url`.
-
-**If a future V3 Pro failure appears, do not assume the asset-id translation is the root cause.** Check `task.error_reason` and the actual provider response — the translation gap is closed.
-
-Seedance 2.5 Omni Reference is the preferred default for reference-heavy work. Use Seedance 2.0 Omni when trained character IDs or its positional-token contract are required, and Kling V3 Pro when the shot specifically needs Kling's Elements, structured controls, or atmospheric continuation.
+`fal-ai/kling-video/v3/pro/image-to-video` requires provider-native `start_image_url`; send `start_image_asset_id` (or `start_image_url`) and PR0TA maps it, with `end_image_asset_id` mapping to `end_image_url`. If a V3 Pro request fails, read `task.error_reason` and the provider response.
 
 ### Failure-Mode Guidance
 
 When a reference payload fails, **trust the error message.**
 
 - **Validator rejection** surfaces as an explicit server-side error at submission time. Read the error text — it usually names the specific field that's wrong.
-- **Downstream provider rejection** surfaces as a task failure after submission. Check `task.error_reason` for the provider's actual complaint — don't assume it's a known translation gap (the historical Kling V3 Pro case is now fixed).
+- **Downstream provider rejection** surfaces as a task failure after submission. Check `task.error_reason` for the provider's actual complaint — read the provider's complaint before changing fields.
 - Neither failure mode is silent hallucination — if a shot silently produced the wrong content, the issue is prompting (see `pr0ta-prompting`), not a reference-field validation bug.
 
 If in doubt, test the payload against a short 2-second generation before committing a full production to it.
@@ -332,17 +330,43 @@ If in doubt, test the payload against a short 2-second generation before committ
 
 This table is the copy-paste-safe surface for agents — what provider-native field each model requires, and which unified PR0TA field to send.
 
-| Model | Provider-Native Required | Preferred PR0TA Unified Field | Alternates | Translation Implemented | Tested |
+| Model | Provider-Native Required | PR0TA Unified Field | Alternates | Translation Implemented | Tested |
 |---|---|---|---|---|---|
 | `fal-ai/kling-video/v3/pro/image-to-video` | `start_image_url` | `start_image_asset_id` | `start_image_url`, `end_image_asset_id`, `end_image_url`, `elements[]` | Yes | Yes |
 | `fal-ai/kling-video/o3/pro/image-to-video` | `image_url` | `image_asset_id` | `image_url`, `start_image_asset_id`, `start_image_url`, `end_image_asset_id`, `end_image_url` | Yes | Partial |
 | `fal-ai/kling-video/o3/pro/reference-to-video` | practical: prompt + refs | `start_image_asset_id` + `reference_image_asset_ids[]` | `start_image_url`, `reference_image_urls[]`, `elements[]`, `end_image_*` | Yes | Partial |
 | `muapi/seedance-2-vip-image-to-video` | `images_list[]` | `reference_image_asset_ids[]` | `reference_image_urls[]`, `start_image_asset_id`, `start_image_url` | Yes | Yes |
 | `muapi/seedance-2-vip-omni-reference` | `prompt` + multimodal refs | `reference_image_asset_ids[]`, `reference_video_urls[]`, `reference_audio_urls[]` | `reference_image_urls[]`, `elements[]`, `character_id`, `character_ids[]` | Yes | Yes |
-| `muapi/wan3.0-text-to-video`, `muapi/wan3.0-prime-text-to-video` | `prompt` | no references | `resolution`, `aspect_ratio`, `duration`, `thinking_mode`, `enable_audio`, `seed` | Yes | Yes |
+| `muapi/wan3.0-text-to-video`, `muapi/wan3.0-prime-text-to-video` | `prompt` | no references | `resolution`, `aspect_ratio`, `duration`, `thinking_mode`, `enable_audio: bool`, `seed` | Yes | Yes |
 | `muapi/wan3.0-image-to-video`, `muapi/wan3.0-prime-image-to-video` | `prompt`, `image_url` | `start_image_asset_id` | `start_image_url`; optional `end_image_asset_id` / `end_image_url` maps to `last_image` | Yes | Yes |
 | `muapi/wan3.0-reference-to-video`, `muapi/wan3.0-prime-reference-to-video` | `prompt`; optional provider arrays | `images_list[]`, `videos_list[]`, `audios_list[]` | unified reference image/video/audio URL fields | Yes | Yes |
 
 **Legend:** *Implemented* = unified→provider translation is wired. *Tested* = targeted provider-specific outbound assertion exists. *Partial* = path looks wired but full provider-specific outbound assertion is not at the same confidence level as Fal Kling V3 Pro.
 
-**Matrix status:** The validator-derived matrix is authoritative for submission-time validation. The provider-certified rows above are authoritative for what actually reaches the provider. Both are now in sync for the common paths.
+**Matrix status:** The validator-derived matrix is authoritative for submission-time validation. The provider-certified rows above are authoritative for what actually reaches the provider.
+
+### Duration by Route
+
+Duration is route-specific. Use whole seconds where the route takes an integer and inspect the delivered duration before timeline placement. `models_get_defaults` is the live authority.
+
+| Model | Accepted `duration` |
+|---|---:|
+| `muapi/seedance-2-vip-text-to-video` | `4`..`15` |
+| `muapi/seedance-2-vip-image-to-video` | `4`..`15` |
+| `muapi/seedance-2-vip-omni-reference` | `4`..`15` |
+| `muapi/seedance-2.5-*` standard routes | `4`..`30` |
+| `byteplus/seedance-2.5` | `4`..`30` or `-1` (model chooses; edit tasks always `-1`) |
+| `muapi/wan3.0-*` | `2`..`30` |
+| `alibaba/wan-3.0-prime/*` | `smart` or `2`..`30`; omitted means `5` |
+| `google/gemini-omni-flash/v1.1/{text,image,reference}-to-video` | `3`..`10` |
+| `google/gemini-omni-flash/v1.1/edit` | not exposed; follows the source |
+| `minimax/h3-max/*` generation routes | `5`..`15` |
+| `minimax/h3-max/lip-sync/image-to-video` | follows the audio (5–14.8 s) |
+| `fal-ai/minimax/hailuo-03/*` | `5`..`15` |
+| `blackforestlabs/flux-3/*` generation routes | `5`..`20`; first/last and keyframes need an explicit integer |
+| `lightricks/ltx-2.5/*/pro` | `auto` or `6`, `8`, `10` where exposed |
+| `lightricks/ltx-2.5/*/fast` | even `6`..`20`, constrained by resolution/FPS |
+| `xai/grok-imagine-video/v1.5/*` | `1`..`15` |
+| Kling V3/O3 Fal generation routes | `3`..`15` |
+
+Current Seedance 2.0 T2V, I2V, and Omni routes accept `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`. H3 Max R2V accepts at most 12 image/video/audio files; each timed clip is 2–15 seconds and video and audio references each total at most 15 seconds. Kling O3 4K video-to-video accepts a 3–15 second MP4/MOV source from 720–3840 pixels and at most 200 MB; Elements plus reference images total at most four.

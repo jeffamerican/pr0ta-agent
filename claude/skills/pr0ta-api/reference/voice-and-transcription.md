@@ -1,6 +1,6 @@
 ## Voice Browser API
 
-Gemini Flash TTS (`fal-ai/gemini-3.1-flash-tts`) is PR0TA's default for new TTS calls. Use ElevenLabs v3 (`eleven_v3`) as the fallback when Gemini is unavailable, when a workflow requires a specific ElevenLabs `voice_id`, or when the user specifically wants ElevenLabs v3 tag behavior.
+Resolve the TTS model with `models_preferred(modality="dialogue_model")`; `pr0ta-audio` → "Choose the model" covers choosing when nothing is set.
 
 Discover available provider voices before making TTS calls where the user has not provided an exact voice.
 
@@ -15,37 +15,37 @@ Parameters: `provider` (`all`, `elevenlabs`, `google`/`gemini`, `minimax`, `klin
 
 **Usage:** Call this browser before TTS generation to let users browse/search/select voice IDs programmatically, rather than hardcoding voice IDs or requiring the browser Voice Design tab. Copy the selected voice's `selection` fields into `generation_submit` or REST `/generate`.
 
-**V3 compatibility -- try-and-fallback.** Do not derive or expose a `supports_v3` boolean from voice metadata. Do not treat `high_quality_base_model_ids` or `verified_languages[].model_id` as hard gates for `eleven_v3`. Instead, attempt TTS with `eleven_v3` and fall back to `eleven_multilingual_v2` on failure. See `voice-v2.md` for the full response shape and contract.
+**ElevenLabs model compatibility.** Voice metadata such as `high_quality_base_model_ids` or `verified_languages[].model_id` is not a hard gate for a given ElevenLabs model; do not derive a `supports_v3` flag from it. If the resolved model rejects a voice, report it and choose again with `models_list(modality="dialogue_model")`. See `voice-v2.md` for the full response shape.
 
 ---
 
-## Transcription API (Scribe V2 Preferred, Whisper Fallback)
+## Transcription API
 
 PR0TA exposes editorial-grade transcription with word- or segment-level timestamps under the **audio-to-text modality**. Two providers are exposed:
 
-- **ElevenLabs Scribe V2 (default — use this):** `model_id: "fal-ai/elevenlabs/speech-to-text/scribe-v2"`. Returns speaker IDs, audio event detection (laughter, applause, breaths), and per-word `event_type` classification in addition to standard word timing. Higher word-level accuracy on narration-style English.
-- **Accepted Scribe aliases:** `scribe-v2`, `scribe_v2`, `fal-ai/scribe-v2`, and `elevenlabs/scribe-v2` are normalized server-side to the canonical route above before task creation and provider dispatch.
-- **Whisper (fallback only):** `model_id: "fal-ai/whisper"`. Retained for niche language coverage. Not recommended for new productions.
+Pass `model_id` from `models_preferred(modality="audio_to_text_model")` (Settings → Tools → Audio→Text, else the admin pin). When `model_id` is omitted, the transcription routes use ElevenLabs Scribe V2. Capabilities of the audio-to-text models:
+
+- **ElevenLabs Scribe V2** (`fal-ai/elevenlabs/speech-to-text/scribe-v2`): speaker IDs, audio event detection (laughter, applause, breaths), and per-word `event_type` classification on top of word timing. The short aliases `scribe-v2` and `scribe_v2` normalize to this id server-side.
+- **Whisper** (`fal-ai/whisper`): broad language coverage; word timing without speaker or event labels.
 
 **This is the source of truth for any timing, sync, subtitle, or dialogue-matching work.** Always go through this endpoint; the post-production timeline and narration timeline both depend on the word-level output.
 
-### Recommended Start Endpoint (Auto-Populates Narration Timeline)
+### Start Endpoint (Auto-Populates Narration Timeline)
 
 ```
 MCP: transcription_start
 Required: project_id, asset_id
-Defaults: model_id=fal-ai/elevenlabs/speech-to-text/scribe-v2, timestamp_granularity=word
+Optional: model_id (omitted: Scribe V2), timestamp_granularity (default word)
 
 REST fallback:
 POST /api/audio/transcription/start
-Authorization: Bearer $PAT
 ```
 
 ```json
 {
   "asset_id": "<narration_audio_asset_id>",
   "project_id": "<project_id>",
-  "model_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2"
+  "model_id": "<model_id from models_preferred(modality=\"audio_to_text_model\")>"
 }
 ```
 
@@ -59,7 +59,6 @@ For transcription work that does not need to auto-populate a narration timeline 
 
 ```
 POST /api/v2/projects/{project_id}/transcribe
-Authorization: Bearer $PAT
 ```
 
 Provide exactly **one** input source:
@@ -76,14 +75,14 @@ Optional parameters:
 
 ```json
 {
-  "model_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+  "model_id": "<model_id from models_preferred(modality=\"audio_to_text_model\")>",
   "language": "en",
   "diarization": true,
   "timestamp_granularity": "word"
 }
 ```
 
-- `model_id`: provider selection. Pass Scribe V2 explicitly to pin the preferred provider regardless of user defaults.
+- `model_id`: the audio-to-text model. Pass it explicitly (from `models_preferred`) so the result does not depend on the route's fallback.
 - `timestamp_granularity`: `"word"` or `"segment"` (one mode per call — `"both"` is not supported).
 - `diarization`: speaker labels when `true`. With Scribe V2, diarization is automatic — speaker IDs appear in word-level results without requiring this flag.
 - `language`: ISO code; omit for auto-detect.
@@ -145,7 +144,7 @@ POST /api/v2/projects/{project_id}/transcribe/batch
 ```json
 {
   "asset_ids": ["asset-1", "asset-2"],
-  "model_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+  "model_id": "<model_id from models_preferred(modality=\"audio_to_text_model\")>",
   "language": "en",
   "timestamp_granularity": "segment"
 }
@@ -167,7 +166,6 @@ PR0TA supports extracting a standalone audio asset from a project video asset, a
 
 ```
 POST /api/v2/projects/{project_id}/assets/{asset_id}/extract-audio
-Authorization: Bearer $PAT
 ```
 
 Request body:
@@ -205,9 +203,9 @@ Response:
 
 These fields are stored in asset metadata and labels so downstream skills can reason about origin.
 
-### Updated Transcription Behavior
+### Transcription Inputs
 
-`POST /api/v2/projects/{project_id}/transcribe` now accepts:
+`POST /api/v2/projects/{project_id}/transcribe` accepts:
 
 - audio assets
 - video assets with audio

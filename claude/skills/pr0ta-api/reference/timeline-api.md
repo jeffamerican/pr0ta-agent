@@ -4,7 +4,7 @@ The **post-production timeline** is the primary editing surface for both AI agen
 
 **For workflow guidance** (when to add clips, how to set Ken Burns presets, preview/render loop, snapshot handoff patterns), see `pr0ta-timeline`. This file documents the API shapes the timeline skill relies on.
 
-Base prefix: `/api/post-production/{project_id}`
+Paths below are relative to the project's post-production prefix (UUID or slug), for example `/timeline` is `GET /api/post-production/{project_id}/timeline`.
 
 ## Timeline State
 
@@ -233,8 +233,7 @@ Clip data is nested under a `clip` key; placement under a `placement` key. Use `
 - `sourceInFrame` / `sourceOutFrame` — frame-native source trim inputs accepted by clip create/update and resolved into `inPoint` / `outPoint`.
 - `fitToFill` / `speed` — explicit retime state when a source range is stretched/compressed to a program duration.
 - `kenBurns` — Ken Burns motion (see below).
-- `transition` — transition to the next clip (dissolve, wipe, fade, etc.).
-- `fitMode` — image-clip visual fit: `contain` keeps the full poster/key art visible, `cover` / `crop` center-crops to fill the sequence, and `fill` stretches to the sequence. Use with `background: "black"`, `"blur"`, or a CSS-style color for matte/blur fill. Do not combine exact-fit image clips with Ken Burns/transform when the note is "show the whole poster."
+- `transition` — set on the **incoming** clip: `{"type": "dissolve", "duration": 0.5}` with `duration` in seconds. Types and adjacency rules: `pr0ta-timeline` → "Transitions".
 - `sourceGroup` / `source_group` / `usageFamily` / `usage_family` — optional semantic reuse family. Timeline analysis reports `semanticReuse[]` when a source family appears in multiple clips even if asset IDs differ.
 
 Clip reads/lists expose retime diagnostics when known: `fitToFill`, `frameSafeFitToFill`, `speed`, `sourceDuration`, `programDuration`, `renderedProgramFrames`, `renderedProgramDuration`, `startFrame`, `endFrame`, `endFrameInclusive`, `sourceInFrame`, `sourceOutFrame`, `sourceInPoint`, `sourceOutPoint`, `sourceSpan`, `effectivePlaybackDuration`, and `retimeReason`.
@@ -257,14 +256,14 @@ These fields allow skills to audit a cut for aspect-fit issues and explain clip 
 { "kenBurns": { "preset": "push_in" } }
 ```
 
-Available presets: `push_in`, `push_in_fast`, `pull_back`, `zoom_in_extreme`, `drift_left`, `drift_right`, `hold`, `ken_burns_slow`
+Presets the renderer knows: `push_in`, `pull_back`, `drift_left`, `drift_right`, `hold`. Any other preset name renders as `hold`.
 
 Custom parameters (when presets don't fit):
 ```json
-{ "kenBurns": { "start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0], "easing": "linear" } }
+{ "kenBurns": { "start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0] } }
 ```
 
-At render time, still-image clips with `kenBurns` metadata emit MLT `affine` filters. The platform handles super-resolution, FPS enforcement, and dimension normalization — all the things that previously caused field failures.
+`start_zoom` and `end_zoom` are clamped to 0.1–10 and `pan` values to −1..1. Motion is linear; there is no easing field. At render time, still-image clips with `kenBurns` metadata emit MLT `affine` filters, and the platform handles FPS and dimension normalization. When to use which: `pr0ta-timeline` → "Ken Burns as a Clip Property".
 
 ## Audio Mix Properties
 

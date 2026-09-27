@@ -1,38 +1,54 @@
 ---
 name: pr0ta-image
-description: "PR0TA image generation and editing for key frames, references, posters/title cards, stills, and character sheets. Read when generating, editing, uploading, or choosing image models."
+description: "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, and fan-out for hard text shots. Read when generating, editing, uploading, or choosing image models."
 ---
 
-# Image Generator Reference
+# Image Generation and Editing
 
-> **See also:** For using generated images as Element/Character source material for multi-shot consistency, read `pr0ta-consistency`. For prompt engineering, read `pr0ta-prompting`; for GPT Image 2.5, Nano Banana Pro/2, Seedream 5, Midjourney, or Kling O3/V3, first select the exact generation/edit/reference branch in `pr0ta-prompting/reference/model-modality-guides.md`.
+For images that will become Element or Character source material, read `pr0ta-consistency`. Before writing a prompt, read `pr0ta-prompting` and, for the resolved model, its row in `pr0ta-prompting/reference/model-modality-guides.md` (GPT Image 2.5 also has `pr0ta-prompting/reference/gpt-image-25.md`).
 
-Before generating or editing images for an existing project, call `memory_context_pack` with the relevant scene, character, asset, or department scope. Use approved visual decisions, references, continuity constraints, and conflicts when choosing the model and writing the prompt. After selecting a hero still, rejecting a take, or establishing a new visual rule, record it with `memory_record_decision` or `memory_record_note`.
+For an existing project, call `memory_context_pack` with the scene, character, asset, or department scope. Use approved visual decisions, references, continuity constraints, and conflicts when writing the prompt. After selecting a hero still, rejecting a take, or establishing a visual rule, record it with `memory_record_decision` or `memory_record_note`.
 
-## Model Selection: GPT Image 2.5 Is the Preferred GPT Family
+## Resolve the Model
 
-**GPT Image 2.5 supersedes GPT Image 2 (GPT-Image-02 / GPT-02) in every generation, edit, reference, and fan-out recommendation. Use the old `openai/gpt-image-2` or `openai/gpt-image-2/edit` endpoints only when the user expressly requests them.** Preserve explicit user model and quality choices; do not silently downgrade to GPT Image 2 on a failed request.
+The platform chooses models, not this skill. The admin pins models per modality and each user may override them in Settings → Tools. Text-to-image requests must always name a model; the platform does not pick one for them.
 
-- **Sunburst + `quality: "max"`** is the first-class premium choice for final stills, hero frames, character sheets, identity-sensitive edits, dense typography, and complex compositions. Select it directly when quality matters; a Nano Banana trial is not a prerequisite.
-- **Flare** is the GPT Image 2.5 option for speed-sensitive iteration. It also supports `max`; choose a lower quality only when compatible with the user's quality and latency requirements.
-- **Nano Banana 2** remains useful for economical general image work (`nano_banana_2` for generation, `fal-ai/nano-banana-2/edit` for edits). It does not change the GPT 2.5-over-2 preference.
+1. Name the operation, then its modality key:
 
-Read [GPT Image 2.5 production prompting](../pr0ta-prompting/reference/gpt-image-25.md) before authoring these prompts. Use Fal endpoint IDs, not direct OpenAI API model names. Set `quality: "max"` in the request for highest-quality work: `high`, `auto`, or the word “maximum” in prose do not select the highest level. Re-query defaults and pricing before submission.
+| Operation | Modality key |
+|---|---|
+| Text-to-image (key frames, posters, stills) | `image_model` |
+| Prompt edit of one image | `image_edit_model` |
+| Combine several input images | `image_multi_edit_model` |
+| Generate from Element or character bundles | `elements_to_image_model` |
+| Inpaint a region / extend beyond the border | `image_inpaint_model` / `image_outpaint_model` |
+| Remove a background | `bg_removal_model` |
+| Upscale, denoise, sharpen, restore | `image_upscale_model` |
+| Image to 3D model / image or text to 3D world | `image_to_3d_model` / `image_to_world_model`, `text_to_world_model` |
 
-**Fall back to other models when:**
-- An otherwise allowed image prompt is falsely rejected by Nano Banana 2 or GPT Image 2.5 Sunburst → preserve the provider error, then try Flux 2 PRO / Flux 2 MAX, GPT Image 1.5, or another model listed for the needed mode
-- You need specialized reasoning-based image generation → GLM Image
-- You need premium anime or manga aesthetics → Midjourney Niji 7 (`muapi/midjourney-niji`)
-- You need Midjourney visual development or campaign-grade key art → Midjourney V8 (`muapi/midjourney-v8`), with V7 (`muapi/midjourney-v7`) as an alternative
-- Budget is extremely tight → use `models_list` to identify current candidates, then query `GET /api/crew/model_pricing?model_id={model_id}` for each candidate before comparing costs; do not assume a historically inexpensive model is still cheapest
+2. If the user named a model, use it and keep their quality setting; never swap it silently after a failure. Otherwise resolve the key with `models_preferred(modality=...)`; `pr0ta-api` → "Choosing a model" owns the full rule, including a null `model_id`.
+3. Call `models_get_defaults(model_id)` for `supported_modes`, fields, enums, and limits. Fields do not transfer between models.
+4. For cost-sensitive choices, query `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate. Skills carry no prices.
 
-For most reference images, key frames, and production stills — **default to Nano Banana 2**. Choose GPT Image 2.5 Sunburst for character consistency edits and challenging prompt adherence.
+REST equivalents: `GET /api/v2/models/preferred?modality=...`, `GET /api/v2/models`, and `GET /api/crew/model_defaults?model_id={model_id}`.
 
-**⚠️ Nano Banana 2 outputs native resolution (~768px wide), not the requested pixel dimensions.** That's fine — the post-production timeline normalizes every clip to the delivery resolution automatically when you add it (`POST /timeline/clips`). You do not need to pre-upscale before adding a still to the timeline. If you need the still at delivery resolution *outside* the timeline (e.g. as a thumbnail), regenerate with the target aspect ratio and accept the native resolution.
+### Capability Facts
 
-### MCP Quick Reference
+Use these when the user asks for a capability; they are not a ranking. Confirm each against `models_get_defaults`.
 
-Prefer the bundled PR0TA MCP connector for agent workflows. Submit with `generation_submit`, then poll with `tasks_get`.
+- **GPT Image 2.5 (Sunburst and Flare, text-to-image and edit):** `quality` accepts `auto`, `low`, `medium`, `high`, `xhigh`, `max`; the highest level requires the literal `max` (the Fal default is `high`). Edit routes take up to 16 reference images and an optional `mask_url`; Flare is the faster variant. GPT Image 2 is a separate route: do not send it `xhigh` or `max`. Read `pr0ta-prompting/reference/gpt-image-25.md`.
+- **Nano Banana 2 and Nano Banana 2 Edit:** output size follows the `resolution` field (`0.5K`, `1K`, `2K`, `4K`; `1K` when omitted, which gives about 768 px on the short side, such as 768×1376 at 9:16). `aspect_ratio` accepts `auto` plus fourteen ratios including 21:9, 4:5, and the extreme 4:1, 1:4, 8:1, 1:8. Up to 4 images per call, optional web search, `safety_tolerance` 1–6.
+- **Midjourney V7, V8, Niji 7:** one optional `image_url`; each run returns four registered variants in `result.urls` (`result.download_url` is the first). Controls: `stylize` (0–1000), `chaos` (0–100), `weird` (0–3000), `negative_prompt`, `seed`. Niji 7 targets anime and manga.
+- **Reve 2.1:** 4096-pixel native detail and layout-aware text for posters, packaging, and infographics. Remix takes 1–8 references addressed as `<frame>N</frame>`.
+- **Seedream 5.0 Pro:** dense layouts and multilingual typography; its edit route takes up to 10 input images.
+- **Kling Image O3:** 1–9 images per call or a 2–9 image series, 1K/2K/4K, optional Element control.
+- **GPT Image 1.5:** fixed sizes 1024×1024, 1536×1024, and 1024×1536.
+- **LoRA styles:** Qwen Image 2512 (LoRA) and Z-Image Turbo (LoRA) take up to 3 LoRA weights; find others with `models_list(search="lora")`.
+- **Relight or replace the world behind a subject while keeping its pixels:** Beeble SwitchX (Still). Read `pr0ta-hybrid`.
+
+## Submission Contract
+
+Submit with `generation_submit` (or `generation_batch_submit` for up to ten items), then poll with `tasks_get`; parallel submission limits are in `pr0ta-api` → "Rate limits and concurrency".
 
 ```json
 {
@@ -40,369 +56,161 @@ Prefer the bundled PR0TA MCP connector for agent workflows. Submit with `generat
   "request": {
     "generator": "image",
     "mode": "txt_to_img",
-    "model": "nano_banana_2",
+    "model": "<model_id from models_preferred(modality=\"image_model\")>",
     "prompt": "Dark navy infographic showing global market growth, gold accent text, clean vector style.",
-    "width": 1920,
-    "height": 1080,
-    "format": "jpeg"
+    "aspect_ratio": "16:9",
+    "format": "png"
   }
 }
 ```
 
-### REST Fallback — Complete Image Generation Examples
+Add size, resolution, and quality fields exactly as the model's schema names them (`resolution`, `image_size`, `quality`, `num_images`, `output_format`). Never ask for a higher resolution in prompt prose.
 
-Use REST/curl only when MCP is unavailable, for high-volume scripts, or for endpoints not yet exposed through MCP. For the full parameter reference, see `pr0ta-api`. Use `models_get_defaults` or `GET /api/crew/model_defaults?model_id={model_id}` for the authoritative parameter list and types for any model.
+### Modes and Inputs
 
-```bash
-# Generate an image via API (Nano Banana 2 — default)
-curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
-  -H "Authorization: Bearer $PR0TA_PAT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "generator": "image",
-    "mode": "txt_to_img",
-    "model": "nano_banana_2",
-    "prompt": "Dark navy infographic showing global market growth, gold accent text, clean vector style.",
-    "width": 1920,
-    "height": 1080,
-    "format": "png"
-  }'
+| Mode | Use |
+|---|---|
+| `txt_to_img` | Text-to-image |
+| `img_to_img` | Prompt edit of a base image |
+| `ref_to_img` | Generate from reference images or Elements |
+| `edit_img` | Direct edit (inpaint-style, mask) |
 
-# Character consistency edit via API (GPT Image 2.5 Sunburst Edit — premium identity work)
-curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
-  -H "Authorization: Bearer $PR0TA_PAT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "generator": "image",
-    "mode": "img_to_img",
-    "model": "openai/gpt-image-2.5/sunburst/edit",
-    "quality": "max",
-    "prompt": "Keep the subject, relight as moody neon noir portrait with blue rim light.",
-    "image_asset_id": "uuid-source-image"
-  }'
+Take the mode from `supported_modes`; some families list only edit modes even when the image input is optional. Edit modes need at least one input: `image_asset_id`, `image_url`, `start_image_asset_id`, `reference_image_asset_ids[]`, `element_ids[]`, or `elements[]`. Put the image being transformed in `image_asset_id` and ordered identity or style references in `reference_image_asset_ids`, then bind each attachment in the prompt with the model's own syntax (see `pr0ta-prompting` → "Reference Binding Is a Submission Contract").
 
-# GPT Image 2.5 Sunburst text-to-image (for challenging prompt adherence)
-curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
-  -H "Authorization: Bearer $PR0TA_PAT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "generator": "image",
-    "mode": "txt_to_img",
-    "model": "openai/gpt-image-2.5/sunburst/text-to-image",
-    "quality": "max",
-    "prompt": "Dark navy infographic showing global market growth, gold accent text, clean vector style."
-  }'
-
-# Returns: { "task_id": "...", "status": "queued" }
-# Poll task, then download via result.asset_id (see pr0ta-api)
-```
-
-**For Nano Banana 2 via API, always use `width`/`height` in pixels** (e.g., 1920x1080). The `image_size` parameter behavior is inconsistent across models — `width`/`height` is the reliable path. For GPT Image 2.5 Sunburst, use `image_size`, `quality`, `num_images`, and `output_format` — check `model_defaults` for the full parameter list.
-
-Pricing is intentionally omitted from skill documentation because it changes independently of the skill bundle. Use `models_list` for current candidate IDs and availability, then query `GET /api/crew/model_pricing?model_id={model_id}` for each candidate immediately before cost-sensitive selection.
-
-| API Model String | Human Name | Generator | Mode |
-|-----------------|------------|-----------|------|
-| `nano_banana_2` | **Nano Banana 2** | image | txt_to_img |
-| `fal-ai/nano-banana-2/edit` | **Nano Banana 2 Edit** | image | img_to_img |
-| `openai/gpt-image-2.5/sunburst/text-to-image` | GPT Image 2.5 Sunburst | image | txt_to_img |
-| `openai/gpt-image-2.5/sunburst/edit` | GPT Image 2.5 Sunburst Edit | image | img_to_img, ref_to_img, edit_img |
-| `openai/gpt-image-2.5/flare/text-to-image` | GPT Image 2.5 Flare | image | txt_to_img |
-| `openai/gpt-image-2.5/flare/edit` | GPT Image 2.5 Flare Edit | image | img_to_img, ref_to_img, edit_img |
-| `muapi/midjourney-niji` | Midjourney Niji 7 | image | txt_to_img, img_to_img, ref_to_img |
-| `muapi/midjourney-v8` | Midjourney V8 | image | txt_to_img, img_to_img, ref_to_img |
-| `muapi/midjourney-v7` | Midjourney V7 | image | txt_to_img, img_to_img, ref_to_img |
-| `fal-ai/gpt-image-1/edit-image` | GPT Image 1.5 Edit | image | edit_img |
-| `kling/o1/image-to-image` | Kling Image Edit | image | ref_to_img |
-
-## Modes (Tabs across the top)
-
-### 1. Txt to Img (Text-to-Image)
-Generate images from text prompts.
-
-**Default model: Nano Banana 2** — fast, cost-effective, and strong at dimension control. Choose GPT Image 2.5 Sunburst for challenging prompt adherence or character consistency edits.
-
-**Key parameters:** prompt, ratio (auto, 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, etc.), resolution (1K, 2K, 4K), seed (optional, for reproducibility), number of images (default: 1), format (jpeg, png, webp), tolerance (1-6 range, default 4; some models cap at 5 -- controls prompt adherence and content-safety filtering). Use tolerance only for allowed content and preserve the provider error when a false-positive rejection occurs. If a policy-compliant tolerance retry still rejects, switch to a different image model that supports the needed mode; query the live model list rather than relying on stale labels. See `pr0ta-video` → "Provider False-Positive Fallback Ladder" for the same pattern on the video side.
-
-**Available Txt-to-Img models:** Query the live catalog for current availability and price before choosing among these capability examples.
-- **Nano Banana 2** — **recommended default** for speed and dimension control
-- OpenAI GPT Image 2.5 Sunburst — preferred for challenging prompt adherence or character consistency edits
-- Midjourney Niji 7 — anime, manga, character key art, optional reference image
-- Midjourney V8 — premium concept art and highest-quality Midjourney output
-- Midjourney V7 — artistic visual development and reference-guided exploration
-- Qwen Image 2 Pro (Text-to-Image)
-- GPT Image 1.5 — alternative high-quality image route
-- FLUX.2 Pro — high-quality fallback for allowed prompts that other providers false-positive reject
-- FLUX.2 Max — high-quality fallback for allowed prompts that other providers false-positive reject
-- ByteDance SeeDream v4.5 — high-quality image generation
-- GLM Image — reasoning-oriented image generation
-- Kling Image V3 (Text-to-Image)
-- Kling Image O3 (Text-to-Image)
-
-### Model Resolution Constraints
-
-Not all models support the full range of aspect ratios. Check constraints before generating:
-
-| Model | Supported Resolutions | Notes |
-|-------|----------------------|-------|
-| **Nano Banana 2** | All ratios (auto, 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, 21:9, 4:5, 5:4, etc.) up to 4K | Most flexible — supports the full ratio dropdown |
-| **GPT Image 1.5** | **1024x1024** (1:1), **1536x1024** (3:2 landscape), **1024x1536** (2:3 portrait) only | **Ignores `image_size` parameter.** Always outputs 1024x1024 regardless of what you request via API. |
-| Other models | Verify against `GET /api/v2/models` | Constraints vary by provider |
-
-**Important — GPT Image 1.5:** This model ignores the `image_size` / dimension parameters via API and always outputs 1024x1024. If you need controlled dimensions, use Nano Banana 2 instead.
-
-**Important — Nano Banana 2 portrait orientation bug:** Requesting `portrait_4_3` currently returns a landscape image (1408x768) instead of the expected portrait orientation. If you need a portrait 4:3 image, generate at a supported portrait ratio (e.g., `3:4` or `9:16`) or generate landscape and crop/rotate in post-processing.
-
-### 2. Img to Img (Image-to-Image)
-Transform existing images with a prompt.
-
-**Default model: Nano Banana 2 Edit** (`fal-ai/nano-banana-2/edit`) for general edits. **Choose GPT Image 2.5 Sunburst Edit** (`openai/gpt-image-2.5/sunburst/edit`) for character consistency edits where preserving identity through the edit is critical — GPT Image 2.5 Sunburst is the preferred model for maintaining likeness.
-
-**Key parameters:** reference images (with reference strength 0-140%+), image URLs, plus the same prompt and settings as Txt to Img.
-
-Midjourney V7, V8, and Niji accept one reference image through `image_url`. They return four registered variants in `result.urls`; `result.download_url` is the first variant for single-output clients. Use `stylize` (0–1000), `chaos` (0–100), `weird` (0–3000), `negative_prompt`, and `seed` exactly as exposed by `models_get_defaults`.
-
-### 3. LoRA Txt2Img / LoRA Img2Img
-Generate with custom LoRA models trained on specific styles or subjects.
-
-**Models:** Qwen Image 2512 (LoRA), Z-Image Turbo (LoRA)
-
-**Additional controls:**
-- **LoRA Library** -- Browse and search installed LoRAs
-- **LoRA weight slider** (0.00 - 1.00+, default: 0.80)
-- **Triggers** -- LoRA-specific trigger words
-
-## Image Editing Tools (Below the generate button)
-
-These tools work on selected images in the Canvas:
-
-| Tool | Description |
-|------|-------------|
-| **Ref to Img** | Generate a new image using an existing one as reference |
-| **Img to 3D** | Convert a 2D image to a 3D model |
-| **Txt to World** | Generate a 3D world/environment from text |
-| **Img to World** | Generate a 3D world from an image |
-| **Vid to World** | Generate a 3D world from a video |
-| **Inpaint** | Edit specific regions of an image |
-| **Outpaint** | Extend an image beyond its borders |
-| **Roto Bg** | Remove/replace backgrounds |
-| **Face** | Face-specific editing and enhancement |
-| **Upscale** | Increase image resolution |
-| **Crop** | Crop images |
-| **Collage** | Combine multiple images |
-| **Annotate** | Add annotations to images |
-| **Metadata** | View/edit image metadata |
-
-### Curated Topaz Image Enhancement
-
-Use these Fal-hosted endpoints only in the **Upscale** image operation. They are
-image-to-image processors and do not accept text-generation inputs unless the
-endpoint schema exposes a prompt. Query `models_get_defaults` before submitting;
-never copy controls between Topaz families.
-
-| Intent | Model | Guidance |
-|--------|-------|----------|
-| General faithful enhancement | `topaz/upscale/image/precision` | Default Topaz choice; upscale, cleanup, and optional face/subject recovery |
-| Noise removal | `topaz/denoise/image` | Begin with the least aggressive denoise model |
-| Blur or focus recovery | `topaz/sharpen/image` | Match the model to motion blur, lens blur, portrait, wildlife, or focus loss |
-| White balance or colorization | `topaz/adjust/image` | Use Colorize only for monochrome sources |
-| Damaged-photo repair | `topaz/restore/image` | Recover 3 for general repair; Dust-Scratch V2 for damaged scans |
-| Transparent artwork | `topaz/upscale/image/transparent` | Alpha-preserving PNG-only output |
-| Severe low-resolution reconstruction | `topaz/upscale/image/generative` | May invent detail; use only when that tradeoff is approved |
-| Intentional reinterpretation | `topaz/upscale/image/creative` | Most creative option; avoid for fidelity-critical restoration |
-
-Precision, Denoise, Sharpen, Adjust, Restore, and Transparent are the curated
-fidelity-oriented choices. Generative and Creative must be treated as
-reconstruction, not neutral restoration.
-
-## API Image Edit Modes
-
-The unified generation API now supports image editing beyond text-to-image:
-
-| Mode | Description | Example Model |
-|------|-------------|---------------|
-| `txt_to_img` | Text-to-image (standard) | `nano_banana_2` |
-| `img_to_img` | Prompt-based image editing | `fal-ai/nano-banana-2/edit` |
-| `ref_to_img` | Reference-driven generation | `kling/o1/image-to-image` |
-| `edit_img` | Direct image editing | `fal-ai/gpt-image-1/edit-image` |
-
-Image edit modes require at least one input image. Valid inputs: `image_asset_id`, `image_url`, `start_image_asset_id`, `reference_image_asset_ids[]`, `element_ids[]`, `elements[]`.
-
-**Example: Prompt-based image edit (restyle a character reference):**
 ```json
 {
   "generator": "image",
   "mode": "img_to_img",
-  "model": "fal-ai/nano-banana-2/edit",
-  "prompt": "Keep the subject identity and pose, but relight as a moody neon noir portrait with blue rim light.",
+  "model": "<model_id from models_preferred(modality=\"image_edit_model\")>",
+  "prompt": "Image 1 is the subject; keep identity and pose. Relight as a moody neon-noir portrait with blue rim light, matching the palette of Image 2.",
   "image_asset_id": "uuid-source-image",
   "reference_image_asset_ids": ["uuid-style-ref"],
   "format": "png"
 }
 ```
 
-**Example: Reference-driven Kling image edit (consistency correction):**
-```json
-{
-  "generator": "image",
-  "mode": "ref_to_img",
-  "model": "kling/o1/image-to-image",
-  "prompt": "Match the wardrobe and facial structure from the references exactly.",
-  "reference_image_urls": ["https://example.com/hero-base.png"],
-  "element_ids": ["project-element-uuid"]
-}
+Edit modes are the tool for consistency correction: fixing character drift in a key frame before it goes to video. See `pr0ta-consistency`.
+
+`format` accepts `png`, `jpeg`, `jpg` (normalized to `jpeg`), and `webp`; other values return `400`. Some models return PNG regardless of the requested format, so check the delivered file's type.
+
+REST (only when MCP is unavailable, for high-volume scripts, or for an unexposed route):
+
+```bash
+curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
+  -H "Authorization: Bearer $PR0TA_PAT" \
+  -H "Content-Type: application/json" \
+  -d '{"generator": "image", "mode": "txt_to_img", "model": "'"$MODEL_ID"'",
+       "prompt": "...", "aspect_ratio": "16:9", "format": "png"}'
+# Returns {"task_id": "...", "status": "queued"}; poll the task, then download result.asset_id (see pr0ta-api).
 ```
 
-These edit modes are particularly useful for consistency correction -- fixing character appearance drift in key frames before video generation. See the `pr0ta-consistency` skill.
+Batch: `POST /api/v2/projects/{project_id}/generate/batch` takes up to 10 items.
 
-**Image format validation:** The API accepts `png`, `jpeg`, `jpg`, and `webp`. The value `jpg` is normalized to `jpeg`. Unsupported formats (e.g., `tiff`, `bmp`) return `400`.
+## Enhancement and Restoration
 
-**Important caveat:** Nano Banana 2 may output PNG regardless of the requested format. Always check the actual file extension/content type of the returned asset rather than assuming it matches your request.
+Upscaling, denoising, sharpening and restoration resolve through `image_upscale_model`: call `models_preferred(modality: "image_upscale_model")`, and when the user asks for a specific repair, pick from `models_list(modality: "image_upscale_model")`. These routes are image-to-image processors: they accept no text-generation inputs unless the schema exposes a prompt, and controls do not transfer between families (`models_get_defaults`).
 
-## Uploading Existing Images into a Project
+Capabilities, for when the user asks for one: the Topaz image families cover faithful enhancement with optional face or subject recovery (Precision), noise removal (Denoise; start with the least aggressive setting), blur and focus recovery (Sharpen), white balance and colorizing monochrome (Adjust), damaged-photo and scan repair (Restore), alpha-preserving PNG upscales (Transparent), and detail reconstruction (Generative, Creative). All but Generative and Creative are fidelity-oriented; those two invent detail rather than restore it, so use them only when the user approves that tradeoff.
 
-You don't always need to generate an image — sometimes the best reference is a real photograph, a screenshot, a hand-drawn sketch, or a frame pulled from existing footage. Use the **direct image upload endpoint** to ingest local files:
 
-```
-POST /api/v2/projects/{project_id}/assets/upload
-Content-Type: multipart/form-data
-```
+## Uploading Existing Images
 
-Send one or more `files` fields (images only). The response returns standard `AssetRead` objects whose `id` values can be used immediately in any generation payload:
+The best reference is sometimes a real photograph, a sketch, a location scout, a product shot, or a frame from footage. Upload it and use the returned asset `id` anywhere an asset id is accepted: `image_asset_id`, `start_image_asset_id`, `reference_image_asset_ids[]`, or Element and Character sources.
 
-- `image_asset_id` or `start_image_asset_id` in `img_to_img` / `ref_to_vid` modes
-- `reference_image_asset_ids[]` for style or identity references
-- Source material when creating Element bundles or Character profiles (see `pr0ta-consistency`)
+Use `assets_upload_start` (or `assets_upload_batch_start` for several files) to get a signed upload handoff, PUT the bytes, and let the storage event finalize the asset; call `assets_upload_finalize` only if it did not. Optional metadata on finalize: `category`, `subject`, and `labels`.
+
+REST multipart alternative: `POST /api/v2/projects/{project_id}/assets/upload` with one or more `files` fields (images only); it returns `AssetRead` objects and stamps `labels.source = "upload_api"`. With the Python client:
 
 ```python
 from pr0ta_client import upload_images
 
-assets = upload_images(project_id, [
-    "/path/to/actor-headshot.jpg",
-    "/path/to/location-photo.png",
-])
+assets = upload_images(project_id, ["/path/to/actor-headshot.jpg", "/path/to/location-photo.png"])
 headshot_id = assets[0]["id"]
-location_id = assets[1]["id"]
 ```
 
-Optional metadata fields: `category` (default `"imported"`), `subject`, `labels` (JSON object). PR0TA auto-stamps `labels.source = "upload_api"` and `labels.ingest_channel = "api"`.
+See `pr0ta-api` → `reference/image-upload.md` for error cases.
 
-**When to upload vs generate:** Upload when you have real-world material that should anchor the production — actor likenesses, brand assets, location scouts, product photos, storyboard scans. Generate when you need new synthetic imagery. In practice, most multi-shot productions use both: uploaded references to establish identity, generated images to fill out the shot list.
-
-For the full endpoint spec and error cases, see `pr0ta-api` → "Project Image Upload (Direct Multipart)".
+Upload real material that should anchor the production (actor likenesses, brand assets, location scouts, product photos, storyboard scans); generate new synthetic imagery. Most productions use both.
 
 ## Image Genre Recipes
 
-Image prompts are not one-size-fits-all. Different shot types have **opposite** requirements. The following recipes cover field-tested genres distinct from standard scene images.
+Different shot types have opposite requirements.
 
-### Flash Card Recipe (Sub-1-Second Shots)
+### Scene Image
 
-Flash cards are designed to be **felt more than read** — year drops, name drops, impact beats, cut-in title slugs that appear for <1 second in a fast edit. They have opposite requirements from scene images.
+The general guidance in `pr0ta-prompting` applies: self-contained, specific subject, lighting, and camera, grounded environment.
 
-**Requirements:**
+### Key Frame for Video
 
-- **Extreme color saturation.** Single dominant hue, pushed to maximum. Use color to differentiate adjacent flash cards in the cut (e.g., amber-gold for "2027", electric-blue for "2029"). The viewer should register color before content.
-- **Massive type.** The text or number should consume 50–80% of the frame. If you can read it at thumbnail size, it is big enough.
-- **Zero background detail.** Solid color field or, at most, a single subtle gradient. No textures, no props, no scene elements — background detail will be missed in sub-1-second shots and only adds noise.
-- **Single typographic element.** One word, one number, one phrase. Multi-line flash cards don't work — the viewer can't read line 2.
-- **Hard, flat lighting.** No dimensional shading on the type. Flat vector-style rendering reads faster than any attempt at realism.
+A still that will be animated should show the state before the action, not its peak (`pr0ta-prompting` → Technique 6). Generate it at the delivery aspect ratio: several image-to-video routes follow the input image's shape.
 
-**Prompt template:**
+### Flash Card (Sub-One-Second Shots)
+
+Flash cards are felt more than read: year drops, name drops, impact beats.
+
+- **Extreme saturation.** One dominant hue per card; vary hue between adjacent cards so the viewer registers color before content.
+- **Massive type.** The text fills 50–80% of the frame; if it reads at thumbnail size, it is big enough.
+- **Zero background detail.** A solid field or one subtle gradient.
+- **One typographic element.** One word, number, or short phrase.
+- **Flat, hard lighting.** Flat vector rendering reads faster than realism.
 
 ```
-A full-frame flash card design. Solid [SINGLE DOMINANT COLOR] background, no other scene elements. Massive centered [TYPE: "2027" / "SINGULARITY" / etc.] in a [BOLD SANS-SERIF / CONDENSED DISPLAY / etc.] typeface, occupying approximately 60-70% of the frame height, rendered in [CONTRASTING COLOR]. Flat vector style, hard edges, no shadows, no gradient on the type. The single typographic element is the entire image. Poster graphic, not a photograph.
+A full-frame flash card design. Solid [SINGLE DOMINANT COLOR] background, no other scene elements. Massive centered [TEXT] in a [BOLD SANS-SERIF / CONDENSED DISPLAY] typeface, occupying approximately 60-70% of the frame height, rendered in [CONTRASTING COLOR]. Flat vector style, hard edges, no shadows, no gradient on the type. The single typographic element is the entire image. Poster graphic, not a photograph.
 ```
 
-**Concrete field example:** For a "2027" year-drop flash card in a countdown documentary, amber-gold (#F5A623) background with deep navy numerals worked. For a paired "2029" card, electric-blue (#1E90FF) background with cream-white numerals worked. The saturation jump between the two cards does the editorial work at speed.
-
-**Anti-pattern:** Scene-photography language ("a beautiful amber-toned photograph of the number 2027 on a textured wall"). This produces a scene, not a flash card. Use poster/graphic/flat/vector language instead.
-
-### Scene Image (Default Genre)
-
-The rest of this skill's prompting guidance applies: self-contained, specific subject/lighting/camera, grounded environment. This is the default.
+Example: a "2027" card in amber-gold (#F5A623) with deep navy numerals, followed by a "2029" card in electric blue (#1E90FF) with cream numerals. The saturation jump does the editorial work at speed. Avoid scene-photography language ("a photograph of the number 2027 on a textured wall"), which produces a scene, not a card.
 
 ### Title Card
 
-For deliberate title shots (held 1.5–3 seconds with time to read), treat it as a **hybrid** — more typographic than a scene image but with more styling than a flash card. You can afford one subtle background element (a soft gradient, a faint glyph, a vignette) but the type still dominates. AI-generated title cards composed as still images (then animated via a timeline Ken Burns preset) beat any overlay text filter for production polish.
+A title held 1.5–3 seconds is a hybrid: the type dominates, with room for one subtle background element (soft gradient, faint glyph, vignette). A generated still animated with a timeline Ken Burns preset usually beats an overlay text filter for polish.
 
-**For text-heavy title cards, use the "Line-Locked Poster" prompt pattern from `pr0ta-prompting`** (`Line N (style): EXACT TEXT` formatting with an `EXACTLY` directive). That pattern routes around the safety/softening pass that rewrites provocative copy into blander substitutes. Field-tested failure mode without it: `"CAN'T RUN OUT OF MONEY"` softened to `"CAN'T RUN OUT OF FUNDS"`.
+### Any Still With On-Screen Text
 
-### Hard Rule — Any Still With On-Screen Text
+This is a reliability rule. If the still has any rendered text (title, brand, tagline, credit, sign in the scene):
 
-This is a reliability rule, not a style preference. **If the still has any rendered text — title card, brand name, tagline, credit line, flash card, sign visible in the scene — two steps are mandatory:**
+1. **Use the Line-Locked Poster pattern** (`pr0ta-prompting` → Technique 3): `Line N (style): EXACT TEXT` with an `EXACTLY` directive. Prose copy fails often enough to treat as unreliable: duplicated lines, garbled glyphs, softened or paraphrased copy ("CAN'T RUN OUT OF MONEY" became "CAN'T RUN OUT OF FUNDS"), dropped characters.
+2. **Check every glyph after generation.** Read the image letter by letter against the intended copy and regenerate on any mismatch.
 
-1. **Use the Line-Locked Poster Prompt pattern.** Prose prompts with on-screen text fail in the wild often enough to treat as unreliable — common failure modes include duplicated lines ("WARBY" stacked above "WARBY PARKER"), garbled glyphs ("Lologobo" on a matte corporate card), softened or paraphrased copy, and character drop. The `Line N (style): EXACT TEXT` + `EXACTLY` directive pattern in `pr0ta-prompting` → Technique 3 routes around all of these.
-2. **Post-gen glyph QC is mandatory.** After the image lands, read it and verify every character against the intended text — letter by letter, no skimming. Regen on any mismatch. A duplicated line or garbled glyph caught at QC costs one regeneration; caught at delivery it costs a re-edit or a slipped deadline.
+Brand names, exact-copy titles, and anything a stakeholder will read at full size are worth fanning out.
 
-**Fan out on any high-stakes text shot.** Brand names, exact-copy title cards, and anything a stakeholder will read at full size are cheap to fan out (3–5 text-reliable image models in parallel) and expensive to ship wrong. See "Fan-Out and Pick" below.
+## Fan-Out and Pick for Hard Shots
 
-## Fan-Out and Pick — First-Class Recipe for Hard Shots
+For a hard shot (exact text, complex composition, specific mood), submit the same prompt to 3–5 models in parallel and pick the winner. Concurrent image jobs finish in about the time of one, and image calls are inexpensive; one model almost always lands the shot, while sequential retries on one model are slower and less reliable.
 
-**When a shot is hard (exact text, complex composition, specific mood), submit the same prompt to 3–5 text-reliable models in parallel and pick the winner.** PR0TA's async job model makes this operationally cheap for *image* fan-out — the time cost is the same as a single generation because they run concurrently, and the credit cost for 3–5 image calls across Nano Banana / Ideogram / GPT Image 1.5 is small enough to treat fan-out as a first-class editorial tool.
-
-**Cost discipline:** Image fan-out is cheap. **Video fan-out is not.** Kling and Seedance video calls cost real money — do not reflexively fan out 3–5 video generations for every hard shot. For video, prefer one well-prompted call (with Line-Locked poster stills animated on the timeline via Ken Burns presets where possible) and reserve fan-out for the few shots where the creative risk genuinely justifies the spend. "Almost free" is only accurate for image-class models.
-
-**Batch route option:** PR0TA exposes a first-class batch endpoint (`POST /api/v2/projects/{id}/generate/batch`, max 10 items) for when you want one request that carries many payloads. The loop in the recipe below uses independent `/generate` calls for simpler per-item error handling; either pattern works.
-
-**Field result:** On a failed title card where Nano Banana 2's first attempt softened the copy, fanning out to five models (Ideogram, Nano Banana 2 retry with a different seed, GPT Image 1.5, Kling V3, Kling O3) and selecting the best was the single highest-ROI move in the entire production. At least one model will almost always nail the shot; sequential retry on a single model is slower and less reliable.
-
-**Recipe:**
+Choose the candidates from `models_list(modality="image_model")`: pinned models first, then models whose catalog notes document typography or layout when the copy is critical. Tell the user which models you fanned out to.
 
 ```python
-# Fan out the same prompt to N text-reliable models in parallel.
-PROMPT = """<your Line-Locked Poster prompt here>"""
-
-MODELS = [
-    "nano_banana_2",         # default
-    "openai/gpt-image-2.5/sunburst/text-to-image",   # premium production candidate
-    "gpt_image_1_5",
-    "ideogram",
-    "kling_v3",              # image mode
-    "kling_o3",              # image mode
-]
-
-task_ids = {}
-for model in MODELS:
-    resp = submit_generation({
-        "generator": "image",
-        "mode": "txt_to_img",
-        "model": model,
-        **({"quality": "max"} if model.startswith("openai/gpt-image-2.5/") else {}),
-        "prompt": PROMPT,
-        "aspect_ratio": "9:16",
-    })
-    task_id = resp.get("task_id")
-    if not task_id:
-        print(f"[WARN] {model} rejected at validation: {resp}")
-        continue
-    task_ids[model] = task_id
-
-# Poll all of them concurrently, download each result, then pick the winner by eye.
+candidates = [m["provider_model_id"] for m in models_list(modality="image_model")["models"][:5]]
+tasks = {}
+for model_id in candidates:
+    request = {"generator": "image", "mode": "txt_to_img", "model": model_id,
+               "prompt": PROMPT, "aspect_ratio": "9:16"}
+    request.update(schema_specific_fields(model_id))  # e.g. quality "max" where the schema offers it
+    task = generation_submit(project_id=project_id, request=request)
+    if task.get("task_id"):
+        tasks[model_id] = task["task_id"]
+# Poll all tasks with tasks_get, review each result, and pick by eye.
 ```
 
-**Selection criteria, in order:**
+Or send the same list as one `generation_batch_submit` call (up to ten items).
 
-1. **Exact text match.** Any card with softened or mutated copy is disqualified regardless of how pretty it is.
+Selection criteria, in order:
+
+1. **Exact text match.** Softened or mutated copy is disqualified regardless of beauty.
 2. **Composition and hierarchy.** Hero line dominant, secondary lines clearly subordinate.
-3. **Color integrity.** Requested palette actually on the output.
-4. **Production polish.** Type rendering (no smeared letters), background cleanliness, aspect ratio fitness.
+3. **Color integrity.** The requested palette is actually present.
+4. **Polish.** Clean glyph edges, clean background, correct aspect ratio.
 
-Log every attempt into `assets.json` (see the `pr0ta` hub → "assets.json — Local Asset ID Map") so you can audit which prompt + model + seed produced the winner and reuse it for consistent re-renders later.
+Log every attempt (prompt, model, seed, task id, winner) in `assets.json` (see the `pr0ta` hub → "Local ledger") so a winning combination can be re-rendered consistently.
 
-**When NOT to fan out:** Routine B-roll, background plates, and any shot where Nano Banana 2 routinely succeeds on the first attempt. Fan-out is for hard shots, not every shot.
+Video fan-out is not cheap. For video, prefer one well-prompted call (or a verified still animated on the timeline) and fan out only where the creative risk justifies the spend. Skip image fan-out for routine B-roll and background plates.
 
-## Output Resolution — The Timeline Handles Upscaling
+## Output Resolution and the Timeline
 
-**⚠️ Image models return their native output resolution, not the pixel dimensions your aspect ratio implies.** Requesting `aspect_ratio: "9:16"` from Nano Banana 2 typically yields something like **768×1376**, not 1080×1920.
+Image models return the size their resolution field selects, not the pixel size an aspect ratio implies. The post-production timeline normalizes every clip to the sequence's delivery resolution when you add it with `POST /timeline/clips`, so stills need no pre-upscaling. Set the sequence once (for example 1080×1920 vertical or 1920×1080 horizontal).
 
-**This is fine.** The post-production timeline normalizes every clip — stills and video alike — to the sequence's delivery resolution automatically when you add it via `POST /timeline/clips`. Set the sequence settings once (e.g. 1080×1920 for vertical, 1920×1080 for horizontal) and the platform handles scale + pad + format internally with high-quality resampling. You do not need to pre-upscale stills before adding them to the timeline.
+When a still must be delivered at a specific size outside the timeline (a thumbnail export), raise the model's own resolution or size field where it offers one, or run an `image_upscale_model` utility.
 
-**When you *do* need a still at delivery resolution outside the timeline** (e.g. a standalone thumbnail export): regenerate with the appropriate aspect ratio at the closest supported model size and use the output as-is. Do **not** ask the model to produce a higher resolution by prompt — the native output is fixed per model and prompt language cannot override it.
+## Reliability
 
-## Known Limitations and Workarounds
-
-All image generation should use the **reliability contract** from the `pr0ta-api` skill, which handles these issues automatically via the state machine and fallback chain.
-
-- **Format parameter may be ignored by some models.** Nano Banana 2 typically outputs PNG regardless of `format` setting. Plan for PNG output.
-- **Image generation events are best-effort (fixed April 2026, defense-in-depth retained).** Events now backfill from task history. The reliability contract still treats events as acceleration only — never as the sole completion signal.
-- **Image task status stall (fixed April 2026, defense-in-depth retained).** Task reads now reconcile to `succeeded` when the asset exists. The reliability contract still polls with asset-discovery fallback as defense-in-depth.
+Use the `pr0ta-api` reliability contract: poll every task to a terminal state, treat task events as acceleration rather than the only completion signal, and fall back to asset discovery when a task read lags. If an allowed prompt is falsely rejected, preserve the provider error, retry once at the highest policy-compliant `safety_tolerance` where the schema offers it, then choose another model for the same mode from `models_list(modality=...)` and say so. Never switch models to evade a real policy restriction.

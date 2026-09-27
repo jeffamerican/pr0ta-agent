@@ -2,9 +2,9 @@
 
 Provider-normalized voice browsing, plus project-scoped PR0TA endpoints for voice cloning, prompt-based voice design, committing voice-design previews, and speech-to-speech (STS) conversion. All routes sit under `/api/v2/projects/{project_id}/voices/...` and require authenticated project access. The MCP equivalent for browsing is `voices_list`.
 
-Gemini Flash TTS (`fal-ai/gemini-3.1-flash-tts`) is the default for new PR0TA TTS generation. Use voice browsing when the user needs to choose by provider, tone, language, accent, or available project/provider voices. Use clone/design/STS workflows when the user needs to create or transform a voice.
+Resolve the TTS model with `models_preferred(modality="dialogue_model")`. Use voice browsing when the user needs to choose by provider, tone, language, accent, or available project/provider voices. Use clone/design/STS workflows when the user needs to create or transform a voice.
 
-**For workflow guidance** (when to clone vs design vs STS, decision tree), see `pr0ta-audio` → "Voice V2 — Clone, Design, and Speech-to-Speech".
+**For workflow guidance** (when to clone vs design vs STS, decision tree), see `pr0ta-audio` → "Voice clone, design and speech-to-speech".
 
 ## Voice Browser
 
@@ -75,22 +75,21 @@ The browser returns normalized voice rows across ElevenLabs, Gemini/Google, Mini
 
 Copy the returned `selection` fields into the later TTS request. Do not hand-map provider-specific fields unless a model reference requires it. For Gemini/Google, preserve `selection.voice_settings.voice`; for ElevenLabs, MiniMax, Kling, and xAI, use `selection.voice_id`.
 
-### V3 Compatibility — Try-and-Fallback
+### ElevenLabs Model Compatibility
 
 **Do not** derive or expose a public `supports_v3` boolean from voice metadata.
 
-- Do **not** treat `high_quality_base_model_ids` or `verified_languages[].model_id` as a hard compatibility gate for `eleven_v3`.
-- Instead: attempt TTS with `model_id: "eleven_v3"` and a valid `voice_id`. If it fails, fall back to `eleven_multilingual_v2`.
-- ElevenLabs may update v3 support for voices without updating metadata fields, so metadata-based gating is unreliable.
+- `high_quality_base_model_ids` and `verified_languages[].model_id` are not a hard compatibility gate: ElevenLabs can change which models a voice supports without updating those fields.
+- Submit with the resolved TTS model and the chosen `voice_id`. If the model rejects the voice, report it and choose again with `models_list(modality="dialogue_model")` or pick another voice.
 
-## Model Discovery Update
+## Audio Model Discovery
 
-`GET /api/v2/models?generator=audio` now returns models for all audio modalities:
+`GET /api/v2/models?generator=audio` returns models for every audio modality, including these voice routes:
 
 | Model ID | Mode Hint | Purpose |
 |----------|-----------|---------|
-| `fal-ai/gemini-3.1-flash-tts` | `txt_to_speech` | Default text-to-speech |
-| `eleven_v3` | `txt_to_speech` | ElevenLabs fallback text-to-speech |
+| `fal-ai/gemini-3.1-flash-tts` | `txt_to_speech` | Gemini text-to-speech |
+| `eleven_v3` | `txt_to_speech` | ElevenLabs text-to-speech |
 | `eleven_voice_design_prompt` | `voice_design` | Prompt-based voice design |
 | `eleven_ttv_v3` | `voice_design` | Voice design (v3 variant) |
 | `eleven_multilingual_ttv_v2` | `voice_design` | Voice design (multilingual) |

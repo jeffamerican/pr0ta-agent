@@ -5,13 +5,14 @@ hero prop, or wardrobe reference and there is no approved image to attach yet.
 The workflow returns a provider-ready **candidate** generation package; it does
 not silently approve the design or generate media.
 
+
 ## Choose the profile
 
 | Subject | `prompt_profile` | Required department chain |
 |---|---|---|
-| Character identity and look | `character_reference_design` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
-| Hero prop or designed object | `prop_reference_design` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
-| Wardrobe/look exploration | `wardrobe_reference_design` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
+| Character identity and look | `"character_reference_design"` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
+| Hero prop or designed object | `"prop_reference_design"` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
+| Wardrobe/look exploration | `"wardrobe_reference_design"` | Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer |
 
 Do not override `role_chain` or `optional_roles` for these profiles. The server
 supplies and validates the department-correct chain. All stages are consulted.
@@ -42,8 +43,10 @@ not the bootstrap profile for a subject that has no references.
 }
 ```
 
-No `references` field is required. The profile defaults to
-`model_id: "nano_banana_2"` and `modality: "text_to_image"`.
+No `references` field is required. Pass `target.model_id` from
+`models_preferred(modality="image_model")` (or `image_edit_model` once references
+are attached); the profile's built-in fallback applies only when no model is
+declared. Without references the modality is `text_to_image`.
 
 If inspirations exist, add ordered image references with a narrow declared
 authority. Semantic aliases `character_reference`, `style_reference`,
@@ -63,7 +66,7 @@ normalizes their media type to `image` while preserving the semantic type.
 }
 ```
 
-With one or more references, the default modality becomes
+With one or more references, the modality becomes
 `reference_to_image`. The aliases `ref_to_img` and `img_to_img` normalize to
 that modality. A reference modality without references, or a text modality
 with references, is rejected before task creation with an actionable 422.

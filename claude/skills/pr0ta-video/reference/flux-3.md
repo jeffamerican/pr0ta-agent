@@ -174,11 +174,11 @@ Continue directly from the source clip's last frame. The camera maintains the ex
 - State `Music: none` or `non-diegetic music: none` when dialogue must remain clean.
 - Keep speech short enough for the shot; long copy competes with action and sync.
 - Treat wording, pronunciation, lip sync, stereo placement, and mix as take-level QC.
-- Transcribe every speech-bearing result before timeline placement.
+- Confirm a transcript for every speech-bearing result before timeline placement (`pr0ta-audio` indexing rule).
 
 ## Typography and Animated Design
 
-FLUX 3 is a preferred PR0TA video family for native motion typography because BFL explicitly documents strong typography generation and animated designs. Use it for title sequences, kinetic type, signs, product copy, interface motion, and designed information graphics when the words themselves need to move.
+BFL explicitly documents strong typography generation and animated designs for FLUX 3. It suits title sequences, kinetic type, signs, product copy, interface motion, and designed information graphics when the words themselves need to move.
 
 Put the literal text early in the prompt and in quotation marks. Specify the type style, size hierarchy, color, placement, material/effect, entrance and exit motion, and the interval during which the copy must remain unchanged. Say `no additional words` when only the supplied copy may appear.
 

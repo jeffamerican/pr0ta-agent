@@ -9,7 +9,6 @@ Upload local still images directly into a project without the prepare/proxy/fina
 ```
 POST /api/v2/projects/{project_id}/assets/upload
 Content-Type: multipart/form-data
-Authorization: Bearer <PAT>
 ```
 
 ### Request
@@ -22,6 +21,8 @@ Multipart fields:
 | `category` | no | `imported` | Freeform string. |
 | `subject` | no | — | Freeform string. |
 | `labels` | no | — | JSON **object** encoded as a string (not an array, not bare text). |
+
+Authenticate with the PAT bearer token (`Authorization: Bearer $PR0TA_PAT`).
 
 **Complete curl example (copy-paste ready):**
 

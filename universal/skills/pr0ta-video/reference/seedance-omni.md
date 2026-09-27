@@ -2,7 +2,7 @@
 
 Seedance 2.0 Omni is a quad-modal audiovisual model. It accepts text plus optional image, video, audio, and character references. Its strength is explicit multimodal role assignment followed by chronological film direction.
 
-**PR0TA model ID:** `muapi/seedance-2-vip-omni-reference`
+**PR0TA model ID:** `muapi/seedance-2-vip-omni-reference` (mode `ref_to_vid`). Other Seedance 2.0 routes (`muapi/seedance-2-*` T2V, I2V, first/last, fast and mini variants, and the `muapi/sd-2-vip-*` 1080p/4K routes) share this prompt grammar; take each route's fields and modes from `models_get_defaults`.
 
 ## Contents
 
@@ -22,7 +22,7 @@ Seedance 2.0 Omni is a quad-modal audiovisual model. It accepts text plus option
 - Audio: MP3 or WAV, up to 3 files and 15 seconds total.
 - Reference capacity: up to 15 files total by the per-modality ceilings: 9 image + 3 video + 3 audio.
 
-The provider's current Omni schema requires only the prompt; references are optional. PR0TA's generic `ref_to_vid` validation can still require a reference because that mode promises reference-conditioned work. For prompt-only generation, prefer the dedicated Seedance 2.0 T2V endpoint. For any production pass, query `models_get_defaults` because PR0TA's cached catalog can lag MuAPI's live schema.
+The provider's current Omni schema requires only the prompt; references are optional. PR0TA's generic `ref_to_vid` validation can still require a reference because that mode promises reference-conditioned work. For prompt-only generation, use the dedicated Seedance 2.0 T2V endpoint. For any production pass, query `models_get_defaults` because PR0TA's cached catalog can lag MuAPI's live schema.
 
 Seedance 2.0 is natively audiovisual at the model-family level. Whether a specific MuAPI route exposes generated-audio controls is a separate payload question. The current VIP schemas do not document a universal `sound` or `generate_audio` field. Verify live defaults and inspect the actual result before relying on native audio.
 
@@ -32,7 +32,7 @@ Tokens are positional and lowercase in MuAPI's current documentation:
 
 | Prompt token | Provider input | Meaning |
 |---|---|---|
-| `@image1` … `@image9` | nth `images_list` entry | identity, set, prop, composition, lighting, style, storyboard |
+| `@image1` … `@image9` | nth `images_list[]` entry | identity, set, prop, composition, lighting, style, storyboard |
 | `@video1` … `@video3` | nth `video_files` entry | performance, physical motion, camera trajectory, cuts, rhythm |
 | `@audio1` … `@audio3` | nth `audio_files` entry | rhythm, timing, sound character, or speech-content guidance |
 | `@character:<request_id>` | completed Seedance 2 Character-sheet request | provider injects that request's character image |
@@ -70,7 +70,7 @@ Official ByteDance examples often lead with genre or shot intent for T2V, motion
 
 ### Prompt-Only T2V
 
-Prefer `muapi/seedance-2-vip-text-to-video` when there are no references:
+Use `muapi/seedance-2-vip-text-to-video` (mode `txt_to_vid`) when there are no references:
 
 ```text
 [Genre, shot scale, and opening composition]. [Subjects and setting]. First, [action]. Then, [physical development and reaction]. The camera [path and target]. [Lighting and sound events]. The shot ends with [observable state].
@@ -197,19 +197,19 @@ PR0TA preserves provider request IDs in task metadata, but the unified `extend_v
 
 ## Choosing Seedance 2.0 vs 2.5
 
-Prefer Seedance 2.0 Omni when the shot needs:
+Seedance 2.0 Omni is the route that offers:
 
 - Positional `@image`, `@video`, or `@audio` role binding.
 - A trained Omni or character-sheet resource.
 - Model-family audiovisual generation, with result-level verification.
 - The established PR0TA global-bible/storyboard-token workflow.
 
-Prefer Seedance 2.5 when the shot needs:
+Seedance 2.5 is the family that offers:
 
 - A 16–30 second single generation.
 - The larger Omni capacity of 30 images, 10 videos, and 10 audios (50 total inputs).
 - Dedicated first/last-frame routing.
-- A 480p draft route followed by a 720p final candidate.
+- 480p, 720p, native 1080p, and native 4K routes selected by model ID.
 
 Seedance 2.5's current MuAPI routes do not expose 2.0's character tokens or documented positional reference tokens. Do not transfer those features by name.
 
@@ -234,7 +234,6 @@ Seedance 2.5's current MuAPI routes do not expose 2.0's character tokens or docu
 - [Official Seedance 2.0 model page](https://seed.bytedance.com/en/seedance2_0)
 - [Seedance 2.0 technical report](https://arxiv.org/abs/2604.14148)
 - [MuAPI OpenAPI](https://api.muapi.ai/openapi.json)
-- [MuAPI Omni task metadata](https://muapi.ai/api/app/get-task-data?name=seedance-2-vip-omni-reference)
 - [MuAPI Seedance 2 VIP Extend](https://muapi.ai/playground/seedance-2-vip-extend)
 
 PR0TA defaults are synchronized to the live provider schemas. Re-check `models_get_defaults` before production because provider contracts can change.

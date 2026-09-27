@@ -42,7 +42,7 @@ Let Marble recaption by default. Use `disable_recaption=true` only when the exac
 
 ## Choose the model
 
-- `marble-1.1`: recommended default and fixed-cost current-quality model.
+- `marble-1.1`: fixed-cost current-quality model.
 - `marble-1.1-plus`: largest worlds; dynamically expands 3D coverage for large outdoor or indoor spaces and can cost more.
 - `marble-1.0-draft`: fast, low-cost prompt and layout exploration.
 - `marble-1.0`: legacy model retained for ongoing explorations.

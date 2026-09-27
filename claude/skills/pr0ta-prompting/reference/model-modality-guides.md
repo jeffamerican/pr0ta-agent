@@ -4,7 +4,7 @@ Use this reference whenever the selected model belongs to one of the curated fam
 
 ## Required Routing Order
 
-1. Resolve the exact current `model_id` from model discovery or the generation request.
+1. Resolve the exact `model_id`: the user's named model, else `models_preferred(modality=...)`, else a choice from `models_list(modality=...)` (see `pr0ta-image` and `pr0ta-video`).
 2. Resolve the active operation: T2V, I2V, audio-to-video, first/last frame, Omni/reference, video edit/extend, T2I, image edit/reference, image-to-3D, TTS, audio reference, image-to-audio, text-to-music, or image-to-music.
 3. Apply only the matching row below. Do not transfer tokens, section grammar, negative-prompt behavior, or reference semantics across models or routes.
 4. Query `models_get_defaults` before building the payload. This reference controls prompt writing, not the live endpoint schema.
@@ -61,7 +61,7 @@ For dialogue, define stable speaker IDs and use `<d>[Language] exact words</d>`.
 
 Official sources: [H3 base prompt guide](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md), [H3 reference guide](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md).
 
-H3 Max has separate Fal T2V, I2V, and R2V IDs. Its R2V route binds literal `Image 1`, `Video 1`, and `Audio 1` roles, accepts 12 files, and requires `balanced` or `quality` prompt expansion. Do not copy fixed-2K H3 fields into it.
+H3 Max has separate Fal T2V, I2V, Multi-Angle, lip-sync, and R2V IDs. Its R2V route binds literal `Image 1`, `Video 1`, and `Audio 1` roles, accepts 12 files, and requires `balanced` or `quality` prompt expansion. Multi-Angle takes a structured `camera_trajectory`; its prompt describes only subject motion (a blank prompt freezes the scene). Do not copy fixed-2K H3 fields into H3 Max.
 
 ### FLUX 3
 
@@ -104,7 +104,7 @@ Deep reference: `pr0ta-video/reference/wan-3.0.md`.
 | I2V | motion onset from frame zero → causal action → camera evolution → sound → end state | The source image owns subject, scene, composition, and style; optional `last_image` is terminal guidance on the same route. |
 | R2V | plain-language ordinal reference ledger → chronological action → camera/reference relationship → sound → landing | Finalize each media array first and give every reference one primary job; numbering is separate within image, video, and audio arrays. |
 
-Wan generates audio by default. MuAPI routes use `enable_audio` and `thinking_mode`; Fal-native `alibaba/wan-3.0-prime/*` routes use `audio`, `enable_thinking`, and `enable_prompt_expansion`. Their reference array names also differ. Standard and Prime share the same natural-language prompting approach, but payload fields must come from the selected provider schema. Wan 3.0 is a native typography candidate: quote exact copy, describe its design/motion/hold, and inspect every frame. Never use `@imageN`, `@videoN`, `@audioN`, `@ElementN`, character-token syntax, or an invented negative-prompt field. Treat exact dialogue and lip sync as take-level QC, not a guarantee.
+Wan generates audio by default. MuAPI routes use `enable_audio: bool` and `thinking_mode`; Fal-native `alibaba/wan-3.0-prime/*` routes use `audio`, `enable_thinking: bool`, and `enable_prompt_expansion: bool`. Their reference array names also differ. Standard and Prime share the same natural-language prompting approach, but payload fields must come from the selected provider schema. Wan 3.0 is a native typography candidate: quote exact copy, describe its design/motion/hold, and inspect every frame. Never use `@imageN`, `@videoN`, `@audioN`, `@ElementN`, character-token syntax, or an invented negative-prompt field. Treat exact dialogue and lip sync as take-level QC, not a guarantee.
 
 Official sources: [MuAPI Wan 3.0](https://muapi.ai/wan-3), [Wan 3.0 T2V](https://muapi.ai/playground/wan3.0-text-to-video), [Wan 3.0 I2V](https://muapi.ai/playground/wan3.0-image-to-video), [Wan 3.0 R2V](https://muapi.ai/playground/wan3.0-reference-to-video). Alibaba's [Wan prompt guide](https://www.alibabacloud.com/help/en/model-studio/text-to-video-prompt) supports the family-level entity/scene/motion, I2V motion/camera, and sound-direction techniques, but its multi-shot and reference syntax currently name Wan 2.6/2.7 rather than Wan 3.0.
 
@@ -143,11 +143,21 @@ Use precise camera vocabulary when framing matters. Attribute dialogue to named 
 
 Official sources: [Gemini Omni prompt guide](https://deepmind.google/models/gemini-omni/prompt-guide/), [Gemini Omni API](https://ai.google.dev/gemini-api/docs/omni).
 
+### Grok Imagine Video 1.5
+
+Deep reference: `pr0ta-video/reference/grok-imagine-video-1.5.md`.
+
+| Operation | Prompt order | Critical rule |
+|---|---|---|
+| T2V | framing/setting → subject action → camera → dialogue/sound → end state | Prompt at most 4,096 characters; no image inputs. |
+| I2V | motion after frame zero → camera → sound → end state | The single image owns appearance and aspect ratio. |
+| R2V | zero-based `<IMAGE_N>` role tags → chronological action → camera → sound → end state | Tag 1–7 images as `<IMAGE_0>`, `<IMAGE_1>` in final array order. |
+
 ## Image Models
 
 ### GPT Image 2.5
 
-PR0TA policy: GPT Image 2.5 supersedes GPT Image 2 / GPT-Image-02. Prefer Sunburst with `quality: "max"` for production quality; use Flare for speed-sensitive iteration. Use GPT Image 2 only on explicit user request, never as an automatic fallback. This preference does not override the user's selected model or quality.
+GPT Image 2.5 has Sunburst and Flare variants (Flare is the faster one), each with text-to-image and edit routes. Keep the user's selected model and quality, and never swap one GPT generation for another silently.
 
 | Operation | Prompt order | Critical rule |
 |---|---|---|
@@ -158,11 +168,11 @@ Highest quality is the literal request value `quality: "max"`; Fal defaults to `
 
 Read [GPT Image 2.5 production prompting](gpt-image-25.md) for exact Fal routes, a premium still/edit recipe, supported controls, and QC. Use natural numbered image roles rather than Seedance's `@image1` grammar. Preserve authored copy and current project authority during enhancement.
 
-Official sources: [OpenAI image prompting](https://developers.openai.com/api/docs/guides/image-prompting), [Fal Sunburst edit](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api).
+Official sources: OpenAI image prompting (OpenAI developer docs), [Fal Sunburst edit](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api).
 
 ### GPT-Image-02
 
-Legacy compatibility guidance, only when the user explicitly requests GPT Image 2. Use its original Fal endpoint and schema; do not send GPT 2.5-only `xhigh` or `max` values. Write scene, subject, composition, lighting, exact text, and constraints; for edits assign numbered image roles and preserve identity, layout, and copy. Never switch an expressly requested GPT Image 2 job to GPT 2.5 silently.
+GPT Image 2 (`openai/gpt-image-2`, `openai/gpt-image-2/edit`) is a separate route from 2.5. Use its own schema; do not send the 2.5-only `xhigh` or `max` quality values. Write scene, subject, composition, lighting, exact text, and constraints; for edits assign numbered image roles and preserve identity, layout, and copy.
 
 ### Nano Banana Pro and Nano Banana 2
 
@@ -221,6 +231,14 @@ Grok responds well to detailed natural-language briefs covering subject, style, 
 
 Official sources: [xAI image generation](https://x.ai/grok/use-cases/image-generation), [xAI image editing](https://x.ai/grok/use-cases/image-editing).
 
+### Reve 2.1
+
+| Operation | Prompt order | Critical rule |
+|---|---|---|
+| T2I | deliverable/layout → subject → composition and text hierarchy → materials/light → exact copy | Suited to posters, packaging, and infographics with in-image text; quote copy exactly. |
+| Edit | requested change → preserved content | One `image_url`; name what must stay. |
+| Remix | `<frame>N</frame>` role per reference → combined result → preserved traits | 1–8 references; bind each with `<frame>N</frame>`. |
+
 ## 3D Models
 
 ### Meshy v7
@@ -244,7 +262,7 @@ Write natural performance-ready text. Insert a few compatible audio tags where d
 
 Do not use SSML break tags with V3. Do not stack many experimental tags or expect a calm source voice to shout convincingly.
 
-Official source: [ElevenLabs V3 prompting guide](https://elevenlabs.io/docs/best-practices/prompting).
+Official source: [ElevenLabs V3 prompting guide](https://elevenlabs.io/docs/best-practices/prompting). PR0TA request fields and tag list: `pr0ta-audio/reference/elevenlabs-v3-audio-tags.md`.
 
 ### Gemini TTS Models
 
@@ -257,7 +275,7 @@ Prompt order: `AUDIO PROFILE → SCENE → DIRECTOR'S NOTES → SAMPLE CONTEXT w
 - For multi-speaker dialogue, speaker labels must exactly match configured speaker names.
 - Select a prebuilt voice whose inherent character supports the performance.
 
-Official source: [Google Gemini speech generation](https://ai.google.dev/gemini-api/docs/speech-generation).
+Official source: [Google Gemini speech generation](https://ai.google.dev/gemini-api/docs/speech-generation). PR0TA request fields: `pr0ta-audio/reference/gemini-tts.md`.
 
 ### Seed Audio 1.0
 
@@ -269,7 +287,7 @@ Official source: [Google Gemini speech generation](https://ai.google.dev/gemini-
 
 PR0TA's current Fal route accepts up to three audio references or one image; the two reference types are mutually exclusive. Query the live schema for current limits.
 
-Official source: [ByteDance Seed Audio 1.0](https://seed.bytedance.com/en/seedaudio1_0).
+Official source: [ByteDance Seed Audio 1.0](https://seed.bytedance.com/en/seedaudio1_0). PR0TA request fields: `pr0ta-audio/reference/seed-audio.md`.
 
 ## Music
 
@@ -281,6 +299,8 @@ Official source: [ByteDance Seed Audio 1.0](https://seed.bytedance.com/en/seedau
 | Image-to-music | image people/place/action/mood → genre → tempo → instruments → dynamics → vocals/lyrics | Translate visible meaning into concrete musical decisions. |
 
 Name instruments and their roles. Prefix supplied words with `Lyrics:` or describe a lyrical theme when lyrics should be generated.
+
+Lyria 3.5 (`google/lyria-3.5`) has no duration field: state the length and structure in the prompt ("a 2-minute track", "[0:00-0:30] Intro: ..."). It takes prompts in English, German, Spanish, French, Hindi, Japanese, Korean and Portuguese, has no negative prompt (describe what you want, not what to avoid), and returns MP3 at a flat price per generation.
 
 Official source: [Google Lyria prompt guide](https://deepmind.google/models/lyria/prompt-guide/).
 

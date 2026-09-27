@@ -1,49 +1,74 @@
 # Provider Consistency Systems
 
-Read this only when creating, registering, or troubleshooting provider-level consistency resources for recurring subjects. Keep `SKILL.md` as the routing and rule surface; this file carries lifecycle details and payload recipes.
+Read this when creating, registering, using, or troubleshooting provider consistency resources. `SKILL.md` holds the rules and the order of work; this file holds the lifecycle details and payload shapes. Every example resolves its generation model with `models_preferred` (or `models_list` when it returns null); none of them chooses a model.
 
-## Kling Elements (V3 / O3 / Omni)
+## Contents
 
-### What Is An Element?
+- Kling Elements
+- Seedance 2.0 Characters
+- Seedance Omni multi-modal references
+- Multi-prompt and multi-shot generation
+- Camera control
+- Reference pipeline
+- Image edit for consistency correction
 
-An Element is a reference bundle representing a single subject -- a character, prop, location, or object. Each Element consists of:
+## Kling Elements
 
-- **1 frontal/hero image** -- the primary, clearest view of the subject (front-facing preferred)
-- **1-3 additional reference images** -- different angles, poses, or views of the same subject
+### What an Element Is
 
-The frontal image tells the model "this is the subject." The additional references give the model more information about the subject's appearance from other angles, which dramatically improves consistency -- especially for characters that move, turn, or appear from multiple perspectives.
+An Element is a reference bundle for one subject: a character, prop, location, or object.
 
-### Building Strong Element Bundles
+- **One frontal (hero) image**: the clearest, front-facing view. It tells the model "this is the subject."
+- **One to three more images**: other angles, poses, or views of the same subject, which improve consistency when the subject turns or moves.
 
-**Characters:** frontal face/body shot + profile view + 3/4 angle + back view (if available)
-**Props/Objects:** hero product shot + side angle + detail close-up
-**Locations/Sets:** establishing wide shot + key detail angles
+Good bundles: a character's front, profile, three-quarter, and back views; a prop's hero, side, and detail views; a location's establishing wide plus key detail angles. Every image in an Element shows the **same** subject; make a separate Element for each distinct subject, era, or wardrobe. Build the bundle from the approved Prep references (casting portraits and sheets, looks, props, set plates) and generate only the missing angles.
 
-All images in a single Element must depict the **same subject**. Do not mix different characters or objects into one Element -- create separate Elements for each distinct subject.
+### Creating an Element
 
-### Creating Elements via API
+An Element is created on Kling, then registered in the project.
 
-```json
-POST /api/v2/projects/{project_id}/elements
-{
-  "name": "Protagonist - Sarah",
-  "provider": "kling",
-  "provider_resource_id": "101",
-  "reference_asset_ids": ["uuid-frontal", "uuid-profile", "uuid-three-quarter"]
-}
-```
+1. **Create it on Kling** from the approved images.
+   `POST /api/kling/elements` with the project and the images. PR0TA resolves project asset URLs to provider-readable ones:
 
-This stores the Element in the project. Use the returned `id` in subsequent generations via `element_ids[]`.
+   ```json
+   {
+     "project_id": "project-uuid",
+     "reference_type": "image_refer",
+     "element_name": "Sarah",
+     "element_image_list": {
+       "frontal_image": "<approved front asset URL>",
+       "refer_images": [{ "image_url": "<approved profile asset URL>" }]
+     }
+   }
+   ```
 
-### Using Elements In Generation
+   The response carries a task ID; poll `GET /api/kling/elements/tasks/{task_id}` until it returns the `element_id`. `GET /api/kling/elements?project_id=` lists the project's Elements. A video Element uses `reference_type: "video_refer"` with `element_video_list.refer_videos[]`.
+2. **Register it in the project**:
 
-Reference stored Elements by their project IDs:
+   ```json
+   consistency_resources_create({
+     "resource_type": "element",
+     "resource": {
+       "name": "Sarah",
+       "provider": "kling",
+       "provider_resource_id": "<element_id from Kling>",
+       "reference_asset_ids": ["uuid-frontal", "uuid-profile", "uuid-three-quarter"],
+       "labels": { "character_name": "Sarah" }
+     }
+   })
+   ```
+
+   REST: `POST /api/v2/projects/{project_id}/elements` with the same body. The character bundle finds an Element by its labels or name matching the character, or by shared reference assets.
+
+### Using Elements in Generation
+
+Pass stored Elements by project ID or provider ID in `element_ids[]` on a Kling route that accepts Elements:
 
 ```json
 {
   "generator": "video",
   "mode": "ref_to_vid",
-  "model": "kling_o3_pro",
+  "model": "<model_id from models_preferred(modality: \"reference_to_video_model\")>",
   "prompt": "@Element1 walks into the room and looks around nervously...",
   "start_image_asset_id": "uuid-scene-frame",
   "element_ids": ["element-uuid-sarah", "element-uuid-desk-prop"],
@@ -51,168 +76,104 @@ Reference stored Elements by their project IDs:
 }
 ```
 
-You can also pass inline Elements for one-off references:
+Check the resolved model's `models_get_defaults` `supported_modes` and fields first; not every route accepts Elements. For a one-off bundle without a stored Element, pass inline Elements:
 
 ```json
 "elements": [
-  {
-    "frontal_asset_id": "uuid-frontal",
-    "additional_asset_ids": ["uuid-profile", "uuid-three-quarter"]
-  }
+  { "frontal_asset_id": "uuid-frontal", "additional_asset_ids": ["uuid-profile", "uuid-three-quarter"] }
 ]
 ```
 
-**Token reference in prompts:** `@Element1` = first element, `@Element2` = second element. `@Image1` = Start Image. Never use pronouns -- always reference subjects by token or label.
+**Prompt tokens:** `@Element1` is the first Element, `@Element2` the second; `@Image1` is the start image. Never refer to subjects by pronoun; use the token or a fixed label.
 
-### Element Best Practices
+### Element Practice
 
-1. **Create Element bundles at project start** -- before video generation, build all recurring character/prop/location Elements.
-2. **Reuse the same Elements across all generations** -- this is the primary Kling consistency mechanism.
-3. **Use Refs slider at 140%+** -- higher values mean stronger visual fidelity to references.
-4. **Four reference images per character is ideal** -- frontal + profile + 3/4 + back.
-5. **Generate reference images first** -- use Nano Banana 2 by default, or GPT Image 2.5 Sunburst for character consistency edits.
-6. **Upload real-world references when available** -- actor headshots, product photos, location scouts, or storyboard scans can be ingested through direct image upload, then reused in Elements and generation payloads.
-7. **Do multiple takes** -- generate 4-6+ variations of every reference image and select the strongest. The quality of your references sets the ceiling for the entire production.
+1. Build the recurring character, prop, and location Elements before video generation.
+2. Reuse the same Elements for every shot of that subject.
+3. Four references per character (front, profile, three-quarter, back) is the strong case.
+4. Upload real references (actor headshots, product photos, scouts) when they exist.
+5. Generate four to six takes of any missing reference and keep the strongest; the references set the ceiling for the production.
 
-## Seedance 2.0 Characters (MuAPI)
+## Seedance 2.0 Characters
 
-### What Is A Seedance Character?
+### What a Seedance Character Is
 
-Seedance 2.0 Omni supports persistent character identity through the MuAPI character system. A Seedance character is constructed from:
+Seedance 2.0 Omni holds a character's identity through a trained Omni token. Train it from:
 
-- **1 frontal image** -- a clear, front-facing photo of the character (the identity anchor)
-- **1 character sheet** -- a multi-panel reference showing front, back, side profile, action pose, and/or expressions (generated at 4K 21:9 resolution)
-- **Optionally 1-2 additional images** -- supplementary angles or poses for stronger identity lock
+- **one clean frontal portrait**, the identity anchor; or
+- **a character sheet or up to three approved stills**: front, back, profile, an action pose, and expressions, with an outfit description.
 
-The character sheet is the critical differentiator from Kling Elements. It gives the model a comprehensive understanding of the character's full appearance in a single image -- multiple angles, expressions, and details laid out as a professional character reference sheet.
+A character sheet gives the model the full appearance in one image: several angles and expressions laid out as a professional reference sheet. Strong sheets render every panel clearly, keep the appearance identical across angles, show distinctive features, use a neutral background, and cover front, back, profile, and at least one expressive pose. Start from the approved Prep sheet (`cast_list_get`); if none exists, build the brief with `casting_character_sheet_prompt_resolve`, generate with `models_preferred(modality: "image_model")`, fan out four to six takes, and have the user approve one.
 
-### Generating Strong Character Sheets
+Never mix hairstyles, outfits, makeup, or ages in one training set. Providers average ambiguous references and every downstream shot drifts. One identity, one era or look, one wardrobe concept per Character.
 
-Use Nano Banana 2 to generate the character sheet before creating the Seedance character:
+### Training the Token
 
-```text
-Professional character reference sheet for [character description].
-4K resolution, 21:9 ultra-wide layout. Panels showing: front-facing portrait,
-back view, left profile, right three-quarter view, action pose, facial
-expression range. Clean white background, consistent studio lighting across
-all panels. Character design sheet for animation production.
-```
+Training runs through unified generation (`generation_submit`, REST `POST /api/v2/projects/{project_id}/generate`) on one of two Seedance character training routes:
 
-Generate 4-6+ variations and select the best. The character sheet is the foundation of all subsequent Seedance generations; every quality flaw propagates forward.
-
-Strong character sheets have clear rendering in every panel, consistent appearance across angles, visible distinctive features, a neutral background, and coverage of front, back, side profile, and at least one expressive pose.
-
-### Creating A Seedance Character Token
-
-You do not upload a character directly to `POST /characters`. You first train a character token on MuAPI, then persist the returned token into the project character store. Both training paths run through the unified generation endpoint and return an Omni token in `result_refs.character_id` on completion.
-
-| You have... | Use this training model | Required inputs |
+| You have | Route | Required inputs |
 |---|---|---|
-| One clean frontal portrait | `muapi/seedance-2-omni-reference-train` | `image_url` or `image_asset_id` + `character_name` |
-| A character sheet or 1-3 curated approved stills | `muapi/seedance-2-character` | `images_list[]` + `character_name` + `outfit_description` |
+| One clean frontal portrait | `muapi/seedance-2-omni-reference-train` | `image_url` or `image_asset_id`, `character_name`; optional `description` |
+| A character sheet or 1–3 approved stills | `muapi/seedance-2-character` | `images_list[]` (up to three), `character_name`, `outfit_description` |
 
-Do not mix hairstyles, outfits, makeup, or ages in one training build. Providers average ambiguous references, and you will get drift in every downstream shot. One identity, one era/look, one wardrobe concept per build.
-
-#### Path A -- Single Portrait Training
+Single portrait:
 
 ```json
-POST /api/v2/projects/{project_id}/generate
 {
   "generator": "video",
   "mode": "ref_to_vid",
   "model": "muapi/seedance-2-omni-reference-train",
-  "image_url": "https://example.com/hero-portrait.jpg",
+  "image_asset_id": "uuid-approved-portrait",
   "character_name": "Maya",
   "description": "Female lead, black leather jacket, studio portrait, neutral expression"
 }
 ```
 
-- Async job -- poll `GET /api/v2/projects/{project_id}/tasks/{task_id}` until `status: "succeeded"`.
-- Required fields: `image_url` (or `image_asset_id`) and `character_name`.
-- The portrait must be a single clean face-forward image. One identity, no compositing.
-- `description` is optional but helps downstream identity lock.
-
-#### Path B -- Character Sheet Training
+Character sheet or stills:
 
 ```json
-POST /api/v2/projects/{project_id}/generate
 {
   "generator": "video",
   "mode": "ref_to_vid",
   "model": "muapi/seedance-2-character",
   "prompt": "Create a reusable character profile for later Seedance Omni Reference shots.",
-  "images_list": [
-    "https://example.com/maya-sheet-front.jpg",
-    "https://example.com/maya-sheet-profile.jpg",
-    "https://example.com/maya-sheet-closeup.jpg"
-  ],
+  "images_list": ["<approved sheet URL>", "<approved profile URL>", "<approved close-up URL>"],
   "character_name": "Maya",
   "outfit_description": "Black leather jacket, white tee, dark jeans"
 }
 ```
 
-- Async job -- poll to `succeeded` like Path A.
-- Accepts up to 3 stills in `images_list[]`.
-- `outfit_description` is required and validator-enforced on this path.
-- Designed for multiple approved references plus wardrobe context.
+Poll with `tasks_get` until `succeeded`. The task's `result_refs` carry the Omni token as `character_id` (the `result` media envelope does not), the character name, any sheet assets, and `project_character_id`: PR0TA has already stored the Character for the project. Add the approved Prep reference asset IDs to it with `consistency_resources_update(resource_type: "character", resource_id, updates: {reference_asset_ids})` and tag the source portrait or sheet as a `character_reference` so the bundle finds it.
 
-#### Async Completion Shape
+A token trained outside PR0TA is registered with `consistency_resources_create(resource_type: "character", resource: {name, provider: "muapi", provider_resource_id: "<token>", reference_asset_ids})` (REST `POST /api/v2/projects/{project_id}/characters`). Characters support only `provider: "muapi"`, and one token registers once per project.
 
-```json
-{
-  "status": "succeeded",
-  "result_refs": {
-    "character_id": "omni-maya-token",
-    "character_name": "Maya",
-    "reference_urls": ["https://example.com/hero-portrait.jpg"]
-  }
-}
-```
-
-The `character_id` string is the Omni token. Prefer `result` over `result_refs` for unified-generation clients when both are present; the normalized shape surfaces the same identifier as `result.character_id`.
-
-#### Persisting The Token
-
-Save the Omni token into the project character store so you can reference it by UUID in future generations:
-
-```json
-POST /api/v2/projects/{project_id}/characters
-{
-  "name": "Maya",
-  "provider": "muapi",
-  "provider_resource_id": "omni-maya-token"
-}
-```
-
-The response returns a project-scoped UUID. From this point forward, reference Maya in generations by that UUID via `character_ids[]`. You only train once per identity; every subsequent shot reuses the stored character. After persisting, tag the source portrait/sheet assets as `character_reference` so the consistency bundle can find them.
-
-### Using Characters In Generation
+### Using Characters in Generation
 
 ```json
 {
   "generator": "video",
-  "mode": "txt_to_vid",
-  "model": "muapi/seedance-2-vip-omni-reference",
-  "prompt": "@image1 -- Sarah walks through a bustling Tokyo market at golden hour. Camera tracks from behind.",
-  "character_ids": ["project-character-uuid-sarah"],
+  "mode": "ref_to_vid",
+  "model": "<model_id of a Seedance 2.0 Omni route>",
+  "prompt": "@omni-character:<token> walks through a bustling Tokyo market at golden hour. Camera tracks from behind.",
+  "character_ids": ["project-character-uuid-maya"],
   "reference_image_urls": ["https://example.com/scene-ref.png"],
   "duration": 10
 }
 ```
 
-**Current limitation:** The unified generation route currently resolves exactly one stored character per request.
+`character_ids[]` accepts the project Character ID or its token. A request carries at most three, and each must appear in the prompt as `@omni-character:<token>`; the bundle's `provider_payloads.seedance.prompt_tokens` gives the exact tokens. Test a take before relying on more than one lock in a shot. Seedance 2.0 Omni is the only route with trained character tokens (`pr0ta-video`); on other routes, pass the approved references as images.
 
 ## Seedance Omni Multi-Modal References
 
-Seedance 2.0 Omni is a quad-modal model supporting text + up to 9 images + 3 videos + 3 audio inputs (15 files by the per-modality ceilings).
+Seedance 2.0 Omni is quad-modal: text plus up to 9 images, 3 videos, and 3 audio files.
 
-| Reference Type | Max Count | What the Model Extracts | Use For |
-|---------------|-----------|------------------------|---------|
-| Images (`@image1`-`@image9`) | 9 | Character features, composition, lighting, color palette, pose, environment | Character identity, scene composition, style reference, location |
-| Videos (`@video1`-`@video3`) | 3 | Camera motion paths, movement speed, pacing, choreography | Camera trajectory, motion style, pacing reference |
-| Audio (`@audio1`-`@audio3`) | 3 | Rhythm, content, tonal mood, timing cues | Music-synced motion and speech-content guidance; verify sync per take |
+| Reference | Max | What the model takes from it | Use for |
+|---|---|---|---|
+| Images (`@image1`–`@image9`) | 9 | Features, composition, lighting, palette, pose, environment | Identity, composition, style, location |
+| Videos (`@video1`–`@video3`) | 3 | Camera path, movement speed, pacing, choreography | Camera trajectory, motion style, pacing |
+| Audio (`@audio1`–`@audio3`) | 3 | Rhythm, content, mood, timing cues | Music-synced motion and speech guidance; verify sync per take |
 
-Use the `references[]` array for typed multi-modal input:
+Typed references:
 
 ```json
 {
@@ -228,21 +189,17 @@ Use the `references[]` array for typed multi-modal input:
 }
 ```
 
-Reference strategy:
-- **Character + environment:** Use `@image1` for the character and `@image2` for the location/set. Assign them explicitly in the prompt.
-- **Motion matching:** Upload a reference video clip and reference it with `@video1` to transfer its camera movement and pacing to the new generation.
-- **Music-driven content:** Upload the music track as `@audio1` so the model can sync character motion to rhythm and beat.
-- **Combined:** "Match @image1 as the character, shoot in the style of @image2, use @video1 camera movement, sync to @audio1 beat pattern."
+Give every reference one job and name it in the prompt: "Match @image1 as the character, shoot in the style of @image2, use the @video1 camera movement, sync to the @audio1 beat." `pr0ta-video` → `reference/seedance-omni.md` owns the full Omni contract.
 
-## Multi-Prompt / Multi-Shot Generation
+## Multi-Prompt and Multi-Shot Generation
 
-Both Kling V3/O3 and Seedance support multi-prompt mode for generating multiple timed shots within a single video. This is critical for continuity because the model maintains consistency across all shots in one pass.
+Kling and Seedance routes with multi-prompt generate several timed shots in one video, which holds consistency across all of them.
 
 ```json
 {
   "generator": "video",
   "mode": "ref_to_vid",
-  "model": "kling/o3/image-to-video",
+  "model": "<model_id from models_preferred>",
   "prompt": "Hero navigates the warehouse",
   "prompt_mode": "multi_prompt",
   "multi_prompt": [
@@ -255,48 +212,38 @@ Both Kling V3/O3 and Seedance support multi-prompt mode for generating multiple 
 }
 ```
 
-Key points:
-- Set `prompt_mode: "multi_prompt"` to activate multi-prompt.
-- `multi_prompt` is an array of prompt segment objects.
-- Kling V3 supports up to 5 shots per generation.
-- Kling O3 supports up to 6 camera cuts.
-- Elements are shared across all segments, which maintains character consistency throughout.
+`prompt_mode: "multi_prompt"` activates it; `multi_prompt` is an array of segments; Elements apply to every segment. The segment limit is per route; read it from `models_get_defaults` or the model's reference in `pr0ta-video`.
 
-Use multi-prompt when shots are sequential in the same scene/location, character consistency within the sequence is critical, smooth camera transitions matter, and the total duration fits within one generation. Use separate generations when shots are in different locations, different characters appear in different shots, the total sequence exceeds maximum generation duration, or each shot needs independent control.
+Use multi-prompt when the shots share a scene, consistency inside the sequence matters, the camera flows between them, and the total fits one generation. Use separate generations for different locations, different characters per shot, sequences longer than the route's maximum, or shots that need independent control.
 
-## Camera Control (Kling V3)
+## Camera Control
 
-Kling V3 supports structured camera control parameters:
+Kling routes that accept it take structured camera movement instead of prompt text alone:
 
 ```json
-{
-  "camera_control": {
-    "type": "simple",
-    "config": { "horizontal": 5 }
-  }
-}
+{ "camera_control": { "type": "simple", "config": { "horizontal": 5 } } }
 ```
 
-This provides programmatic camera movement rather than relying on prompt text alone. Combine with multi-prompt for precise shot choreography.
+Combine it with multi-prompt for choreographed shots.
 
-## Professional Reference Pipeline
+## Reference Pipeline
 
-For productions requiring high consistency, follow this pipeline before any shot generation:
+For productions that need high consistency, before any shot generation:
 
-1. **Generate character reference sheets.** Use Nano Banana 2 to create multi-angle character reference images. Generate 4-6 variations minimum and select the strongest.
-2. **Generate location/set references.** Create establishing shots for recurring locations and set geometry.
-3. **Generate prop references.** Create clean multi-angle references for recurring props.
-4. **Tag references and create resources.** Tag approved reference images as `character_reference`, then create all Element bundles and Character profiles before video generation.
-5. **Generate scene key frames.** Use image-to-image with Element references so the right characters/props appear in the right locations.
-6. **Generate videos with consistency resources.** Use `element_ids[]` or `character_ids[]` from the consistency bundle on every generation.
+1. **Characters**: approved Prep portraits and sheets; generate only missing angles (`image_model` or `image_edit_model`), four to six takes each.
+2. **Locations and sets**: approved Prep set plates; generate missing establishing and detail views.
+3. **Props**: approved Prep prop references; generate clean multi-angle views where missing.
+4. **Label and build**: tag approved references (`character_reference` and so on), then create every Element and Character before video.
+5. **Key frames**: compose scene key frames from the Element or reference bundles (`elements_to_image_model`) so the right characters and props appear in the right places.
+6. **Video**: pass the bundle's `element_ids[]` or `character_ids[]` on every generation of that subject.
 
-Example final video payload:
+Final shot with a key frame and Elements:
 
 ```json
 {
   "generator": "video",
   "mode": "ref_to_vid",
-  "model": "kling_o3_pro",
+  "model": "<model_id from models_preferred(modality: \"reference_to_video_model\")>",
   "prompt": "@Image1 -- @Element1 enters frame from the left...",
   "start_image_asset_id": "uuid-keyframe-scene-1",
   "element_ids": ["element-uuid-sarah", "element-uuid-briefcase"],
@@ -304,20 +251,20 @@ Example final video payload:
 }
 ```
 
-## Image Edit For Consistency Correction
+## Image Edit for Consistency Correction
 
-When a generated image almost matches your reference but has inconsistencies, use the unified image edit modes to correct it:
+When a key frame almost matches but drifts (hair, jacket, prop), correct it with an image edit before generating video:
 
 ```json
 {
   "generator": "image",
   "mode": "img_to_img",
-  "model": "fal-ai/nano-banana-2/edit",
-  "prompt": "Keep the composition and pose but match the character appearance from the reference exactly. Same hair color, same jacket.",
+  "model": "<model_id from models_preferred(modality: \"image_edit_model\")>",
+  "prompt": "Keep the composition and pose; match the character's appearance to the reference exactly: same hair color, same jacket.",
   "image_asset_id": "uuid-generated-frame-with-issues",
   "reference_image_asset_ids": ["uuid-character-reference"],
   "element_ids": ["element-uuid-character"]
 }
 ```
 
-Use this for fixing character appearance drift in key frames before video generation, adjusting lighting/style to match a production look, and correcting props or wardrobe inconsistencies.
+Include `element_ids` only when the resolved edit model accepts Elements. Use corrections for appearance drift in key frames, matching lighting or style to the production look, and fixing props or wardrobe.

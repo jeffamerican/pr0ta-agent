@@ -1,6 +1,9 @@
+# Batch Generation and the Event Feed
+
 ## Batch Generation
 
-Submit multiple generation requests in a single call.
+Submit several generation requests in one call. MCP: `generation_batch_submit`
+with `{project_id, requests: [...]}`.
 
 ### Submit Batch (Auth Required)
 
@@ -12,25 +15,32 @@ Request:
 ```json
 {
   "requests": [
-    { "generator": "image", "mode": "txt_to_img", "prompt": "..." },
-    { "generator": "image", "mode": "txt_to_img", "prompt": "..." }
+    { "generator": "image", "mode": "txt_to_img", "model": "<model_id from models_preferred>", "prompt": "...", "idempotency_key": "shot-01-v1" },
+    { "generator": "image", "mode": "txt_to_img", "model": "<model_id from models_preferred>", "prompt": "...", "idempotency_key": "shot-02-v1" }
   ]
 }
 ```
 
-**CRITICAL: All parameters go at the top level of each request object.** Do NOT nest parameters inside a `"params"` object — this is a common mistake that causes `"prompt is required"` errors. Each request in the array has the same flat structure as a single `POST /generate` request.
+**All parameters go at the top level of each request object.** Each item has
+the same flat shape as a single `POST /generate` request. Nesting them inside a
+`"params"` object fails with errors such as `"prompt is required"`.
 
 ```json
-// ✅ CORRECT — flat structure
-{ "generator": "video", "mode": "ref_to_vid", "model": "kling_o3_pro", "prompt": "...", "duration": 10 }
+// Correct: flat
+{ "generator": "video", "mode": "ref_to_vid", "model": "<model_id>", "prompt": "...", "duration": 10 }
 
-// ❌ WRONG — nested params object
-{ "generator": "video", "mode": "ref_to_vid", "params": { "model": "kling_o3_pro", "prompt": "...", "duration": 10 } }
+// Wrong: nested params object
+{ "generator": "video", "mode": "ref_to_vid", "params": { "model": "<model_id>", "prompt": "...", "duration": 10 } }
 ```
 
 **Guardrails:**
-- Maximum 10 requests per batch. Exceeding this returns `413`.
-- Empty `requests` array returns `400`.
+- At most 10 requests per batch; more returns `413`.
+- An empty `requests` array returns `400`.
+- Every item is validated before any is submitted; items are then submitted one
+  by one, so an early item can be accepted before a later one fails.
+- An `Idempotency-Key` header is the batch key; PR0TA derives one key per item
+  from it. An item's own `idempotency_key` takes precedence.
+- `completion_subscription_id` can be set on each item.
 
 Response:
 ```json
@@ -42,29 +52,31 @@ Response:
 }
 ```
 
-Each task can be polled individually via the events or task endpoints.
+**Batch or loop.** Use the batch route for N distinct payloads you want queued in
+one round-trip. Use separate submissions when retries, cancels, or later
+requests depend on earlier results.
 
 ---
 
-## Generation Event Queue (Primary Completion Path)
-
-The event queue is the **preferred method** for detecting when generations complete. It replaces per-task polling for automation workflows.
-
-### List Generation Events
+## Generation Event Feed
 
 ```
 GET /api/v2/projects/{project_id}/events
 ```
 
-Returns terminal generation events for the project, newest first.
+Returns terminal generation events for the project, newest first. The feed
+tells a batch poller which tasks finished; the task itself stays the
+authoritative record, so confirm each event with `tasks_get` or
+`tasks_batch_get` before acting on it. For wake-ups without polling, use a
+completion subscription (`SKILL.md` → "Completion subscriptions").
 
 **Query parameters:**
-- `since` -- ISO timestamp; only events after this time
-- `status` -- filter by status (`succeeded`, `failed`)
-- `generator` -- filter by generator type (`image`, `video`, `audio`, `music`)
-- `task_id` -- filter to a specific task
-- `limit` -- max events per page (default: 50). **For batch workflows (10+ clips), always set `limit=200` or higher.** The default of 50 will silently drop later completions from the response.
-- `cursor` -- pagination cursor from previous response. Use `has_more` + `cursor` to paginate through large result sets.
+- `since`: ISO timestamp; only events after this time
+- `status`: `succeeded` or `failed`
+- `generator`: `image`, `video`, `audio`, `music`, ...
+- `task_id`: one task
+- `limit`: events per page (default and maximum 200)
+- `cursor`: from the previous response; page while `has_more` is true
 
 **Example response:**
 ```json
@@ -77,7 +89,7 @@ Returns terminal generation events for the project, newest first.
       "project_id": "project-1",
       "generator": "video",
       "mode": "ref_to_vid",
-      "model": "kling_o3_pro",
+      "model": "<model_id>",
       "status": "succeeded",
       "asset_id": "asset_abc123",
       "asset_ids": ["asset_abc123"],
@@ -90,23 +102,19 @@ Returns terminal generation events for the project, newest first.
 }
 ```
 
-**Useful filter patterns:**
-- `generator=video&status=succeeded` -- completed videos only
-- `generator=audio` -- narration/TTS completions
-- `task_id=$TASK_ID` -- reconciling a single job
-- `cursor=$CURSOR` -- consuming a long event stream page by page
+**Useful filters:**
+- `generator=video&status=succeeded`: completed videos only
+- `generator=audio`: narration and TTS completions
+- `task_id=$TASK_ID`: one job
+- `cursor=$CURSOR`: a long feed page by page
 
-**Batch workflow pagination:** The server now defaults to `limit=200` (previously 50). For very large batches (200+ events), still check `has_more` in the response and paginate with `cursor`. Events also now backfill missing terminal events from task history, so the previous gap where tasks succeeded without emitting events has been closed.
+For mixed image/video/audio/music batches, filter by `generator` rather than
+scanning one mixed feed.
 
-### Wait Strategy
+### Wait strategy
 
-Recommended wait times before first event poll:
-- Image: 15 seconds (image events and task reconciliation are now reliable; asset-listing fallback is retained as defense-in-depth)
-- Video: 60 seconds, then 30-second intervals
+Typical time before the first check:
+- Image: 15 seconds
+- Video: 60 seconds, then every 30 seconds
 - Audio: 10 seconds
 - Music: 20 seconds
-
-**Note:** Image generation events and task status reconciliation have been hardened (April 2026). Events now backfill from task history, and tasks reconcile to `succeeded` from persisted assets. The asset-listing fallback remains as defense-in-depth for any edge cases.
-
----
-

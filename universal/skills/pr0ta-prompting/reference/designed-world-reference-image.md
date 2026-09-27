@@ -246,8 +246,9 @@ approved Seedance character tokens forward separately.
 }
 ```
 
-The profile defaults to `muapi/seedream-5.0-pro-edit` with
-`reference_to_image`. Override technical parameters only when the selected
+Pass `target.model_id` from `models_preferred(modality="image_edit_model")`;
+the profile's built-in fallback applies only when no model is declared. The
+modality is `reference_to_image`. Override technical parameters only when the selected
 model's live schema requires it; never invent provider fields.
 
 Blender-worker outputs store the same package metadata in each asset's

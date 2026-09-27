@@ -8,7 +8,7 @@ This ladder is for content that complies with PR0TA policy, provider policy, law
 
 1. Confirm the error is a content classification, not an invalid field, missing reference, or quota failure.
 2. If the exact endpoint exposes a tolerance/safety control, retry once at the highest policy-compliant setting.
-3. If it still rejects, switch to a live suitable fallback: Grok Imagine, then LTX 2.3, then WAN 2.7/2.6/2.5 as available.
+3. If it still rejects, choose another model for the same operation from `models_list(modality=...)`, confirm its `supported_modes` and fields with `models_get_defaults`, and tell the user which model you switched to and why.
 4. Rewrite or soften the creative shot only after suitable alternate providers also reject it, because rewriting changes the user's intent.
 
 Positive prompt framing does not repair a true provider classifier rejection. Preserve the evidence and switch only when the content is allowed.

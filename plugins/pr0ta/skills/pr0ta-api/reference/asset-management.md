@@ -1,4 +1,8 @@
-## Asset Management (Auth Required)
+# Asset Management
+
+MCP: `assets_list`, `assets_get_download_link` (or `assets_get_download_links` for many), `assets_upload_start`, `assets_upload_batch_start`, `assets_upload_finalize`, `assets_annotations_update`, `assets_trim`. The REST routes below need a bearer token or, for downloads and thumbnails, a scoped `asset_token` URL.
+
+## Listing and Reading Assets
 
 ### List Project Assets
 
@@ -32,7 +36,7 @@ Read the asset ID from `.assets[i].asset.id`, not `.assets[i].id`.
 
 ### ⚠️ Asset Listing Pagination — Always Iterate to Exhaustion
 
-**Do not assume page 1 is exhaustive.** The asset listing endpoint paginates, and any project with more than ~50 assets will span multiple pages. Field-tested failure mode: an agent looked at page 1, didn't find `img_01`, concluded the asset was deleted — it was on page 2.
+**Do not assume page 1 is exhaustive.** The listing paginates; a project with more assets than one page spans several, and an asset missing from page 1 may be on page 2.
 
 **Canonical pagination contract for the project-scoped API:** offset-based with `next_offset`.
 
@@ -54,7 +58,7 @@ Response shape:
 - `next_offset` — offset to pass on the next request; **`null` when the listing is exhausted**
 - `total` — total count of assets matching the filters (useful for progress reporting)
 
-**Rule:** When searching for a known asset ID or name, iterate until `next_offset` is `null` (or the returned page is empty) before concluding the asset doesn't exist.
+**Rule:** When searching for a known asset ID or name, iterate until `next_offset` is `null` (or the returned page is empty) before concluding the asset doesn't exist. MCP `assets_list` pages the same way (`offset`, `limit`) and filters by `task_id`, `kind`, `category`, `reference_type`, `subject`, `q`, and more.
 
 ```python
 import subprocess, json
@@ -85,9 +89,7 @@ def find_asset_by_name(project_id: str, pat: str, name: str) -> dict | None:
     return None  # truly not in the project
 ```
 
-**Legacy cursor pagination:** The older (non-project-scoped) assets route at `/api/v2/assets` still supports `cursor`/`nextCursor` pagination. **Prefer the project-scoped endpoint with offset/next_offset for all new code** — it's the canonical contract going forward.
-
-**Tip:** For productions with dozens or hundreds of assets, maintain a local `assets.json` map (see the `pr0ta` hub skill) so you don't need to re-iterate the listing every time you look up an ID.
+**Tip:** For productions with many assets, keep a local `assets.json` map (see the `pr0ta` hub skill) so you do not re-iterate the listing for every lookup.
 
 ### Get One Asset
 
@@ -101,21 +103,27 @@ Returns the canonical `AssetRead` object directly. The asset must belong to the 
 
 ```
 GET /api/v2/projects/{project_id}/assets/{asset_id}/download
+GET /api/v2/projects/{project_id}/assets/{asset_id}/download-link
 ```
 
-This endpoint requires project authorization through a PAT/JWT bearer token or a scoped `asset_token` handoff and works reliably for all asset types (image, video, audio). A newly completed task can briefly precede object-store visibility; in that case the endpoint returns `202`, `Retry-After: 2`, and `{"status":"materializing"}` instead of a false durable 404. Retry the same authenticated URL after the indicated delay.
+`/download` returns the bytes for every asset type and needs project
+authorization (bearer token or a scoped `asset_token` URL). A just-finished
+task can precede object-store visibility: the route then returns `202`,
+`Retry-After: 2`, and `{"status":"materializing"}`; retry the same URL after
+the delay. `/download-link` (MCP `assets_get_download_link`) returns a
+short-lived scoped URL; add `?as_attachment=true` for download headers.
+Fetching bytes, verifying them, and bulk export: `pr0ta-downloading`.
 
-**Defense-in-depth fallback:** If a download ever returns 0 bytes, use the authenticated `storage_uri` fallback (this bug was fixed April 2026, but the fallback is good practice):
-
-1. Get asset metadata: `GET /api/v2/projects/{project_id}/assets?kind=video`
-2. Read the `storage_uri` field from the asset object
-3. Download with auth: `curl -L -H "Authorization: Bearer $PAT" "https://app.pr0ta.com${storage_uri}" -o video.mp4`
-
-### Get Asset Thumbnail (Authentication or Scoped Delivery Token Required)
+### Get Asset Metadata and Thumbnail
 
 ```
+GET /api/v2/projects/{project_id}/assets/{asset_id}/metadata
 GET /api/v2/projects/{project_id}/assets/{asset_id}/thumbnail
 ```
+
+Metadata includes `generation_context` (`prompt`, `model`, `negative_prompt`,
+`seed`, `task_id`, `submitted_at`, `completed_at`, `status` when recoverable),
+so any asset can be traced back to the job that produced it.
 
 ### MCP Signed Upload Lifecycle
 
@@ -137,29 +145,23 @@ If storage event delivery is unavailable or delayed and the asset remains in `up
 
 The start tools only create placeholders and signed upload URLs. Until the storage event finalizer or fallback `assets_upload_finalize` succeeds, uploaded assets remain in `uploading` status and may be absent from filtered `assets_list` results, normal project asset lists, and Asset Browser selectors. The fallback verifies object existence and any declared byte size/SHA-256 before transitioning the record to `ready`; integrity failures leave it non-ready. Successful finalization applies metadata/category/labels/folder updates and runs post-upload processing for media metadata and thumbnails.
 
-Production storage event endpoint:
-
-```text
-POST /api/internal/storage/object-finalize
-```
-
-The endpoint accepts Eventarc/CloudEvents storage finalize payloads or Pub/Sub push payloads for `OBJECT_FINALIZE`. Authenticate with either the existing `X-Internal-Secret` header or a Google OIDC bearer token whose service-account email matches `PR0TA_STORAGE_EVENT_SERVICE_ACCOUNT`. If `PR0TA_STORAGE_EVENT_AUDIENCE` is set, the OIDC token audience must match it; otherwise the endpoint URL is used as the expected audience.
-
 ---
 
 ## Batch Workflow Pattern
 
 For multi-shot productions, avoid one polling loop per task.
 
-Recommended pattern:
-
-1. Submit each generation and immediately persist `{scene_key, shot_key, task_id}` in your orchestration state.
-2. Poll `GET /api/v2/projects/{project_id}/events?limit=200` with `since=` or `cursor=` on a shared cadence. **Always set `limit=200`** for batch workflows — the default of 50 drops later completions.
-3. Match returned events by `task_id`. **Some tasks may succeed without generating events** — also poll individual tasks via `GET /api/tasks/{task_id}` for any that don't appear in events after the expected timeout.
-4. Attach `asset_id` / `asset_ids` back to your scene or shot keys.
-5. Use `GET /api/v2/projects/{project_id}/assets?task_id=$TASK_ID` for direct task-to-asset reconciliation, or broader filters like `kind=video` for audit passes.
-6. Use `created_after` / `created_before` on the assets endpoint to distinguish current runs from earlier failed or experimental batches.
-7. Normalize final video dimensions after download when your edit pipeline requires strict output sizes.
+1. Submit each generation with a stable `idempotency_key` and immediately
+   persist `{scene_key, shot_key, task_id}` in your orchestration state.
+2. Poll the tasks together with `tasks_batch_get` on a shared cadence, or read
+   `GET /api/v2/projects/{project_id}/events` (page with `cursor`; `limit`
+   defaults to and caps at 200) to learn which finished, then confirm each with
+   the task. Task status is authoritative.
+3. Attach `result.asset_id` / `result.asset_ids` back to your scene or shot
+   keys.
+4. For audits, list with `task_id=...`, `kind=video`, or
+   `created_after` / `created_before` to separate the current run from earlier
+   batches.
 
 Minimal orchestration state example:
 ```json

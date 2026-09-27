@@ -11,16 +11,18 @@ The three generation routes produce native audiovisual video. They accept 3–10
 
 ## Route Contracts
 
-| Route | Required | Optional references |
-|---|---|---|
-| T2V | `prompt` | None |
-| I2V | `prompt`, `image_url` | `end_image_url` |
-| R2V | `prompt` plus a deliberate reference package in PR0TA | `image_urls` (10), `reference_video_urls` (3) |
-| Edit | `prompt`, `video_url` | `resolution`: `360p`, `720p`, `1080p`, or `4k` |
+| Route | `mode` | Required | Optional references |
+|---|---|---|---|
+| T2V | `txt_to_vid` | `prompt` | None |
+| I2V | `ref_to_vid` | `prompt`, `image_url` | `end_image_url` |
+| R2V | `ref_to_vid` | `prompt` plus at least one image or video reference | `image_urls` (10), `reference_video_urls` (3) |
+| Edit | `video_to_video` | `prompt`, `video_url` | `resolution`: `360p`, `720p`, `1080p`, or `4k` |
+
+The I2V route rejects `img_to_vid`; PR0TA validates the mode per route.
 
 Each R2V reference video must be no longer than 3 seconds. The current Fal schema exposes no reference-audio field. Do not substitute Wan, Seedance, or H3 array names.
 
-The table above names Fal's provider fields, not the preferred unified PR0TA input. When the image already belongs to the project, submit its canonical asset ID:
+The table above names Fal's provider fields, not the unified PR0TA input. When the image already belongs to the project, submit its canonical asset ID:
 
 - I2V: `image_asset_id` or `start_image_asset_id`
 - R2V: ordered `reference_image_asset_ids[]`
@@ -39,6 +41,6 @@ For R2V, finalize each array before writing the prompt. Bind images with zero-ba
 
 For Edit, make the source clip authoritative. Request one focused transformation, locate it in space and time when needed, and state the identity, motion, timing, framing, and scene elements that must remain unchanged. Do not send generation-only fields that the Edit schema does not expose. Google moderation has rejected face-identifying prompt language and the word `drone` in provider runs; preserve the blocked receipt as moderation evidence rather than labeling it an outage.
 
-Every speech-bearing result must pass the Scribe V2 transcription gate before editorial use. Inspect actual duration, resolution, reference adherence, dialogue, and sync.
+Speech-bearing results follow the `pr0ta-audio` indexing rule before editorial use. Inspect actual duration, resolution, reference adherence, dialogue, and sync.
 
 Official Fal API pages: [T2V](https://fal.ai/models/google/gemini-omni-flash/v1.1/text-to-video/api), [I2V](https://fal.ai/models/google/gemini-omni-flash/v1.1/image-to-video/api), [R2V](https://fal.ai/models/google/gemini-omni-flash/v1.1/reference-to-video/api), [Edit](https://fal.ai/models/google/gemini-omni-flash/v1.1/edit/api).

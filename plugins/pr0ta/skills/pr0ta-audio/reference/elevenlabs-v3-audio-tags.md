@@ -1,6 +1,20 @@
 # ElevenLabs v3 Audio Tags
 
-Read this only when using the ElevenLabs v3 fallback (`model: "eleven_v3"`) or maintaining a legacy ElevenLabs-tagged workflow. For new PR0TA TTS, prefer Gemini Flash TTS and the main `pr0ta-audio` Gemini prompting section.
+Read this when the resolved `dialogue_model` is ElevenLabs v3 (`eleven_v3`),
+or when a scene dialogue take renders on it. Prompt guidance for the family is
+also in `pr0ta-prompting` → `reference/model-modality-guides.md` →
+"ElevenLabs V3".
+
+## Voices
+
+Use an ElevenLabs `voice_id`: from `voices_list(provider: "elevenlabs")`
+(copy `selection.voice_id`), from the cast, or from `voices_clone` /
+`voices_design_commit`. Do not decide v3 compatibility from voice metadata
+(`high_quality_base_model_ids`, `verified_languages`); ElevenLabs changes v3
+support without updating those fields. Submit with the voice; if v3 rejects it
+with a model-compatibility error, tell the user and offer another voice, or
+another model from `models_list(modality: "dialogue_model")` that the voice
+supports.
 
 ## Syntax
 
@@ -78,4 +92,4 @@ Eleven v3 treats punctuation as implicit delivery direction:
 - Professional Voice Clones are not optimized for v3. Use Instant Voice Clones or prompt-designed voices for better tag responsiveness.
 - Tags are suggestive, not deterministic. Regenerate if a take does not land.
 - Stability affects expressiveness. Higher stability is more consistent but less dynamic.
-- Keep dialogue under 2000 characters per call for Text to Dialogue. Standard TTS allows up to 5000 characters.
+- Single-voice TTS takes up to 5,000 characters per call. Scene dialogue requests (Text to Dialogue) take at most 2,000 characters and 10 distinct voices each; PR0TA splits a scene to fit and joins the parts. In scene lines, SSML `<break>` tags become ellipses and line `cues` become leading tags.

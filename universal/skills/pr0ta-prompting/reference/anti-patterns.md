@@ -36,7 +36,7 @@ The following anti-patterns break visual consistency and cause generation failur
 
 ### 9. Ambiguous Numeric Progressions
 **Bad:** "Count down from 9 to 1 over 2.5 seconds" (model will hallucinate intermediate values)
-**Good:** Enumerate every state with an explicit timestamp -- see Technique 1. Use Seedance 2.0 Omni for any enumerated-state shot.
+**Good:** Enumerate every state with an explicit timestamp -- see Technique 1.
 
 ### 10. Relying on Reference Context in Prose
 **Bad:** "The same scene, now at sunset." (prompt is not self-contained -- reference may be ignored)

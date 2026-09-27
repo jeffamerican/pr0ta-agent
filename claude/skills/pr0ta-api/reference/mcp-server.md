@@ -1,193 +1,21 @@
-# PR0TA MCP Server & Agent Tools
+# PR0TA MCP Server
 
-> **See also:** For review room tools exposed through this MCP surface, read `reference/review-room-api.md`. For the unified generation API, read `reference/unified-generation.md`.
+One tool registry serves both external MCP clients (Claude, Codex, ChatGPT,
+Cursor, and other remote-MCP hosts) and PR0TA's in-app agents. A tool is defined
+once, so the same name, schema, access checks, credits, and durable tasks apply
+wherever it is called.
 
-## Overview
+**Finding tools.** Call `prep_production_capabilities` for the page-to-tool map
+(which tools serve Development, Prep, Production, and Post pages). The complete
+generated catalog, with every tool's arguments, is `reference/mcp-tools.md`.
+Your MCP client's tool listing has the full JSON schemas.
 
-The PR0TA Agent Tool system provides a unified tool layer that serves two purposes:
+## Connecting
 
-1. **Internal agents** (Editor, Storyboarder, Director, etc.) use provider-native function calling through the BytePlus, Gemini, or OpenRouter adapter to query project data on demand.
-2. **External tools** (Codex, Claude Code, Cursor, ChatGPT, Claude connectors, etc.) connect via an MCP server to query and interact with PR0TA project data.
+### Packaged setup
 
-Both share a single provider-agnostic tool registry — each tool is defined once and consumed everywhere.
-
----
-
-## Available MCP Tools
-
-### Agent-Complete Tools (require `project_id` unless noted)
-
-| Tool | Description | Key Parameters |
-|------|-------------|----------------|
-| `generation_submit` | Submit one image, video, motion, 3D, Lipsync, speech, SFX, or music generation request | `project_id`, `request` |
-| `generation_batch_submit` | Submit multiple generation requests in one call | `project_id`, `requests` |
-| `memory_search` | Search cited ProtaFilm|memory claims for the current project | `project_id`, `query`, `department`, `scope_type`, `scope_id`, `limit` |
-| `memory_context_pack` | Get role/task/scope-specific project memory for prompt building and agent decisions | `project_id`, `agent_role`, `task_intent`, `scope` |
-| `memory_graph` | Get curated memory graph lenses for scene, department, decision, conflict, or provenance views | `project_id`, `lens`, `scene`, `department` |
-| `memory_get_confirmation` | Resolve the exact latest persisted approval message ID accepted by `memory_record_decision` for the calling role | `project_id` |
-| `memory_request_confirmation` | Ask the authenticated MCP user to approve one exact asset-bound decision and return a short-lived signed confirmation reference | `project_id`, `decision`, `semantic_key`, `approved_asset_id` |
-| `memory_record_decision` | Record a durable creative or production decision in project memory; missing confirmation returns `confirmation_required` without creating a candidate | `project_id`, `decision`, `semantic_key` or `replaces_claim_id`, `memory_snapshot_id` or `expected_head_ids`; optional `user_confirmation_ref`; matching `approved_asset_id` and an asset/reference/selection/approval semantic facet for an approved review event |
-| `memory_record_note` | Record a durable note for future agents | `project_id`, `title`, `body`, `department`, `scope_type`, `scope_id` |
-| `voices_list` | Browse/search TTS voices across ElevenLabs, Gemini/Google, MiniMax, Kling, and xAI | `project_id`, `provider`, `search`, `page_size`, `include_live`, `include_custom` |
-| `transcription_start` | Start Scribe V2 transcription and narration-timeline transcript auto-population | `project_id`, `asset_id`, `model_id`, `language`, `diarization`, `timestamp_granularity` |
-| `transcription_get` | Retrieve stored transcript text, segments, and flattened word timing | `project_id`, `asset_id` |
-| `tasks_get` | Poll canonical task state and result | `project_id`, `task_id` |
-| `tasks_cancel` | Cancel a queued/running task | `project_id`, `task_id` |
-| `assets_list` | List project assets with Prep/Production filters and pagination | `project_id`, `kind`, `category`, `reference_type`, `subject`, `source`, `favorite_only`, `asset_ids`, `folder_path`, `task_id`, `limit`, `offset` |
-| `assets_upload_start` | Create a retry-safe upload handoff; reuse the same idempotency key after an ambiguous timeout, and storage events auto-finalize after PUT succeeds | `project_id`, `filename`, `content_type`, `kind`, `folder_path`, `idempotency_key`, `checksum_sha256` |
-| `assets_upload_finalize` | Integrity-checking fallback finalizer; missing objects or declared size/SHA-256 mismatches fail without becoming ready | `project_id`, `asset_id`, `byte_size`, `checksum_sha256`, `duration_ms`, `metadata`, `category`, `subject`, `labels`, `status`, `folder_path` |
-| `assets_annotations_update` | Write tags, notes, labels, and semantic reference metadata to one asset | `project_id`, `asset_id` or `url`, annotation fields |
-| `assets_annotations_batch_update` | Annotate up to 100 Prep/Production assets in one call | `project_id`, `annotations` |
-| `assets_favorite_set` | Favorite or unfavorite an asset | `project_id`, `asset_id`, `favorite` |
-| `assets_get_download_link` | Return a short-lived scoped proxy URL without waiting for object-store signing | `project_id`, `asset_id`, `as_attachment`, `artifact` |
-| `assets_download` | Alias for returning a download URL for an asset | `project_id`, `asset_id` |
-| `audio_analyze` | Predict timeline audio levels for one range or multiple windows | `project_id`, `sequence_id`, `from_time`, `to_time`, `windows`, `track`, `tracks` |
-| `audio_meter` | Run actual LUFS/true-peak metering for short ranges/windows | `project_id`, `sequence_id`, `from_time`, `to_time`, `windows`, `track`, `tracks`, `allow_long`, `timeout_seconds` |
-| `music_analyze` | Start beat/downbeat/transient analysis for an instrumental asset | `project_id`, `asset_id`, `min_bpm`, `max_bpm`, `beats_per_bar`, include flags |
-| `post_sequence_get` | Load the saved post-production sequence/timeline | `project_id`, `sequence_id` (optional) |
-| `post_sequence_save` | Save or patch a post-production sequence/timeline payload | `project_id`, `timeline`, `sequence_id` (optional), `merge_existing`, `lock_token` |
-| `post_render_start` | Start a post-production render task | `project_id`, `render_request`, `sequence_id` |
-| `post_export_start` | Start a final master export task from a saved sequence; inline timeline payloads are rejected | `project_id`, `export_request`, `sequence_id` |
-| `narration_timeline_get` | Load narration-timeline state | `project_id` |
-| `narration_materialize_to_post` | Materialize narration cuts into post-production | `project_id`, `sequence_name`, `replace` |
-| `review_submit_assets` | Publish project assets to a client review room | `project_id`, `asset_ids`, `title`, `description`, `review_notes`, `allow_download`, `webhook_url`, `webhook_secret` |
-| `models_list` | Search the complete model/tool catalog with bounded pages | `generator`, `image_kind`, `search`, `curated_only`, `offset`, `limit` |
-| `models_get_defaults` | Resolve a catalog alias or provider ID and return contract-equivalent defaults/schema, `requested_model_id`, `resolved_model_id`, and compatible `request_defaults` | `model_id` |
-| `production_context_get` | Fetch existing script breakdown, casting, set, prop, look, and approved reference context for a scene/shot before generation | `project_id`, `scene_number`, `shot_number`, `character_names`, `include_provider_guidance` |
-| `storyboard_chunks_list` | List 4-15s screenplay/storyboard chunks suitable for Seedance storyboard reference sheets | `project_id`, `scene_number`, `scene_range_end`, `max_duration_seconds` |
-| `storyboard_reference_sheet_generate` | Generate chronological storyboard reference sheet variations for one chunk | `project_id`, `chunk_id`, `variation_count`, `reference_asset_ids`, `reference_image_urls`, `include_chunk_reference_urls` |
-| `storyboard_reference_sheets_list` | List generated storyboard reference sheet assets for a chunk, optionally with download links | `project_id`, `chunk_id`, `include_download` |
-| `prep_production_capabilities` | Map every Prep and Production page to its MCP tools | `project_id` |
-| `project_metadata_get` | Read full project metadata or selected top-level Prep keys | `project_id`, `keys`, `lightweight` |
-| `project_metadata_patch` | Merge editable Prep/Production metadata | `project_id`, `updates` |
-| `style_package_get` | Load Style-page metadata and persisted style assets | `project_id`, `include_assets` |
-| `style_package_save` | Persist `styleReferences` and annotate style/global-bible assets together | `project_id`, `styles`, `asset_annotations` |
-| `style_world_create` | Create one Style world without replacing existing worlds; optionally claim scenes | `project_id`, `name`; optional `style_id`, `scope`, prompts, notes, `scene_numbers`, `is_default` |
-| `style_world_assign_scenes` | Replace one alternate Style world's scenes and remove conflicts from other alternates | `project_id`, `style_id`, `scene_numbers` |
-| `style_world_update` | Update one Style world's canonical prompts, scope, notes, model controls, or default status | `project_id`, `style_id`; optional revised fields |
-| `style_world_delete` | Delete one Style world while retaining at least one valid default | `project_id`, `style_id` |
-| `department_heads_get` | Load Locations, Looks, and Props partitioned data | `project_id`, `start_scene`, `end_scene`, `include_bootstrap` |
-| `department_heads_save` | Persist Locations, Looks, or Props data | `project_id`, `department`, `scenes`, `breakdown`, `library`, `authoritative_scene_numbers` |
-| `cast_list_get` | Load the canonical Casting-page cast list | `project_id` |
-| `cast_list_save` | Failure-safely persist Casting metadata and cast CSV; optionally reconcile divergent stores | `project_id`, `cast_members`, optional `reconcile_existing` |
-| `agent_chat_orchestrate_prompt` | Build a typed multi-department provider prompt; bootstrap net-new character, hero-prop, or wardrobe candidates without an existing reference, or use the designed-world/Seedance specialist profiles | `project_id`, `creative_brief`, `prompt_profile`; optional `references`, `guidance_package`, `role_chain`, `optional_roles`, `target`, `memory_scope`, `authority_plan` |
-| `agent_chat_resume` | Resume a retryable failed orchestration from its preserved checkpoint without rerunning completed departments | `project_id`, `retry_token` from `tasks_get.error.details.retry_token` |
-| `agent_chat_send` | Queue project-scoped department chat using app context, credits, and persistence; `generation_mode: "prompt_only"` returns a typed package through the Production Queue Cinematographer boundary | `project_id`, `role`, `topic`, `message`; use `topic.deliverable: "seedance_omni_prompt"` for final Seedance packages |
-| `producer_read_generate`, `director_read_generate`, `casting_read_generate`, `script_supervisor_read_generate` | Queue durable Prep reads | `project_id` plus the prerequisite analysis payloads |
-| `department_read_generate` | Queue Locations, Looks, or Props reads | `project_id`, `department`, `scenes`, prerequisite analyses |
-| `shotlist_generate`, `shotlist_generate_batch`, `shotlist_scene_chat` | Generate or refine shotlists | `project_id` plus scene/analysis payloads |
-| `save_scene_shotlist` | Save shots with canonical integer `shotNumber`; scene-prefixed display labels such as `1.01` are preserved as `shot_id` | `project_id`, `scene_number`, `shots` |
-| `storyboard_generate`, `storyboard_generate_batch`, `storyboard_sequences_get`, `storyboard_sequences_save` | Generate and persist storyboards/sequences | operation-specific scene and sequence fields |
-| `production_queue_*` | Complete Production Queue CRUD, prompting, selection, regeneration, analysis, refresh, and recovery | operation-specific queue fields |
-| `memory_overview`, `memory_sources_*`, `memory_claims_list`, `memory_claim_update`, `memory_conflicts_list` | Full Memory workspace administration | operation-specific source, filter, and claim fields |
-| `casting_voice_*`, `voices_*`, `consistency_resources_*` | Casting voice workflows and reusable Seedance/Kling resources | operation-specific request/resource fields |
-| `performances_list` | List/search human-performance metadata | `project_id`, `scene_number`, `character`, `text`, `limit`, `offset` |
-| `performances_create` | Create human-performance metadata | `project_id`, `performance` |
-| `performances_update` | Update human-performance metadata | `project_id`, `performance_id`, `updates` |
-| `performances_delete` | Delete human-performance metadata without deleting media | `project_id`, `performance_id` |
-
-`cast_list_get` also projects explicitly named image assets tagged `reference_type: "character_reference"` and categorized as `portrait` or `character_sheet` into unselected member shells. Supply a consistent `subject` and/or `character_name`; Prep → Cast exposes the candidate but does not automatically approve or select its portrait or character sheet.
-
-When present, `models_get_defaults.request_defaults` can be passed directly to `generation_submit`; voice and catalog-only tool models omit it because they use dedicated workflows. Catalog aliases resolve before schema lookup, and `resolved_model_id` names the canonical provider model. Unified image parameters advertised by that schema are forwarded or rejected before provider dispatch; image-edit tasks expose requested and normalized snapshots separately from `metadata.provider_request.parameters`. `models_list` searches the complete catalog and returns a bounded page (default 50, maximum 200) with `offset`, `limit`, `total`, and `has_more`; it accepts `curated_only=true` for a shorter administrator-curated menu. Image-to-3D uses `generator=3d`, `mode=image_to_3d`, and `image_asset_id` or `image_url`. Image `sync_mode` is boolean, `text_to_image` normalizes to `txt_to_img`, and the compatibility alias `image_edit` normalizes to `img_to_img`; agents should emit `img_to_img`, `ref_to_img`, or `edit_img` and preserve selected assets through asset-ID fields. `performances_list.scene_number` accepts an integer or numeric string.
-
-Prompt-only generation packages, including direct `agent_chat_send` requests, freeze their project context before the first department call. Selecting Director, Storyboarder, or Cinematographer as the generic prompt entry role always invokes the complete configured Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer chain. A generic `contributed` Casting, Stylist, or Propmaster result must contain a prompt fact or reference recommendation. Contributed prompt facts are reserved inside the selected endpoint's prompt budget and remain required at the terminal Cinematographer boundary.
-
-For a net-new reference, use `character_reference_design`, `prop_reference_design`, or `wardrobe_reference_design`. Every profile runs the configured Director, Casting, Production Designer, Stylist, Propmaster, Storyboarder, and Cinematographer. Director and Storyboarder must contribute; other departments return typed `referenceDesignStatus: "not_applicable"` with an empty `proposedPrompt` when the subject has no material decision inside their authority, rather than inventing unrelated design facts. The workflow accepts zero `references`. Zero-reference requests default to `nano_banana_2` plus `text_to_image`; requests with references default to `reference_to_image`. Reference `type` accepts the media values `image`, `video`, and `audio` plus the semantic image aliases `character_reference`, `style_reference`, `prop_reference`, and `wardrobe_reference`. Poll with `tasks_get`, require a `generation_package` whose `approval_status` is `candidate`, then call `generation_submit` only after explicit user approval. Read `pr0ta-prompting` → `reference/reference-design-bootstrap.md` for complete payloads and failure handling.
-
-Hunyuan text motion uses `generator=motion`, `mode=text_to_motion`, `model=fal-ai/hunyuan-motion`, and a short body-geometry prompt. Optional controls are `duration` (0.5-12), `guidance_scale` (1-10), `seed`, and `output_format` (`fbx` or `dict`). Read `pr0ta-prompting` → "Motion Prompting Is an Exception" before writing the prompt.
-
-### Project Intelligence and Legacy Review Tools
-
-| Tool | Description | Key Parameters |
-|------|-------------|----------------|
-| `get_scene_breakdown` | Scene characters, locations, props, action, continuity notes | `scene_number` (required), `scene_range_end` (optional) |
-| `get_scene_shotlist` | Director's shot list for a scene | `scene_number` (required) |
-| `get_character_references` | Character portrait, voice config, wardrobe, look timeline | `character_name` (required) |
-| `get_set_references` | Production design images and notes for a location/scene | `scene_number` (optional), `location` (optional) |
-| `get_shot_assets` | Video/audio takes, storyboard frames for a shot | `scene_number` (required), `shot_number` (required) |
-| `get_screenplay_text` | Active saved screenplay with scene selection, pagination, revision metadata, and optional live workspace context | `scene_number`, `offset`, `limit`, `include_workspace_context`, `workspace_session_id` (optional) |
-| `enable_studio_mode` | Enable Studio mode so review-room tools can create submissions, rounds, and share links | (none) |
-| `submit_assets_for_review` | Legacy alias for review-room submission | `asset_ids` (required); `title`, `description`, `review_notes`, `allow_download`, `webhook_url`, `webhook_secret` (optional) |
-| `get_review_annotations` | Retrieve review comments, annotations, and decisions; every event includes `asset_id` and the response includes referenced `review_submissions` | `review_round_id`, `submission_id`, `resolution_status` (optional) |
-
-Prefer `production_context_get` over a hand-rolled ledger when a project already has breakdowns, casting, department-head references, or contact/character sheets. It composes existing PR0TA prep state and returns provider guidance for Seedance and Kling. For Seedance 2.0 Omni storyboard-control workflows, use `storyboard_chunks_list` -> `storyboard_reference_sheet_generate` -> `tasks_get` -> `storyboard_reference_sheets_list`.
-
-For World Labs Marble sets, call `world_generation_submit` with `mode: "text_to_world"`, `"image_to_world"`, or `"video_to_world"`. Image mode accepts `image_url`/`image_media_asset_id`, an explicit panorama via `is_pano: true`, or 2-8 `multi_image_inputs` rows containing `uri` or `media_asset_id` and optional `azimuth`. Use `reconstruct_images: true` for overlapping same-space auto layout. Use `world_model: "marble-1.1"` by default, `"marble-1.1-plus"` for larger environments, and `"marble-1.0-draft"` for inexpensive exploration. Set Designer requests should include `set_environment_id` so the completed world attaches to the validated canonical set lineage.
-
-For a depth-guided set, use `mode: "image_to_world"`, a text `prompt`, and `depth_pano_url` or `depth_pano_media_asset_id`. Include `depth_pano_extension: "exr"` for metric EXR input. For normalized PNG input use `"png"` plus positive `depth_z_min` and `depth_z_max` metres, with max greater than min. The returned task covers both depth-to-RGB and panoramic world generation. The registered world preserves metric scale and ground offset; request SPZ, collider, or panorama files through `assets_get_download_link.artifact` using `world_splat_full_res`, `world_splat_500k`, `world_splat_100k`, `world_mesh_collider`, or `world_pano`.
-
-For hybrid plate work and world-anchored structure references, `generation_submit` accepts `beeble/switchx` (`generator: "video"`, `mode: "video_to_video"`, the plate as `video_asset_id`, an optional look reference in `reference_image_asset_ids`, and a matte as `alpha_asset_id` with `alpha_mode` and `alpha_media_kind`) and `beeble/switchx-image` (`generator: "image"`, `mode: "edit_img"`, the frame as `image_asset_id`). Completed SwitchX tasks return `alpha_asset_id` and `source_asset_id` alongside the render. `set_environment_collider_materialize` (`environment_id`, `world_asset_id`) stores a Marble world's collider mesh as the environment's `blender_source`, and `blender_job_submit` accepts `request.source_world_asset_id` to render `flat_structural` and `depth_normalized` passes from it. Read `pr0ta-hybrid`.
-
-Saved storyboard sequences are authoritative for manual grouping, title, duration, explicitly marked prompts, selected reference sheets, and the ordered reference package. `storyboard_sequences_save` preserves records omitted from a partial upsert unless their scene is listed in `replace_scene_numbers`; use replacement when saving a complete scene grouping. Prompt markers are `storyboardSheetPrompt`, `seedancePrompt`, `omniReferencePrompt`, and `motionContinuityPrompt`; snake-case aliases are accepted and normalized, while unknown markers fail with status 422. A one-call `storyboard_sheet_prompt` passed to `storyboard_reference_sheet_generate` has highest prompt precedence.
-
-`production_queue_analyze` and typed `agent_chat_send` requests terminate at one shared Cinematographer boundary. A successful single-item analysis normally exposes the complete `generation_package` directly through `tasks_get.result`, including the final prompt, ordered multimodal reference plan, validated technical settings, prompt character count, Queue identity, and available stage lineage. Designed-world or reference-design prompt orchestration may instead succeed with `type: "prompt_assessment"` for explicit review; the compiler does not recursively call departments for clarification. Inspect `prompt_assessment.status`, do not assume `final_prompt` exists, and do not generate unless `result.type` is `generation_package`. The boundary repairs one invalid agent result, then fails with `AGENT_RESULT_CONTRACT_VIOLATION` without setting `cinematographer_finalized`.
-
-For guided stylized designed-world generation, call `agent_chat_orchestrate_prompt` with `prompt_profile: "designed_world_reference_image"`. Preferred input uses `guidance_package` with exactly one neutral `flat_structural` pass and one `depth_normalized` pass sharing package ID, resolution, and camera/frame identity. Submit the approved `appearance` reference plus required character, styling, and prop authorities in `references`; the Storyboarder must select or exclude every candidate reference explicitly. Stylist and Propmaster are always consulted from Settings → Agents and return typed `not_applicable` results when their department has nothing to contribute; `subject_presence` is context for that agent decision, not a server-side skip instruction. Provider order is flat, depth, appearance, continuity. Depth requires finite visible-pixel percentile metadata and passing histogram QC; both package members are mandatory. The backward-compatible active `semantic_asset_id` plus `appearance` path remains available. Poll with `tasks_get`, generate only from `result.type: "generation_package"`, and inspect `generation_receipt` for selected/excluded references, normalization, QC, validation, and provider order.
-
-### Discovery Tools
-
-| Tool | Description | Parameters |
-|------|-------------|------------|
-| `create_project` | Create a PR0TA project for the authenticated user | `name` (required), `description`, `slug` (optional) |
-| `list_projects` | List all available PR0TA projects | (none) |
-| `get_project_metadata` | Project summary: logline, genre, tone, cast, visual approach | `project_id` (required) |
-
-### Compatibility Rules
-
-- Tool names use underscores, not dotted names.
-- `app_navigate` is client-only and is not published through MCP. External clients should open returned app paths in their own browser environment.
-- Every project-scoped tool requires `project_id`; `create_project` and `list_projects` are project-independent.
-- Use `memory_context_pack` before prompt-building, generation, editorial, styling, writing, or production decisions. Preserve citations and do not merge candidate claims into approved facts.
-- Use `memory_record_decision` or `memory_record_note` after accepted decisions, selected references, continuity constraints, client/director notes, and editorial conclusions.
-- `memory_record_decision` only becomes Current from a signed Operator approval or a verified persisted user-message reference. A missing reference returns `confirmation_required` and `created: false`; do not retry blindly or claim the Bible changed.
-- Call `memory_get_confirmation` after the user explicitly approves a memory write in PR0TA chat, then pass its `persisted-agent-chat-message-id` unchanged as `user_confirmation_ref`; quoted approval prose is not an ID. From Codex or another elicitation-capable MCP client, call `memory_request_confirmation` and pass its short-lived signed reference unchanged with the same `approved_asset_id`, `semantic_key`, and decision.
-- An actor-attributed `approved` or `approved_with_notes` event returned by `get_review_annotations` is also a valid `memory_record_decision.user_confirmation_ref` when it remains that submission's active decision after the latest publish marker, the call passes the event's exact snapshotted `approved_asset_id`, and it targets an asset/reference/selection/approval semantic facet. The Current claim is canonically derived from the approved asset and semantic key, not agent-authored decision text, and records the review event, round, submission, reviewer, and immutable asset provenance; unrelated identity or continuity facets require their own chat or Operator confirmation.
-- Use `voices_list` before TTS when the user has not provided an exact voice. Copy the returned `selection` fields into `generation_submit` or REST `/generate`.
-- Long-running work returns task IDs. Poll with `tasks_get`; submit tools never imply completion.
-- Prompt orchestration is a frozen single-pass compiler: department tools are disabled, each role resolves from the project's Settings -> Agents configuration and gets one compact structured call under a model-aware execution profile. The task snapshot includes the project orientation/casting slice used by every stage and derives handoff-summary length from the selected generation endpoint's published prompt limit. Supply `target.max_characters` only to assert an explicit endpoint contract; models whose schema declares no limit do not receive an invented summary ceiling. A transient provider failure may retry that same configured runtime once; it never substitutes a hard-coded model. A schema-invalid response may instead get one focused repair call. `timeout_seconds` is an independent soft latency target for each department rather than a cumulative workflow deadline: active streamed output may continue, stalled reads use the server idle timeout, and a higher fail-safe ceiling stops runaway calls. The profile applies the role budget only when the selected runtime publishes a completion limit or an operator supplies an explicit ceiling; it does not infer output capacity from the input context window. Active-generation and validation progress remain visible. Exhausted attempts set `resume_safe: false` and omit `retry_token`. `tasks_get.error.details.target_generation` and failure `result_refs` explicitly state whether the target provider was submitted and charged.
-- Errors are structured with `error`, `error_reason`, `error_detail`, validation messages, and retry/fail-fast hints when available.
-- File bytes are handed off through upload/download intents and links, not embedded in MCP payloads.
-- Signed upload handoffs are completed by storage object-finalize events after a successful PUT to the returned upload URL. If event delivery is unavailable or delayed and the asset remains in `uploading` status, call `assets_upload_finalize` as a fallback; it verifies object existence and declared size/SHA-256 before making the asset ready.
-
-### Role-Tool Access Matrix
-
-Not all roles have access to all tools. The registry enforces access per role.
-
-| Tool | writer | producer | director | casting | script_supervisor | acting_coach | production_designer | stylist | propmaster | storyboarder | cinematographer | editor | story_editor |
-|------|--------|----------|----------|---------|-------------------|--------------|---------------------|---------|------------|--------------|-----------------|--------|--------------|
-| `get_scene_breakdown` | Y | | Y | | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| `get_scene_shotlist` | | | Y | | | Y | Y | | | Y | Y | Y | |
-| `get_character_references` | | | Y | Y | | Y | Y | Y | | Y | | Y | |
-| `get_set_references` | | | Y | | | | Y | | | Y | Y | Y | |
-| `get_shot_assets` | | | Y | | | | | | | | Y | Y | |
-| `get_screenplay_text` | Y | | Y | | Y | Y | | | | | | Y | Y |
-| `production_context_get` | | Y | Y | Y | | | Y | Y | Y | Y | Y | Y | |
-| `storyboard_chunks_list` | | Y | Y | | | | | | | Y | | Y | |
-| `storyboard_reference_sheet_generate` | | Y | Y | | | | | | | Y | | Y | |
-| `storyboard_reference_sheets_list` | | Y | Y | | | | | | | Y | | Y | |
-| `review_submit_assets` | | Y | Y | | Y | | | | | | | Y | |
-| `submit_assets_for_review` | | Y | Y | | Y | | | | | | | Y | |
-| `get_review_annotations` | | Y | Y | | Y | | | | | | | Y | |
-| project metadata and Style tools | | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| asset annotation tools | | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| department-head tools | | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| Casting and performance tools | | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-
----
-
-## MCP Server Setup
-
-### Packaged Client Setup
-
-PR0TA's Codex and Claude packages bundle the remote MCP connector. The universal package includes the same configuration for other remote-MCP-capable hosts:
-
-```json
-{
-  "mcpServers": "./.mcp.json"
-}
-```
-
-The bundled `.mcp.json` points at production:
+The Codex and Claude distributions bundle the remote connector; the universal
+package carries the same configuration for other remote-MCP hosts:
 
 ```json
 {
@@ -200,184 +28,221 @@ The bundled `.mcp.json` points at production:
 }
 ```
 
-After installing or updating, restart or reload the host if it retains the original tool inventory. The user authorizes PR0TA through the host's remote MCP/OAuth flow. If PR0TA tool names are not callable, reconnect `https://app.pr0ta.com/api/mcp/mcp` using the host-specific helper or instructions bundled with the distribution before falling back to REST.
+After installing or updating, restart or reload the host if it keeps its
+original tool inventory. The user authorizes PR0TA through the host's remote
+MCP OAuth flow: the host opens or prints a PR0TA authorization URL, the user
+signs in with their normal PR0TA account, and the host receives a user-scoped
+token.
 
-Expected behavior: the host opens or prints a PR0TA authorization URL. Complete the browser login, start a fresh session when required, then search for `list_projects`. If the host reports that it cannot discover OAuth, verify the live authorization metadata includes `token_endpoint_auth_methods_supported` with `none`, and redeploy PR0TA before retrying. If the host lists authenticated PR0TA tools but the model still cannot call them, the server setup succeeded and the remaining defect is host-side tool admission. Do not replace MCP with PAT/REST/browser automation for that case.
+### Connect canary
 
-### Local Development Prerequisites
+Start a fresh session when the host requires it, then call `list_projects`. If
+it returns the user's projects, the connection works. If PR0TA tools are not
+callable, reconnect `https://app.pr0ta.com/api/mcp/mcp` with the host-specific
+helper or instructions bundled with the distribution before falling back to
+REST.
 
-```bash
-pip install mcp
-```
+### Manual connector setup
 
-### Local Transports
+- **ChatGPT:** enable Developer Mode / connectors, add a custom MCP connector
+  with URL `https://app.pr0ta.com/api/mcp/mcp`, and complete PR0TA's OAuth.
+- **Claude:** add a custom connector with URL
+  `https://app.pr0ta.com/api/mcp/mcp` and complete PR0TA's OAuth.
+- **Other hosts:** any client that supports remote Streamable HTTP MCP with
+  OAuth.
 
-**stdio** (Claude Code, Cursor, and other local IDE integrations):
+### OAuth
 
-```bash
-cd pr0ta_platform/backend
-python mcp_server.py
-```
+- Streamable HTTP endpoint: `https://app.pr0ta.com/api/mcp/mcp`
+- Authorization server metadata:
+  `https://app.pr0ta.com/api/mcp/.well-known/oauth-authorization-server`
+- Protected resource metadata:
+  `https://app.pr0ta.com/api/mcp/.well-known/oauth-protected-resource/api/mcp/mcp`
+- Root aliases for RFC 9728 clients:
+  `https://app.pr0ta.com/.well-known/oauth-authorization-server/api/mcp`,
+  `https://app.pr0ta.com/.well-known/oauth-authorization-server/api/mcp/mcp`,
+  and `https://app.pr0ta.com/.well-known/oauth-protected-resource/api/mcp/mcp`
+- Public PKCE clients (Codex-style) use `token_endpoint_auth_method: "none"`.
+- Tokens are user-scoped and require an active account, verified email, admin
+  approval, and an unlocked billing account.
 
-**SSE** (legacy remote/testing):
+### Troubleshooting
 
-```bash
-python mcp_server.py --sse
-```
+- **Host cannot discover OAuth:** check that the live authorization metadata
+  lists `none` in `token_endpoint_auth_methods_supported`.
+- **Host lists PR0TA tools but the model cannot call them:** the server setup
+  succeeded; the fault is the host's tool admission. Do not replace MCP with
+  PAT, REST, or browser automation for that case.
+- **A tool is missing from the host's inventory:** refresh MCP discovery (for
+  Codex, rerun the distribution's connection helper to refresh its enabled tool
+  list) and start a fresh session.
+- **Tools return empty results:** verify `project_id` with `list_projects`, and
+  check that the Prep reads the tool wraps have been run.
 
-**Streamable HTTP** (local HTTP testing):
+## Compatibility rules
 
-```bash
-python mcp_server.py --streamable-http
-```
+- Tool names use underscores, not dotted names.
+- Every project-scoped tool requires `project_id`.
+- `create_project` and `list_projects` are the project-independent MCP tools;
+  they, `get_project_metadata`, `get_project_development_context`,
+  `list_project_assets`, `get_workspace_snapshot` and the `operator_mission_*`
+  tools exist only for MCP clients.
+- `app_navigate` is client-only and is not published through MCP. External
+  clients open returned app paths in their own browser.
+- Long-running tools return task IDs. Wait with `tasks_get` (or a completion
+  subscription); a submit never implies completion.
+- Errors are structured: `error`, `error_reason`, `error_detail`, validation
+  messages, and retry or fail-fast hints when available.
+- File bytes move through upload and download handoffs, never inside MCP
+  payloads. After a PUT to a signed upload URL, PR0TA finalizes the asset from
+  the storage event; if it stays in `uploading`, call `assets_upload_finalize`,
+  which verifies existence and any declared size or SHA-256 before marking it
+  ready.
+- Use `voices_list` before TTS when the user has not named an exact voice, and
+  copy the returned `selection` fields into `generation_submit`.
+- Project memory: `SKILL.md` → "Project memory" owns the contract
+  (`memory_context_pack` arguments, what `memory_record_decision` requires).
+  A decision becomes Current only from a signed Operator approval or a
+  verified user confirmation; a missing reference returns
+  `confirmation_required` and `created: false`, so do not retry blindly or
+  claim the Bible changed. Confirmation references:
+  - After the user approves in PR0TA chat, call `memory_get_confirmation` and
+    pass its `persisted-agent-chat-message-id` unchanged as
+    `user_confirmation_ref`. Quoted approval prose is not an ID.
+  - From an elicitation-capable MCP client, call `memory_request_confirmation`
+    and pass its short-lived signed reference unchanged with the same
+    `approved_asset_id`, `semantic_key`, and decision.
+  - An actor-attributed `approved` or `approved_with_notes` event from
+    `get_review_annotations` also works when it is still that submission's
+    active decision, the call passes the event's exact `approved_asset_id`, and
+    the key is an asset, reference, selection, or approval facet. The Current
+    claim derives from the approved asset and key, not agent-written text.
 
-### Claude Code Configuration (Local Stdio Fallback)
+## Prompt orchestration contract
 
-Add the PR0TA MCP server to `.claude/mcp.json` at the project root:
+`agent_chat_orchestrate_prompt` and typed `agent_chat_send` requests end at one
+Cinematographer boundary. Poll with `tasks_get` and branch on `result.type`:
 
-```json
-{
-  "mcpServers": {
-    "pr0ta": {
-      "command": "python",
-      "args": ["pr0ta_platform/backend/mcp_server.py"],
-      "cwd": "/path/to/script2screen"
-    }
-  }
-}
-```
+- `type: "generation_package"`: the final prompt, ordered multimodal reference
+  plan, validated technical settings, prompt character count, and stage lineage.
+  Generate only from this.
+- `type: "prompt_assessment"`: designed-world or reference-design orchestration
+  stopped for explicit review. Inspect `prompt_assessment.status`
+  (`needs_clarification` or `has_problems`),
+  do not assume `final_prompt` exists, and do not generate. The compiler does not call departments again for
+  clarification.
 
-With a virtual environment:
 
-```json
-{
-  "mcpServers": {
-    "pr0ta": {
-      "command": "/path/to/script2screen/venv/bin/python",
-      "args": ["pr0ta_platform/backend/mcp_server.py"],
-      "cwd": "/path/to/script2screen"
-    }
-  }
-}
-```
+The boundary repairs one invalid agent result, then fails with
+`AGENT_RESULT_CONTRACT_VIOLATION`. Orchestration is a single pass: each
+department resolves from the project's Settings → Agents configuration, gets
+one structured call, and may get one retry of that same runtime or one focused
+repair call. Exhausted attempts set `resume_safe: false` and omit
+`retry_token`; `tasks_get.error.details.target_generation` states whether the
+target provider was submitted and charged. `timeout_seconds` is a per-department
+latency target, not a workflow deadline. Supply `target.max_characters` only to
+assert an explicit endpoint limit.
 
-### Cursor Configuration (Local Stdio Fallback)
+**Designed-world references.** For guided stylized designed-world generation,
+call `agent_chat_orchestrate_prompt` with
+`prompt_profile: "designed_world_reference_image"`. Pass `guidance_package` with
+exactly one neutral `flat_structural` pass and one `depth_normalized` pass
+sharing package ID, resolution, and camera/frame identity; both are mandatory,
+and depth needs finite visible-pixel percentile metadata and a passing histogram
+check. Put the approved `appearance` reference and the required character,
+styling, and prop authorities in `references`.
+The Storyboarder must select or exclude every candidate reference explicitly. Provider order is flat, depth,
+appearance, continuity. The older `semantic_asset_id` plus `appearance` pair
+still works. Inspect `generation_receipt` for selected and excluded references,
+normalization, QC, and provider order. Workflow: `pr0ta-prompting` →
+`reference/designed-world-reference-image.md`.
 
-**Project-level (recommended)** — `.cursor/mcp.json` in the repo root:
+**Net-new references.** The profiles
+`prompt_profile: "character_reference_design"`, `"prop_reference_design"`, and
+`"wardrobe_reference_design"` accept zero `references` and run the configured
+department chain; departments with nothing to add return
+`referenceDesignStatus: "not_applicable"`. Require a `generation_package` whose
+`approval_status` is `candidate`, and call `generation_submit` only after the
+user approves. Workflow: `pr0ta-prompting` →
+`reference/reference-design-bootstrap.md`.
 
-```json
-{
-  "mcpServers": {
-    "pr0ta": {
-      "command": "python3",
-      "args": ["pr0ta_platform/backend/mcp_server.py"],
-      "env": { "PYTHONPATH": "." }
-    }
-  }
-}
-```
+**Prompt-only packages.** `agent_chat_send` with `generation_mode:
+"prompt_only"` freezes project context before the first department call.
+Choosing Director, Storyboarder, or Cinematographer as the entry role runs the
+full configured chain through the Cinematographer.
 
-Point `command` at your venv Python if using one. Restart Cursor after changing MCP config.
+## Tool contracts worth knowing
 
----
-
-## Remote MCP Connectors (OAuth)
-
-PR0TA exposes a remote MCP surface for Codex, ChatGPT, Claude-style connectors, Cursor-style clients, and other MCP hosts.
-
-### Production URLs
-
-- **Streamable HTTP:** `https://app.pr0ta.com/api/mcp/mcp`
-- **OAuth metadata:** `https://app.pr0ta.com/api/mcp/.well-known/oauth-authorization-server`
-- **Protected resource metadata:** `https://app.pr0ta.com/api/mcp/.well-known/oauth-protected-resource/api/mcp/mcp`
-- **Root metadata aliases for RFC 9728 clients:** `https://app.pr0ta.com/.well-known/oauth-authorization-server/api/mcp`, `https://app.pr0ta.com/.well-known/oauth-authorization-server/api/mcp/mcp`, and `https://app.pr0ta.com/.well-known/oauth-protected-resource/api/mcp/mcp`
-
-### Auth Model
-
-- Remote connectors authenticate through PR0TA MCP OAuth.
-- Codex-style public PKCE clients use `token_endpoint_auth_method: "none"`.
-- Users log in with their normal PR0TA account on the consent page.
-- Connector tokens are user-scoped and enforce: active account, verified email, admin approval, billing/account lock checks.
-
-### ChatGPT Setup
-
-1. Enable ChatGPT Developer Mode / connectors.
-2. Add a custom MCP connector with URL `https://app.pr0ta.com/api/mcp/mcp`.
-3. Complete the PR0TA OAuth authorization flow when prompted.
-
-### Claude Setup (Remote)
-
-1. Add a custom MCP connector with URL `https://app.pr0ta.com/api/mcp/mcp`.
-2. Complete the PR0TA OAuth authorization flow.
-
-For Claude Code local development, prefer the stdio setup above. For normal agent use, prefer the remote connector.
-
-### Local vs Remote Auth
-
-- Local `stdio` clients: use `access_token` tool arguments or `PR0TA_MCP_ACCESS_TOKEN` env var.
-- Remote connectors: use MCP OAuth bearer auth, not tool-level `access_token` arguments.
-
----
-
-## Environment Requirements
-
-The MCP server requires the same environment variables as the main backend:
-
-```bash
-OPENROUTER_API_KEY=<your-key>       # Required for factory-default internal agents
-# GEMINI_KEY or BytePlus credentials are required when those providers are selected.
-DATABASE_URL=<your-database-url>    # Required for project listing
-```
-
----
-
-## Internal Agent Integration
-
-When tools are enabled for a role, the agent chat function:
-
-1. Builds a slim context (project summary, scene index, character names) instead of the full context blob.
-2. Converts tool definitions through the selected runtime's Gemini or OpenAI-compatible adapter.
-3. Runs a multi-round function-calling loop (up to 5 rounds) until the model returns a text response.
-4. Parses the final text response as JSON.
-
-### Enabling/Disabling Tools
-
-Tools are enabled by default for all core roles. Override per-project via `crew_config.json`:
-
-```json
-{
-  "agent_tools": {
-    "enabled": false,
-    "roles_with_tools": []
-  }
-}
-```
-
-When `agent_tools.enabled` is `false`, the system falls back to the existing full context blob flow with zero behavioral change.
-
----
-
-## Adding New Tools
-
-1. **Define** — Add a `ToolDefinition` entry to `TOOL_CATALOG` in `registry.py` with `allowed_roles`.
-2. **Implement** — Add a handler function in `implementations.py` and register it in `TOOL_HANDLERS`.
-3. **Done** — The new tool is automatically available to internal agents (via `get_tools_for_role()`) and MCP clients (via `register_tools()` in the MCP bridge). No changes needed in the MCP server, agent chat service, or adapters.
-
----
-
-## Troubleshooting
-
-- **MCP server won't start:** Check Python path, install `mcp` SDK, verify `.env` for database and API keys.
-- **Tools return empty results:** Verify `project_id` via `list_projects`. Check that the Producer/Director/Script Supervisor reads have been run — tools wrap existing services.
-- **Function calling not working (internal agents):** Verify `agent_tools.enabled` is `true`, the role is in `roles_with_tools`, the provider is BytePlus, Google, or OpenRouter, and the selected catalog model advertises tool support.
-- **MCP tool calls failing:** All project-scoped MCP tools require `project_id`. `create_project` and `list_projects` are project-independent; internal project tools get the ID from the execution context, while external MCP calls need it explicitly.
-
-### Native trim, music analysis, and reporting
-
-The connected prep/production tool profile includes `assets_trim`, `music_analyze`, and `bug_report_create`. All use the existing authenticated MCP connection and project context. `assets_trim` requires project editor access and accepts `asset_id`, `asset_type` (`audio` or `video`), `in_point`, and `out_point` in seconds. Audio derivatives are PCM WAV, bounded to the requested duration, with measured output metadata and source labels retained in provenance. It returns `asset.id` synchronously. `music_analyze` returns the native analysis task response; `bug_report_create` returns `bug_report.id`.
-
-After updating an existing Codex connection, refresh its `enabled_tools` profile with `scripts/connect_pr0ta_mcp.sh` and start a fresh session to reload tool discovery. A local allowlist cannot expose a tool until its server implementation is deployed.
+- **`models_get_defaults`** resolves a catalog alias or provider ID and returns
+  `requested_model_id`, `resolved_model_id`, the parameter schema, and, for
+  models unified generation accepts, `request_defaults` that can seed a
+  `generation_submit` request. Image parameters the schema advertises are
+  forwarded or rejected before provider dispatch.
+- **Motion.** Text motion uses `generator=motion`, `mode=text_to_motion`, the
+  model from `models_preferred(modality: "humanoid_motion_model")`, and a short
+  body-geometry prompt. The Hunyuan motion route (`fal-ai/hunyuan-motion`, the only text-to-motion route) takes optional `duration`
+  (0.5–12), `guidance_scale` (1–10), `seed`, and `output_format` (`fbx` or
+  `dict`). Read `pr0ta-prompting` → "Motion Prompting Is an Exception" before
+  writing the prompt.
+- **Cast visibility.** `cast_list_get` also shows explicitly named image assets
+  tagged `reference_type: "character_reference"` with category `portrait` or
+  `character_sheet` as unselected cast members. Give a consistent `subject` or
+  `character_name`; visibility is not portrait approval. `cast_list_save` writes
+  the Casting metadata and cast CSV together.
+- **Storyboard sequences.** Saved sequences are authoritative for grouping,
+  title, duration, marked prompts, selected reference sheets, and the ordered
+  reference package. `storyboard_sequences_save` keeps records a partial upsert
+  omits unless their scene is in `replace_scene_numbers`. Prompt markers are
+  `storyboardSheetPrompt`, `seedancePrompt`, `omniReferencePrompt`, and
+  `motionContinuityPrompt`; unknown markers fail with `422`. For Seedance
+  storyboard control: `storyboard_chunks_list` →
+  `storyboard_reference_sheet_generate` → `tasks_get` →
+  `storyboard_reference_sheets_list`.
+- **Production context.** `production_context_get` composes breakdown, casting,
+  set, prop, look, and approved reference context for a scene or shot before
+  generation.
+- **Worlds.** `world_generation_submit` takes `mode` `text_to_world`,
+  `image_to_world`, or `video_to_world`, and `world_model` from the Marble
+  models the tool lists. Image mode accepts one image, an explicit panorama
+  (`is_pano: true`), or 2–8 `multi_image_inputs`; a depth-guided set adds
+  `depth_pano_url` or `depth_pano_media_asset_id` (EXR metric, or PNG with
+  `depth_z_min`/`depth_z_max`). Set Designer requests pass `set_environment_id`
+  so the world attaches to its set. Fetch SPZ, collider, or panorama files with
+  `assets_get_download_link.artifact`. Workflow: `pr0ta-prompting` →
+  `reference/marble-world-generation.md`.
+- **Hybrid plates.** `set_environment_collider_materialize` (`environment_id`,
+  `world_asset_id`) stores a Marble world's collider mesh as the environment's
+  Blender source, and `blender_job_submit` accepts
+  `request.source_world_asset_id` to render structure passes from it. Workflow:
+  `pr0ta-hybrid`.
+- **Trim, analysis, reports.** `assets_trim` (`asset_id`, `asset_type` `audio`
+  or `video`, `in_point`, `out_point` in seconds) returns the new `asset.id`
+  synchronously and needs editor access. `music_analyze` returns an analysis
+  task. `bug_report_create` returns `bug_report.id`.
+- **Screenplay reads.** `get_screenplay_text` pages with `scene_number`,
+  `offset`, `limit`, and `next_offset`. By default it returns the latest
+  published revision with Fountain notes removed (`not_published` before the
+  first publish); `working_draft: true` returns the working draft. Read the
+  draft before revising or saving it, and save the complete current draft,
+  never published text over a newer draft (`pr0ta-development`).
 
 ## Pending Operator action handoff
 
-A succeeded agent-chat task can contain `proposedOperatorActions` awaiting approval; it is not an analysis result. Each signed action includes `execution_handoff` with the existing authenticated REST path, exact request body and confirmation instructions. Present arguments, risk, estimate and confirmation reason; disclose unverified cost. Obtain required user confirmation before using the single-use expiring token. The server still checks project editor access, role, arguments, conversation epoch and replay protection. If `video_quality_control_analyze` is absent from a host inventory, refresh MCP discovery; it is registered on the server. A direct resubmission is a separate paid request, not approval of the pending action. Poll the returned analysis task before reporting QC findings.
+A succeeded agent-chat task can contain `proposedOperatorActions` awaiting
+approval; it is not an analysis result. Each signed action includes
+`execution_handoff` with the authenticated REST path, the exact request body,
+and confirmation instructions. Present the arguments, risk, estimate, and
+confirmation reason, and disclose unverified cost. Get the user's confirmation
+before using the single-use, expiring token. The server still checks project
+editor access, role, arguments, conversation epoch, and replay. A direct
+resubmission is a separate paid request, not approval of the pending action.
+Poll the returned analysis task before reporting QC findings.
+
+## PR0TA's in-app agents
+
+Inside PR0TA, department agents and the Operator call the same registry tools
+through their configured model runtimes; the registry enforces which roles may
+call each tool. The Operator runs durable missions on PR0TA's agent harness or,
+when the project selects it in Settings → Agents, the Managed Codex runtime.
+External agents reach it through the `operator_mission_*` tools (see
+`SKILL.md` → "Operator missions" and `pr0ta-operator`).

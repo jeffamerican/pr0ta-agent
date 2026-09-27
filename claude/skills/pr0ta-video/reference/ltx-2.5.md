@@ -149,7 +149,7 @@ For generated dialogue or singing:
 - Describe visible delivery and reduce competing action.
 - Separate dialogue, ambience, effects, and music in the prose.
 - Set `generate_audio: false` when exact wording or an isolated post-production mix matters more than native sync.
-- Transcribe every speech-bearing generated result before timeline placement.
+- Confirm a transcript for every speech-bearing result before timeline placement (`pr0ta-audio` indexing rule).
 
 ## Typography and Designed Text
 

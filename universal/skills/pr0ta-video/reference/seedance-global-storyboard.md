@@ -24,7 +24,7 @@ The global bible keeps the production world coherent. The chunk storyboard sheet
 
 ## MCP Storyboard Sheet Workflow
 
-Prefer the MCP tools for Skills users and agent workflows.
+Use the MCP tools for agent workflows.
 
 ### 1. List Beat Chunks
 
@@ -46,13 +46,14 @@ storyboard_reference_sheet_generate({
   "project_id": "project-uuid-or-slug",
   "chunk_id": "scene-12-chunk-3",
   "variation_count": 4,
+  "model": "<model_id from models_preferred(modality=\"image_edit_model\")>",
   "reference_asset_ids": ["asset-character", "asset-location"],
   "reference_image_urls": [],
   "include_chunk_reference_urls": true
 })
 ```
 
-Use approved PR0TA cast, set, prop, wardrobe, and style assets as `reference_asset_ids` whenever possible. With references, the default image model is `openai/gpt-image-2.5/sunburst/edit`; without references, it is `openai/gpt-image-2.5/sunburst/text-to-image`. Pass `quality` to preserve a chosen quality level; only omitted GPT Image 2.5 requests default to `max`. The tool returns a task; poll with `tasks_get`.
+Use approved PR0TA cast, set, prop, wardrobe, and style assets as `reference_asset_ids` whenever possible. Pass `model` resolved with `models_preferred(modality="image_edit_model")` when references are attached, or `image_model` when none are; the tool's built-in fallback applies only when `model` is omitted. Pass `quality` to set a quality level explicitly. The tool returns a task; poll with `tasks_get`.
 
 ### 3. Select the Approved Sheet
 
@@ -97,7 +98,7 @@ Store it as a normal PR0TA asset and annotate it so future agents can find it:
 }
 ```
 
-If a casting-director contact sheet, production-design board, or script-breakdown reference board already exists, prefer that as the starting point instead of creating a new parallel artifact.
+If a casting-director contact sheet, production-design board, or script-breakdown reference board already exists, start from it instead of creating a new parallel artifact.
 
 ## Build Storyboard Chunks
 
@@ -128,6 +129,7 @@ Do not submit several independent storyboard or shot-frame images to the final g
 ## Department-Owned Prompt Assembly
 
 For agentic Seedance 2.0 assembly, call `agent_chat_orchestrate_prompt` with `prompt_profile: "seedance_storyboard_sequence"`. Supported Seedance 2.0 Omni targets select it automatically. Seedance 2.5 must omit this profile and use the model-aware natural-language reference path; its current routes do not support the 2.0 positional or trained-character token grammar.
+
 
 The positional-token specialist contract below applies to Seedance 2.0. Seedance 2.5 uses the generic Director → Casting → Production Designer → Stylist → Propmaster → Storyboarder → Cinematographer production-prompt path by default. Generic Casting, Stylist, and Propmaster stages return provider-neutral `promptCasting`, `promptStyling`, and `promptProps`, recommend references only by exact submitted natural-language role, and use `not_applicable` when appropriate. Its Storyboarder must return a typed `proposedShotlist` preserving the Director's shot structure and intent alongside the executable `proposedPrompt`; caller-selected references retain their declared natural-language roles.
 

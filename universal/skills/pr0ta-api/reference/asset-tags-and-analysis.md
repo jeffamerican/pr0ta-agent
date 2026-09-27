@@ -121,7 +121,7 @@ Field usage guidance:
 
 ### Timeline Mark Labels and Descriptions
 
-Marks now support `label` and `description` fields for richer editorial annotation.
+Marks support `label` and `description` fields for richer editorial annotation.
 
 #### Create a mark with label and description
 
@@ -290,7 +290,7 @@ Keyed by `assetId` (preferred) or `assetUrl` (fallback). Any media used by more 
 
 ### Clip Reuse Flags
 
-The standard clip listing now includes per-clip reuse metadata:
+The standard clip listing includes per-clip reuse metadata:
 
 ```
 GET /api/post-production/{project_name}/timeline/clips?sequence_id=timeline_v2

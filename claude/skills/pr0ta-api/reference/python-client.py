@@ -1,147 +1,189 @@
 #!/usr/bin/env python3
 """
-PR0TA Minimal Python Client (Copy-Paste Ready)
-===============================================
+PR0TA Minimal Python REST Client
+================================
 
-Use this as the starting point for any Python-based PR0TA automation. It
-bakes in the Cloudflare-safe download path (curl via subprocess — urllib
-is 403'd by Cloudflare's bot fingerprint), the PAT bearer pattern, the
-structured validation-error contract for unified v2 (with a defensive
-task_id=None fallback for legacy/internal paths), and a polling helper.
+A starting point for Python automation against the PR0TA REST API. Agents
+with the PR0TA MCP connector should prefer its tools; use this for standalone
+scripts.
 
-Every gotcha in the skill pack that costs debug time is handled here on
-the first copy-paste.
+Core functions:
+  - preferred_model()     GET /api/v2/models/preferred for one modality
+  - submit_generation()   unified /generate; resolves the model when not given
+  - poll_task()           project-scoped polling; raises on failure
+  - download_asset()      curl download with status and size checks
+  - upload_images()       multipart image upload into a project
+  - list_assets()         offset/next_offset asset paging
 
-Five core functions:
-  - upload_images()       — multipart image upload into a project
-  - submit_generation()   — unified /generate with structured error handling
-  - poll_task()           — project-scoped polling with async provider errors
-  - download_asset()      — Cloudflare-safe curl download
-  - list_assets()         — paginated asset listing
-
-Environment setup:
+Setup:
   pip install requests
-  export PR0TA_PAT="pat_xxxxxxxxxxxxx"
-  export PR0TA_PROJECT_ID="your-project-uuid"
-  python pr0ta_client.py
+  export PR0TA_PAT="pat_..."
+  export PR0TA_PROJECT_ID="your-project-uuid-or-slug"
+  python python-client.py                  # one image with the preferred model
+  python python-client.py MODEL_ID [...]   # compare explicit model ids
 
-What this client deliberately does NOT do:
-  - No retry loop on validation errors. Fix the payload instead.
-  - No urllib / urlretrieve. Cloudflare will 403 it.
-  - No silent fallback to api.pr0ta.com. Stick to app.pr0ta.com.
-  - No implicit rate limiting. Poll interval is 2s; per-minute limits
-    apply by tier (FREE 50, CREATOR 100, PRO 200, ENTERPRISE 500).
+Model choice belongs to the platform: the user's Settings -> Tools default,
+else the admin's pinned model for the modality. When nothing resolves, pick a
+model from GET /api/v2/models (or MCP models_list with modality=...) and pass
+it explicitly.
 
-Extend per-project with domain helpers (cue sheet loaders, assets.json
-writers, post-production timeline helpers) but keep the five core
-functions as the reliable backbone.
+Rate limits are per user per minute by tier (see the pr0ta-api skill); this
+client polls every 2 seconds and does not retry validation errors.
 """
+
+from __future__ import annotations
 
 import json
 import os
 import subprocess
+import sys
 import time
+import uuid
 from pathlib import Path
 from typing import Any
 
 import requests  # pip install requests
 
 BASE_URL = "https://app.pr0ta.com"
-PAT = os.environ["PR0TA_PAT"]  # pat_xxxxxxxxxxxxx
-HEADERS = {"Authorization": f"Bearer {PAT}", "Content-Type": "application/json"}
+TERMINAL_STATUSES = {"succeeded", "completed", "failed", "error", "cancelled", "canceled"}
 
 
 class PR0TAError(RuntimeError):
     pass
 
 
-def submit_generation(project_id: str, payload: dict[str, Any]) -> str:
-    """Submit a unified /generate payload and return a validated task_id.
+def _pat() -> str:
+    try:
+        return os.environ["PR0TA_PAT"]
+    except KeyError as exc:
+        raise PR0TAError("Set PR0TA_PAT to a personal access token (pat_...)") from exc
 
-    Handles both the unified v2 structured validation-error contract
-    (``{"detail": {"error_code": "validation_error", "reason": ...}}``, the
-    primary contract as of April 2026) and the legacy ``task_id=None``
-    shape that may still surface from internal/lower-level service paths.
 
-    See pr0ta-video -> "Per-Model Duration Constraints" and
-    "Validation Errors Are Now Structured" for common causes (discrete
-    duration values, aspect ratio, forbidden reference fields, etc.).
+def _headers(json_body: bool = True) -> dict[str, str]:
+    headers = {"Authorization": f"Bearer {_pat()}"}
+    if json_body:
+        headers["Content-Type"] = "application/json"
+    return headers
+
+
+def preferred_model(modality: str) -> str | None:
+    """Return the model id PR0TA resolves for ``modality``, or None when nothing is set or pinned.
+
+    Modality keys include image_model, image_edit_model, reference_to_video_model,
+    video_model, video_edit_model, video_extend_model, dialogue_model,
+    music_model, and sfx_model.
     """
-    url = f"{BASE_URL}/api/v2/projects/{project_id}/generate"
-    r = requests.post(url, headers=HEADERS, json=payload, timeout=30)
-    # Don't raise_for_status yet — 4xx bodies carry the structured error.
-    body = r.json() if r.content else {}
-    # Primary contract: structured validation error on unified v2.
-    detail = body.get("detail") if isinstance(body, dict) else None
-    if isinstance(detail, dict) and detail.get("error_code"):
-        raise PR0TAError(
-            f"Validation error ({detail.get('error_code')}): {detail.get('reason')}\n"
-            f"Payload: {json.dumps(payload, indent=2)}"
-        )
+    r = requests.get(
+        f"{BASE_URL}/api/v2/models/preferred",
+        headers=_headers(json_body=False),
+        params={"modality": modality},
+        timeout=30,
+    )
+    if r.status_code == 400:
+        raise PR0TAError(f"Unknown modality {modality!r}: {r.text}")
     r.raise_for_status()
-    task_id = body.get("task_id")
-    if not task_id:
-        # Legacy fallback: internal/lower-level paths may still return this shape.
+    entry = (r.json().get("modalities") or {}).get(modality) or {}
+    return entry.get("model_id")
+
+
+def submit_generation(
+    project_id: str,
+    payload: dict[str, Any],
+    *,
+    modality: str | None = None,
+    idempotency_key: str | None = None,
+) -> str:
+    """Submit one unified generation request and return its task_id.
+
+    ``payload["model"]`` wins when present. Otherwise ``modality`` is resolved
+    with preferred_model(); a request with neither is rejected here rather than
+    left for the server to guess. Reuse the same ``idempotency_key`` when
+    retrying one logical generation after a timeout.
+    """
+    body = dict(payload)
+    if not body.get("model"):
+        if not modality:
+            raise PR0TAError("Pass payload['model'] or a modality to resolve it from.")
+        model = preferred_model(modality)
+        if not model:
+            raise PR0TAError(
+                f"No model is set or pinned for {modality}. Choose one from "
+                f"GET /api/v2/models and pass it as payload['model']."
+            )
+        body["model"] = model
+    body.setdefault("idempotency_key", idempotency_key or f"client-{uuid.uuid4()}")
+
+    r = requests.post(
+        f"{BASE_URL}/api/v2/projects/{project_id}/generate",
+        headers=_headers(),
+        json=body,
+        timeout=60,
+    )
+    data = r.json() if r.content else {}
+    if r.status_code >= 400:
+        detail = data.get("detail") if isinstance(data, dict) else data
         raise PR0TAError(
-            f"Generation rejected (no task_id and no structured error). "
-            f"Check model/duration/aspect_ratio/refs against pr0ta-video skill.\n"
-            f"Payload: {json.dumps(payload, indent=2)}\n"
-            f"Response: {json.dumps(body, indent=2)}"
+            f"Generation rejected (HTTP {r.status_code}): {json.dumps(detail, indent=2)}\n"
+            f"Payload: {json.dumps(body, indent=2)}"
         )
+    task_id = data.get("task_id")
+    if not task_id:
+        raise PR0TAError(f"No task_id in response: {json.dumps(data, indent=2)}")
     return task_id
 
 
-def poll_task(project_id: str, task_id: str, *, timeout_s: int = 600, interval_s: float = 2.0) -> dict[str, Any]:
-    """Poll a task until it reaches a terminal state (completed / failed).
+def poll_task(project_id: str, task_id: str, *, timeout_s: int = 1200, interval_s: float = 2.0) -> dict[str, Any]:
+    """Poll until the task is terminal. Returns the task; raises on failure or timeout.
 
-    Uses the project-scoped route (preferred). On terminal failure,
-    surfaces ``error``, ``error_reason``, and ``error_detail`` so the
-    caller can distinguish retryable provider timeouts from fatal
-    issues like insufficient provider credits.
+    Read outputs from ``task["result"]`` (asset_id, asset_ids, download_url).
+    Stalled tasks are not recovered by PR0TA: if ``progress`` stops moving for
+    several minutes, cancel with POST .../tasks/{task_id}/cancel and decide
+    whether to resubmit.
     """
     url = f"{BASE_URL}/api/v2/projects/{project_id}/tasks/{task_id}"
     deadline = time.time() + timeout_s
     while time.time() < deadline:
-        r = requests.get(url, headers=HEADERS, timeout=30)
+        r = requests.get(url, headers=_headers(json_body=False), timeout=30)
         r.raise_for_status()
         task = r.json()
         status = task.get("status")
-        if status in {"completed", "succeeded", "failed", "error", "cancelled", "canceled"}:
+        if status in TERMINAL_STATUSES:
             if status in {"failed", "error"}:
-                detail = task.get("error_detail") or {}
-                reason = task.get("error_reason", "unknown")
-                msg = task.get("error", "No error message")
                 raise PR0TAError(
-                    f"Task {task_id} failed ({reason}): {msg}\n"
-                    f"error_detail: {json.dumps(detail, indent=2)}"
+                    f"Task {task_id} failed ({task.get('error_reason', 'unknown')}): "
+                    f"{task.get('error', 'no message')}\n"
+                    f"error_detail: {json.dumps(task.get('error_detail') or {}, indent=2)}"
                 )
             return task
         time.sleep(interval_s)
-    raise PR0TAError(f"Task {task_id} did not complete within {timeout_s}s")
+    raise PR0TAError(f"Task {task_id} did not finish within {timeout_s}s")
 
 
-def download_asset(project_id: str, asset_id: str, out_path: Path) -> Path:
-    """Download an asset via ``curl`` subprocess.
+def download_asset(project_id: str, asset_id: str, out_path: Path, *, attempts: int = 5) -> Path:
+    """Download an asset with curl and verify it.
 
-    IMPORTANT: Do NOT use urllib / urlretrieve here. PR0TA asset URLs sit
-    behind Cloudflare, which 403s Python's default user-agent. ``requests``
-    works sometimes. ``curl``'s default user-agent works every time. This
-    is the single most common "why does my Python download fail" cause
-    across the skill pack.
+    curl is used because PR0TA's CDN can reject Python urllib's default user
+    agent. A just-finished asset may answer 202 "materializing"; that is
+    retried after a short wait. The file must come back as HTTP 200 and be
+    larger than zero bytes.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     url = f"{BASE_URL}/api/v2/projects/{project_id}/assets/{asset_id}/download"
-    cmd = [
-        "curl", "-sSL", "--fail",
-        "-H", f"Authorization: Bearer {PAT}",
-        "-o", str(out_path),
-        url,
-    ]
-    subprocess.run(cmd, check=True)
-    if out_path.stat().st_size == 0:
-        raise PR0TAError(f"0-byte download for asset {asset_id}")
-    return out_path
+    status = ""
+    for _ in range(attempts):
+        result = subprocess.run(
+            ["curl", "-sSL", "-o", str(out_path), "-w", "%{http_code}",
+             "-H", f"Authorization: Bearer {_pat()}", url],
+            check=True, capture_output=True, text=True,
+        )
+        status = result.stdout.strip()
+        if status == "200" and out_path.stat().st_size > 0:
+            return out_path
+        if status != "202":
+            break
+        time.sleep(2)
+    raise PR0TAError(f"Download of asset {asset_id} failed (HTTP {status}); request a fresh link and retry")
 
 
 def upload_images(
@@ -152,78 +194,80 @@ def upload_images(
     subject: str | None = None,
     labels: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
-    """Upload one or more local images into a PR0TA project.
-
-    Returns the list of created AssetRead objects. Each asset's ``id``
-    can be used immediately in generation payloads (e.g.
-    ``start_image_asset_id``, Element/Character source images, or
-    ``ref_to_img`` references).
-    """
-    url = f"{BASE_URL}/api/v2/projects/{project_id}/assets/upload"
-    files = [("files", (Path(p).name, open(p, "rb"))) for p in paths]
+    """Upload local images; returns the created assets. Their ids work in generation payloads."""
     data: dict[str, str] = {"category": category}
     if subject:
         data["subject"] = subject
     if labels:
         data["labels"] = json.dumps(labels)
-    # Multipart — do not send Content-Type: application/json.
-    r = requests.post(
-        url, headers={"Authorization": f"Bearer {PAT}"}, files=files, data=data, timeout=60,
-    )
+    handles = [open(p, "rb") for p in paths]
+    try:
+        files = [("files", (Path(p).name, h)) for p, h in zip(paths, handles)]  # field name is "files"
+        r = requests.post(
+            f"{BASE_URL}/api/v2/projects/{project_id}/assets/upload",
+            headers=_headers(json_body=False), files=files, data=data, timeout=120,
+        )
+    finally:
+        for h in handles:
+            h.close()
     r.raise_for_status()
-    body = r.json()
-    return body.get("assets", [])
+    return r.json().get("assets", [])
 
 
-def list_assets(project_id: str, *, kind: str | None = None) -> list[dict[str, Any]]:
-    """List all assets in a project, iterating the canonical offset/next_offset pagination."""
-    url = f"{BASE_URL}/api/v2/projects/{project_id}/assets"
-    params: dict[str, Any] = {"limit": 100}
+def list_assets(project_id: str, *, kind: str | None = None, task_id: str | None = None) -> list[dict[str, Any]]:
+    """List every asset, following offset/next_offset until it is null.
+
+    Each item is the listing's wrapper; the asset id is item["asset"]["id"].
+    """
+    params: dict[str, Any] = {"limit": 100, "offset": 0}
     if kind:
         params["kind"] = kind
+    if task_id:
+        params["task_id"] = task_id
     out: list[dict[str, Any]] = []
-    offset = 0
     while True:
-        params["offset"] = offset
-        r = requests.get(url, headers=HEADERS, params=params, timeout=30)
+        r = requests.get(
+            f"{BASE_URL}/api/v2/projects/{project_id}/assets",
+            headers=_headers(json_body=False), params=params, timeout=30,
+        )
         r.raise_for_status()
         body = r.json()
         out.extend(body.get("assets", []))
-        next_offset = body.get("next_offset")
-        if next_offset is None:
+        if body.get("next_offset") is None:
             return out
-        offset = next_offset
+        params["offset"] = body["next_offset"]
 
 
-# --- Example: fan-out and pick (see pr0ta-image skill) ---
-# NOTE: PR0TA also exposes a first-class batch route —
-#   POST /api/v2/projects/{id}/generate/batch  (max 10 items per request,
-#   up-front validation, item-by-item submission, partial-success reporting).
-# The loop below is the simpler "independent submits" pattern; use the
-# batch route when you want one request that carries many payloads.
+# Example: one prompt on the preferred image model, or a side-by-side of the
+# model ids given on the command line. For many payloads in one request, the
+# batch route POST /api/v2/projects/{project_id}/generate/batch takes up to 10.
 if __name__ == "__main__":
-    project_id = os.environ["PR0TA_PROJECT_ID"]
-
-    prompt = """The poster text must read EXACTLY the following:
-Line 1 (small white caps): EXAMPLE HEADER
-Line 2 (HUGE bold amber-gold): EXAMPLE TITLE
-Flat vector poster on deep navy. No other text. 9:16."""
+    project = os.environ["PR0TA_PROJECT_ID"]
+    prompt = (
+        "Flat vector poster on deep navy. Line 1 (small white caps): EXAMPLE HEADER. "
+        "Line 2 (huge bold amber-gold): EXAMPLE TITLE. No other text."
+    )
+    candidates: list[str | None] = list(sys.argv[1:]) or [None]
 
     tasks: dict[str, str] = {}
-    for model in ("nano_banana_2", "gpt_image_1_5", "ideogram"):
+    for model_id in candidates:
+        request: dict[str, Any] = {
+            "generator": "image",
+            "mode": "txt_to_img",
+            "prompt": prompt,
+            "aspect_ratio": "9:16",
+        }
+        if model_id:
+            request["model"] = model_id
+        label = model_id or "preferred"
         try:
-            tasks[model] = submit_generation(project_id, {
-                "generator": "image",
-                "mode": "txt_to_img",
-                "model": model,
-                "prompt": prompt,
-                "aspect_ratio": "9:16",
-            })
-        except PR0TAError as e:
-            print(f"[WARN] {model}: {e}")
+            tasks[label] = submit_generation(project, request, modality="image_model")
+        except PR0TAError as exc:
+            print(f"[WARN] {label}: {exc}")
 
-    for model, task_id in tasks.items():
-        task = poll_task(project_id, task_id)
-        asset_id = (task.get("result_refs") or {}).get("asset_id")
+    for label, task_id in tasks.items():
+        finished = poll_task(project, task_id)
+        asset_id = (finished.get("result") or {}).get("asset_id")
         if asset_id:
-            download_asset(project_id, asset_id, Path(f"out/{model}.png"))
+            safe = label.replace("/", "_")
+            print(download_asset(project, asset_id, Path(f"out/{safe}.png")))

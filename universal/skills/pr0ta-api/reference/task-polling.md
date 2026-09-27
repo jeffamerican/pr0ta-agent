@@ -4,23 +4,17 @@ Full polling contract: routes, in-progress / succeeded / failed response shapes,
 
 ## Task Status and Polling Fallback
 
-**Task status is authoritative.** With a configured completion subscription, await the notification, acknowledge actual pickup, and read `tasks_get` to reconcile its result. Without a receiver, or during recovery, poll until terminal state. See [completion notifications](task-completion.md).
+**Task status is authoritative.** Poll until a terminal state. MCP: `tasks_get` for one task, `tasks_batch_get` for several.
 
-If a subscribed task finishes during active work and you accept its result through
-a status read, reconcile and acknowledge its completion event now; do not wait for
-a queued notification to take another turn. Follow
-[active-work pickup](task-completion.md#results-picked-up-during-active-work).
+With a configured completion subscription, await the notification, acknowledge actual pickup, and read `tasks_get` to reconcile its result; see [completion notifications](task-completion.md). If a subscribed task finishes during active work and you accept its result through a status read, reconcile and acknowledge its completion event now; follow [active-work pickup](task-completion.md#results-picked-up-during-active-work).
 
 ### Get Task Status
 
-Two equivalent routes — prefer the project-scoped path so the project context is explicit:
-
 ```
-GET /api/v2/projects/{project_id}/tasks/{task_id}   ← preferred
-GET /api/tasks/{task_id}                              ← also valid
+GET /api/v2/projects/{project_id}/tasks/{task_id}
 ```
 
-Both return the same task object. The project-scoped route was added April 2026; the global route has existed since launch.
+Use the project-scoped route so the project is explicit; the unscoped `GET /api/tasks/{task_id}` returns the same task object.
 
 ### Async Provider Errors
 
@@ -117,7 +111,7 @@ Use `created_at` for timing calculations in the reliability contract. Use `error
 - `provider_error` + `error_detail.code: 402` → do **not** retry; fix provider account credits first
 - `invalid_parameters` → do not retry; fix the payload
 
-**`result` is the canonical completion contract.** Always read asset information from `result`, not `result_refs`. The canonical shape for all succeeded generation tasks is:
+**`result` is the canonical media contract.** `result_refs` is the raw record the task wrote, and `result` is derived from it. Read asset information for generation tasks from `result`; its canonical shape is:
 
 ```json
 {
@@ -135,28 +129,24 @@ Use `created_at` for timing calculations in the reliability contract. Use `error
 - `result.asset_id` — primary single-output identifier
 - `result.asset_ids` — complete list of asset-backed outputs
 - `result.download_url` — primary retrieval URL
-- `result_refs` — legacy compatibility; do not use as the preferred client contract
+- `result_refs` — the task's own payload. The media envelope keeps only the fields above, so anything task-specific is read from `result_refs`: drafted screenplay scenes (`scenes`, `failed`, `notReached`), Operator mission receipts (`mission_id`, `mission_status`, `summary`, `cursor`), trained Seedance character tokens (`character_id`), SwitchX alphas (`alpha_asset_id`, `source_asset_id`), BiRefNet mattes (`matte_asset_id`, `plate_asset_id`), and assembled timelines (`timeline`, `sequence_id`). Tasks whose contract is a passthrough (agent chat, generation packages) copy `result_refs` into `result` unchanged.
 
-If a completed task does not expose `result.asset_id`, treat it as a platform bug and use the asset listing fallback (`GET /api/v2/projects/{id}/assets?kind=video` sorted by recency). The platform has hardened reconciliation so that tasks reaching `succeeded` without clean asset linkage are repaired from persisted assets.
+A succeeded generation task always carries `result.asset_id`. If one does not, report it with `bug_report_create`; meanwhile `assets_list` with `task_id` finds the output.
 
 ### Cancel a Stuck Task
 
-Two equivalent routes — prefer the project-scoped path:
+MCP `tasks_cancel`, or:
 
 ```
-POST /api/v2/projects/{project_id}/tasks/{task_id}/cancel   ← preferred
-POST /api/tasks/{task_id}/cancel                              ← also valid
+POST /api/v2/projects/{project_id}/tasks/{task_id}/cancel
 ```
+
+The unscoped `POST /api/tasks/{task_id}/cancel` also exists.
 
 Cancels a running or stalled task. Use this when a video task has been stuck at the same `progress` for >3 minutes, or has exceeded the max polling window (20 min for video).
 
 The backend normalizes both `canceled` and `cancelled` terminal states — completion side-effects are reliable for cancelled tasks.
 
-**Cancellation in the reliability contract:**
-1. Detect stall: same `progress` value for >3 minutes
-2. Cancel: `POST /api/tasks/{task_id}/cancel`
-3. Resubmit: identical generation request to the same provider (queue-reset often fixes it)
-4. **If the retry also stalls, pivot to the other video provider** — Seedance → Kling V3 I2V, or Kling → Seedance Omni. Do not burn a third attempt on the same backend. See `pr0ta-video` → "Cross-Provider Pivot on Stall" for the field-translation cheat sheet.
-5. If both providers stall, surface the status to the user before degrading to a Ken Burns push on the still — motion vs. no-motion is a creative call, not an infrastructure call.
+**After a stall:** cancel, then resubmit the same request once (with a new `idempotency_key`, since it is a new attempt). If it stalls again, tell the user and choose another model for the modality with `models_list(modality=...)` only with their agreement. Replacing motion with a still is a creative decision for the user, not a recovery step. The full stall policy is in `reliability-contract.md`.
 
 ---

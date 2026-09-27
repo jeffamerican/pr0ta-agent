@@ -22,13 +22,16 @@ Use this reference for the Hailuo H3 and H3 Max PR0TA endpoints. H3 has a model-
 | `minimax/h3-max/text-to-video` | H3 Max should invent the full scene | `prompt`, `prompt_expansion_mode` | 5–15 seconds; `480P`, `768P`, or `1080P`; six aspect ratios |
 | `minimax/h3-max/image-to-video` | H3 Max should animate a supplied frame | `prompt`, opening image, `prompt_expansion_mode` | Optional `end_image_url`; output ratio follows the first image |
 | `minimax/h3-max/lip-sync/image-to-video` | An approved still must speak a finished soundtrack | `image_url`, `audio_url` | Audio 5–14.8 seconds; duration follows the clipped audio; `480P`, `768P`, `1080P`, or `2K`; no prompt field |
+| `minimax/h3-max/multi-angle/image-to-video` | One image should be filmed along a scripted camera path (orbit, dolly, crane) | `image_url`, `prompt_expansion_mode` (`balanced` or `quality`) | 5–15 seconds; `480P`, `768P`, or `1080P`; optional `camera_trajectory` of 2–12 keyframes; prompt optional |
 | `minimax/h3-max/reference-to-video` | H3 Max should bind mixed continuity or audio references | `prompt`, `prompt_expansion_mode`, at least one image or video | Up to 9 images, 3 videos, 3 audio clips; 12 combined files; video and audio each total at most 15 seconds; `480P`, `768P`, or `1080P` |
+
+Modes: the text-to-video routes use `txt_to_vid`; every image-to-video, multi-angle, and reference-to-video route uses `ref_to_vid`; the lip-sync route is generator `lipsync`. Confirm with `models_get_defaults(model_id).supported_modes`.
 
 H3 Max is a separate Fal contract, not a replacement identifier for H3. T2V/I2V `prompt_expansion_mode` is `disabled`, `balanced`, or `quality`; R2V requires `balanced` or `quality`. All default to `balanced`. PR0TA's I2V modality deliberately requires an image even though Fal can fall back to T2V when the raw endpoint omits it. Query live defaults before carrying fixed-2K H3 assumptions into H3 Max.
 
-H3 Max Turbo adds `minimax/h3-max-turbo/text-to-video` and `minimax/h3-max-turbo/image-to-video`. Both generate 5–15 seconds at 480P/768P/1080P with native audio and `prompt_expansion_mode` balanced/quality. The I2V route accepts optional `end_image_url` for first/last-frame work. No Turbo R2V route was confirmed. Fal's current launch promotion lasts through 30 September 2026; query the live estimate before generation.
+H3 Max Turbo adds `minimax/h3-max-turbo/text-to-video` and `minimax/h3-max-turbo/image-to-video`. Both generate 5–15 seconds at 480P/768P/1080P with native audio and `prompt_expansion_mode` balanced/quality. The I2V route accepts optional `end_image_url` for first/last-frame work. No Turbo R2V route exists in the catalog. Query the live estimate before generation.
 
-For H3 Max R2V, finalize ordered `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`, then bind literal `Image 1`, `Video 1`, and `Audio 1` roles in the prompt. Audio cannot be the only reference. Each video/audio clip must be 2–15 seconds, video references together and audio references together each must not exceed 15 seconds, with at most 9 images, 3 videos, 3 audio clips, and 12 files overall. Fal bills $0.05/$0.08/$0.16 per output second at 480P/768P/1080P plus pooled reference tokens beyond the first 4,096; audio contributes approximately 80 tokens/second to that pool. Obtain and approve the preflight estimate before submission.
+For H3 Max R2V, finalize ordered `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`, then bind literal `Image 1`, `Video 1`, and `Audio 1` roles in the prompt. Audio cannot be the only reference. Each video/audio clip must be 2–15 seconds, video references together and audio references together each must not exceed 15 seconds, with at most 9 images, 3 videos, 3 audio clips, and 12 files overall. Reference media adds to the billed token pool, so obtain the user's approval of the preflight estimate before submission.
 
 Aspect ratios for T2V are `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, and `9:16`. Reference-to-video also accepts `adaptive`. I2V has no aspect-ratio field: prepare the first image at the delivery ratio.
 
@@ -156,6 +159,32 @@ non_diegetic_music: Minimal low electronic pulse.
 ```
 
 For I2V, treat the approved text-bearing image as frame-zero authority and name the exact typography that must remain stable. For R2V, bind the design as `Image N` and give it the explicit role of typography/brand authority. Inspect every frame at delivery resolution and generate alternatives when spelling or glyph stability fails.
+
+## Multi-Angle Camera Trajectories
+
+`minimax/h3-max/multi-angle/image-to-video` films one supplied image along an ordered camera path. The trajectory is a camera-control input, not an image reference.
+
+- `camera_trajectory`: 2–12 keyframes, each with `time` (0–1, normalized to the clip, non-decreasing), `azimuth` (degrees; signed full turns are preserved), `elevation` (−90 to 90), and `distance` (positive). The first pose holds before its time and the last pose holds to the end.
+- `prompt` is optional. When blank, the scene is frozen and only the camera moves. To add motion, describe the subject's action and state that the camera path is controlled separately; do not narrate the camera in prose that fights the trajectory.
+- `prompt_expansion_mode` accepts only `balanced` or `quality`.
+
+```json
+{
+  "generator": "video",
+  "mode": "ref_to_vid",
+  "model": "minimax/h3-max/multi-angle/image-to-video",
+  "image_asset_id": "approved-set-still",
+  "prompt_expansion_mode": "balanced",
+  "duration": 8,
+  "resolution": "768P",
+  "camera_trajectory": [
+    {"time": 0.0, "azimuth": 0, "elevation": 5, "distance": 1.0},
+    {"time": 1.0, "azimuth": 90, "elevation": 15, "distance": 0.8}
+  ]
+}
+```
+
+Use it for set coverage, product orbits, and reframes of an approved still. Distance units follow the provider schema; read `models_get_defaults` before choosing values.
 
 ## Reference-to-Video Grammar
 

@@ -1,6 +1,6 @@
 # Editorial Primitives — Reference
 
-The post-production timeline now exposes a first-class editorial primitive surface: **asset marks**, **program marks**, **3-point edits**, **trim operations**, and **clip link groups**. These are real shipped backend contracts, not proposed features.
+The post-production timeline exposes editorial primitives: **asset marks**, **program marks**, **3-point edits**, **trim operations**, and **clip link groups**.
 
 **For workflow guidance** (when to use marks vs hard-coded seconds, editorial judgment, pacing), see `pr0ta-timeline` and `pr0ta-editorial`. This file documents the API shapes.
 

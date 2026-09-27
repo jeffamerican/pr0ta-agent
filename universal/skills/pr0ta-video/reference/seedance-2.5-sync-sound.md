@@ -48,28 +48,9 @@ Suggested role wording:
 > picture carrying the intended song. Its audio is the sole musical authority
 > throughout; the black picture is only a transport container.
 
-## Local reference-preparation utility
+## Preparing the derivatives
 
-In the PR0TA source checkout, use its `venv` and installed FFmpeg/ffprobe:
-
-```bash
-venv/bin/python pr0ta_platform/backend/services/sync_reference_preparation.py mute-visual performance.mp4 silent.mp4 --start 0 --duration 12
-venv/bin/python pr0ta_platform/backend/services/sync_reference_preparation.py song-carrier master.wav song.mp4 --start 43 --duration 30
-```
-
-These commands create new files and adjacent `.receipt.json` files; they reject
-existing destinations, invalid ranges, missing streams and failed integrity
-checks. Mute preparation removes the audio stream. Carrier preparation measures
-decoded audio correlation at zero lag and sample-count difference; these are
-input checks, not output performance scores. AAC is lossy.
-
-Upload the prepared files through the normal asset-upload workflow, then record
-the returned asset IDs alongside both receipts. Use those IDs in the order above.
-The Python utility's `ordered_handoff(visual_receipt, song_receipt)` rejects an
-audible continuity receipt and returns the ordered files, empty audio-reference
-list and native-sound handoff policy. It does not submit paid generation.
-Hosted clients without local files can prepare derivatives in Post, export,
-and verify the same input conditions before submission.
+Make the silent continuity derivative and the black-picture song carrier in Post (or any editor), export them, and upload them as project assets. Before submission verify: the continuity file has no audio stream or decodes to silence; the carrier's duration and decoded audio match the source excerpt at zero lag. Record each derivative's source asset id, range, and audio policy with the returned asset ids, and attach them in the order above. AAC is lossy; keep the master for the final mix.
 
 ## Recorded evidence and its limits
 

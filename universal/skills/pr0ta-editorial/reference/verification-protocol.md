@@ -1,131 +1,88 @@
 # Render Verification Protocol
 
-> **See also:** For editorial judgment and the five-pass rewrite loop, read the parent `pr0ta-editorial` SKILL.md. For timeline preview and render endpoints, read `pr0ta-timeline`.
+> **See also:** the parent `pr0ta-editorial` SKILL.md for the ship gate and the five-pass loop; `pr0ta-timeline` for preview, render diagnostics, and export.
 
 ## Why This Exists
 
-The user's instruction: "YOU ALWAYS HAVE TO CHECK YOUR WORK. THIS IS BASIC."
-
-If the user has to be the one who notices that the end is blank, that a shot doesn't match the narration, or that there's a silent gap in the audio, the verification pass failed. The agent does the QC, not the user. This protocol is the gate between "I rendered something" and "I can show this to the user."
-
----
+The agent checks its own work. If the user is the one who notices that the end is blank, that a shot does not match the narration, or that the audio drops out, verification failed. This protocol is the gate between "I rendered something" and "I can show this to the user."
 
 ## When to Run
 
-Run this protocol on **every render before handoff** — preview renders during editorial passes and final exports before delivery. The scope scales: previews get a lighter pass (steps 1, 3, 5); final exports get the full protocol.
+Run it on **every render before handoff**: previews between passes and final exports before delivery. Previews get the lighter pass at the end of this file; final exports get the full protocol.
 
----
+## Start With the Platform's Diagnostics
+
+Before looking at frames, read what PR0TA already measured:
+
+- **Timeline analysis before the render**: gaps, overlaps, reused media, source shortfalls, and frame coverage (`pr0ta-timeline` → Analyze Before Render). Unintended gaps on primary tracks, repeated `asset_id`s, and `sourceShortfallCount > 0` are failures.
+- **Render diagnostics on the finished task**: `timelineMediaGaps[]` (program frames with no media), `renderedPixelGaps[]` (transparent or checkerboard frames after render), and `transparentOutputFrames`. Every entry is a hard review item; repair by its frame range, not by loose timestamp.
+- **Audio**: `audio_analyze` predicts levels, ducking, and the render gain envelope without rendering; `audio_meter` measures LUFS and true peak on short windows. Check at least one narration-quiet window for music audibility.
 
 ## The Full Protocol
 
-### Step 1: First and End-Frame Discipline
+### Step 1: First and End Frames
 
-The first frame of a social-media video is the thumbnail — it determines whether the viewer clicks. The final frame is what the viewer takes away. Both must be intentional.
+The first frame is the thumbnail and decides whether a viewer clicks. The last frames are what the viewer takes away. Confirm that the first frame is the intended opening composition and that the frames at `duration − 1.0s` and `duration − 0.1s` show the intended final composition (credits, final beat, deliberate fade), not an unintended black frame, transparency, or a frozen mid-transition. A clip slot longer than its media can drop frames at the end, so do not trust the timeline's reported duration alone.
 
-The renderer can drop frames at the very end if a clip's allocated timeline slot exceeds its native duration. Do not trust the timeline's reported duration alone.
+### Step 2: Audio Integrity
 
-**Mandatory checks before declaring a render done:**
+Look for unintended silent windows of a second or more. Do not trust integrated loudness or a whole-file mean; they average away local dropouts. If a silence is not a deliberate pause, trace it to the timeline (a gap between clips, a missing track, a clip with no audio) and fix it before anyone hears it.
 
-```bash
-# Get actual duration
-ffprobe -v error -show_entries format=duration -of csv=p=0 output.mp4
-
-# Extract near-end frames
-ffmpeg -ss $(echo "$DURATION - 1.0" | bc) -i output.mp4 -frames:v 1 qc_frames/end_minus_1s.jpg
-ffmpeg -ss $(echo "$DURATION - 0.1" | bc) -i output.mp4 -frames:v 1 qc_frames/end_minus_0.1s.jpg
-
-# Extract first frame
-ffmpeg -ss 0 -i output.mp4 -frames:v 1 qc_frames/first_frame.jpg
-```
-
-View all three frames. Confirm:
-- First frame shows the intended thumbnail/title composition
-- Both end frames show the intended final composition (credits card, final beat, fade-to-black)
-- Neither end frame is an unintentional black frame, transparency artifact, or frozen mid-transition
-
-### Step 2: Audio Integrity Scan
-
-Check for silent windows of 1+ seconds anywhere in the audio. Do **not** trust integrated loudness or `volumedetect mean_volume` — those average across the whole file and hide localized dropouts.
-
-```bash
-# Detect silent gaps (threshold: -50dB for 1+ second)
-ffmpeg -i output.mp4 -af silencedetect=noise=-50dB:d=1.0 -f null - 2>&1 | grep silence_
-```
-
-If silence is detected:
-- Check whether it's intentional (a deliberate pause, a breath between sections)
-- If unintentional, trace back to the timeline — is there a gap between clips? A missing audio track? A clip with no audio source?
-- Fix the timeline and re-render before showing the user
-
-Also verify music audibility: the music bed must be present at a measurable level, not buried below the noise floor. Peak somewhere in the -15 to -6 dBFS range while ducked under narration; up to -3 dBFS in narration-quiet sections. A music bed you can't hear is wasted credits.
-
-For timelines with music automation, explicitly test at least one narration gap after render. A simple failure check is to run `silencedetect` on the full rendered mix and inspect any silence window that overlaps a section where the music bed should be audible. For API-driven checks, meter or preview a narration-quiet window rather than relying only on whole-file loudness.
+Music must be measurable, not buried: peaks around −15 to −6 dBFS while ducked under narration, up to −3 dBFS in narration-quiet sections. With music automation, test at least one narration gap after render.
 
 ### Step 3: Concept-Word Frame Audit
 
-For narration-driven productions, verify that the right visual is on screen at the right moment. For every concept word in the cut plan, extract a frame at the moment the viewer should see the matching visual:
+For narration-driven work, check the frame at each concept word (`word.end + narration_offset + 0.4s`): the visual matches what the narration says, the shot has arrived (not the previous cut), and it is not a black frame or a transition artifact.
+
+### Step 4: Visual Integrity
+
+Scan for unintended black stretches, transparency artifacts, and frozen frames outside the editorial design. Unintended black usually means a clip slot extends past its media, or a gap in the track.
+
+### Step 5: Random Spot Checks
+
+Check three to five frames at random points for generator artifacts (warped faces, melted text, impossible geometry), style breaks, aspect-ratio or letterbox errors, and quality drops.
+
+
+### Doing the Steps Locally
+
+Download the render (`pr0ta-downloading`) and check it with ffmpeg. Save frames to a `qc_frames/` folder named `cut_<idx>_<anchor>_<time>s.jpg` so the user can spot-check them.
 
 ```bash
-# For each concept word: word.end + narration_offset + 0.4s
-ffmpeg -ss $AUDIT_TIME -i output.mp4 -frames:v 1 "qc_frames/cut_${IDX}_${ANCHOR}_${TIME}s.jpg"
-```
+# Duration
+DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 output.mp4)
 
-View each extracted frame and confirm:
-- The visual content matches what the narration is describing at that moment
-- The shot has arrived (not still showing the previous cut)
-- The shot is not a black frame or transition artifact
+# Step 1: first and end frames
+ffmpeg -ss 0 -i output.mp4 -frames:v 1 qc_frames/first_frame.jpg
+ffmpeg -ss $(echo "$DURATION - 1.0" | bc) -i output.mp4 -frames:v 1 qc_frames/end_minus_1s.jpg
+ffmpeg -ss $(echo "$DURATION - 0.1" | bc) -i output.mp4 -frames:v 1 qc_frames/end_minus_0.1s.jpg
 
-Save all frames to a `qc_frames/` folder with the naming convention `cut_<idx>_<anchor>_<time>s.jpg` so the user can spot-check them later.
+# Step 2: silent windows of 1s or more below -50 dB
+ffmpeg -i output.mp4 -af silencedetect=noise=-50dB:d=1.0 -f null - 2>&1 | grep silence_
 
-### Step 4: Visual Integrity Scan
+# Step 3: one frame per concept word (AUDIT_TIME = word.end + narration_offset + 0.4)
+ffmpeg -ss $AUDIT_TIME -i output.mp4 -frames:v 1 "qc_frames/cut_${IDX}_${ANCHOR}_${AUDIT_TIME}s.jpg"
 
-Scan for transparency artifacts, unintentional black gaps, or frozen frames that aren't part of the editorial design:
-
-```bash
-# Per-frame luminance scan — detect near-black frames
+# Step 4: near-black stretches
 ffmpeg -i output.mp4 -vf "blackdetect=d=0.5:pix_th=0.10" -f null - 2>&1 | grep black_
-```
 
-If black frames are detected, check whether they're intentional fades or gaps between clips. Unintentional black frames usually mean a clip's timeline slot extends past its native duration, or there's a gap in the track.
-
-### Step 5: Spot-Check Random Frames
-
-Extract 3-5 frames at random positions throughout the production:
-
-```bash
-# Random spot checks across the duration
+# Step 5: random spot checks
 for t in $(python3 -c "import random; d=$DURATION; print(' '.join(f'{random.uniform(0.5,d-0.5):.1f}' for _ in range(5)))"); do
   ffmpeg -ss $t -i output.mp4 -frames:v 1 "qc_frames/spot_${t}s.jpg"
 done
 ```
 
-View each and check for:
-- Generator artifacts (warped faces, melted text, impossible geometry)
-- Style breaks (a photorealistic frame in an otherwise painterly production)
-- Aspect ratio or letterboxing issues
-- Visual quality degradation
-
----
+For a narration fix, also transcribe the exported file's audio, not only the source narration asset.
 
 ## The Gate
 
-This protocol is a gate, not a checklist to hand-wave through. If any step fails:
-
-1. Identify the specific issue in the timeline
-2. Fix it (swap a clip, adjust timing, regenerate, re-mix)
-3. Re-render
-4. Re-run the full protocol on the new render
-
-Do not surface a failed render with caveats ("there's a small issue at 2:15 but otherwise it's fine"). Fix it first. The user should never see a render that hasn't passed QC.
-
----
+This is a gate, not a checklist to wave through. If any step fails: identify the issue in the timeline, fix it (swap, retime, regenerate, remix), re-render, and rerun the full protocol on the new render. Do not surface a failed render with caveats ("a small issue at 2:15 but otherwise fine"). The user never sees a render that has not passed QC.
 
 ## Lighter Pass for Preview Renders
 
-During editorial iteration (between passes), run a reduced protocol:
+Between passes, run a reduced protocol:
 
-1. **End-frame check** — confirm the preview doesn't trail off into black
-2. **Concept-word spot-check** — pick 3-5 concept words at critical moments, extract frames, confirm visual alignment
-3. **Audio spot-check** — listen to the first 5 seconds, last 5 seconds, and one section in the middle for obvious issues
+1. **End frames**: the preview does not trail into black.
+2. **Concept words**: three to five critical words, frame-checked.
+3. **Audio**: the first 5 seconds, the last 5 seconds, and one middle section for obvious problems.
 
-Save the full protocol for the ship-quality render. But never skip QC entirely — even a lightweight pass catches the most common failures.
+Save the full protocol for the ship-quality render, but never skip QC entirely.

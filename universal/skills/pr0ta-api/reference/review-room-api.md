@@ -89,7 +89,9 @@ Creates or reuses studio submissions for the supplied assets, publishes them to 
 
 The caller must be an authenticated PR0TA project user with a role allowed to use editor-style agent tools. Allowed roles: `editor`, `director`, `producer`, `script_supervisor`.
 
-The MCP server requires `project_id` on every project-scoped tool call. Local stdio clients may provide `access_token` per call or via `PR0TA_MCP_ACCESS_TOKEN`; remote MCP connectors use OAuth bearer flow.
+Every project-scoped tool call requires `project_id`.
+
+Local stdio MCP clients may provide `access_token` per call or via `PR0TA_MCP_ACCESS_TOKEN`; remote MCP connectors use the OAuth bearer flow.
 
 ### Arguments
 
@@ -227,7 +229,7 @@ PATCH  /api/workspace/{project_id}/studio/review-annotations/{annotation_id}
 DELETE /api/workspace/{project_id}/studio/review-annotations/{annotation_id}
 ```
 
-For authenticated agent work, prefer `get_review_annotations`; it returns annotations plus review events in one payload. Each event carries its resolved `asset_id`, and `review_submissions` preserves the historical submission-to-asset mapping. Do not invent `/api/workspace/.../annotations` routes.
+For authenticated agent work, prefer `get_review_annotations`; it returns annotations plus review events in one payload. Each event carries its resolved `asset_id`, and `review_submissions` preserves the historical submission-to-asset mapping. Do not invent other workspace annotation routes.
 
 After creating a replacement review link, verify the review/submission asset ID matches the export asset intended for review. If replacing an old review round, mark old annotations `addressed` when possible and include metadata or a note pointing to the replacement review URL/round.
 

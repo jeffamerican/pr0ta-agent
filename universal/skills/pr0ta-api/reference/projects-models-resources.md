@@ -1,123 +1,98 @@
+# Projects, Models, and Consistency Resources
+
 ## Project Management (Auth Required)
 
-### List Projects
-```
-GET /api/v2/projects
-```
-Returns all projects the authenticated user can access. Each project includes: `id`, `name`, `created_at`, `asset_count`, `settings`, `is_active_project`.
+Every project route takes the project's UUID or slug in the path. Pass it
+explicitly; no API call depends on an active project.
 
-### Create Project
-```
-POST /api/v2/projects
-```
-```json
-{
-  "name": "Turtle Videos",
-  "description": "Automation workspace"
-}
-```
-Add `?select=true` to auto-set as the active project: `POST /api/v2/projects?select=true`
+| Operation | Route |
+| --- | --- |
+| List projects the user can access | `GET /api/v2/projects` |
+| Create | `POST /api/v2/projects` with `{"name": "...", "description": "..."}` |
+| Get | `GET /api/v2/projects/{project_id}` |
+| Update | `PATCH /api/v2/projects/{project_id}` |
+| Archive | `POST /api/v2/projects/{project_id}/archive` |
+| Delete | `DELETE /api/v2/projects/{project_id}` |
 
-**PAT limitation:** `?select=true` only works with JWT session tokens. PATs will receive `"Active project selection requires an interactive session token"`. When using a PAT, create the project without `?select=true` and use the returned `id` directly in all subsequent API calls -- active project selection is only needed for browser-side workflows.
+Each project includes `id`, `name`, `created_at`, `asset_count`, `settings`, and
+`is_active_project`. The web app's active project (`POST
+/api/v2/projects/{project_id}/select`, `DELETE /api/v2/projects/active`,
+`?select=true` on create) is a browser-session convenience: PATs cannot set it,
+and generation and every other project route take `project_id` instead.
 
-### Get Project
-```
-GET /api/v2/projects/{project_id}
-```
+MCP: `project_metadata_get`.
 
-### Update Project
-```
-PATCH /api/v2/projects/{project_id}
-```
-
-### Delete Project
-```
-DELETE /api/v2/projects/{project_id}
-```
-
-### Archive Project
-```
-POST /api/v2/projects/{project_id}/archive
-```
-
-### Set Active Project
-```
-POST /api/v2/projects/{project_id}/select
-```
-Sets the project as the user's active project.
-
-### Clear Active Project
-```
-DELETE /api/v2/projects/active
-```
-
-### Get Current User Info (includes active project)
-```
-GET /api/auth/me
-```
-Returns user info including `active_project_id`.
+MCP-only project tools: `list_projects`, `create_project`,
+`get_project_metadata`.
 
 ---
 
 ## Model Discovery
 
-### Filtered Catalog
+### Preferred model per modality
+
+```
+GET /api/v2/models/preferred
+GET /api/v2/models/preferred?modality=image_model
+```
+
+MCP: `models_preferred(modality=...)`. Returns `resolution_order`
+(`user_default`, then `admin_pin`), `when_unresolved`, and `modalities`, keyed by
+modality. Each entry has `modality`, `model_id` (null when nothing is set or
+pinned), `source`, `resolved_from`, `pin_rank`, `pinned` (the admin's pins along
+the modality's fallback chain), `fallback_modalities`, `in_catalog`, and the
+catalog fields `display_name`, `alias`, `generator`, `provider`,
+`supported_modes`, `generation_submit_supported`, and `image_kind` when the
+model is cataloged. The caller's Settings → Tools choices apply only to
+authenticated requests. An unknown modality returns `400` with
+`known_modalities`. How to use it: `SKILL.md` → "Choosing a model".
+
+### Filtered catalog
 
 ```
 GET /api/v2/models
-GET /api/v2/models?generator=image
 GET /api/v2/models?generator=image&image_kind=text_to_image
 GET /api/v2/models?generator=image&image_kind=image_edit
 GET /api/v2/models?generator=video
-GET /api/v2/models?generator=3d
-GET /api/v2/models?generator=audio
-GET /api/v2/models?generator=music
 GET /api/v2/models?search=sam%203d
 ```
 
-No auth required. Returns the complete visible provider catalog, including generation models, 3D/world endpoints, analysis and utility tools, training endpoints, transcription/voice models, and LLMs. Filter by `generator`, optionally by `image_kind`, or search ids/names/providers/tags/descriptions with `search`. Every row includes `supported_modes`, `generation_submit_supported`, and `api_access` so clients can distinguish normal generation from catalog-only or dedicated workflows. Image rows include `image_kind` (`text_to_image` or `image_edit`); upscaling models are categorized as utilities because they use a dedicated route.
+No auth required. Returns the complete visible provider catalog: generation
+models, 3D and world endpoints, analysis and utility tools, training endpoints,
+transcription and voice models, and LLMs. Filter by `generator` (`image`,
+`video`, `motion`, `3d`, `world`, `lipsync`, `audio`, `music`, `voice`,
+`transcription`, `training`, `utility`, `llm`), optionally `image_kind`, or
+`search` across ids, names, providers, tags, and descriptions. With
+`project_id`, each row also carries its rights-policy status for that project.
 
-### Provider and Defaults Discovery
+Every row includes `id`, `alias`, `provider_model_id`, `display_name`,
+`generator`, `provider`, `supported_modes`, `generation_submit_supported`, and
+`api_access`, so clients can tell normal generation from catalog-only or
+dedicated workflows. Image rows include `image_kind`; upscalers are utilities
+because they use a dedicated route. Pass `provider_model_id` (or a listed
+`alias`) as the request's `model`.
+
+MCP: `models_list` pages the same catalog (`offset`, `limit` up to 200, `total`,
+`has_more`). With `modality`, it returns that modality's curated models, pinned
+first, marked `pinned` and `pin_rank`; `curated_only=true` limits a category to
+the admin-curated list.
+
+### Parameters, defaults, and pricing
 
 ```
-GET /api/crew/providers                           — full provider list (all modalities)
-GET /api/crew/model_defaults?model_id={model_id}  — OpenAPI-driven defaults + JSON Schema for a model
-GET /api/crew/model_pricing?model_id={model_id}   — billable / display pricing hint
+GET /api/crew/model_defaults?model_id={model_id}  — parameter schema and defaults for a model
+GET /api/crew/model_pricing?model_id={model_id}   — billable and display pricing
+GET /api/crew/providers                           — provider list (all modalities)
 ```
 
-Use `model_defaults` to discover the authoritative parameter list and types for any model before calling `/generate`. Catalog aliases are resolved before lookup: `requested_model_id` preserves the caller input and `resolved_model_id` names the canonical provider endpoint. Alias and canonical responses share the same category, recommendations, schema, and required fields. This is especially useful for newly added models where parameter names differ from established ones.
+`model_defaults` returns the authoritative parameter list and types before you
+call `/generate`. Catalog aliases resolve first: `requested_model_id` keeps the
+caller's input and `resolved_model_id` names the canonical provider endpoint.
+MCP `models_get_defaults` adds `supported_modes` and, for models unified
+generation accepts, `request_defaults` (`generator`, `mode`, `model`).
 
-### Common Model Identifiers
-
-| Generator | UI Display Name | API `model` string |
-|-----------|----------------|-------------------|
-| **Image** | **GPT Image 2.5 Sunburst** | **`openai/gpt-image-2.5/sunburst/text-to-image`** |
-| **Image Edit** | **GPT Image 2.5 Sunburst Edit** | **`openai/gpt-image-2.5/sunburst/edit`** |
-| Image | Nano Banana 2 | `nano_banana_2` |
-| Image Edit | Nano Banana 2 Edit | `fal-ai/nano-banana-2/edit` |
-| Image | Midjourney Niji 7 | `muapi/midjourney-niji` |
-| Image | Midjourney V8 | `muapi/midjourney-v8` |
-| Image | Midjourney V7 | `muapi/midjourney-v7` |
-| Image Edit | GPT Image 1 Edit | `fal-ai/gpt-image-1/edit-image` |
-| Image Edit | Kling Image Edit | `kling/o1/image-to-image` |
-| **Video** | **Seedance 2.5 Omni Reference** | **`muapi/seedance-2.5-omni-reference`** |
-| Video | Seedance 2.0 Omni | `muapi/seedance-2-vip-omni-reference` |
-| Video | Seedance 2.0 T2V | `muapi/seedance-2-vip-text-to-video` |
-| Video | Kling Video O3 Pro | `kling_o3_pro` |
-| Video | Kling O3 (advanced) | `kling/o3/image-to-video` |
-| Video | Kling V3 Pro | `kling_v3_pro` |
-| Video | Lyra 2 Zoom (i2v) | `fal-ai/lyra-2/zoom` |
-| Audio | Gemini 3.1 Flash TTS | `fal-ai/gemini-3.1-flash-tts` |
-| Audio | Eleven v3 fallback | `eleven_v3` |
-| Music | Eleven Music | `music-v1` |
-
-**Default recommendation:** For image work, **Nano Banana 2** (`nano_banana_2` for T2I, `fal-ai/nano-banana-2/edit` for editing) is the default — fast and cost-effective. Choose **GPT Image 2.5 Sunburst with `quality: "max"`** (`openai/gpt-image-2.5/sunburst/text-to-image` / `openai/gpt-image-2.5/sunburst/edit`) for challenging prompt adherence or character consistency edits where preserving likeness is essential.
-
-For video work, **Seedance 2.5 Omni Reference** (`muapi/seedance-2.5-omni-reference`) is the preferred default. Supply at least one approved image, video, or audio reference. Use another endpoint only for a capability the preferred route does not provide, such as an exact first/last bridge, source Edit/Extend, Seedance 2.0 trained character IDs, H3 native 2K, or Kling's structured multi-shot/camera controls.
-
-**Model string formats:** Some models accept multiple string formats. The strings above are canonical. The tester also confirmed these work: `fal-ai/kling-video/o3/pro/image-to-video` (equivalent to `kling_o3_pro`). Always verify against the models endpoint.
-
-Using incorrect model strings will return a `500` error. Always verify against the models endpoint.
+An unavailable or non-submittable model returns `400` naming why; requests are
+never rerouted to a different model.
 
 ---
 
@@ -162,11 +137,11 @@ PATCH /api/v2/projects/{project_id}/elements/{element_id}
 DELETE /api/v2/projects/{project_id}/elements/{element_id}
 ```
 
-**Legacy Kling compatibility:** Older projects that used Kling-scoped element IDs in project metadata are automatically bootstrapped into the new `elements` table on first use. Both new internal project resource IDs and legacy provider element IDs are accepted during resolution.
+Both project element IDs and Kling provider element IDs are accepted during resolution.
 
 ### Character Profiles (Seedance / MuAPI)
 
-Characters are project-scoped Seedance/MuAPI character identities for persistent character consistency. A Seedance character is constructed from a **frontal image** (identity anchor) + a **character sheet** (multi-panel reference at 4K 21:9 resolution showing front, back, side, poses, expressions) + optionally **1-2 additional images**. Generate the character sheet with Nano Banana 2 first (see `pr0ta-consistency`), then register the character here.
+Characters are project-scoped Seedance/MuAPI character identities for persistent character consistency. A Seedance character is built from a **frontal image** (identity anchor), a **character sheet** (multi-panel reference at 4K 21:9 showing front, back, side, poses, expressions), and optionally one or two more images. Generate the character sheet first (see `pr0ta-consistency`), then register the character here. Seedance 2.0 Omni is the route that consumes trained character tokens; Seedance 2.5 Omni Reference takes approved reference assets instead.
 
 **Create Character:**
 ```

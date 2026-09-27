@@ -2,7 +2,7 @@
 
 ## Selection and request contract
 
-PR0TA's production preference is **Sunburst with `quality: "max"`** for premium stills and edits. Flare is the faster-iteration alternative. Both supersede GPT Image 2 / GPT-02; select that legacy model only on explicit user request. Keep explicit model, quality, and budget constraints. This is PR0TA policy, not a claim that every max-quality take will outperform every alternative.
+Read this when the resolved model is a GPT Image 2.5 route. Sunburst and Flare share the request contract; Flare is the faster variant. Keep the user's explicit model, quality, and budget constraints; a higher quality setting does not guarantee a better take.
 
 | Operation | Sunburst | Flare |
 |---|---|---|
@@ -15,7 +15,7 @@ Fal accepts 1–10 outputs, prompts up to 32,000 characters, and up to 16 refere
 
 ## Author the production brief
 
-Lead with the deliverable and its use in this production. Make composition, materials, lighting, literal text, and reference roles unambiguous. For edits, separate the intended change from the details that must remain. Iterate one change at a time. These practices follow the [official OpenAI image prompting guide](https://developers.openai.com/api/docs/guides/image-prompting).
+Lead with the deliverable and its use in this production. Make composition, materials, lighting, literal text, and reference roles unambiguous. For edits, separate the intended change from the details that must remain. Iterate one change at a time. These practices follow the official OpenAI image prompting guide (OpenAI developer docs).
 
 PR0TA still brief example:
 
@@ -26,7 +26,7 @@ Submit through `generation_submit` with these settings inside `request`, alongsi
 ```json
 {
   "mode": "txt_to_img",
-  "model": "openai/gpt-image-2.5/sunburst/text-to-image",
+  "model": "<resolved GPT Image 2.5 text-to-image model_id>",
   "quality": "max",
   "image_size": {"width": 2048, "height": 1152},
   "output_format": "png",
@@ -48,6 +48,6 @@ Use the `/edit` endpoint and `quality: "max"`. For a localized repair, attach a 
 
 Check the rendered artifact for cast identity, reference assignment, wardrobe/prop continuity, exact text, panel order, anatomy, output dimensions, and alpha edges where relevant. Judge it at intended delivery scale. Record accepted assets and decisions in project memory; do not mark candidates as approved automatically.
 
-Query current pricing and submit one compact canary before an authorized paid fan-out. For a comparison, hold the prompt, attachments, dimensions, and output format constant and record quality setting, time, cost, and acceptance. If Sunburst fails, retain the receipt and diagnose or use an authorized 2.5 alternative; never silently fall back to GPT Image 2.
+Query current pricing and submit one compact canary before an authorized paid fan-out. For a comparison, hold the prompt, attachments, dimensions, and output format constant and record quality setting, time, cost, and acceptance. If a take fails, retain the receipt and diagnose it before changing models, and never switch the user's selected model silently.
 
 Fal contracts: [Sunburst generation](https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api), [Sunburst edit](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api), [Flare generation](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api), [Flare edit](https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api).

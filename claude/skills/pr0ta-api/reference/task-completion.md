@@ -1,5 +1,6 @@
 # Completion notifications and owner fallback
 
+
 Use completion subscriptions when a dependent workflow needs to resume after a
 generation. A host receiver is required: skill text alone cannot wake a stopped
 conversation. Without a configured receiver and host-resume integration, use

@@ -1,16 +1,9 @@
 # PR0TA Post-Production API Reference
 
-**Date:** 2026-04-21  
 **Audience:** API users and integrators  
-**Scope:** Current post-production timeline, render, transcription, metering, and editorial contracts
+**Scope:** Post-production timeline, render, transcription, metering, and editorial contracts
 
-This is the current backend-facing reference for PR0TA's post-production API surface. It is intended for direct API consumers. The companion skills-facing migration memo is:
-
-- `Documentation/dev_notes/PR0TA_API_SKILLS_DEVELOPER_UPDATE_2026-04-21.md`
-
-The base prefix for the routes below is:
-
-- `/api/post-production/{project_name}`
+This is the backend-facing reference for PR0TA's post-production API surface, for direct API consumers. Every route below lives under the post-production prefix for one project (its UUID or slug), for example `GET /api/post-production/{project_name}/timeline`.
 
 Asset metadata routes referenced here use:
 
@@ -357,7 +350,7 @@ Example:
 
 ```bash
 curl -H "Authorization: Bearer pat_..." \
-  "https://app.pr0ta.com/api/post-production/$PROJ/audio/meter?from=0&to=212&tracks=dialogue,music&format=lufs"
+  "https://app.pr0ta.com/api/post-production/PROJECT_ID/audio/meter?from=0&to=212&tracks=dialogue,music&format=lufs"
 ```
 
 Representative response fields:

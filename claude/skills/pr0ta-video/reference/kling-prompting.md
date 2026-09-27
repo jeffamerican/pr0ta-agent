@@ -1,6 +1,8 @@
 # Kling V3 / O3 Pro Prompting — Reference
 
-**Start here:** this file is the deep dive on Kling prompting. For the triggering overview and the model-selection decision tree, see `pr0ta-video/SKILL.md`. Read this file when writing a Kling prompt, planning multi-shot coverage, or debugging a shot that didn't land.
+Read this file when the resolved model is a Kling route (`kling/*` or `fal-ai/kling-video/*`): writing a Kling prompt, planning multi-shot coverage, or debugging a shot that didn't land. Check `models_get_defaults(model_id).supported_modes` for the mode; Kling image-to-video and reference routes use `ref_to_vid`.
+
+Kling motion-control routes (performance transfer from a driving video) are covered in `motion-transfer.md`. Structured `camera_control` shapes and where PR0TA applies them are in `video-reference-field-matrix.md` (rule 4).
 
 ---
 
@@ -12,7 +14,7 @@ Kling O3 Pro (via the FAL.ai endpoint) uses a specific prompting system built ar
 
 Use `fal-ai/kling-video/o3/4k/video-to-video/edit` for “change one thing, keep the shot” and `fal-ai/kling-video/o3/4k/video-to-video/reference` for controlled style, character, or object integration. Both require `prompt` and `video_url`, bind the source as `@Video1`, accept `@ImageN` image references and `@ElementN` bundles, and optionally preserve source audio with `keep_audio`.
 
-The source must be MP4/MOV, 3–15 seconds, 720–3840 pixels, and at most 200 MB. Elements plus `image_urls` may total at most four. Reference exposes `duration` 3–15 and `aspect_ratio` `auto`, `16:9`, `9:16`, or `1:1`; Edit follows the source and does not expose those fields. Fal lists $0.42 per output second. Always obtain explicit approval for the shown estimate before submitting this premium operation.
+The source must be MP4/MOV, 3–15 seconds, 720–3840 pixels, and at most 200 MB. Elements plus `image_urls` may total at most four. Reference exposes `duration` 3–15 and `aspect_ratio` `auto`, `16:9`, `9:16`, or `1:1`; Edit follows the source and does not expose those fields. Always obtain the user's explicit approval of the shown estimate before submitting this premium operation.
 
 ### Element Reference Syntax
 
@@ -110,8 +112,7 @@ For consistent characters across multiple generations:
 2. **Store Elements in the project** -- Use `POST /api/v2/projects/{project_id}/elements` to persist bundles, then reference via `element_ids[]` in all generations.
 3. **Define key features early** in the prompt (e.g., "scar on left cheek," "red leather jacket")
 4. **Never use pronouns** -- always refer to the character by label (`@Element1`, "the woman", "the soldier") every time. Pronouns cause the model to lose track of which subject is which.
-5. Use the **Refs slider** at 140% (default) or higher for strong visual fidelity to references
-6. **Reuse the same Element bundles** across multiple generations to maintain continuity throughout a sequence or project
+5. **Reuse the same Element bundles** across multiple generations to maintain continuity throughout a sequence or project
 
 ### Multi-Shot Mode (Kling V3 / O3 Pro) — The Continuity Workhorse
 
@@ -130,7 +131,7 @@ For consistent characters across multiple generations:
 - **Kling O3 Pro:** up to **6 camera cuts** per generation.
 - **Total duration across all shots: up to 15 seconds.** Sum of per-shot durations cannot exceed 15s.
 - Individual shot durations are explicitly set per shot. A two-shot generation might be 5s + 5s or 3s + 7s — you choose.
-- **Main prompt box must be empty** in the UI when multi-prompt mode is active. All narrative lives in the shot array.
+- **All narrative lives in the shot array** when multi-prompt mode is active; leave the main prompt empty.
 
 **API shape (the contract):**
 
@@ -138,7 +139,7 @@ For consistent characters across multiple generations:
 {
   "generator": "video",
   "mode": "ref_to_vid",
-  "model": "kling_o3_pro",
+  "model": "fal-ai/kling-video/o3/pro/reference-to-video",
   "prompt_mode": "multi_prompt",
   "start_image_asset_id": "uuid-of-uploaded-image",
   "element_ids": ["element-uuid-1", "element-uuid-2"],
@@ -196,9 +197,6 @@ See `pr0ta-consistency` for the full Element bundle workflow.
 3. Generate the same sequence as **one Seedance Omni `character_id` generation** (if it fits in one call) or as parallel shots with shared character ID.
 4. Compare. Pick the better take. Sometimes it's Kling; sometimes it's Seedance. Budget the second generation — it's worth it.
 
-**Multi-shot in the browser UI:**
-
-Toggle **Multi-Prompt** mode on the Ref-to-Vid tab. The main Prompt box will grey out. Add shots via the Multi-Prompt section; each shot gets its own prompt text area and duration field. Sum of durations is capped at 15s. Elements and Start Image are attached once to the generation and shared across all shots.
 
 **Full cinematic example — three-shot dialogue moment:**
 
@@ -250,7 +248,7 @@ Use the **Negative Prompt** field to combat unwanted defaults:
 
 When the user wants a video that **ends on** a specific image (e.g., a logo reveal, a character emerging from abstract forms):
 
-1. **Generate the starting frame** -- Use Nano Banana 2 (Image Generator, Txt to Img) to create an abstract or symbolic starting image that thematically connects to the target. Match the aspect ratio (e.g., 1:1).
+1. **Generate the starting frame** -- Use the text-to-image model from `models_preferred(modality="image_model")` to create an abstract or symbolic starting image that thematically connects to the target. Match the aspect ratio (e.g., 1:1).
 2. **Set up Ref to Vid** -- Put the generated abstract image as **Start Image** and the target (logo, character, etc.) as **End Image**.
 3. **Write the prompt using `@Image1` only** -- Describe the journey FROM the start image. Do NOT reference the End Image with any token. Just describe the transformation: `"@Image1 -- swirling cosmic energy tightens and crystallizes into sharp geometric letterforms. The spiral locks into an emblem shape..."` The model will handle the visual transition to the End Image automatically.
 
@@ -263,6 +261,6 @@ When the user wants a video that **ends on** a specific image (e.g., a logo reve
 - **Anchor subjects early** -- mention the main subject in the first few words
 - **Simpler is better** -- one clear action per 5-second segment beats cramming in complexity
 - **Iterate** -- generate 2-3 variations with slightly different prompts to find the best take
-- **Duration matters** -- 5s for tight, punchy animations; 10s for narrative beats; 15s for fuller sequences. All major models (Kling O3/V3, Seedance) support up to 15s.
+- **Duration matters** -- 5s for tight, punchy animations; 10s for narrative beats; 15s for fuller sequences. Kling generation routes accept 3–15s.
 - **Prefer longer clips** -- A single 15s generation is more visually consistent than three 5s clips. Use multi-prompt mode for complex sequences rather than generating many short clips.
 - **End Image is implicit** -- never try to reference it with `@Image2`. Just describe the transition and the model handles the landing.

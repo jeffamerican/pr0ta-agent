@@ -1,6 +1,6 @@
 # SwitchX 2.0: workflow and API availability
 
-Verified 2026-09-09 against Beeble's [2.0 announcement](https://beeble.ai/research/switchx-2-0) and [live API schema](https://api.beeble.ai/developer-api-docs/openapi.json).
+Sources: Beeble's [2.0 announcement](https://beeble.ai/research/switchx-2-0) and [live API schema](https://api.beeble.ai/developer-api-docs/openapi.json).
 
 ## Availability boundary
 
@@ -44,12 +44,7 @@ Keep the original audio and timing, compare an overlay against the source, and
 check color-management interpretation in the host before grading. This is a
 manual handoff, not a PR0TA plugin Finish command.
 
-## Pricing and implementation status
+## Pricing and status
 
-The announcement's two-week 50% offer does not establish API pricing or exact
-account eligibility. Query the relevant live price before paid work; do not
-apply the cloud offer to PR0TA's API cost calculation without confirmation.
-
-The repository implementation checklist is
-`Documentation/switchx_2_api_readiness.md`. Full integration remains pending
-the provider's 2.0 developer contract and end-to-end verification.
+Cloud-app offers do not establish API pricing; query the live price before paid
+work. PR0TA integration of 2.0 waits on the provider's 2.0 developer contract.

@@ -10,28 +10,29 @@ Capability does not remove the acceptance test. Exact copy may still mutate, fli
 
 ## Current Capability Routing
 
-### Premium image candidates
+Resolve the model with `models_preferred(modality=...)` (`image_model`, `image_edit_model`, or the video modality for the operation); when it is null, choose from `models_list(modality=...)`. The capability notes below help when the user asks for text-heavy work; they are not a ranking. Do not keep a static allowlist.
 
-- **GPT Image 2.5 Sunburst:** use for professional image generation/editing, instruction adherence, and text-bearing marketing or design assets.
-- **Nano Banana 2 / current Gemini image family:** use for fast text-bearing stills and iterative edits; current Gemini image guidance explicitly supports advanced text rendering.
-- **Seedream 5.0 Pro:** use for dense layouts, multilingual typography, posters, interfaces, and information visualization when exposed by the live catalog.
-- **Current FLUX image routes:** use when the live model catalog exposes a typography-capable FLUX operation.
+### Image families with documented typography
 
-Query `models_list` and `models_get_defaults` before dispatch. Do not keep an old static allowlist when the catalog has newer premium choices.
+- **GPT Image 2.5 (Sunburst, Flare):** instruction adherence and text-bearing marketing or design assets; highest quality needs the literal `quality: "max"`.
+- **Nano Banana 2 / Pro (Gemini image):** current Gemini image guidance documents advanced text rendering; good for fast iterative edits.
+- **Seedream 5.0 Pro:** dense layouts, multilingual typography, posters, interfaces, and information graphics.
+- **Reve 2.1:** layout-aware posters, packaging, and infographics with in-image text.
+- **FLUX image routes:** when the catalog exposes a typography-capable FLUX operation.
 
-### Premium video candidates
+### Video families with documented typography
 
-- **FLUX 3:** preferred when typography or animated design is central. BFL explicitly documents strong typography generation and animated designs. Read `flux-3.md`.
+- **FLUX 3:** BFL explicitly documents strong typography generation and animated designs, which suits shots where typography or animated design is central. Read `flux-3.md`.
 - **Wan 3.0 / Prime:** valid for native titles, signs, charts, formulas, infographics, and motion typography. Alibaba advertises advanced multilingual text rendering, while also noting that exact on-screen accuracy can still improve. Read `wan-3.0.md`.
 - **Seedance 2.0:** a strong typography candidate for reference-led text animation and designed title shots. Attach the approved text design when available, name its role explicitly, and inspect the temporal result. Read `seedance-omni.md`.
-- **Seedance 2.5:** a strong premium choice for longer typography-led sequences, multimodal reference, and targeted video editing. Use an approved design reference or source-video edit when exact visual direction matters. Read `seedance-2.5.md`.
-- **MiniMax H3:** a strong commercial typography and brand-rendering choice. MiniMax explicitly highlights accurate text and brand rendering; use H3's structured audiovisual grammar and native 2K output. Read `hailuo-h3.md`.
+- **Seedance 2.5:** suits longer typography-led sequences, multimodal reference, and targeted video editing. Use an approved design reference or source-video edit when exact visual direction matters. Read `seedance-2.5.md`.
+- **MiniMax H3:** MiniMax explicitly highlights accurate text and brand rendering; use H3's structured audiovisual grammar and native 2K output. Read `hailuo-h3.md`.
 - **LTX 2.5:** a valid T2V/I2V typography candidate with stronger text detail documented by Lightricks, plus native audiovisual and multi-shot generation. Quote the copy, keep motion readable, and apply frame-by-frame acceptance. Read `ltx-2.5.md`.
 - **Other current video families:** try native typography when provider documentation, current model positioning, or a controlled PR0TA test verifies it. Do not infer incapability from model age alone, and do not infer exactness from general visual quality.
 
 ## Choose Native Video or Deterministic Animation
 
-Prefer native video typography when:
+Choose native video typography when:
 
 - the letters themselves transform, assemble, dissolve, interact, or move through 3D space;
 - typography must participate in generated lighting, materials, particles, or camera motion;
@@ -39,7 +40,7 @@ Prefer native video typography when:
 - the copy is short enough to inspect frame by frame; and
 - several variants can be generated and compared.
 
-Prefer a verified still plus a timeline hold/Ken Burns preset when:
+Choose a verified still plus a timeline hold/Ken Burns preset when:
 
 - legal, financial, safety, credit, or brand copy must be exact;
 - the text is long or dense;
@@ -104,7 +105,7 @@ Do not let a correct thumbnail, first frame, or last frame stand in for the temp
 2. Move the quoted text earlier and specify `no additional words`.
 3. Simplify the type treatment or motion while preserving the creative intent.
 4. Generate several variants or try the premium tier.
-5. Switch to a stronger documented typography model, especially FLUX 3 for native motion design.
+5. Switch to another model with documented typography capability (for native motion design, FLUX 3's documentation covers animated type).
 6. Generate or edit a pixel-verified still with a premium image model.
 7. Animate that still deterministically on the PR0TA timeline.
 

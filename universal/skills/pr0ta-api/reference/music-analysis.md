@@ -2,13 +2,12 @@
 
 The **music analysis API** is the instrumental-music analogue of transcription. Scribe V2 is a speech model and does not detect musical beats or downbeats. This endpoint is PR0TA's first-party beat detector — asset → analysis task → `music_analysis.editorial_anchors`, persisted on asset metadata.
 
-**When to use this:** for any instrumental music asset (score bed, underscore, stinger) that will drive cut timing. The output is the required time-indexing pass for Path B of the mandatory time-indexing rule in `pr0ta-audio`.
+**When to use this:** for any instrumental music asset (score bed, underscore, stinger) that will drive cut timing. It is the music half of `pr0ta-audio` → "Time-indexing": check for a stored analysis before starting one.
 
 ## Start Analysis
 
 ```
 POST /api/v2/projects/{project_id}/music/analyze
-Authorization: Bearer $PAT
 ```
 
 Request body:
@@ -99,4 +98,4 @@ This mirrors the dialogue-timing storage pattern (`whisper_index` on audio asset
 - **`transients[]`** (with per-hit `strength`) for sharp accents where the beat tracker is too coarse.
 - Best results on instrumental tracks with a stable pulse. For rubato, ambient, orchestral, or meter-shifting music, fall back from `downbeat_times` to `transients` plus local context.
 
-For the full policy on when to use this endpoint vs Scribe V2, see `pr0ta-audio` → "Mandatory Time-Indexing Rule (Two Paths)" and "Music Analysis API".
+For when to index speech versus music, see `pr0ta-audio` → "Time-indexing"; for cutting to beats, `pr0ta-music` → "Beat analysis".
