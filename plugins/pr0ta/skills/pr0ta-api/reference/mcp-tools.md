@@ -179,13 +179,6 @@ the tool listing in your MCP client.
 - `narration_materialize_to_post`(sequence_name): Materialize narration cuts into the post-production sequence.
 - `narration_timeline_get`(): Load the complete narration timeline for a project.
 
-## performances
-
-- `performances_create`(**performance**): Create a human-performance metadata record for uploaded or recorded production media.
-- `performances_delete`(**performance_id**): Delete a human-performance metadata record.
-- `performances_list`(scene_number, character, text, limit, offset): List or search human-performance metadata for the Production page.
-- `performances_update`(**performance_id**, **updates**): Update a human-performance metadata record.
-
 ## post
 
 - `post_export_start`(export_request, sequence_id): Start an async final master export for a saved post-production sequence.
@@ -253,6 +246,10 @@ the tool listing in your MCP client.
 - `set_environment_collider_materialize`(**environment_id**, **world_asset_id**): Download a World Labs Marble world's collider mesh, register it as a project GLB asset, and link it to a 3D set environment as the Blender source so…
 - `set_environment_upsert`(**variant_id**, status, build_brief, revision_notes, render_settings, metadata): Create or revise the 3D environment contract for a canonical Production Design set variant.
 - `set_environments_get`(scene_number): List canonical 3D set environments, their Production Design variants, assigned scenes, render contract, and linked Blender, runtime, world, still, vi…
+
+## shot
+
+- `shot_performances_list`(shot_uid, scene_number, shot_number, kinds, limit): List the performances filed on a shot, newest first: human takes recorded in Human Performances, dialogue takes, and camera takes.
 
 ## shotlist
 

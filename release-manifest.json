@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04289-ced",
-  "bundle_sha256": "b67d4cd4a77e3368367d127b15dd9e70656a2cb92ef79f9e3406f299733a36f8",
+  "platform_revision": "pr0ta-platform-04298-bel",
+  "bundle_sha256": "af1ce45aa6a2aa9086b8ee008edc8125c0e479c2662a0885b45151896106d0e0",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "fc575fe909ccb3f270c12a25efef72856088beeafdb98967dbfe19deb9d76350",
+      "content_sha256": "27ece6d0a8f36730a055da16a4cf3c2048b1de8a5a9742eb61ad6b752ee8c7c5",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "e670a97b4156d6ce62899cc7285da4b085d3de20cba7419dee4c641dde74929e"
+          "sha256": "0d8c78c5d0cd39e89cc3744c5f6a095035b2a46a58346033ddeeabbe6afa364f"
         },
         {
           "path": "reference/music-analysis.md",
@@ -560,10 +560,6 @@
     "operator_mission_send",
     "operator_mission_start",
     "operator_missions_list",
-    "performances_create",
-    "performances_delete",
-    "performances_list",
-    "performances_update",
     "post_export_start",
     "post_render_start",
     "post_sequence_get",
@@ -599,6 +595,7 @@
     "set_environment_collider_materialize",
     "set_environment_upsert",
     "set_environments_get",
+    "shot_performances_list",
     "shotlist_generate",
     "shotlist_generate_batch",
     "shotlist_scene_chat",
@@ -638,5 +635,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "80884ab4f1f72465ab3c3adfe998e06956b2e3c04342578619d7dd076397d700"
+  "mcp_connector_tools_sha256": "0cb6d0a1d2be5019ad1e7b74c8d5864829864a5cccba100d385e8ee653e796eb"
 }
