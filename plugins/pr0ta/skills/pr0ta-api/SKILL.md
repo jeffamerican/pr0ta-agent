@@ -330,7 +330,7 @@ imported draft with `get_screenplay_text(working_draft: true)`.
 
 `get_project_development_context` returns the same under
 `development_settings`; its top-level `logline` is the Producer read's, not the
-working logline.
+working logline. `script_id` scopes it to one library script.
 
 Approving a logline or beat sheet, publishing, approving direction, rerunning a
 breakdown, and answering review questions are the user's decisions. Publishing,

@@ -338,7 +338,7 @@ External MCP clients also have these; they take `project_id` where a project app
 
 ## get
 
-- `get_project_development_context`(): Get PR0TA development context including logline, beat sheet, screenplay status, and development settings.
+- `get_project_development_context`(script_id): Get PR0TA development context including logline, beat sheet, screenplay status, and development settings, for one script in the project's library (sc…
 - `get_project_metadata`(): Get high-level project metadata summary (logline, genre, tone, cast, scene count).
 - `get_workspace_snapshot`(session_id): Get the latest structured frontend workspace snapshot for a project, optionally scoped to a session_id.
 

@@ -74,7 +74,9 @@ primary 1-999, the next 1001-1999, and so on).
 `get_project_development_context` returns the same under
 `development_settings`. Its top-level `logline`, `genre` and `tone` come from
 the Producer read, not the working logline: read the logline from
-`development_settings.activeLogline` or `approvedLogline`.
+`development_settings.activeLogline` or `approvedLogline`. Pass `script_id` to
+read one library script's beat sheet and loglines; every read also lists the
+library's `scripts` and the project's `campaign_sheet` (the arc over them).
 
 `get_screenplay_text` pages the screenplay. By default it returns the latest
 published revision (Fountain notes removed), and `not_published` before the
