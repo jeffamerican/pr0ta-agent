@@ -33,8 +33,8 @@ the tool listing in your MCP client.
 
 ## beat
 
-- `beat_sheet_approve`(structure, beats): Record the beat sheet as approved so screenplay drafting follows it.
-- `beat_sheet_generate`(**prompt**, structure, logline, template, quality_gate): Queue the Story Editor to write a beat sheet; returns a task to poll with tasks_get.
+- `beat_sheet_approve`(structure, beats, script_id): Record a script's beat sheet as approved so screenplay drafting follows it.
+- `beat_sheet_generate`(**prompt**, structure, logline, template, quality_gate, script_id): Queue the Story Editor to write a script's beat sheet; returns a task to poll with tasks_get.
 
 ## blender
 
@@ -84,7 +84,7 @@ the tool listing in your MCP client.
 
 ## development
 
-- `development_logline_set`(**logline**, approve): Save the project's working logline; with approve=true also record it as the approved logline the beat sheet and screenplay build on.
+- `development_logline_set`(**logline**, approve, script_id): Save a script's working logline; with approve=true also record it as the approved logline the beat sheet and screenplay build on.
 
 ## direction
 
@@ -118,7 +118,7 @@ the tool listing in your MCP client.
 - `get_review_annotations`(submission_id, review_round_id, resolution_status): Retrieve client review comments, decisions, annotations, and time-coded feedback for the project.
 - `get_scene_breakdown`(**scene_number**, scene_range_end): Retrieve the script supervisor's scene breakdown for one or more scenes.
 - `get_scene_shotlist`(**scene_number**): Retrieve the director's shot list for a scene, including shot number, size, angle, lens, aspect ratio, movement, duration, description, action, and c…
-- `get_screenplay_text`(scene_number, offset, limit, include_workspace_context, working_draft, workspace_session_id): Retrieve the screenplay.
+- `get_screenplay_text`(scene_number, offset, limit, include_workspace_context, working_draft, script_id, workspace_session_id): Retrieve the screenplay.
 - `get_set_references`(scene_number, location): Retrieve production design reference images and descriptions for a location or scene.
 - `get_shot_assets`(**scene_number**, **shot_number**): Retrieve generated media assets (video takes, audio takes, storyboard frames) for a specific shot identified by scene and shot number.
 
@@ -231,14 +231,19 @@ the tool listing in your MCP client.
 
 ## screenplay
 
-- `screenplay_draft_beats`(**content**, budgets): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
-- `screenplay_import`(filename, force): Make an uploaded screenplay document (PDF, Final Draft, Fountain, or text) the working draft.
-- `screenplay_publish`(title, actual_length_eighths): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
-- `screenplay_save`(**content**, new_revision): Save the complete working screenplay.
+- `screenplay_draft_beats`(**content**, budgets, script_id): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
+- `screenplay_import`(filename, force): Make an uploaded screenplay document (PDF, Final Draft, Fountain, or text) the working draft of the PRIMARY script.
+- `screenplay_publish`(title, actual_length_eighths, script_id): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
+- `screenplay_save`(**content**, new_revision, script_id): Save the complete working draft of one script in the project's library.
 
 ## script
 
+- `script_create`(**title**, kind): Create a new, empty script in the project's library and return it (id, title, kind, blockStart).
 - `script_supervisor_read_generate`(**script**, **producer_analysis**, **director_analysis**, casting_analysis): Run and persist normalized Script Supervisor scenes, characters, locations, and continuity; returns a task.
+
+## scripts
+
+- `scripts_list`(): List the project's screenplay library: id, title, kind (feature, episode, spot, short, alternate, other), blockStart (its first production scene numb…
 
 ## set
 
@@ -308,7 +313,7 @@ the tool listing in your MCP client.
 
 ## video
 
-- `video_quality_control_analyze`(**asset_id**, **query**, fps, media_resolution, clip_context, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous audio-visual quality-control analysis.
+- `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
 
 ## voices
 

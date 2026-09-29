@@ -311,6 +311,7 @@ user, so access, credits, and side effects match the app.
 | `beat_sheet_generate` | `POST /api/projects/{project_id}/beat-sheet/generate` (task) |
 | `beat_sheet_approve` | `POST /api/projects/{project_id}/metadata` |
 | `documents_list`, `document_add_text` | `GET` / `POST /api/projects/{project_id}/documents` |
+| `scripts_list`, `script_create` | `GET` / `POST /api/projects/{project_id}/scripts` |
 | `screenplay_import` | `POST /api/projects/{project_id}/screenplay/preprocess` |
 | `screenplay_save` | `POST /api/projects/{project_id}/screenplay/update` |
 | `screenplay_draft_beats` | `POST /api/projects/{project_id}/screenplay/draft-beats` (task) |

@@ -256,6 +256,16 @@ Official sources: [Meshy Image to 3D](https://help.meshy.ai/en/articles/9996860-
 
 ## Speech and Audio Models
 
+### ElevenLabs V4
+
+Applies to Eleven v4 (`eleven_v4`) and v4 Turbo (`eleven_v4_turbo`).
+
+Write natural performance-ready text. Direct delivery inline where it changes, either with short tags (`[whispers]`, `[laughs]`) or with a natural-language direction in brackets (`[said angrily in a French accent]`). Short sound cues (`[light rain]`, `[phone buzzing]`) render inside the take; use them sparingly. Use punctuation for rhythm, ellipses for weighted pauses, and capitals sparingly for emphasis. In multi-speaker dialogue, prefix every line with its assigned speaker. A voice keeps its identity across languages, so write the line in the language it should be spoken.
+
+Do not use SSML break tags. Do not stack many tags on one word or expect a calm source voice to shout convincingly.
+
+Official source: [ElevenLabs prompting guide](https://elevenlabs.io/docs/best-practices/prompting). PR0TA request fields and tag list: `pr0ta-audio/reference/elevenlabs-v3-audio-tags.md`.
+
 ### ElevenLabs V3
 
 Write natural performance-ready text. Insert a few compatible audio tags where delivery changes, use punctuation for rhythm, ellipses for weighted pauses, and capitals sparingly for emphasis. Choose a voice whose training character already fits the target emotion. In multi-speaker dialogue, prefix every line with its assigned speaker.

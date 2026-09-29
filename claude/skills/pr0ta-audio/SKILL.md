@@ -39,17 +39,17 @@ Every generation step resolves its model from the platform:
 
 | Resolved model | Read |
 |---|---|
-| ElevenLabs v3 (`eleven_v3`) | `reference/elevenlabs-v3-audio-tags.md` |
+| ElevenLabs v4 (`eleven_v4`, `eleven_v4_turbo`) or v3 (`eleven_v3`) | `reference/elevenlabs-v3-audio-tags.md` |
 | Gemini TTS routes (`fal-ai/gemini-3.1-flash-tts`, `gemini-3.1-flash-tts-preview`, `gemini-2.5-flash-preview-tts`, `gemini-2.5-pro-preview-tts`) | `reference/gemini-tts.md` |
 | Seed Audio 1.0 (`bytedance/seed-audio-1.0`) | `reference/seed-audio.md` |
 | Any other route | its `models_get_defaults` fields |
 
-Prompt grammar per model family (ElevenLabs V3, Gemini TTS, Seed Audio) is in
+Prompt grammar per model family (ElevenLabs V4/V3, Gemini TTS, Seed Audio) is in
 `pr0ta-prompting` → `reference/model-modality-guides.md`.
 
 Capabilities, for when the user asks for one:
 
-- **Inline performance tags in the text:** ElevenLabs v3 reads bracketed tags
+- **Inline performance tags in the text:** ElevenLabs v4 and v3 read bracketed tags
   (`[whispers]`, `[sigh]`) as direction. Seed Audio reads bracketed cues as
   audio direction (sound effects, room tone, pauses) inside one continuous take.
 - **Separate style direction and multi-speaker config:** Gemini TTS routes take
@@ -99,8 +99,9 @@ Submit with `generation_submit`, poll with `tasks_get`; the finished task
 carries `result.asset_id`. Add the resolved model's own fields
 (`models_get_defaults`) as its reference describes.
 
-- Text beyond 5,000 characters is cut off, and some models accept less (the
-  model's reference and `models_get_defaults` give its limit). Split long
+- Text beyond the model's limit is cut off: 10,000 characters on ElevenLabs
+  v4, 5,000 on v3 and most other routes, less on some (the model's reference
+  and `models_get_defaults` give its limit). Split long
   narration at paragraph or scene boundaries and use the same voice and
   direction for every part.
 - Generate narration in as few takes as possible, ideally one per voice: one

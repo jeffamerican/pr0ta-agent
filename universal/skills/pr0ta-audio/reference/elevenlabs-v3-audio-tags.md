@@ -1,24 +1,31 @@
-# ElevenLabs v3 Audio Tags
+# ElevenLabs v4 and v3 Audio Tags
 
-Read this when the resolved `dialogue_model` is ElevenLabs v3 (`eleven_v3`),
-or when a scene dialogue take renders on it. Prompt guidance for the family is
-also in `pr0ta-prompting` → `reference/model-modality-guides.md` →
+Read this when the resolved `dialogue_model` is ElevenLabs v4 (`eleven_v4`),
+v4 Turbo (`eleven_v4_turbo`) or the legacy v3 (`eleven_v3`), or when a scene
+dialogue take renders on one of them. Prompt guidance for the family is also in
+`pr0ta-prompting` → `reference/model-modality-guides.md` → "ElevenLabs V4" and
 "ElevenLabs V3".
+
+v4 reads every v3 tag below. It also takes natural-language directions in
+brackets (`[said angrily in a French accent]`) and short sound cues
+(`[light rain]`), speaks 90+ languages with a voice's identity kept across
+languages, and accepts up to 10,000 characters per request (v3: 5,000).
+v4 Turbo is the low-latency variant at half the character cost.
 
 ## Voices
 
 Use an ElevenLabs `voice_id`: from `voices_list(provider: "elevenlabs")`
 (copy `selection.voice_id`), from the cast, or from `voices_clone` /
-`voices_design_commit`. Do not decide v3 compatibility from voice metadata
-(`high_quality_base_model_ids`, `verified_languages`); ElevenLabs changes v3
-support without updating those fields. Submit with the voice; if v3 rejects it
+`voices_design_commit`. Do not decide v4 or v3 compatibility from voice metadata
+(`high_quality_base_model_ids`, `verified_languages`); ElevenLabs changes model
+support without updating those fields. Submit with the voice; if the model rejects it
 with a model-compatibility error, tell the user and offer another voice, or
 another model from `models_list(modality: "dialogue_model")` that the voice
 supports.
 
 ## Syntax
 
-Eleven v3 interprets words in square brackets as performance directions. Tags are v3-specific; older ElevenLabs models ignore them.
+Eleven v4 and v3 interpret words in square brackets as performance directions. Older ElevenLabs models (Multilingual v2, Flash) ignore them.
 
 Place tags inline in the text, before or within the speech they modify:
 
@@ -92,4 +99,4 @@ Eleven v3 treats punctuation as implicit delivery direction:
 - Professional Voice Clones are not optimized for v3. Use Instant Voice Clones or prompt-designed voices for better tag responsiveness.
 - Tags are suggestive, not deterministic. Regenerate if a take does not land.
 - Stability affects expressiveness. Higher stability is more consistent but less dynamic.
-- Single-voice TTS takes up to 5,000 characters per call. Scene dialogue requests (Text to Dialogue) take at most 2,000 characters and 10 distinct voices each; PR0TA splits a scene to fit and joins the parts. In scene lines, SSML `<break>` tags become ellipses and line `cues` become leading tags.
+- Single-voice TTS takes up to 10,000 characters per call on v4 (5,000 on v3). PR0TA splits scene dialogue into Text to Dialogue requests of at most 5,000 characters on v4 (2,000 on v3) and 10 distinct voices each, then joins the parts. In scene lines, SSML `<break>` tags become ellipses and line `cues` become leading tags.
