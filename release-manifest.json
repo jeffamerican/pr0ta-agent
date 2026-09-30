@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04528-bag",
-  "bundle_sha256": "642a36827baae42e13991165e8e0efa322eabf7447c1287aa93a25b786a8e85c",
+  "platform_revision": "pr0ta-platform-04546-zuf",
+  "bundle_sha256": "00294fb0d78a71c902076eb31aff712d26f005e521802272ce4275dedf37a6f5",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "67939e6fd26bdc2c43ea0f9a47cfa70371fe7f49dd712902dbff788810c08692",
+      "content_sha256": "3cf33a975eb4b7d094f8dc415be41372ee380d9a8e3f271c961435739d0c4044",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "a2788599a8abd80504b530a5f19d3ac7b55cd98d75e6b6786bf9806fc5bfb203"
+          "sha256": "f4a2cc232c9a8e600d5f9fcdfe355e4b5dda391ac2e1121cb05dd9d0cd07be23"
         },
         {
           "path": "reference/music-analysis.md",
@@ -584,6 +584,7 @@
     "project_metadata_get",
     "project_metadata_patch",
     "read_pr0ta_skill",
+    "read_web_page",
     "review_submit_assets",
     "save_scene_shotlist",
     "screenplay_draft_beats",
@@ -637,5 +638,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "5157b53be4726d2956491aeae4bcf3acded7ed22e9d5e7a4c2e6fb3f974d16c6"
+  "mcp_connector_tools_sha256": "c95f4dd17b8610a0b7bb15bc702fbbdb7e44ee47cc4f10d7e552158049d842da"
 }

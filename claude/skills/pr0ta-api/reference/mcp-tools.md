@@ -220,6 +220,7 @@ the tool listing in your MCP client.
 ## read
 
 - `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.
+- `read_web_page`(**url**, max_chars): Open one web page in a browser and return its text as Markdown, after its scripts have run.
 
 ## review
 
