@@ -124,7 +124,7 @@ the tool listing in your MCP client.
 
 ## grounded
 
-- `grounded_web_search`(**query**, max_results): Search the web using Gemini's official grounding API and return sources.
+- `grounded_web_search`(**query**, max_results): Search the web with your model provider's search and return an answer with its sources.
 
 ## hybrid
 

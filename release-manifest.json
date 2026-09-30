@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04448-dek",
-  "bundle_sha256": "e20bf877b62a0dd2c188a23e8331aae3807854385b1d17c7402ab918b4128d64",
+  "platform_revision": "pr0ta-platform-04528-bag",
+  "bundle_sha256": "642a36827baae42e13991165e8e0efa322eabf7447c1287aa93a25b786a8e85c",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "fa367bbc6ca67db0374a503a726570d746bc4ded59d1cd5e1be3811a39346dc8",
+      "content_sha256": "67939e6fd26bdc2c43ea0f9a47cfa70371fe7f49dd712902dbff788810c08692",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "dcf755ffa2319fa0987bbe351a07802ebda996ac6552b7a5583411003c03360c"
+          "sha256": "a2788599a8abd80504b530a5f19d3ac7b55cd98d75e6b6786bf9806fc5bfb203"
         },
         {
           "path": "reference/music-analysis.md",
@@ -273,7 +273,7 @@
     {
       "name": "pr0ta-music",
       "description": "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points. Read before generating, analyzing or placing any non-speech audio.",
-      "content_sha256": "fa590d5252e16e005ffca8de5710aa57b6b7ee4c04b43b9a2c36ccebd818445b",
+      "content_sha256": "5be6a737b29827f8e34350a3493daa238a407970fb5ec4e4fd91cd5ce10e93a8",
       "documents": [
         {
           "path": "SKILL.md",
@@ -281,7 +281,7 @@
         },
         {
           "path": "reference/eleven-music.md",
-          "sha256": "e00300d954befd0756eb907e1afd9b40e32f8c709fa072aec69ebd5680d91bab"
+          "sha256": "02583692d1996a39fdff8171c25ed75d03c4041ab6b1342d6bc3ec08a55e3a75"
         }
       ]
     },

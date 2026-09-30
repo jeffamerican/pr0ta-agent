@@ -39,7 +39,7 @@ rejected.
 | Route | Plan shape |
 |---|---|
 | Music v1 | `sections`, each with its `duration_ms`. |
-| Music v2 and v2.5 | `chunks` (1 to 30). A generated chunk has `duration_ms` (3,000 to 120,000), `text` with lyrics or a section direction (at most 6,000 characters), optional `positive_styles` and `negative_styles` (at most 50 each), `context_adherence` (`low`, `medium`, `high`) and `condition_strength` (`low` to `xhigh`). |
+| Music v2 and v2.5 | `chunks` (1 to 30). A generated chunk has `duration_ms` (3,000 to 120,000), `text` with lyrics or a section direction (at most 6,000 characters, and every line at most 200: put a long direction on several lines), optional `positive_styles` and `negative_styles` (at most 50 each), `context_adherence` (`low`, `medium`, `high`) and `condition_strength` (`low` to `xhigh`). |
 
 Submit a plan through `generation_submit` as `parameters.composition_plan`.
 `prompt` is still required by the request, but the plan drives the render and
