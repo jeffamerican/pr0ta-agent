@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.0.5",
-  "released_at": "2026-09-28",
-  "source_revision": "v6.0.5",
-  "minimum_platform_version": "1.25.88",
+  "skills_version": "6.0.6",
+  "released_at": "2026-09-30",
+  "source_revision": "v6.0.6",
+  "minimum_platform_version": "1.25.106",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04546-zuf",
-  "bundle_sha256": "00294fb0d78a71c902076eb31aff712d26f005e521802272ce4275dedf37a6f5",
+  "platform_revision": "pr0ta-platform-04558-row",
+  "bundle_sha256": "060ca89e8bddc067cc996b6048e457da844b1e25957e47f05ece807119313ee0",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "3cf33a975eb4b7d094f8dc415be41372ee380d9a8e3f271c961435739d0c4044",
+      "content_sha256": "7835fc11e4560775c25dc2661e6187db38649bfed3bd6be18e2bbce22688b6cb",
       "documents": [
         {
           "path": "SKILL.md",
@@ -121,7 +121,7 @@
         },
         {
           "path": "reference/timeline-api.md",
-          "sha256": "ba118090527241f4b71301ae6e47e6aefa16395d023ece9b702661123be849b3"
+          "sha256": "6d4fe4312b0fa886a373589b968b7c8900a6f740791b3d19d355d0bb635f6121"
         },
         {
           "path": "reference/unified-generation.md",
@@ -360,11 +360,11 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, clip editing, Ken Burns, audio mix and ducking, transitions, frame-accurate cuts, marks, 3-point edits, trims, link groups, snapshots, preview, render diagnostics, source shortfalls and fitToFill, narration materialization, and final export. Read when assembling, editing, mixing, previewing, or exporting a cut.",
-      "content_sha256": "71ef20a8f1e35872df6f17387fb1017dd65547762a81afb3eb54b9ebd8656db9",
+      "content_sha256": "aa9b0f307dcb835cd431144a7dfa9049c065f15d7011b5c9790058244afed9dd",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "44d289d5b1afe8a0f4be973fc065230a6de2dd1c8b89fcb69d1b8548557fb728"
+          "sha256": "1b2b33d275705367f818840369e29b3ee141afebc2523f7bf73128c9673c44fc"
         },
         {
           "path": "reference/repairs-and-diagnostics.md",

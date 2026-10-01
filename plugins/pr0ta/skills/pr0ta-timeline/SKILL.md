@@ -130,13 +130,24 @@ Timeline-level mix lives in `audioMix`, set by saving or patching the sequence:
 
 ## Transitions
 
-Set `transition` on the **incoming** clip with a duration in seconds:
+A transition is an object on the clip it belongs to, with `duration` in seconds:
 
 ```json
 { "transition": { "type": "dissolve", "duration": 0.5 } }
 ```
 
-Types: `dissolve`, `crossfade`, `fade-up`, `fade-to-black`, `wipe`. Dissolves, crossfades, and wipes apply only between adjacent clips on the same track (touching, or within 0.1s). This covers common editorial cases; it is not a full transition engine. If the viewer notices the transition, it is probably in the way (`pr0ta-editorial`).
+| `type` | Effect |
+|---|---|
+| `dissolve`, `crossfade`, `wipe` | From the previous clip into this one. Set it on the **incoming** clip. Applies only between adjacent clips on the same track (touching, or within 0.1s). |
+| `fade-up` | This clip opens from black. |
+| `fade-out`, `fade-to-black` | This clip closes to black. |
+
+- `duration`: seconds, above 0 and at most 10 (longer values are capped at 10). Send a number. If it is missing or unreadable, the transition gets 0.5s.
+- `easing` (optional): `linear`, `ease-in`, `ease-out`, or `ease-in-out`. It shapes the editor preview only; renders ramp linearly.
+- A cut has no transition: omit the field, or send `"transition": null` in a clip update to remove one.
+- Always send the object. A bare name such as `"dissolve"` is saved as that type at 0.5s; `"cut"`, `"none"`, the ambiguous `"fade"`, and unrecognized names are saved as a cut.
+
+This covers common editorial cases; it is not a full transition engine. If the viewer notices the transition, it is probably in the way (`pr0ta-editorial`).
 
 ## Frame-Accurate Picture Cuts
 

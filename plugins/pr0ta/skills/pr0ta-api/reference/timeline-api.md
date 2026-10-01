@@ -233,7 +233,7 @@ Clip data is nested under a `clip` key; placement under a `placement` key. Use `
 - `sourceInFrame` / `sourceOutFrame` — frame-native source trim inputs accepted by clip create/update and resolved into `inPoint` / `outPoint`.
 - `fitToFill` / `speed` — explicit retime state when a source range is stretched/compressed to a program duration.
 - `kenBurns` — Ken Burns motion (see below).
-- `transition` — set on the **incoming** clip: `{"type": "dissolve", "duration": 0.5}` with `duration` in seconds. Types and adjacency rules: `pr0ta-timeline` → "Transitions".
+- `transition` — an object, never a bare name: `{"type": "dissolve", "duration": 0.5}` with `duration` in seconds (0 < duration ≤ 10). `null` removes it. Types, which clip carries each, defaults, and adjacency rules: `pr0ta-timeline` → "Transitions".
 - `sourceGroup` / `source_group` / `usageFamily` / `usage_family` — optional semantic reuse family. Timeline analysis reports `semanticReuse[]` when a source family appears in multiple clips even if asset IDs differ.
 
 Clip reads/lists expose retime diagnostics when known: `fitToFill`, `frameSafeFitToFill`, `speed`, `sourceDuration`, `programDuration`, `renderedProgramFrames`, `renderedProgramDuration`, `startFrame`, `endFrame`, `endFrameInclusive`, `sourceInFrame`, `sourceOutFrame`, `sourceInPoint`, `sourceOutPoint`, `sourceSpan`, `effectivePlaybackDuration`, and `retimeReason`.
