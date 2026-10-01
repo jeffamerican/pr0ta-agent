@@ -216,8 +216,12 @@ full configured chain through the Cinematographer.
   `request.source_world_asset_id` to render structure passes from it. Workflow:
   `pr0ta-hybrid`.
 - **Trim, analysis, reports.** `assets_trim` (`asset_id`, `asset_type` `audio`
-  or `video`, `in_point`, `out_point` in seconds) returns the new `asset.id`
-  synchronously and needs editor access. `music_analyze` returns an analysis
+  or `video`, `in_point`, `out_point` in seconds) needs editor access. A short
+  trim returns the new `asset.id` directly. One estimated past ~60 s (or sent
+  with `background: true`) returns `{async: true, task_id, status,
+  idempotency_key}`: poll `tasks_get` until it succeeds and read
+  `result_refs.asset_id`. Retrying the same trim, or passing the same
+  `idempotency_key`, joins that task instead of trimming twice. `music_analyze` returns an analysis
   task. `bug_report_create` returns `bug_report.id`.
 - **Screenplay reads.** `get_screenplay_text` pages with `scene_number`,
   `offset`, `limit`, and `next_offset`. By default it returns the latest

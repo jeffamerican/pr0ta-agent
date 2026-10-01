@@ -207,7 +207,7 @@ Video fan-out is not cheap. For video, prefer one well-prompted call (or a verif
 
 ## Output Resolution and the Timeline
 
-Image models return the size their resolution field selects, not the pixel size an aspect ratio implies. The post-production timeline normalizes every clip to the sequence's delivery resolution when you add it with `POST /timeline/clips`, so stills need no pre-upscaling. Set the sequence once (for example 1080×1920 vertical or 1920×1080 horizontal).
+Image models return the size their resolution field selects, not the pixel size an aspect ratio implies. The post-production timeline scales every clip to the sequence frame at render, so stills need no pre-upscaling; their shape still matters. A still of another shape is letterboxed unless its clip sets `fit: cover` (`pr0ta-timeline` → "Sequences, Sources and Framing"), so generate stills at the deliverable's aspect (9:16 for a vertical cut).
 
 When a still must be delivered at a specific size outside the timeline (a thumbnail export), raise the model's own resolution or size field where it offers one, or run an `image_upscale_model` utility.
 

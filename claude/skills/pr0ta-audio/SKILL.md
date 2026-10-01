@@ -243,7 +243,15 @@ change.
   per call.
 - `transcription_get` returns `text`, `segments`, flat `words` with start and
   end times, counts, the options used, and `transcription_summary` (model id,
-  detected language).
+  detected language). While a transcription is still running it returns
+  `{status, task_id, in_flight: true}` (REST answers `202`): poll the task. A
+  clip with no speech has a finished transcript: `status: completed`,
+  `words: []`, `text: ""`. Do not transcribe it again.
+- Transcription is billed once per asset: `transcription_start` returns the
+  existing transcript, or joins the running task, with `deduplicated: true`
+  when it is compatible with the request (word timing when you ask for words,
+  the language you name, speaker ids when you ask for diarization). An
+  incompatible one starts a new transcription; `force: true` always does.
 - If the narration timeline's transcript layer did not fill (for example the
   asset is not labeled as speech), `pr0ta-sync` covers repopulating it.
 

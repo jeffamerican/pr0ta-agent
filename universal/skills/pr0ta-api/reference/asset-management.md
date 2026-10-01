@@ -125,6 +125,24 @@ Metadata includes `generation_context` (`prompt`, `model`, `negative_prompt`,
 `seed`, `task_id`, `submitted_at`, `completed_at`, `status` when recoverable),
 so any asset can be traced back to the job that produced it.
 
+### Trim an Asset
+
+```
+POST /api/assets/{project}/trim
+{"asset_id": "...", "asset_type": "audio" | "video", "in_point": 12.0, "out_point": 48.5,
+ "idempotency_key"?: "...", "background"?: false}
+```
+
+MCP: `assets_trim`. A short trim answers `200 {success, asset}` with the new
+asset. A trim estimated to take over ~60 s (long slices, 4K, HEVC/VP9), or one
+sent with `background: true`, answers `202 {success, async: true, task_id,
+status, deduplicated, idempotency_key, estimated_seconds, poll}`: poll
+`GET /api/tasks/{task_id}` (MCP `tasks_get`) until it succeeds, then read
+`result_refs.asset_id`. A retry of the same trim (same asset, points and
+labels), or with the same `Idempotency-Key` header / `idempotency_key`, joins
+the existing task (`deduplicated: true`) instead of trimming twice; a failed
+attempt never blocks a retry.
+
 ### MCP Signed Upload Lifecycle
 
 Use `assets_upload_start` or `assets_upload_batch_start` to create upload handoffs, then PUT bytes to each returned signed URL. For a single upload, supply a stable `idempotency_key` and reuse it after any ambiguous timeout; PR0TA returns the same placeholder instead of creating a duplicate. Supplying `checksum_sha256` at start binds that digest to fallback finalization. In production, a storage object-finalize notification should call PR0TA and transition the placeholder to `ready` automatically.

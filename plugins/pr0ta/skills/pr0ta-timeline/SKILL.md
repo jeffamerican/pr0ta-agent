@@ -1,82 +1,83 @@
 ---
 name: pr0ta-timeline
-description: "PR0TA post-production timeline: sequences and tracks, clip editing, Ken Burns, audio mix and ducking, transitions, frame-accurate cuts, marks, 3-point edits, trims, link groups, snapshots, preview, render diagnostics, source shortfalls and fitToFill, narration materialization, and final export. Read when assembling, editing, mixing, previewing, or exporting a cut."
+description: "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut."
 ---
 
 # Post-Production Timeline
 
-The post-production timeline is PR0TA's editing surface. It is persistent, shared state: agents edit it through tools and the API, and the user opens the same sequence in the browser to scrub, reorder, trim, and approve. Every edit persists; a one-shot fix is one call, not a rebuild. Assemble, mix, preview, and render here. If the timeline lacks something a production needs, report it (`bug_report_create`) rather than building a parallel local pipeline.
+The post-production timeline is PR0TA's editing surface. It is persistent, shared state: agents edit it through tools and the API, and the user opens the same sequence in the browser to scrub, trim, review and approve. Assemble, frame, caption, mix, check and export here. If the timeline lacks something a production needs, report it (`bug_report_create`) rather than building a parallel local pipeline.
 
-This is **not** the narration timeline. The narration timeline is a transcript-anchored cut list (`pr0ta-sync`); once its cuts verify, you materialize them into a post-production sequence and edit here.
+This is **not** the narration timeline (`pr0ta-sync`), a transcript-anchored cut list you materialize into a sequence once it verifies. Field contracts live in `pr0ta-api` → `reference/timeline-api.md`, `reference/editorial-primitives.md` and `reference/source-shortfalls-and-fit-to-fill.md`. Editorial judgment (what to cut, when it ships, vertical and short-form craft) lives in `pr0ta-editorial`.
 
-This skill owns the workflow. Field-level contracts live in `pr0ta-api` → `reference/timeline-api.md`, `reference/editorial-primitives.md`, `reference/asset-tags-and-analysis.md`, and `reference/source-shortfalls-and-fit-to-fill.md`. Editorial judgment (what to cut, when it ships) lives in `pr0ta-editorial`.
-
-Before assembly or a major pass, call `memory_context_pack` with a `task_intent` and the sequence, scene, or task `scope`; use approved memory for continuity, client notes, style, pacing, and asset decisions, and surface conflicts before mutating the timeline. After a meaningful edit decision, accepted fix, snapshot rationale, or review conclusion, record it with `memory_record_decision` or `memory_record_note`.
+Before a major pass, call `memory_context_pack` with a `task_intent` and the sequence `scope`; after a meaningful decision, record it with `memory_record_decision` or `memory_record_note`.
 
 ## Tools and Routes
 
 | Job | MCP tool | REST (post-production prefix) |
 |---|---|---|
-| Read a sequence | `post_sequence_get` | `GET /timeline?sequence_id=`, `GET /timeline/state`, `GET /timeline/clips` |
+| Measure sources | `assets_probe` | `POST /api/assets/{project_name}/media/probe-backfill` (whole project) |
+| Read a sequence | `post_sequence_get` | `GET /timeline?sequence_id=`, `GET /timeline/clips` |
 | Save or patch a sequence | `post_sequence_save` (`merge_existing: true` patches) | `POST /timeline?sequence_id=`, `PATCH /timeline` |
-| Preview render of a range | `post_render_start` (`render_request` with `from`, `to`) | `POST /render`, `GET /preview?from=&to=` |
+| Link picture and sound | `post_clips_link` | `POST /timeline/links` |
+| Analyze and list problems | `post_sequence_analyze`, `post_sequence_debug_report` | `GET /timeline/analysis`, `GET /timeline/debug-report` |
+| Look at frames | `post_frames_get` | |
+| Is the latest render current? | `post_sequence_analyze` (`no_verification_render`) | `GET /timeline/verification?sequence_id=` |
+| Approve, request changes, reopen | none: people only | `POST /timeline/review?sequence_id=` (signed-in user in the app) |
+| Preview render | `post_render_start` (`from`, `to`, `quality`) | `POST /render`, `GET /preview?from=&to=&quality=low` |
+| Mix prediction and loudness | `audio_analyze`, `audio_meter` | `GET /audio/analyze`, `GET /audio/meter`, `GET /preview/audio` |
 | Final master | `post_export_start` | `POST /export` |
-| Mix prediction and metering | `audio_analyze`, `audio_meter` | `GET /audio/analyze`, `GET /audio/meter`, `GET /preview/audio` |
 | Poll a render | `tasks_get` | `GET /render/{task_id}/status` |
+| Cut a source into a new asset | `assets_trim` (a long one returns a `task_id` to poll) | |
 | Narration cuts into Post | `narration_materialize_to_post` | `POST /api/v2/projects/{project_id}/narration-timeline/materialize-to-post-production` |
 
-Relative REST paths in this skill sit under the post-production prefix, as in `GET /api/post-production/{project_id}/timeline/state`. Tracks, clip CRUD, marks, 3-point edits, trims, link groups, snapshots, history, and timeline analysis are REST routes on that prefix (listed in the sections below).
+Relative REST paths sit under the post-production prefix, as in `GET /api/post-production/{project_id}/timeline/clips`. Tracks, clip CRUD, marks, 3-point edits, trims and snapshots are REST routes on that prefix.
 
-**Editing through the MCP tools.** Clip CRUD, tracks, marks, 3-point edits, trims, link groups and snapshots are REST routes; the MCP tools save whole sequences. With MCP tools only, edit safely:
+**Renders, frame grabs, probes and analysis are free.** They spend no credits, so a mission with a credit cap can run them; use them on every pass. `assets_probe` and `post_frames_get` save what they find (measurements on the asset, a contact-sheet image), so they need edit access and count as project edits.
 
-1. Keep a restore point: save the sequence you read to a backup `sequence_id` with `post_sequence_save` (REST clients use `POST /timeline/snapshot`).
-2. Call `post_sequence_get` immediately before `post_sequence_save`, never from an earlier read. A save that carries an older `version` than the stored one fails with `409` (stale); read again and reapply.
-3. Change only the clips you mean to change and send everything else exactly as you read it. This is the one exception to the rule below about rewriting `tracks[]`, and it holds only because the read is fresh.
+**Editing through the MCP tools.** The MCP tools save whole sequences. Edit safely:
+
+1. Keep a restore point: save the sequence you read to a backup `sequence_id` (REST clients use `POST /timeline/snapshot`).
+2. Call `post_sequence_get` immediately before `post_sequence_save`, never from an earlier read, and send `baseVersion` set to the `version` it returned. A full replace of an existing sequence without `baseVersion` fails with `428 base_version_required`; one built on an older version fails with `409 stale_write` (both carry `current_version`): read again and reapply. A save to a deleted sequence fails with `410 sequence_deleted`. Creating a new sequence needs no base; `merge_existing: true` patches need none either.
+3. Change only the clips you mean to change and send everything else exactly as you read it.
+
+Every save answers with `validationWarnings`; its `deliveryWarnings` list names letterboxed sources, doubled audio, missing captions and same-source slices. Fix them before rendering.
 
 
-REST clients use the clip and track routes for targeted edits and the MCP tools for reads, whole-sequence saves, renders and exports. The user opens the same sequence at `https://app.pr0ta.com/timeline?sequence_id={sequence_id}`.
+REST clients use the clip and track routes for targeted edits and the MCP tools for reads, whole-sequence saves, checks, renders and exports. The user opens the same sequence at `https://app.pr0ta.com/timeline?sequence_id={sequence_id}`.
 
-**From the Production Queue.** Scripted shots are generated in the Production Queue (`pr0ta-prep` → "Production Queue"), and selected takes do not reach a sequence on their own. The First Cut (Timeline toolbar; REST `POST /api/editor/{project_id}/auto-assemble-async`, a task whose `result_refs.sequence_id` is the new sequence) assembles one from each Queue item's selected take; otherwise place each selected take's asset as a clip (Clips below).
+**From the Production Queue.** Selected takes do not reach a sequence on their own. The First Cut (Timeline toolbar; REST `POST /api/editor/{project_id}/auto-assemble-async`) assembles one; otherwise place each selected take as a clip.
 
 ## Core Rules
 
-- **Name the sequence every time.** Tools and routes default to `timeline_v2`. Record the `sequence_id` you are editing and pass it to every read, write, render, export, and review submission, or you will render a stale default.
-- **One track is one linear lane.** Concurrent audio (narration under music) goes on separate audio tracks. Overlapping clips on one track are invalid and the renderer rejects them.
-- **Create tracks before clips**, one at a time with `POST /timeline/tracks`. Do not rewrite the whole `tracks[]` array through `PATCH /timeline`; a stale payload can restore deleted clips. With MCP tools only, follow "Editing through the MCP tools" above.
-- **`POST /timeline/clips` always creates.** It never upserts: running the same edit logic twice doubles your clips. Read the clip list first; change a clip with `PATCH /timeline/clips/{clip_id}`; replace one by deleting it and adding the new clip.
-- **Seconds are canonical; frames are exact.** `start` and `duration` are seconds (the `_ms` fields are the same values in milliseconds). For picture cuts that matter, use frame-native fields (see Frame-Accurate Picture Cuts).
-- **Snapshot before every major pass**, user review, or many-clip change.
-- **Read state after the user edits.** They may have reordered, trimmed, or swapped clips; read the sequence before your next write.
-- **Respect the edit lock.** A user can hold an advisory lock on a sequence. Writes then fail with `409 timeline_locked` unless they carry the lock token (`X-Timeline-Lock-Token` header, or `lock_token` on `post_sequence_save`). Do not take the lock from a user who is editing; ask. Lock routes: `GET /timeline/lock`, `POST /timeline/lock/acquire`, `/heartbeat`, `/release`.
+- **Name the sequence every time.** Tools default to `timeline_v2`. Pass the `sequence_id` you are editing to every read, write, check, render and export.
+- **One track is one linear lane.** Concurrent audio goes on separate audio tracks; overlapping clips on one track are invalid.
+- **Create tracks before clips** (`POST /timeline/tracks`). Never rewrite `tracks[]` from a stale read.
+- **`POST /timeline/clips` always creates**, never upserts. Change a clip with `PATCH /timeline/clips/{clip_id}`.
+- **Seconds are canonical; frames are exact.** Use frame-native fields for cuts that matter.
+- **Snapshot before every major pass** and read the sequence again after the user edits.
+- **Respect the edit lock.** A user editing holds the lock; writes then fail with `409 timeline_locked` unless they carry its token (`lock_token`). Do not take it from someone who is editing; ask.
 
-## Sequences and Tracks
+## Sequences, Sources and Framing
 
-**Sequence settings come first.** Set width, height, and frame rate before adding clips: 1920×1080 at 30 fps for HD, 1080×1920 at 30 fps for vertical social, 3840×2160 at 24 fps for 4K cinematic. The timeline normalizes every clip to the sequence's size and frame rate at render, so no manual scaling is needed. Plate-based hybrid clips should match the sequence frame rate rather than be retimed (`pr0ta-hybrid`).
+**The sequence frame is the deliverable's shape.** Set width, height and frame rate first: 1920×1080 for 16:9, 1080×1920 for 9:16 Reels, Stories, TikTok and Shorts, 1080×1350 for 4:5 feeds, 3840×2160 at 24 fps for 4K.
 
-`POST /sequences` creates a named empty sequence (`sequence_id`, `name`, `sequence` dimensions). It does not copy another sequence or accept tracks. `POST /sequences/{sequence_id}/duplicate` copies one with its clips. `GET /sequences` lists them.
+**Probe every source before you cut it in.** `assets_probe` returns `width`, `height`, `aspect_ratio`, `orientation`, `fps`, `duration_seconds` and `has_audio`, and saves them on the asset; new uploads, generations, trims and renders are measured at registration. Clips carry the result as `sourceMedia` (`width`, `height`, `aspectRatio`, `fps`, `hasAudio`, `fitsSequence`, and for a trim `sourceAssetId` and `sourceInPoint`). `fitsSequence: false` means the source's shape differs from the frame.
 
-**Standard track layout:**
+**Nothing is reframed for you.** Each picture clip is fitted into the frame by `fit`, then `transform` applies on top:
 
-| Track ID | Type | Purpose |
-|---|---|---|
-| `video` | video | Picture |
-| `dialogue` | audio | Narration and dialogue |
-| `music` | audio | Score and beds |
-| `sfx` | audio | Effects and foley |
-| `titles` | title | Title cards and lower thirds |
+| `fit` | Result when shapes differ |
+|---|---|
+| `contain` (absent means contain) | Whole source visible, bars where shapes differ. 16:9 in 9:16 fills only 32% of the frame. |
+| `cover` | Fills the frame, crops the overflow, centered. |
+| `stretch` | Distorts the source to the frame. Avoid. |
 
-`POST /timeline/tracks?sequence_id=` with `{"id": "dialogue", "type": "audio", "label": "Dialogue", "position": 2}` creates an empty track (`position` optional; appended when omitted). Tracks also answer to NLE aliases (`V1`, `A1`, `A2`); `GET /timeline/tracks` returns the alias map. Use raw IDs in requests and aliases when talking to the user.
+`transform` then moves the fitted picture: `scale` (a multiplier, never a percent: 1.0 = fitted size, clamped to 0.01–10), `positionX` and `positionY` (fractions of the frame width and height; `0.25` moves it a quarter frame right or down), `rotation`, `opacity`, with keyframes for moves. Ken Burns on stills composes with the fit.
+
+**Reframing 16:9 into 9:16:** set `"fit": "cover"`, then keep the subject in the window with `transform.positionX`. Covered, the source is 3.16× the frame width, so `positionX` from about −1.08 to 1.08 pans from one edge of the source to the other (positive shows more of its left side). Check the framing with `post_frames_get` on the sequence, shot by shot. Analysis treats a mismatched source (shape more than 1% off the frame's) as `letterboxed_source` unless it is resolved: `fit` `cover` or `stretch`, or `transform.scale` at least 0.98 × the cover scale (3.16 for 16:9 in 9:16). A clip scaled below 1 or moved off centre is an overlay (picture-in-picture) and is never flagged. A wide with its subject at the edge, or two people at opposite edges, does not survive the crop: pick another shot or generate a vertical one (`pr0ta-video`).
 
 ### Rebuild a Fresh Sequence
 
-Mutate the current sequence for normal iteration. Rebuild into a new `sequence_id` when patch state accumulates: more than one structural review revision, a one-frame or media-gap warning that moves after each repair, audio patches that create artifacts twice, or orphan patch tracks, stale narration, muted keyframe remnants, or duplicate shot families.
-
-1. `POST /sequences` with a new `sequence_id` and the dimensions.
-2. Save the complete intended payload to it (`post_sequence_save` or `POST /timeline?sequence_id={new_id}`): tracks, `audioMix`, and `metadata` such as `{"reason": "review-rebuild", "sourceSequenceId": "timeline_v2"}`. To keep settings, read the source sequence first and copy only what you intend.
-3. Rebuild clips frame-native from the authoritative beat or cut list and known-good media: one primary picture track, one narration track, one music track, and extra tracks only for a specific purpose.
-4. Render, export, and submit for review with the new `sequence_id`.
-
-`reference/repairs-and-diagnostics.md` has the full repair and rebuild procedure.
+Rebuild into a new `sequence_id` when patch state accumulates (more than one structural revision, gap warnings that move after each repair, orphan patch tracks, stale narration): `POST /sequences` with the dimensions, save the complete intended payload to it, rebuild clips frame-native from the authoritative cut list, then check and render with the new id. `reference/repairs-and-diagnostics.md` has the procedure.
 
 ## Clips
 
@@ -84,171 +85,122 @@ Mutate the current sequence for normal iteration. Rebuild into a new `sequence_i
 |---|---|
 | `POST /timeline/clips` | Create a clip with placement |
 | `PATCH /timeline/clips/{clip_id}` | Update properties, move to another track |
-| `DELETE /timeline/clips/{clip_id}?ripple=true` | Delete; `ripple=true` closes the gap on that track |
+| `DELETE /timeline/clips/{clip_id}?ripple=true` | Delete; `ripple=true` closes the gap |
 | `POST /timeline/clips/reorder` | Batch placement and start changes |
-
-Create payload: clip fields under `clip`, placement under `placement`:
 
 ```json
 {
-  "clip": { "assetId": "asset_123", "start": 0, "duration": 2.5, "kenBurns": { "preset": "push_in" } },
+  "clip": { "assetId": "asset_123", "start": 0, "duration": 2.5, "inPoint": 4.0, "fit": "cover",
+            "transform": { "positionX": 0.3 } },
   "placement": { "track_id": "video", "position": 0 }
 }
 ```
 
-Use `track_id` in `placement`. Sequence duration is derived from the last clip's end; you never set it. Check each clip's native duration before placing it: a slot longer than the media leaves a real gap (see Source Shortfalls).
+Sequence duration is derived from the last clip's end. Check each clip's native duration first: a slot longer than the media leaves a real gap (Source Shortfalls). Cut a long take into the range you need with `inPoint`/`outPoint`, or with `assets_trim` for a standalone asset; trims are frame-accurate, remember their source, and keep its alpha (VP9 WebM or ProRes 4444), bit depth (10-bit stays 10-bit) and ProRes profile.
 
-## Ken Burns as a Clip Property
+### Ken Burns as a Clip Property
 
-Set `kenBurns` on create or `PATCH`; the renderer computes the motion at export. You never write zoompan expressions.
+Set `kenBurns` on create or `PATCH`; the renderer computes the motion. Presets: `push_in` (emphasis), `pull_back` (reveal), `drift_left` and `drift_right`, `hold`; an unknown preset renders as `hold`. Custom: `{"start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0]}`, `pan` from −1 to 1. Alternate directions across adjacent stills; one direction repeated reads as monotonous.
 
-- **Presets:** `push_in` (emphasis), `pull_back` (reveal), `drift_left` and `drift_right` (lateral movement), `hold` (static). An unrecognized preset renders as `hold`, so use only these names.
-- **Custom:** `{"kenBurns": {"start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0]}}`, with `pan` values from −1 to 1.
+## Text and Captions
 
-Alternate directions across adjacent stills (`push_in` then `pull_back`); repeating one direction reads as monotonous.
-
-## Audio Mix
-
-Timeline-level mix lives in `audioMix`, set by saving or patching the sequence:
+Title-track clips with no asset are text clips: their `text` object is drawn in preview and burned in at render, and `role: "caption"` clips also export as an SRT sidecar.
 
 ```json
-{
-  "audioMix": {
-    "ducking": [
-      { "sourceTrack": "music", "keyTrack": "dialogue", "duckedGain": 0.35, "attackMs": 300, "releaseMs": 500 }
-    ],
-    "narrationOffsetMs": 1500
-  }
-}
+{ "id": "cap_01", "type": "title", "start": 0.4, "duration": 2.1,
+  "text": { "content": "We built it in a weekend.", "role": "caption" } }
 ```
 
-- `ducking` is an **array of rules**, one per relationship (music under dialogue, SFX under narration). Ducking renders as gain automation on the ducked clips, not a sidechain compressor.
-- `duckedGain` is the fraction of nominal volume while the key track plays: `1.0` no ducking, `0.5` ≈ −6 dB, `0.0` mute. Send camelCase fields.
-- **`volumeKeyframes`** give manual level moves. On a track (`PATCH /timeline/tracks/{track_id}`), times are program time: lower the bed from 20s to 35s. On a clip (`PATCH /timeline/clips/{clip_id}`), times are clip-relative: fade a music clip in. Each keyframe has `time`, `value` (linear gain, `1.0` unchanged) or `db`, and optional `interpolation` (`linear` or `hold`). Track and clip gains multiply; ducking merges its keyframes with yours.
+| Field | Values and defaults |
+|---|---|
+| `content` | Required; `\n` breaks lines |
+| `role` | `title` (default), `caption`, `lower_third` |
+| `position` | `top`, `center`, `bottom`, `lower_third`; caption → bottom, lower third → lower_third, title → center |
+| `fontSizePct` | Percent of frame height: caption 4.5, lower third 4, title 8 |
+| `color`, `background` | `#RRGGBB`; caption box `rgba(0,0,0,0.55)` by default, others none |
+| `align`, `bold`, `fontFamily`, `maxWidthPct` | center; title bold; Inter; 86% of frame width |
+| `safeArea` | Default true: inside the 90% title-safe area and, in 9:16, above the bottom 20% where the app UI sits |
 
-`pr0ta-api` → `reference/timeline-api.md` → "Audio Mix Properties" and "Audio Level Keyframes" hold the full field contract and aliases.
+Captions: one or two short lines, each on screen for its spoken words. Time them from word timing (`transcription_get`, `pr0ta-audio`), not by guess. A title clip with an image or video asset stays an overlay. `text` is always an object; a title clip with no asset and empty `text.content` renders nothing and is reported as `empty_text_clip`.
+
+**Social deliverables.** A cut counts as social when its frame is portrait 4:5 or taller (width/height ≤ 0.8) or square, or when `provenance.deliverable` names a platform (Instagram, Reel(s), TikTok, YouTube Shorts, Shorts, Stories, Facebook, LinkedIn, Snapchat). A social cut with no text clip at all gets `no_on_screen_text`; one with audible speech (a dialogue or narration clip, or a video's own sound) and no caption clips gets `no_captions`. Both are warnings.
+
+## Audio
+
+**One rule decides what you hear, in preview and render.** A video clip's own sound plays unless (1) the clip has `audioEnabled: false` or `muted: true`; (2) a linked audio clip of the same media replaces it, or an audio clip extracted from this clip's own sound does (`metadataOverrides.origin.source` `embedded_video_audio` or `native_video_audio` with `origin.sourceClipId` = the video clip's id); or (3) its track is muted, or another track is soloed. Its level is clip `volume` × track `volume`, with `volumeKeyframes` and fades, like any audio clip.
+
+**Same media** means one thing everywhere (replacement, doubled audio, caption sources): each clip's media key is `sourceMedia.sourceAssetId`, else `assetId`, else `assetUrl` (the URL only when neither clip has an asset id), and the keys match.
+
+**Link picture to its sound** when you put a video's audio on an audio track (to mix it, J/L-cut it, or keep it when you change the picture): `post_clips_link` with the video clip and the audio clip(s). Same media: the audio clip replaces the embedded sound, and the two move and trim together. Other media (sound cut from another file): the link does not silence the video, both play, and analysis reports `linked_audio_not_replacing`; pass `mute_video_audio: true` (or set `audioEnabled: false` on the video). An unlinked copy of the same source under its video plays twice, phasey, and drifts when either moves; analysis reports it as `double_audio_risk`.
+
+Generated video carries thin incidental sound; set `audioEnabled: false` unless the sound was designed for the shot.
+
+**Mix** lives in `audioMix`:
+
+```json
+{ "audioMix": { "ducking": [ { "sourceTrack": "music", "keyTrack": "dialogue", "duckedGain": 0.35,
+                               "attackMs": 300, "releaseMs": 500 } ], "narrationOffsetMs": 1500 } }
+```
+
+`ducking` is an array of rules; `duckedGain` is the fraction of nominal volume while the key track plays (`0.5` ≈ −6 dB). `volumeKeyframes` on a track use program time; on a clip, clip time. Each keyframe has `time`, `value` (linear) or `db`, and optional `interpolation`. `pr0ta-api` → `reference/timeline-api.md` has the full contract.
 
 ## Transitions
 
-A transition is an object on the clip it belongs to, with `duration` in seconds:
-
-```json
-{ "transition": { "type": "dissolve", "duration": 0.5 } }
-```
-
-| `type` | Effect |
-|---|---|
-| `dissolve`, `crossfade`, `wipe` | From the previous clip into this one. Set it on the **incoming** clip. Applies only between adjacent clips on the same track (touching, or within 0.1s). |
-| `fade-up` | This clip opens from black. |
-| `fade-out`, `fade-to-black` | This clip closes to black. |
-
-- `duration`: seconds, above 0 and at most 10 (longer values are capped at 10). Send a number. If it is missing or unreadable, the transition gets 0.5s.
-- `easing` (optional): `linear`, `ease-in`, `ease-out`, or `ease-in-out`. It shapes the editor preview only; renders ramp linearly.
-- A cut has no transition: omit the field, or send `"transition": null` in a clip update to remove one.
-- Always send the object. A bare name such as `"dissolve"` is saved as that type at 0.5s; `"cut"`, `"none"`, the ambiguous `"fade"`, and unrecognized names are saved as a cut.
-
-This covers common editorial cases; it is not a full transition engine. If the viewer notices the transition, it is probably in the way (`pr0ta-editorial`).
+A transition is an object on the clip it belongs to: `{ "transition": { "type": "dissolve", "duration": 0.5 } }`. `dissolve`, `crossfade` and `wipe` go on the **incoming** clip and need adjacent clips on one track; `fade-up` opens from black; `fade-out` and `fade-to-black` close to black. `duration` is seconds (at most 10). A cut has no transition (`"transition": null` removes one). If the viewer notices the transition, it is in the way.
 
 ## Frame-Accurate Picture Cuts
 
-PR0TA normalizes picture clips to `[startFrame, endFrame)` on save and render and derives seconds from the sequence frame rate. Treat video and title edits as frame intervals, not decimal guesses.
-
-- Use `startFrame`, `durationFrames`, `sourceInFrame`, and `sourceOutFrame` for frame-critical edits and repairs.
-- A 1–2 frame gap or overlap on one track is drift. Keep the incoming cut frame and adjust the outgoing side.
-- On beat-aligned edits, never pull an incoming cut earlier unless the user asks for a timing change. Cover boundary artifacts with an outgoing tail handle of about 4–8 frames under the beat-locked incoming shot.
-- Never fix a render-boundary defect by holding the last frame. Trim, retime deliberately, extend or regenerate the source, add a tail handle, or replace the shot.
-- After a repair, read the clips back and confirm `startFrame`, `endFrame`, `endFrameInclusive`, and `durationFrames`.
+PR0TA normalizes picture clips to `[startFrame, endFrame)` from the sequence frame rate. Use `startFrame`, `durationFrames`, `sourceInFrame` and `sourceOutFrame` for frame-critical edits. A 1–2 frame gap or overlap on a track is drift: keep the incoming cut frame and adjust the outgoing side. On beat-locked cuts, cover boundary artifacts with a 4–8 frame outgoing tail handle; never hold a last frame to the boundary. After a repair, read the clips back and confirm `startFrame`, `endFrame` and `durationFrames`.
 
 ## Editorial Primitives
 
-Marks, 3-point edits, trims, and link groups give NLE precision. `pr0ta-api` → `reference/editorial-primitives.md` has every shape.
+Marks, 3-point edits, trims and link groups give NLE precision; `pr0ta-api` → `reference/editorial-primitives.md` has every shape. Asset marks (`POST /api/v2/projects/{project_id}/assets/{asset_id}/marks`) hold source in/out points; program marks (`POST /timeline/marks`) anchor story beats, absolutely or to a transcript word. 3-point edits (`POST /timeline/edits`, preview with `POST /timeline/edits/preview`) compute the fourth point. Trims (`POST /timeline/edits/{clip_id}/trim`) take `ripple`, `roll`, `slip` or `slide`; `linked: true` trims linked companions. Lock a link group (`PATCH /timeline/links/{link_group_id}` with `locked: true`) once sync is confirmed.
 
-- **Asset marks** (`POST /api/v2/projects/{project_id}/assets/{asset_id}/marks`): in and out points on source media. Mark the best section before placing a clip.
-- **Program marks** (`POST /timeline/marks`): story anchors on the timeline, absolute or anchored to a transcript word; anchored marks follow the word when clips move. Send `clipId` (and `assetId`) when the same dialogue asset appears more than once. Give marks a `label` and `description` that say what they are for ("Credits In" / "Credits begin here").
-- **3-point edits** (`POST /timeline/edits`, preview first with `POST /timeline/edits/preview`): give three of source in/out and program in/out and PR0TA computes the fourth. Modes `insert` (ripples downstream) and `overwrite`; reference marks as `@mark:<name>`; `affectedTracks` extends the edit to other tracks.
-- **Trims** (`POST /timeline/edits/{clip_id}/trim`, preview with `.../trim/preview`): modes `ripple`, `roll`, `slip`, `slide`; `linked: true` trims linked companions; only `ripple` accepts `affectedTracks`.
-- **Link groups** (`POST /timeline/links`, `GET /timeline/links`): persisted A/V relationships. Link picture and sound as soon as they are placed together; moves and trims on one member propagate. Lock the group (`PATCH /timeline/links/{link_group_id}` with `locked: true`) once sync is confirmed; a locked group rejects every mutation of its members. Clip update, delete, and reorder accept `linked: true`.
+**Source shortfalls.** A source shorter than its program range leaves a real gap and a `source_shortfall` warning (`requestedDuration`, `shortfallDuration`, `gapStart`, `gapEnd`). Decide: a longer take, a companion shot, different media, or a deliberate `fitToFill: true` retime (slow motion on cinematic B-roll only).
 
-Prefer marks to hard-coded seconds, which break when clips move. Preview before committing whenever you reason from marks.
+### Snapshots
 
-### Source Shortfalls and fitToFill
+`POST /timeline/snapshot` (`{"name": "pre-polish"}`) creates or replaces a named snapshot; `GET /timeline/snapshots` lists them; `POST /timeline/snapshot/{name}/restore` restores one; `GET /timeline/snapshot/{name}/diff` shows added, removed and modified clips; `GET /timeline/history` lists recent saves. If a pass makes things worse, restore instead of rebuilding.
 
-When the source is shorter than the requested program range, PR0TA inserts only the available media and leaves a real gap: no freeze padding, no silent stretch. The edit response carries a `source_shortfall` warning (`requestedDuration`, `insertedDuration`, `shortfallDuration`, `gapStart`, `gapEnd`). Surface it and decide: a longer take, a companion shot, different media over the gap, or `fitToFill: true` to retime the source to the range (it writes `speed`; below 1.0 is slow motion). Use `fitToFill` only as a deliberate visible choice (`pr0ta-editorial` limits it to cinematic B-roll). Before render, confirm the clip shows `fitToFill`, `speed`, `sourceSpan`, `programDuration`, and `effectivePlaybackDuration`, and that the effective duration covers the program duration.
+A snapshot is not an edit: creating one keeps the sequence `version` and announces no save, so your `baseVersion`, an approval and a verification render stay valid. Restoring one is an edit (a new version; a changed cut returns to `in_review`). A rename (send `baseVersion`; a stale one is 409) returns the new version: use it as your next `baseVersion`.
 
-## Snapshots
+## Provenance and Review
 
-| Route (with `?sequence_id=`) | Purpose |
-|---|---|
-| `POST /timeline/snapshot` | Create or replace a named snapshot (`{"name": "pre-polish"}`) |
-| `GET /timeline/snapshots` | List snapshots |
-| `POST /timeline/snapshot/{name}/restore` | Restore into the sequence |
-| `GET /timeline/snapshot/{name}/diff` | Added, removed, and modified clips versus now |
-| `GET /timeline/history` | Recent saves and mutations, newest first |
+Every sequence carries `provenance`: `author`, `missionId`, `intent`, `deliverable`, `status` (`draft`, `in_review`, `approved`, `changes_requested`), `notes`, `flags`. Describe the cut when you save it: `post_sequence_save` with `provenance: {"intent": "...", "deliverable": "Instagram Reel 9:16, ≤30 s", "notes": [...]}`. Write the intent in one or two sentences: what the cut is for and its story spine. An Operator mission's save marks the cut `author: operator`, names the mission and puts it `in_review`; existing intent and notes are kept, and only the `provenance` argument changes intent or deliverable (a copy inside the timeline payload does not). Notes and flags are add-only for agents. Only the user, editing in the app, can remove a flag: a save through MCP, the Operator, REST or a personal access token keeps every stored flag (it can add one, never clear `do_not_publish`).
 
-If a pass makes things worse, restore the snapshot instead of rebuilding.
+**Review is human-only.** `approved` and `changes_requested` are set only through `POST /timeline/review?sequence_id=` with `{"decision": "approve" | "request_changes" | "reopen", "note": "...", "baseVersion": <the version reviewed>}`, by a signed-in user in the app; agents, MCP clients and access tokens get `403 review_requires_user_session`. A review without `baseVersion` gets `428 base_version_required`, and one of an older version gets `409 stale_write`, so a decision never lands on a cut the reviewer has not seen. Approving records `approvedVersion`, `reviewedBy` and `reviewedAt`. No save can set or change those fields: the server keeps the stored values. When any writer saves a change to the cut's content (tracks, clips, framing, mix, links) and the stored status is `approved` or `changes_requested`, the server sets it back to `in_review` and clears `approvedVersion` (and the reviewer, when it was approved). A rename or a save that leaves the content as it was keeps the approval current. So: never edit an approved cut you were not asked to change. Add `do_not_publish` to `flags` for a cut that must not leave the project.
 
-## Preview, Mix Checks, and Render
+## The Verification Loop
 
-Check cheapest first:
+Run this on every pass, not only before delivery. `reference/verification-loop.md` has every finding code and its fix.
 
-1. **`audio_analyze`** (`GET /audio/analyze`): predicted levels, ducking impact, and each segment's `render_gain_envelope`, with no render. Is narration far louder than music? Did ducking bury a track?
-2. **`audio_meter`** (`GET /audio/meter`): actual integrated LUFS, loudness range, true peak, and short-term LUFS through the render path, for short windows. Use it for loudness targets.
-3. **`GET /preview/audio`**: a `.wav` of the mix to listen to; `tracks=dialogue,music` solos tracks (all audio checks accept a track filter).
-4. **`GET /preview`** or a range render: picture and sound, only when you need to see it. Omitted `quality` renders full sequence resolution; `quality=low` (or `preview`) renders at half size for fast checks.
+1. **Analyze.** `post_sequence_analyze`; fix every `deliveryChecks` entry of severity `warning` or `error`, and the gaps, overlaps and shortfalls it lists.
+2. **Look at the framing.** `post_frames_get` with the `sequence_id` and `count` 8 (or `times` at the cuts that matter): letterboxing, crops, captions in the safe area.
+3. **Render low.** `post_render_start` with `render_request: {"quality": "low"}`. Poll `tasks_get` until it succeeds; record its `asset_id`. Renders and exports are stamped at creation with the sequence id and the saved version they show; only a finished full-length render of exactly the current saved version verifies it (`GET /timeline/verification?sequence_id=` returns `latestRender` with `version`, `quality`, `loudness.integratedLufs`/`truePeakDbtp`/`loudnessRangeLu`, `captions`, `renderWarnings`, and `coversCurrentVersion`). A section render (`from`/`to`, stamped `render_range`) is for looking at a passage: it never verifies the cut and its loudness never stands for the cut's. A render of an inline timeline never verifies a sequence.
+4. **Watch the render.** `post_frames_get` with that `asset_id`: the first frame, the last, and the frames at each beat, title and caption. These are the frames that will ship.
+5. **Listen.** Read the finished task's `loudness` (integrated LUFS, true peak), or run `audio_meter` windows. Social and web: about −14 LUFS integrated, true peak at most −1 dBTP. `audio_analyze` shows ducking and the music under narration.
+6. **Debug report.** `post_sequence_debug_report`; every warning is fixed or explained.
+7. **Fix and repeat.** Targeted edits, then render again. A cut is ready for review when analysis shows no warnings you cannot explain and the frames and loudness check out.
+8. **Hand off for review.** Save with `provenance` (intent, deliverable, what changed), tell the user which `sequence_id` to open, and wait for approval before the final export.
 
-Music must stay audible in narration gaps: after any render with music automation, meter or listen to at least one narration-quiet window. If the mix goes silent where the bed should play, the render failed.
-
-`POST /render` (`post_render_start`) is the preview render. It loads the saved sequence; send control fields only (`from`, `to`, `resolution`, `width`, `height`, `format`), not timeline JSON. A sequence with no clips returns 400.
-
-## Analyze Before Render
-
-Call `GET /timeline/analysis?sequence_id=` before any render or export. It reports gaps, overlaps, reused media, source shortfalls, frame coverage, and `trackCoverage`, with counts under `summary`:
-
-- Unintended gaps on primary tracks: fix them. `trackCoverage` separates critical gaps from empty overlay lanes.
-- Reused visual media (`reusedMediaCount`): fix unless it is a stated motif.
-- `sourceShortfallCount > 0`: present the affected clips and resolve each (see Source Shortfalls).
-- For retimed clips, confirm `effectivePlaybackDuration >= programDuration` within a frame.
-
-`GET /timeline/debug-report` adds render-risk diagnostics. Render and export results carry `timelineMediaGaps[]` (program frames with no media) and `renderedPixelGaps[]` (transparent or checkerboard frames after render). Each is a hard review item: classify it and repair by its `startFrame`/`endFrame`, never by loose timestamp and never by clearing it on a black-frame check alone. `reference/repairs-and-diagnostics.md` has the adjudication procedure.
-
-## Narration Materialization
-
-Narration-driven pieces (documentary, explainer, anything cut to a transcript) are built and verified in the narration timeline (`pr0ta-sync`), then materialized with `narration_materialize_to_post`. The response includes `timeline`, `clip_count`, and `sequence_name`. The materializer keeps cut order, resolves assets to stable URLs, gives clips stable IDs, keeps transcript-anchor provenance under `metadataOverrides.origin`, converts narration motion to `kenBurns` and supported transitions to clip transitions, adds narration and music clips when those layers exist, and writes the narration offset and ducking intent into `audioMix`. After that, all editing happens here.
-
-## Standard Production Workflow
-
-1. **Generate** images, video, narration, and music: scripted shots in the Production Queue (`pr0ta-prep`), ad-hoc shots with `pr0ta-image`, `pr0ta-video`, `pr0ta-audio`, `pr0ta-music`.
-2. **Set the sequence** size and frame rate, then **create tracks**: at least `video`, `dialogue`, `music`; `sfx` and `titles` as needed.
-3. **Build the edit.** Narration-driven: verify in the narration timeline, then materialize. Otherwise add clips with placement and Ken Burns, narration on `dialogue`, music on `music`.
-4. **Configure audio**: ducking rules, narration offset, clip and track levels, `volumeKeyframes` for manual moves.
-5. **Check the mix** with the escalation above.
-6. **Mark key points**: program marks on concept words, beat changes, and section boundaries; asset marks on best source sections.
-7. **Analyze before render.**
-8. **Snapshot** (`agent-pass-1`).
-9. **Hand off**: tell the user the sequence is ready and which `sequence_id` to open. They scrub, reorder, trim, and swap directly.
-10. **Read back and address notes** with targeted clip edits, not a full rebuild.
-11. **Rebuild when patch state accumulates** (Rebuild a Fresh Sequence). Replacing narration means removing the old narration clips, patch tracks, and stale automation, adding one regenerated narration asset, making sure it is time-indexed, and reflowing the cuts; never layer a replacement over the old one unless asked.
-12. **Final export** when the cut passes the ship gate.
+For a narration or dialogue fix, also transcribe the rendered audio. `video_quality_control_analyze` adds a paid timecoded audio-visual QC pass; run it only on the ship-quality render, and say it is paid.
 
 ## Final Export
 
-`post_export_start` (`POST /export`) renders the locked master from the saved sequence; inline timeline payloads are rejected. Use it only when the cut passes `pr0ta-editorial`'s seven-criteria ship gate and render verification; use preview renders during iteration. Record the `sequence_id`, render or export task ID, and export asset ID together. Client review links get a full-quality export, never a low-quality preview; after submitting for review, confirm the review asset ID is the export you meant to show and record the review round and URL with it. `POST /export-fcpxml` exports the edit as FCPXML for another NLE.
+`post_export_start` (`POST /export`) renders the locked master from exactly the saved sequence, loaded by its `sequence_id`. Save first, then export by `sequence_id`: an export request whose inline `timeline_data` differs from the saved content is refused with `400 export_requires_saved_sequence`. Use it only for a cut that passed `pr0ta-editorial`'s ship gate, the verification loop, and review. The export gate reads the saved sequence, never the request: when it has provenance and either its `author` is not `user` or its flags include `do_not_publish`, the export passes only if `status` is `approved`, `approvedVersion` equals the current `version`, and `do_not_publish` is absent. Otherwise it answers `400` with `detail: {code: "export_requires_confirmation", message, status, flags}`, and only the user's explicit confirmation (`confirm_unapproved: true`) exports it anyway. Export at the sequence's own size: a 9:16 cut exports 1080×1920, never through a 16:9 preset. Record the `sequence_id`, export task ID and export asset ID together; client review links get the full-quality export, never a low preview. `POST /export-fcpxml` exports the edit for another NLE.
 
-## Collaborative Model
+## Standard Workflow
+
+1. **Generate or gather** material: scripted shots in the Production Queue (`pr0ta-prep`), others with `pr0ta-image`, `pr0ta-video`, `pr0ta-audio`, `pr0ta-music`.
+2. **Probe sources** (`assets_probe`) and **set the sequence** to the deliverable's shape; create tracks: `video`, `dialogue`, `music`, `sfx`, `titles` as needed.
+3. **Build the edit**: narration-driven work through the narration timeline and `narration_materialize_to_post`; otherwise clips with placement, `fit`, and Ken Burns.
+4. **Frame and caption**: reframe mismatched sources, add caption and title clips.
+5. **Sound**: link picture to its sound, disable stray generated audio, set ducking and levels.
+6. **Snapshot**, then run **the verification loop** until it is clean.
+7. **Hand off** with provenance; read the user's changes back and address notes with targeted edits.
+8. **Final export** after approval.
 
 | Actor | Works via | Does |
 |---|---|---|
-| Agent | Tools and API | Generates, places, sets motion and mix, previews, verifies |
-| User | Browser Timeline | Scrubs, reorders, trims, swaps, adjusts pacing, approves |
-| Agent, round 2 | Tools and API | Reads the user's changes, addresses remaining notes, re-renders only what changed |
-
-The agent's job is editorial judgment (what goes where, what motion, what pacing), not mechanical assembly.
-
-## Tips
-
-- Use `audio_analyze` before rendering; escalate to an audio preview, then a picture preview, only as needed.
-- Preview segments; render the full piece only for verification and delivery.
-- Presets cover most Ken Burns needs; use custom zoom and pan only for a specific range.
-- Link A/V pairs early and lock them once sync is confirmed.
-- Preview 3-point edits and trims before committing, especially when working from marks.
-- Every `source_shortfall`, `timelineMediaGaps[]`, and `renderedPixelGaps[]` entry gets a decision and a recorded repair.
+| Agent | Tools and API | Generates, places, frames, mixes, checks, renders, describes the cut |
+| User | Browser Timeline | Scrubs, trims, swaps, reviews, approves or requests changes |

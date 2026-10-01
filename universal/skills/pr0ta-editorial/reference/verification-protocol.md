@@ -14,7 +14,7 @@ Run it on **every render before handoff**: previews between passes and final exp
 
 Before looking at frames, read what PR0TA already measured:
 
-- **Timeline analysis before the render**: gaps, overlaps, reused media, source shortfalls, and frame coverage (`pr0ta-timeline` → Analyze Before Render). Unintended gaps on primary tracks, repeated `asset_id`s, and `sourceShortfallCount > 0` are failures.
+- **Timeline analysis before the render**: gaps, overlaps, reused media, source shortfalls, and frame coverage (`post_sequence_analyze`; `pr0ta-timeline` → The Verification Loop). Unintended gaps on primary tracks, repeated `asset_id`s, and `sourceShortfallCount > 0` are failures.
 - **Render diagnostics on the finished task**: `timelineMediaGaps[]` (program frames with no media), `renderedPixelGaps[]` (transparent or checkerboard frames after render), and `transparentOutputFrames`. Every entry is a hard review item; repair by its frame range, not by loose timestamp.
 - **Audio**: `audio_analyze` predicts levels, ducking, and the render gain envelope without rendering; `audio_meter` measures LUFS and true peak on short windows. Check at least one narration-quiet window for music audibility.
 
@@ -41,6 +41,15 @@ Scan for unintended black stretches, transparency artifacts, and frozen frames o
 ### Step 5: Random Spot Checks
 
 Check three to five frames at random points for generator artifacts (warped faces, melted text, impossible geometry), style breaks, aspect-ratio or letterbox errors, and quality drops.
+
+### Doing the Steps With the Tools
+
+Every step runs on PR0TA's own tools, free of credits (`pr0ta-timeline` → The Verification Loop):
+
+1. Render: `post_render_start` with `render_request: {"quality": "low"}` for passes; omit `quality` for the ship-quality render. Poll `tasks_get`; keep the result's `asset_id` and `loudness`.
+2. Step 1 and Steps 3–5: `post_frames_get` with that `asset_id` and `times` at 0, `duration − 1.0`, `duration − 0.1`, each concept word or beat, and three to five random points (up to 12 per call; call again for more). Look at every tile.
+3. Step 2: the render's `loudness`, and `audio_meter` windows over the first and last 5 seconds, the narration-quiet windows, and any section you changed. `audio_analyze` predicts levels and ducking without rendering.
+4. Close with `post_sequence_debug_report`: every warning fixed or explained.
 
 
 ### Doing the Steps Locally

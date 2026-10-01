@@ -21,7 +21,8 @@ the tool listing in your MCP client.
 - `assets_get_download_link`(**asset_id**, as_attachment, artifact): Get a signed/proxy download handoff for one asset.
 - `assets_get_download_links`(**asset_ids**, as_attachment, artifact): Get signed/proxy download handoffs for multiple assets in one MCP call.
 - `assets_list`(offset, limit, kind, category, browser_category, reference_type, subject, source, task_id, q, favorite_only, asset_ids, folder_path, recursive, include_virtual_references, include_download, compact): List PR0TA project assets with simple filters.
-- `assets_trim`(**asset_id**, **asset_type**, **in_point**, **out_point**, category, subject): Trim a project audio or video asset into a new registered derivative.
+- `assets_probe`(**asset_ids**, refresh): Measure video, image and audio assets (free): width, height, aspect_ratio, orientation, fps, duration_seconds, has_audio and codecs, read from each f…
+- `assets_trim`(**asset_id**, **asset_type**, **in_point**, **out_point**, category, subject, idempotency_key, background): Trim a project audio or video asset into a new registered derivative.
 - `assets_upload_batch_start`(**files**, folder_path): Create signed upload handoffs for multiple assets in one MCP call.
 - `assets_upload_finalize`(**asset_id**, byte_size, checksum_sha256, duration_ms, metadata, category, subject, labels, status, folder_path): Fallback: finalize a signed MCP upload after PUT succeeds if the storage event did not auto-finalize it.
 - `assets_upload_start`(**filename**, content_type, kind, folder_path, idempotency_key, checksum_sha256): Create an asset placeholder and signed upload handoff.
@@ -176,15 +177,19 @@ the tool listing in your MCP client.
 
 ## narration
 
-- `narration_materialize_to_post`(sequence_name): Materialize narration cuts into the post-production sequence.
+- `narration_materialize_to_post`(sequence_name, base_version, lock_token): Materialize narration cuts into the post-production sequence.
 - `narration_timeline_get`(): Load the complete narration timeline for a project.
 
 ## post
 
-- `post_export_start`(export_request, sequence_id): Start an async final master export for a saved post-production sequence.
-- `post_render_start`(render_request, sequence_id): Start an async render for a saved or supplied post-production sequence.
+- `post_clips_link`(**video_clip_id**, **audio_clip_ids**, sequence_id, mute_video_audio, lock_token): Link a video clip to its sound on an audio track so they move and trim together.
+- `post_export_start`(export_request, sequence_id): Start an async final master export of a saved sequence (free, no credits).
+- `post_frames_get`(asset_id, sequence_id, times, count): Look at frames (free, no credits): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
+- `post_render_start`(render_request, sequence_id): Start an async preview render of a saved sequence.
+- `post_sequence_analyze`(sequence_id): Analyze a saved sequence before rendering or calling it done (free).
+- `post_sequence_debug_report`(sequence_id): Render-risk report for a saved sequence (free): retimed clips, source shortfalls, media gaps, audio track summary, and one warnings[] list (code, sev…
 - `post_sequence_get`(sequence_id): Load a saved post-production sequence.
-- `post_sequence_save`(**timeline**, sequence_id, merge_existing, lock_token): Save or patch a post-production sequence.
+- `post_sequence_save`(**timeline**, sequence_id, merge_existing, lock_token, provenance): Save or patch a post-production sequence.
 
 ## prep
 
@@ -306,7 +311,7 @@ the tool listing in your MCP client.
 ## transcription
 
 - `transcription_get`(**asset_id**): Get stored transcript text, segments, and flattened word-level timing for a project asset.
-- `transcription_start`(**asset_id**, model_id, language, diarization, timestamp_granularity): Start Scribe V2 transcription for a project audio or video asset.
+- `transcription_start`(**asset_id**, model_id, language, diarization, timestamp_granularity, force): Start Scribe V2 transcription for a project audio or video asset.
 
 ## update
 

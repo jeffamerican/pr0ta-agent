@@ -1,6 +1,6 @@
 ---
 name: pr0ta-editorial
-description: "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, client review fixes, render verification, and asset curation (approved/hero/do_not_use tags, notes, favorites, recorded decisions). Read before an edit pass, a review fix, a final export, or calling a cut done."
+description: "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done."
 ---
 
 # Editorial Discipline for PR0TA Productions
@@ -15,13 +15,13 @@ Before an edit pass, call `memory_context_pack` with a `task_intent` such as `"e
 
 A cut ships only when every one of these is unambiguously yes. Six out of seven is not ready.
 
-1. **The story reads the way the piece intends.** Decide what carries the spine before you cut: picture, performance and dialogue, narration, or music. Then watch it as its audience will and check that carrier does its job. A dialogue-driven scene reads through its performances; a montage or trailer should still read with the sound off; a narrated piece must not lean on narration to cover pictures that say nothing.
+1. **The story reads the way the piece intends.** Decide what carries the spine before you cut: picture, performance and dialogue, narration, or music. Then watch it as its audience will and check that carrier does its job. A dialogue-driven scene reads through its performances; a montage or trailer should still read with the sound off; a narrated piece must not lean on narration to cover pictures that say nothing; a social cut reads with the sound off, its captions and text carrying the story.
 2. **Pacing breathes.** Density alternates with stillness. No flat stretches, no metronome cuts.
-3. **No reused footage.** Every `asset_id` on the timeline is unique, unless a deliberate motif was stated out loud.
+3. **No reused footage.** Every `asset_id` on the timeline is unique, unless a deliberate motif was stated out loud, and no take is split into back-to-back slices posing as separate shots.
 4. **No time-stretches and no unaddressed source shortfalls.** Nothing slower than 70% speed, and that only on cinematic B-roll. Timeline analysis reports `summary.sourceShortfallCount` of zero: every shortfall resolved by a longer take, a companion shot, or a deliberate `fitToFill` on cinematic B-roll.
 5. **Every cut hits a named beat.** You can walk the cut list and name the beat, and its source, for every cut.
-6. **The tail is deliberate.** The last 2 seconds carry a specific editorial choice (credits, a final beat, a held image, a deliberate silence). Never a black frame from drift, never an abrupt stop because a clip ended.
-7. **Credits are present.** If the production cites real sources, the credits card names them. The "made with PR0TA" credit is included.
+6. **The tail is deliberate.** The last 2 seconds carry a specific editorial choice (credits, an end card, a final beat, a held image, a deliberate silence). Never a black frame from drift, never an abrupt stop because a clip ended.
+7. **Credits are present.** If the production cites real sources, the credits card names them. The "made with PR0TA" credit is included. A 15–30 s ad or social cutdown needs no credits card: its end card (brand, offer, call to action) takes that place.
 
 If any answer is no, go back to the pass that owns it. Do not ship with a known no. The Self-Critique Protocol below is how you earn each yes; the Failure Modes section is how you recognize a no.
 
@@ -48,9 +48,19 @@ Every shot, transition, and narration beat either advances the spine or is cut. 
 
 **For narration-driven content (documentaries, video essays, explainers, biography reels) the narration is the spine and the picture serves it.** Author the cut plan against the narration text first, then generate the visuals it needs. Never start from the assets you have and ask where they fit; that is how shot-to-concept alignment fails. `pr0ta-sync` owns the narration-first pipeline.
 
+## Vertical, Social and Cutdowns
+
+Feeds have their own rules. Read `reference/vertical-and-cutdowns.md` before any Reel, Story, TikTok, Short, 6–60 s ad, or shorter version of an existing piece.
+
+- **A recut is a new film.** Write its own spine for its length and viewer. Never a highlights reel: the original's best shots, shorter, in the original order.
+- **Hook in the first 1–2 seconds.** Frame 0 is the thumbnail and the scroll-stopper: motion, a face, the payoff; never a logo or a fade from black.
+- **Sound off by default.** Caption every spoken line and put the message on screen.
+- **Reframe for 9:16.** Each shot native vertical, covered and repositioned, or regenerated vertical; never 16:9 with bars. Text and faces stay inside the safe zones.
+- **Pace for the clock.** Fast early, one idea per shot, brand by the midpoint, an end card held long enough to read.
+
 ## Quality Over Speed
 
-Quality beats speed every time. There is no emergency that justifies shipping a bad cut: more material costs minutes and credits; an embarrassing cut costs reputation and trust. Between a rough cut today and a great cut tomorrow, the answer is tomorrow. When tempted to ship early, ask: can we generate more material (almost always), can we take another pass (almost always), will the viewer notice (if "probably", yes), would I put my name on it (if "sort of", no). "Good enough" is a symptom; say instead *"this is not finished yet — here is what still needs work"*, then do it.
+Quality beats speed every time. More material costs minutes and credits; an embarrassing cut costs trust. Can we generate more material, take another pass? Almost always. Will the viewer notice? If "probably", yes. Would I put my name on it? If "sort of", no. Say *"this is not finished yet — here is what still needs work"*, then do it.
 
 The one legitimate reason to ship below the bar: a hard external constraint (a live broadcast, a scheduled post), the specific shortfalls documented to the user, and the user's informed decision to ship anyway. Shipping rushed work silently is malpractice.
 
@@ -115,7 +125,7 @@ Breaking any of these mid-production is visible.
 
 The shots you are most attached to are usually serving you, not the story. **Cut your favorite shot first** and watch without it. If the cut is stronger, and it often is, leave it out. If weaker, restore it and move on.
 
-Audit with extra suspicion: the hero shot you generated first and fell in love with (usually too long, usually misplaced); the shot you fanned out to five models to get (sunk cost is not editorial); the beautiful establishing shot where nothing happens (start 3 seconds later); the clever transition (if the viewer notices it, it is in the way); the long atmospheric push-in (does it reveal, or decorate?). This is not hating your work; it is auditing attachment because attachment corrodes judgment.
+Audit with extra suspicion: the hero shot you fell in love with first (usually too long, usually misplaced), the shot you fanned out to five models to get (sunk cost is not editorial), the establishing shot where nothing happens (start 3 seconds later), the clever transition, the long push-in that decorates instead of revealing. Attachment corrodes judgment.
 
 ## Generation Is an Editorial Tool
 
@@ -188,14 +198,7 @@ Read `reference/review-and-gates.md` for the preview gate, the review revision p
 
 ## The Voice You Should Adopt With The User
 
-Be direct and specific. Do not hedge.
-
-- *"Shots 4–7 are all the same density; the viewer will flatline there."* Not: "The pacing might be a little off in the middle."
-- *"This is not ready to ship. Three problems: [name them]. They need another pass."* Not: "It's pretty close, we could probably ship."
-
-Be kind, not vague. Vagueness protects the editor's feelings at the viewer's expense.
-
-When the user pushes to ship early, do not silently comply: name the specific problems below the bar and the cost (time, credits) of fixing them, and let the user decide. If they ship anyway, document the known issues shipping as-is.
+Be direct and specific; do not hedge. *"Shots 4–7 are all the same density; the viewer will flatline there."* Not: "The pacing might be a little off." *"This is not ready to ship. Three problems: [name them]."* Not: "It's pretty close." Be kind, not vague. When the user pushes to ship early, name the problems below the bar and the cost of fixing them, and let the user decide; if they ship anyway, document the known issues.
 
 ## Final Test — The One-Question Ship Gate
 

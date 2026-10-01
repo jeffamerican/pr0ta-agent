@@ -417,7 +417,7 @@ You do not need to send full timeline JSON. The route queues a `timeline_render`
 
 ### Final Export
 
-`POST /export` is the **final-export route** for master delivery renders.
+`POST /export` is the **final-export route** for master delivery renders. It renders exactly the saved sequence named by `sequence_id`; a request whose inline `timeline_data` differs from the saved content is refused with `400 export_requires_saved_sequence` (save first). A render with `from`/`to` is stamped `render_range` and never counts as verification.
 
 Use `POST /render` for preview-task rendering during editorial iteration. Use `POST /export` when the cut is locked and ready for final delivery.
 
@@ -520,6 +520,10 @@ POST /timeline/snapshot/{name}/restore?sequence_id=timeline_v2  — Restore a sn
 GET /timeline/snapshot/{name}/diff?sequence_id=timeline_v2  — Diff vs snapshot (added/removed/modified clips)
 ```
 
+Creating a snapshot does not change the sequence `version` and broadcasts no `timeline_sequence_saved` event (it returns `{name, created_at, state, version}`, `version` being the version captured); restoring one saves a new version and broadcasts it. A snapshot that keeps losing a race with concurrent writes answers `409 stale_write`; retry it. Snapshots and history are held by the server: any `snapshots` or `history` sent with a save (`POST` or `PATCH /timeline`, `post_sequence_save`) is ignored and the stored ones are kept.
+
+A rename (`PATCH /sequences/{sequence_id}` with `{"name": "...", "baseVersion": <the version you hold>}`) saves a new version and returns `{success, sequence_id, version, name}`; adopt that version only from a successful answer. With `baseVersion`, a sequence that has moved on answers `409 stale_write` with `current_version` (reload, then rename again). Without `baseVersion` the rename is unconditional.
+
 **Collaboration pattern:** The agent creates a snapshot before handing off to the user. The user makes changes in the browser. The agent diffs against the snapshot to see exactly what changed, then addresses remaining notes without re-reading the entire timeline.
 
 ## Timing and Duration Semantics
@@ -535,7 +539,11 @@ GET /timeline/snapshot/{name}/diff?sequence_id=timeline_v2  — Diff vs snapshot
 The timeline schema includes:
 - `clip.kenBurns` — per-clip Ken Burns motion metadata
 - `clip.start` / `clip.duration` — clip timing in seconds (authoritative); `clip.start_ms` / `clip.duration_ms` as ms-precision equivalents
-- `clip.sourceMedia` — source-media metadata: `width`, `height`, `aspectRatio`, `duration`, `fitsSequence`
+- `clip.sourceMedia` — source-media metadata, recomputed on every save from the asset's measurements (`assets_probe`): `width`, `height`, `aspectRatio`, `duration`, `fitsSequence` (false when the source's shape differs from the sequence frame), `fps`, `hasAudio`, and for a trimmed asset `sourceAssetId`, `sourceInPoint`, `sourceOutPoint` (the original file and the slice's place in it)
+- `clip.fit` — `contain` (absent; whole source, bars where shapes differ), `cover` (fill, crop overflow) or `stretch`, applied to video and image clips before `clip.transform`
+- `clip.transform` — `scale` (1.0 = fitted size), `positionX`/`positionY` (fractions of frame width/height), `rotation`, `opacity`, plus keyframes; applied on top of the fitted frame
+- `clip.text` — on title-track clips with no asset: `content`, `role` (`title`, `caption`, `lower_third`), `position`, `fontFamily`, `fontSizePct` (of frame height), `color`, `background`, `align`, `bold`, `maxWidthPct`, `safeArea`. Burned in at render; captions also export as SRT. `pr0ta-timeline` → "Text and Captions"
+- `clip.audioEnabled`, `clip.muted`, `clip.linkedClipId` — a video clip's own sound plays unless `audioEnabled` is false, `muted` is true, or a linked audio clip of the same asset replaces it (`linkedClipId` either way, or a shared `linkGroupId`); never both
 - `clip.generation_context` — generation provenance: `prompt` (truncated), `model`
 - `clip.linkGroupId` — optional; present when the clip belongs to a link group (see `reference/editorial-primitives.md`)
 - `clip.volumeKeyframes` — clip-level audio automation (clip-relative time, linear gain). See "Audio Level Keyframes".
@@ -543,6 +551,7 @@ The timeline schema includes:
 - `timeline.audioMix` — ducking rules (array), narration offset, volume automation
 - `timeline.audioMix.ducking[]` — array of `{sourceTrack, keyTrack, duckedGain, attackMs, releaseMs}` rules
 - `timeline.origin` — provenance metadata (e.g., materialized from narration timeline)
+- `timeline.provenance` — who made the cut and its review state: `author` (`user`, `operator`, `agent`), `authorName`, `missionId`, `intent`, `deliverable`, `status` (`draft`, `in_review`, `approved`, `changes_requested`), `notes[]`, `flags[]` (e.g. `do_not_publish`), `approvedVersion`, `reviewedBy`, `reviewedAt`, `updatedAt`. Kept across saves that omit it; agents set it through `post_sequence_save`'s `provenance` argument and never approve. `status`, `approvedVersion`, `reviewedBy` and `reviewedAt` are server-held: only `POST /timeline/review?sequence_id=` (`{decision: approve|request_changes|reopen, note?, baseVersion}`, signed-in user in the app; agents, MCP OAuth tokens and personal access tokens get 403; no `baseVersion` → 428 `base_version_required`, an older one → 409 `stale_write`) sets them, and a save that changes the cut's content returns an approved or changes-requested cut to `in_review`. `flags` are add-only for every writer except the user's own session in the app: a REST, PAT, MCP or Operator save cannot remove `do_not_publish`
 - `timeline._clip_index` — indexed clip lookup map
 - `timeline.history` — mutation log; each entry has `timestamp` (ISO 8601)
 - `timeline.snapshots` — named checkpoint states; each has `created_at` (ISO 8601)
