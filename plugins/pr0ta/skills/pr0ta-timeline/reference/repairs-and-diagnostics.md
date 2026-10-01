@@ -57,6 +57,8 @@ A shortfall is a real gap PR0TA left because the source ran out. For each one, p
 
 `summary.sourceShortfallCount` must be zero before a ship render (`pr0ta-editorial`, ship criterion 4).
 
+**Reversed clips** (negative `speed`) play `[inPoint, outPoint]` backwards, sound included: the head shows the out point (or the media end, whichever comes first) and the tail ends on the in point. Repair them mirrored: a head trim moves `outPoint`, a tail trim moves `inPoint`, and a slip by `delta` moves the played range by `−delta·|speed|` (the opposite of a forward clip, so the picture slides the same way on screen). Trims and splits are measured from the range the clip actually plays and never write a negative point; a split piece lying wholly past the in point is written `[in, in]` (blank) or `[in, in + 0.001]` for a hold clip. A reversed `holdLastFrame` clip holds its in-point frame; trims keep that hold point. Changing a clip's speed or direction changes its same-media linked sound too; `linked_av_out_of_sync` saying the two "play in opposite directions" means reverse both, or neither. `pr0ta-api` → `reference/source-shortfalls-and-fit-to-fill.md` → "Reversed Clips" has the full rules.
+
 ## Mix Failures
 
 - **Music inaudible in narration gaps.** Run `audio_analyze` over the gap and read the music segment's `render_gain_envelope`. A ducking rule with a long release or a very low `duckedGain`, or a stray manual keyframe, is the usual cause. Fix it, then meter the window with `audio_meter` or listen to an audio preview. If the rendered mix is still silent where the envelope says music should play, report it (`bug_report_create`) with the render task ID and the envelope.

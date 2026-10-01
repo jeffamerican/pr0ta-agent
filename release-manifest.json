@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.0",
+  "skills_version": "6.1.1",
   "released_at": "2026-10-01",
-  "source_revision": "v6.1.0",
-  "minimum_platform_version": "1.25.110",
+  "source_revision": "v6.1.1",
+  "minimum_platform_version": "1.25.111",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04576-kej",
-  "bundle_sha256": "be602f2b334c90da942fb8ff09b094777469d59d6810bceb136e48d3e9c343bc",
+  "platform_revision": "pr0ta-platform-04582-cad",
+  "bundle_sha256": "f5381f53c04e737150a3d8bf83b95cbf78001f5331f3ecfe3a1659412656d40b",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "d8fada50b582e37d3cb724d72aa577b52ac5e1c716a18788c8fb87a6d0265132",
+      "content_sha256": "ae73bd7eac7d6433ba9208d53467f5f200c11bd2ac6ea64c080fa9022b87f98d",
       "documents": [
         {
           "path": "SKILL.md",
@@ -65,7 +65,7 @@
         },
         {
           "path": "reference/editorial-primitives.md",
-          "sha256": "db98be22553f6f4ff5285523d6c6af3c9b7b67936e2696c55656caac87faafb1"
+          "sha256": "9de03539d5d3b55282304422faed9786653eacb917fc7e89a18aae53566f0d1f"
         },
         {
           "path": "reference/image-upload.md",
@@ -109,7 +109,7 @@
         },
         {
           "path": "reference/source-shortfalls-and-fit-to-fill.md",
-          "sha256": "37080af963a2cf5201c859db3fe375001f7f768b2841d8d4111cb91b048022a0"
+          "sha256": "2008860696d8de058783791db4df9458386169b80f7abc898d36bc54185a4ac8"
         },
         {
           "path": "reference/task-completion.md",
@@ -121,7 +121,7 @@
         },
         {
           "path": "reference/timeline-api.md",
-          "sha256": "df10af67a9e65e9bff36649fed2069b6d65397aaef7f4be76f46db058574dd8c"
+          "sha256": "1aa05c72281f3e44f9d36faf641da2b8f34165898a52d19c14c8fff3670f5c9e"
         },
         {
           "path": "reference/unified-generation.md",
@@ -364,7 +364,7 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut.",
-      "content_sha256": "ff179c5c7ae669613b44010065bdd9a79c05e7be1a4596e13853211e1a998f17",
+      "content_sha256": "658caac808c1a83df62791de0775c9637da62469cb12c530f514239e6cea3fcd",
       "documents": [
         {
           "path": "SKILL.md",
@@ -372,7 +372,7 @@
         },
         {
           "path": "reference/repairs-and-diagnostics.md",
-          "sha256": "fa0361cab30a3a9e58670a543b31829b4c92deb33fdc1885c7a02c642b91e839"
+          "sha256": "2be475f96c5d12c83b962e57ff094f52ac5570ba741dc68f1bcbda67ed692a34"
         },
         {
           "path": "reference/verification-loop.md",

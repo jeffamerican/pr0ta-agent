@@ -196,6 +196,8 @@ POST /api/post-production/{project_name}/timeline/edits/{clip_id}/trim
 | `slip` | Moves source window inside the clip without changing clip duration or position |
 | `slide` | Moves the clip while compensating with adjacent clips |
 
+**Units.** `delta` is seconds of program time for every mode. The source moves by `delta·|speed|`: a slip of 0.5 s on a 2× clip moves its in and out points by 1 s. A reversed clip (negative speed) is mirrored: its head is the out point, so a slip moves its points by `−delta·|speed|` and the picture still slides the same way on screen, and roll/slide/ripple on its head move the out point. A slip stops at source 0 and, for a hold clip or a reversed clip, at the media end; an out point shorter than the clip (a blank tail) moves with the in point, and an out point past what the clip plays is cut to `in + duration·|speed|`. No trim writes a negative source point.
+
 ### Linked trims
 
 All four modes support `linked: true`:

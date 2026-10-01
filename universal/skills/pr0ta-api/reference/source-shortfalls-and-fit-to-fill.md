@@ -202,7 +202,7 @@ POST /api/post-production/{project_name}/timeline/edits
 POST /api/post-production/{project_name}/timeline/edits/preview
 ```
 
-Raw `POST /timeline/clips` is not the canonical retiming path. It can accept `fitToFill` only when the payload also provides `outPoint`, `sourceMedia.duration`/`sourceDuration`, or an explicit positive `speed`; otherwise it returns a validation error so agents know to use `/timeline/edits`.
+Raw `POST /timeline/clips` is not the canonical retiming path. It can accept `fitToFill` only when the payload also provides `outPoint`, `sourceMedia.duration`/`sourceDuration`, or an explicit non-zero `speed` (negative plays reversed); otherwise it returns a validation error so agents know to use `/timeline/edits`.
 
 `PATCH /timeline/clips/{clip_id}` and raw clip creation accept frame-native timing fields for repairs: `startFrame`, `durationFrames`, `sourceInFrame`, and `sourceOutFrame` (snake_case aliases also work). PR0TA resolves them against the sequence frame rate and stores canonical seconds fields. Prefer these fields when repairing review annotations that already include `frame_index` and timecode.
 
@@ -275,6 +275,20 @@ This maps 8 seconds of source into 4 seconds of timeline:
 - `speed = 1.0` — normal speed (no retiming).
 - `speed < 1.0` — slow motion. Source plays slower to fill a longer program range.
 - `speed > 1.0` — speed-up. Source plays faster to fit a shorter program range.
+- `speed < 0` — reversed. The clip plays its own `[inPoint, outPoint]` backwards at `|speed|`, sound included; every rule above uses `|speed|`. `speed = 0` is refused.
+
+#### Reversed Clips
+
+A reversed clip is anchored at its head, `top = min(outPoint, media end)` (without an `outPoint`, the implicit `inPoint + duration·|speed|`): it plays `[max(inPoint, top − duration·|speed|), top]` backwards, so its first frame is `top` and its last is the in point. When `top − duration·|speed|` is below the in point, the clip plays down to the in-point frame and is then blank (or holds that frame with `holdLastFrame`). At slow reversed speeds a head on the media's very last frame shows that frame for its first positions (as a forward clip at the same speed repeats it), so the clip never reads past the media; nothing is dropped and the clip's length is unchanged.
+
+Edits mirror, measured from the played range `[bottom, top]` (`bottom = max(inPoint, top − duration·|speed|)`), never from a stored point outside it:
+- A head trim moves `outPoint`; lengthening the head past the media end leaves `outPoint` at the media end (the extra length becomes blank or held tail). A tail trim moves `inPoint`.
+- A slip by `delta` program seconds moves the played range by `−delta·|speed|` (a forward clip's points move `+delta·|speed|`), so the picture slides the same way on screen: a positive delta moves a reversed clip earlier in the source. It writes `[bottom', bottom' + (top − bottom)]`, stopping at source 0 and at the media end (a stored `outPoint` past the media end is replaced by the played top). A hold clip slips its in point the same way and keeps `top − inPoint` above it.
+- Splitting at program time `t` gives `[top − (t − start)·|speed|, top]` and `[bottom, top − (t − start)·|speed|]`, both still reversed. A piece is never written below the clip's in point: a piece lying wholly in the blank tail is written `[in, in]` (no media, blank), or `[in, in + 0.001]` for a hold clip (it holds the in-point frame). A piece starting within 1 ms of the in point starts exactly on it.
+- No edit writes a negative source point.
+- Changing a clip's `speed` or direction (`PATCH /timeline/clips/{clip_id}` with `updates.speed`) applies to its same-media linked partners too (the picture and its own sound stay together; a linked clip of other media keeps its speed). Reversing keeps the frames that play: forward → reversed writes the forward played end as `outPoint`; reversed → forward writes `[bottom, top]` as `inPoint`/`outPoint`. If the update also sets `inPoint`/`outPoint`, the clip itself takes them as sent.
+
+With `holdLastFrame`/`freezeFrame` the clip holds the in-point frame; trims never move that hold point, and a hold clip too short to reach it plays its range and holds nothing (no shortfall either way). Turning the hold on or off never changes the frames before the hold. Dissolve and wipe tails continue backwards into the source before the in point, or hold the in-point frame for the whole window when there isn't a full window of it; a tail never shows a frame past the media, and a clip with no media in its range has no tail. A reversed `fitToFill` clip plays, picture and its own sound, exactly the source range the same clip plays forward, backwards. A linked picture and sound playing in opposite directions are reported as `linked_av_out_of_sync`: reverse both, or neither.
 
 #### Without `fitToFill`
 
