@@ -146,6 +146,17 @@ Audio controls are endpoint-specific. Send an audio field (`sound`, `audio`, `ge
 
 Speech-bearing results need a transcript before timeline use. PR0TA indexes generated audio in the background with the project's Audio→Text setting; check the asset's index first and start `transcription_start` only when none exists or word-level timing from a specific model is required. `pr0ta-audio` owns this rule. Verify exact wording, speaker identity, sync, and unwanted speech.
 
+## Automatic QC of Every Take
+
+Every generated take is reviewed automatically and free, before an Operator mission sees it. Gemini watches the take with its sound against the shot's intent: the shot plan and scene, the storyboard frame, the approved cast, set and prop references, and the last frame of the previous shot and first frame of the next. It judges story first, then continuity, dialogue, prompt, technical faults and sound. Measured motion cadence, loudness and the script check of speech are added. Read the verdict with `shot_quality_review` (in a mission it is already in the dependency result):
+
+- `pass`: use the take.
+- `fixable`: regenerate with its `revised_prompt` (or its fixes), at most twice for the same shot, then pick the best take by verdict.
+- `fail`: a prompt change is unlikely to fix it; stop and ask the person.
+- `uncertain`: the review lacked the shot's intent or references; check the take yourself and say what could not be verified.
+
+`video_cadence_check` measures stutter, skipped frames, seams and wobble directly; a vision model sampling a few frames per second misses them.
+
 ## On-Screen Text
 
 Current premium video models can generate and animate legible text; a verified generated result is valid production media. Read `reference/generative-typography.md` before producing on-screen copy. It owns exact-string prompting, frame-by-frame QC, repair, and the deterministic still-plus-timeline fallback.

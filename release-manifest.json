@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.2",
-  "released_at": "2026-10-01",
-  "source_revision": "v6.1.2",
-  "minimum_platform_version": "1.25.113",
+  "skills_version": "6.1.3",
+  "released_at": "2026-10-02",
+  "source_revision": "v6.1.3",
+  "minimum_platform_version": "1.25.121",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,24 +12,24 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04595-ref",
-  "bundle_sha256": "582553b8f2a7b30dcef97ea9591371f7ae90d74847fd79d4e2754208319921c4",
+  "platform_revision": "pr0ta-platform-04657-mer",
+  "bundle_sha256": "4bf2512593cadbe38dc39886f60ab64db34454c3749c3534565f0e54fe3215b7",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA (ProtaFilm|maker, app.pr0ta.com) orchestration hub for AI film and video production: script to screen, from logline and screenplay through breakdown, casting, shot lists and storyboards to image, video, voice and music generation, editing and export. Read first for any PR0TA production, then load the one companion skill for the next step.",
-      "content_sha256": "63a5870812b39cbd8297bcbd572097c36eaca2145f21ac91c967c757f71487d2",
+      "content_sha256": "cc0b36b564252e48bc243461fae2e5bfe9a6e4dd0d7499f58dc86ae43f31afdf",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "12dec718c89a3543a322a160e45329ef9f660d81c4fddd61d59f7b339f2ba6d9"
+          "sha256": "e72e7da5ce5cd69b2446b8f36bf6ec9358b08342d9df5f6779bf20508bc874d9"
         }
       ]
     },
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "8f9be436a9355aeb7d082e5b93d10fcd09176c15fb97068d553bf10f75027120",
+      "content_sha256": "984f74ba7d6c5cf1255509b56be805634741d9ba3511f7a6f8be1b6c105b7224",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "c4ef903876843b3a5b688598a08ed8295af5cb47bdbdc0dccce5448fb42f50ab"
+          "sha256": "da5273a6412f3155b683e52d2881e081313e0cba8eddd17b5fdd6fb0802e41a4"
         },
         {
           "path": "reference/music-analysis.md",
@@ -140,11 +140,11 @@
     {
       "name": "pr0ta-audio",
       "description": "PR0TA speech and voice: narration, voiceover, dialogue and scene dialogue takes (text-to-speech), voice clone, voice design, voice changer (speech-to-speech), lip sync audio, transcription, word timing, subtitles, and the time-indexing rule every edit relies on. Read before generating, transcribing or cutting any speech.",
-      "content_sha256": "cffa0dc80f87aacdc426467adf5aa6995210427736eff404e41fee3a341014ea",
+      "content_sha256": "0ff2263e099da9c85dd02faa2380e926d1f266e6a2ee40eadc2432c8d022942c",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "783a890ff50ba40edd521d1c64b221560384c8c019e696ef7d2079778260551d"
+          "sha256": "31cb8227de7a4c0d221c266ddb826c60d0ed1fe7a63fc8aced784f8d8e4eed2c"
         },
         {
           "path": "reference/elevenlabs-v3-audio-tags.md",
@@ -200,7 +200,7 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "62efe2af7095b13cb23a7fe0892e1ea82217cbf624fb322d3ca996d2f01bca1c",
+      "content_sha256": "a5418525950bc3391adc54895e435fb711c68f573d5426fbdef5bef23d6e3965",
       "documents": [
         {
           "path": "SKILL.md",
@@ -212,7 +212,7 @@
         },
         {
           "path": "reference/verification-protocol.md",
-          "sha256": "0cf6423b78b511143db10475eba0632ed4323ebabb48e0be829e06ffe1be0baa"
+          "sha256": "d30983cae74ad52b070e8d4395df1fbe7380fffa4e9e1738c13993a263181f5d"
         },
         {
           "path": "reference/vertical-and-cutdowns.md",
@@ -266,11 +266,11 @@
     {
       "name": "pr0ta-image",
       "description": "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, and fan-out for hard text shots. Read when generating, editing, uploading, or choosing image models.",
-      "content_sha256": "4a68026f2765b4558db84554c88b62a0f518b686796442dc81309f0114a58fde",
+      "content_sha256": "6aaf9732b5392652f3aa427f09208c7ed0bf07591a2d11fa7bf204bfe4e9fba2",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "8996f7f789dc243d13f85ce8ce5efc06a9dbd7e5fe85d97d30f5779f86325a47"
+          "sha256": "d2621b7914c57406b1f9f1e411d7749d58980447e770c824b290db92ce093341"
         }
       ]
     },
@@ -292,11 +292,11 @@
     {
       "name": "pr0ta-operator",
       "description": "Hand work to PR0TA's own Operator as a durable mission: long or many-step production goals (draft a screenplay from beats, prep a set of scenes, storyboard an act, generate and review a batch) that run inside the app with its permissions, credit budget, and approval stops. Read when delegating, running work unattended, or waiting on a mission.",
-      "content_sha256": "966dc7d98b823d0b1a0c42194dcc0dc8eb075494979e2c154152ebe539ce3479",
+      "content_sha256": "9ff89dc7590722b4310a93d5934f2bce6672d1e83d7d48372ab12f7a7f02489f",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "97ec19898260c147a11d203a02a77b45a54fef5d99f371db3873660f4785988d"
+          "sha256": "d63ca0813664e23c3683a0d411648a684a35b8a9aa238fc63ee8e4e404716cdc"
         }
       ]
     },
@@ -383,11 +383,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "a1bce1ed003f4dc6909cf3bc5134fce851d885c77ca59499a0d7ac9376678eb0",
+      "content_sha256": "61712c1daace6c03fb07d5996640371130197935ae2cb8ebe5ac62744d169050",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "f28dbd11dfb473483fdfbb1b7df8fb9df8a687250505ec227130d3e0c8810111"
+          "sha256": "c948e852a3a4ebf81797085d3a1101123de1547ff8675a4708aa4b95626be707"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -500,6 +500,7 @@
     "consistency_resources_list",
     "consistency_resources_update",
     "create_project",
+    "cut_quality_review",
     "department_heads_get",
     "department_heads_save",
     "department_read_generate",
@@ -613,6 +614,7 @@
     "set_environment_upsert",
     "set_environments_get",
     "shot_performances_list",
+    "shot_quality_review",
     "shotlist_generate",
     "shotlist_generate_batch",
     "shotlist_scene_chat",
@@ -644,6 +646,7 @@
     "transcription_get",
     "transcription_start",
     "update_set_references",
+    "video_cadence_check",
     "video_quality_control_analyze",
     "voices_clone",
     "voices_design",
@@ -652,5 +655,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "73f3b5dfb5042ced50e9e33f639ec91f09f11467ea969db385bc04bb9e1b372b"
+  "mcp_connector_tools_sha256": "eb428fd45fdde84c35ead1ea211a42e2b223491a6dc965ddac71b9438e1d5b0e"
 }

@@ -30,7 +30,7 @@ the tool listing in your MCP client.
 ## audio
 
 - `audio_analyze`(sequence_id, from_time, to_time, windows, track, tracks): Predict timeline audio levels for one range or multiple windows.
-- `audio_meter`(sequence_id, from_time, to_time, windows, track, tracks, allow_long, timeout_seconds): Run actual LUFS/true-peak metering for one short range or multiple short windows.
+- `audio_meter`(asset_id, sequence_id, from_time, to_time, windows, track, tracks, allow_long, timeout_seconds): Run actual LUFS/true-peak metering for one short range or multiple short windows of a sequence.
 
 ## beat
 
@@ -76,6 +76,10 @@ the tool listing in your MCP client.
 - `consistency_resources_get`(**resource_type**, **resource_id**): Get one stored Seedance Character or Kling Element.
 - `consistency_resources_list`(**resource_type**): List stored Seedance Characters or Kling Elements for the project.
 - `consistency_resources_update`(**resource_type**, **resource_id**, **updates**): Update references, labels, metadata, name, or archive state for a consistency resource.
+
+## cut
+
+- `cut_quality_review`(asset_id, render_task_id, intent, force): QC verdict for an assembled cut (free).
 
 ## department
 
@@ -185,7 +189,7 @@ the tool listing in your MCP client.
 - `post_clip_slow_motion`(clip_id, sequence_id, **engine**, quote_only, confirm_credits, idempotency_key, lock_token, asset_id, source_in, source_out, speed, fps): Make smooth slow motion for a slowed clip (|speed| < 1): interpolated frames, not repeated ones.
 - `post_clips_link`(**video_clip_id**, **audio_clip_ids**, sequence_id, mute_video_audio, lock_token): Link a video clip to its sound on an audio track so they move and trim together.
 - `post_export_start`(export_request, sequence_id): Start an async final master export of a saved sequence (free, no credits).
-- `post_frames_get`(asset_id, sequence_id, times, count): Look at frames (free, no credits): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
+- `post_frames_get`(asset_id, sequence_id, times, count, detail, region): Look at frames (free, no credits): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
 - `post_render_start`(render_request, sequence_id): Start an async preview render of a saved sequence.
 - `post_sequence_analyze`(sequence_id): Analyze a saved sequence before rendering or calling it done (free).
 - `post_sequence_debug_report`(sequence_id): Render-risk report for a saved sequence (free): retimed clips, source shortfalls, media gaps, audio track summary, and one warnings[] list (code, sev…
@@ -262,6 +266,7 @@ the tool listing in your MCP client.
 ## shot
 
 - `shot_performances_list`(shot_uid, scene_number, shot_number, kinds, limit): List the performances filed on a shot, newest first: human takes recorded in Human Performances, dialogue takes, and camera takes.
+- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio).
 
 ## shotlist
 
@@ -320,6 +325,7 @@ the tool listing in your MCP client.
 
 ## video
 
+- `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts, camera wobble…
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
 
 ## voices

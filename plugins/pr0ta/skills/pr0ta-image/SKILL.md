@@ -169,7 +169,7 @@ A title held 1.5–3 seconds is a hybrid: the type dominates, with room for one 
 This is a reliability rule. If the still has any rendered text (title, brand, tagline, credit, sign in the scene):
 
 1. **Use the Line-Locked Poster pattern** (`pr0ta-prompting` → Technique 3): `Line N (style): EXACT TEXT` with an `EXACTLY` directive. Prose copy fails often enough to treat as unreliable: duplicated lines, garbled glyphs, softened or paraphrased copy ("CAN'T RUN OUT OF MONEY" became "CAN'T RUN OUT OF FUNDS"), dropped characters.
-2. **Check every glyph after generation.** Read the image letter by letter against the intended copy and regenerate on any mismatch.
+2. **Check every glyph after generation.** Look at the still at full resolution, zoomed to the text (`post_frames_get` with the image's `asset_id` and a `region` around the copy), read it letter by letter against the intended copy, and regenerate on any mismatch. The automatic QC review (`shot_quality_review`) also checks rendered text, but a letter-by-letter read is the gate.
 
 Brand names, exact-copy titles, and anything a stakeholder will read at full size are worth fanning out.
 

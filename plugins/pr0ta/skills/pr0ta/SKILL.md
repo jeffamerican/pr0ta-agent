@@ -103,6 +103,13 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
 9. **Curate as you go.** Tag keepers and rejects with
    `assets_annotations_update` and record choices in memory, so the next agent
    and the user can find them.
+10. **Read the QC verdict before using a take.** Every generated take
+   (storyboard frames aside) and every full render or export is reviewed
+   automatically and free, story and continuity first.
+   `shot_quality_review` (a take) or `cut_quality_review` (a render) returns
+   the verdict: `pass`, `fixable` (with a revised prompt), `fail` or
+   `uncertain`. Never present a take that did not pass as good; say what the
+   review found (`pr0ta-video` → "Automatic QC of Every Take").
 
 ## Local ledger
 

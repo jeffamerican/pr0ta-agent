@@ -107,8 +107,13 @@ carries `result.asset_id`. Add the resolved model's own fields
 - Generate narration in as few takes as possible, ideally one per voice: one
   read keeps pace, tone and breath consistent (`pr0ta-sync` plans the timing).
 - Check the take: listen, and read its transcript (`transcription_get`, see
-  Time-indexing) for names, numbers, acronyms and dates. Regenerate a take that
-  misreads them.
+  Time-indexing) for names, numbers, acronyms and dates. For a take generated
+  from script lines, `text` follows the script spelling: read `script_check`
+  (each misread or missing line, expected against heard) and `heard_text` for
+  what was actually said. Regenerate a take that misreads them.
+- `audio_meter` with the take's `asset_id` checks it before it is placed:
+  loudness, true peak, clipping and silent dropouts inside the take. Every
+  generated take is also reviewed automatically (`shot_quality_review`).
 - Non-English speech: write the text in the target language and set the
   language field the model exposes.
 
