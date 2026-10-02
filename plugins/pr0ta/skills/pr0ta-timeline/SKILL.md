@@ -28,9 +28,10 @@ Before a major pass, call `memory_context_pack` with a `task_intent` and the seq
 | Final master | `post_export_start` | `POST /export` |
 | Poll a render | `tasks_get` | `GET /render/{task_id}/status` |
 | Cut a source into a new asset | `assets_trim` (a long one returns a `task_id` to poll) | |
+| Smooth slow motion | `post_clip_slow_motion` | `POST /timeline/slow-motion`, `GET /timeline/slow-motion/quote` |
 | Narration cuts into Post | `narration_materialize_to_post` | `POST /api/v2/projects/{project_id}/narration-timeline/materialize-to-post-production` |
 
-Relative REST paths sit under the post-production prefix, as in `GET /api/post-production/{project_id}/timeline/clips`. Tracks, clip CRUD, marks, 3-point edits, trims and snapshots are REST routes on that prefix.
+Relative REST paths sit under the post-production prefix, as in `GET /api/post-production/{project_id}/timeline/clips`.
 
 **Renders, frame grabs, probes and analysis are free.** They spend no credits, so a mission with a credit cap can run them; use them on every pass. `assets_probe` and `post_frames_get` save what they find (measurements on the asset, a contact-sheet image), so they need edit access and count as project edits.
 
@@ -96,11 +97,11 @@ Rebuild into a new `sequence_id` when patch state accumulates (more than one str
 }
 ```
 
-Sequence duration is derived from the last clip's end. Check each clip's native duration first: a slot longer than the media leaves a real gap (Source Shortfalls). Cut a long take into the range you need with `inPoint`/`outPoint`, or with `assets_trim` for a standalone asset; trims are frame-accurate, remember their source, and keep its alpha (VP9 WebM or ProRes 4444), bit depth (10-bit stays 10-bit) and ProRes profile.
+Sequence duration is derived from the last clip's end. Check each clip's native duration first: a slot longer than the media leaves a real gap (Source Shortfalls). Cut a long take into the range you need with `inPoint`/`outPoint`, or with `assets_trim` for a standalone asset; trims are frame-accurate, remember their source, and keep its alpha, bit depth and ProRes profile.
 
 ### Ken Burns as a Clip Property
 
-Set `kenBurns` on create or `PATCH`; the renderer computes the motion. Presets: `push_in` (emphasis), `pull_back` (reveal), `drift_left` and `drift_right`, `hold`; an unknown preset renders as `hold`. Custom: `{"start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0]}`, `pan` from −1 to 1. Alternate directions across adjacent stills; one direction repeated reads as monotonous.
+Set `kenBurns` on create or `PATCH`; the renderer computes the motion. Presets: `push_in` (emphasis), `pull_back` (reveal), `drift_left` and `drift_right`, `hold`. Custom: `{"start_zoom": 1.0, "end_zoom": 1.15, "pan": [0, 0]}`, `pan` from −1 to 1. Alternate directions across adjacent stills; one direction repeated reads as monotonous.
 
 ## Text and Captions
 
@@ -154,9 +155,11 @@ PR0TA normalizes picture clips to `[startFrame, endFrame)` from the sequence fra
 
 ## Editorial Primitives
 
-Marks, 3-point edits, trims and link groups give NLE precision; `pr0ta-api` → `reference/editorial-primitives.md` has every shape. Asset marks (`POST /api/v2/projects/{project_id}/assets/{asset_id}/marks`) hold source in/out points; program marks (`POST /timeline/marks`) anchor story beats, absolutely or to a transcript word. 3-point edits (`POST /timeline/edits`, preview with `POST /timeline/edits/preview`) compute the fourth point. Trims (`POST /timeline/edits/{clip_id}/trim`) take `ripple`, `roll`, `slip` or `slide`; `linked: true` trims linked companions. Lock a link group (`PATCH /timeline/links/{link_group_id}` with `locked: true`) once sync is confirmed.
+`pr0ta-api` → `reference/editorial-primitives.md` has every shape. Asset marks (`POST /api/v2/projects/{project_id}/assets/{asset_id}/marks`) hold source in/out points; program marks (`POST /timeline/marks`) anchor story beats, absolutely or to a transcript word. 3-point edits (`POST /timeline/edits`, preview with `POST /timeline/edits/preview`) compute the fourth point. Trims (`POST /timeline/edits/{clip_id}/trim`) take `ripple`, `roll`, `slip` or `slide`; `linked: true` trims linked companions. Lock a link group (`PATCH /timeline/links/{link_group_id}` with `locked: true`) once sync is confirmed.
 
 **Source shortfalls.** A source shorter than its program range leaves a real gap and a `source_shortfall` warning (`requestedDuration`, `shortfallDuration`, `gapStart`, `gapEnd`). Decide: a longer take, a companion shot, different media, or a deliberate `fitToFill: true` retime (slow motion on cinematic B-roll only).
+
+**Slow motion must be interpolated.** Below 1× a clip repeats frames. `post_clip_slow_motion` attaches an interpolated rendition (`clip.slowMotion`): `engine: "draft"` (free) to judge, `"topaz"` (paid) to deliver, after `quote_only: true` and the user's OK, passed as `confirm_credits`. It counts only while the clip's speed and range are unchanged; analysis reports `slow_motion_not_interpolated` and `slow_motion_draft_only` (`pr0ta-api` → `reference/source-shortfalls-and-fit-to-fill.md`).
 
 ### Snapshots
 
@@ -168,7 +171,7 @@ A snapshot is not an edit: creating one keeps the sequence `version` and announc
 
 Every sequence carries `provenance`: `author`, `missionId`, `intent`, `deliverable`, `status` (`draft`, `in_review`, `approved`, `changes_requested`), `notes`, `flags`. Describe the cut when you save it: `post_sequence_save` with `provenance: {"intent": "...", "deliverable": "Instagram Reel 9:16, ≤30 s", "notes": [...]}`. Write the intent in one or two sentences: what the cut is for and its story spine. An Operator mission's save marks the cut `author: operator`, names the mission and puts it `in_review`; existing intent and notes are kept, and only the `provenance` argument changes intent or deliverable (a copy inside the timeline payload does not). Notes and flags are add-only for agents. Only the user, editing in the app, can remove a flag: a save through MCP, the Operator, REST or a personal access token keeps every stored flag (it can add one, never clear `do_not_publish`).
 
-**Review is human-only.** `approved` and `changes_requested` are set only through `POST /timeline/review?sequence_id=` with `{"decision": "approve" | "request_changes" | "reopen", "note": "...", "baseVersion": <the version reviewed>}`, by a signed-in user in the app; agents, MCP clients and access tokens get `403 review_requires_user_session`. A review without `baseVersion` gets `428 base_version_required`, and one of an older version gets `409 stale_write`, so a decision never lands on a cut the reviewer has not seen. Approving records `approvedVersion`, `reviewedBy` and `reviewedAt`. No save can set or change those fields: the server keeps the stored values. When any writer saves a change to the cut's content (tracks, clips, framing, mix, links) and the stored status is `approved` or `changes_requested`, the server sets it back to `in_review` and clears `approvedVersion` (and the reviewer, when it was approved). A rename or a save that leaves the content as it was keeps the approval current. So: never edit an approved cut you were not asked to change. Add `do_not_publish` to `flags` for a cut that must not leave the project.
+**Review is human-only.** `approved` and `changes_requested` are set only through `POST /timeline/review?sequence_id=` with `{"decision": "approve" | "request_changes" | "reopen", "note": "...", "baseVersion": <the version reviewed>}`, by a signed-in user in the app; agents, MCP clients and access tokens get `403 review_requires_user_session`. A review without `baseVersion` gets `428 base_version_required`, and one of an older version gets `409 stale_write`, so a decision never lands on a cut the reviewer has not seen. Approving records `approvedVersion`, `reviewedBy` and `reviewedAt`. No save can set or change those fields: the server keeps the stored values. When any writer saves a change to the cut's content (tracks, clips, framing, mix, links) and the stored status is `approved` or `changes_requested`, the server sets it back to `in_review` and clears `approvedVersion`. A rename or a save that leaves the content as it was keeps the approval current. So: never edit an approved cut you were not asked to change. Add `do_not_publish` to `flags` for a cut that must not leave the project.
 
 ## The Verification Loop
 
@@ -176,7 +179,7 @@ Run this on every pass, not only before delivery. `reference/verification-loop.m
 
 1. **Analyze.** `post_sequence_analyze`; fix every `deliveryChecks` entry of severity `warning` or `error`, and the gaps, overlaps and shortfalls it lists.
 2. **Look at the framing.** `post_frames_get` with the `sequence_id` and `count` 8 (or `times` at the cuts that matter): letterboxing, crops, captions in the safe area.
-3. **Render low.** `post_render_start` with `render_request: {"quality": "low"}`. Poll `tasks_get` until it succeeds; record its `asset_id`. Renders and exports are stamped at creation with the sequence id and the saved version they show; only a finished full-length render of exactly the current saved version verifies it (`GET /timeline/verification?sequence_id=` returns `latestRender` with `version`, `quality`, `loudness.integratedLufs`/`truePeakDbtp`/`loudnessRangeLu`, `captions`, `renderWarnings`, and `coversCurrentVersion`). A section render (`from`/`to`, stamped `render_range`) is for looking at a passage: it never verifies the cut and its loudness never stands for the cut's. A render of an inline timeline never verifies a sequence.
+3. **Render low.** `post_render_start` with `render_request: {"quality": "low"}`. Poll `tasks_get` until it succeeds; record its `asset_id`. Renders and exports are stamped at creation with the sequence id and the saved version they show; only a finished full-length render of exactly the current saved version verifies it (`GET /timeline/verification?sequence_id=` returns `latestRender` and `coversCurrentVersion`). A section render (`from`/`to`, stamped `render_range`) is for looking at a passage: it never verifies the cut and its loudness never stands for the cut's. A render of an inline timeline never verifies a sequence.
 4. **Watch the render.** `post_frames_get` with that `asset_id`: the first frame, the last, and the frames at each beat, title and caption. These are the frames that will ship.
 5. **Listen.** Read the finished task's `loudness` (integrated LUFS, true peak), or run `audio_meter` windows. Social and web: about −14 LUFS integrated, true peak at most −1 dBTP. `audio_analyze` shows ducking and the music under narration.
 6. **Debug report.** `post_sequence_debug_report`; every warning is fixed or explained.
@@ -199,8 +202,3 @@ For a narration or dialogue fix, also transcribe the rendered audio. `video_qual
 6. **Snapshot**, then run **the verification loop** until it is clean.
 7. **Hand off** with provenance; read the user's changes back and address notes with targeted edits.
 8. **Final export** after approval.
-
-| Actor | Works via | Does |
-|---|---|---|
-| Agent | Tools and API | Generates, places, frames, mixes, checks, renders, describes the cut |
-| User | Browser Timeline | Scrubs, trims, swaps, reviews, approves or requests changes |

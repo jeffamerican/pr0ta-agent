@@ -182,6 +182,7 @@ the tool listing in your MCP client.
 
 ## post
 
+- `post_clip_slow_motion`(clip_id, sequence_id, **engine**, quote_only, confirm_credits, idempotency_key, lock_token, asset_id, source_in, source_out, speed, fps): Make smooth slow motion for a slowed clip (|speed| < 1): interpolated frames, not repeated ones.
 - `post_clips_link`(**video_clip_id**, **audio_clip_ids**, sequence_id, mute_video_audio, lock_token): Link a video clip to its sound on an audio track so they move and trim together.
 - `post_export_start`(export_request, sequence_id): Start an async final master export of a saved sequence (free, no credits).
 - `post_frames_get`(asset_id, sequence_id, times, count): Look at frames (free, no credits): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
