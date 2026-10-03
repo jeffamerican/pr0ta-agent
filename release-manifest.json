@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.6",
+  "skills_version": "6.1.7",
   "released_at": "2026-10-02",
-  "source_revision": "v6.1.6",
-  "minimum_platform_version": "1.25.126",
+  "source_revision": "v6.1.7",
+  "minimum_platform_version": "1.25.127",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04675-dap",
-  "bundle_sha256": "377f4189c9d81276491653dcfcac0e5c23256505f86d3af2c77794580f558f55",
+  "platform_revision": "pr0ta-platform-04681-ron",
+  "bundle_sha256": "4d2668f8d759ea52c23b003ea7c228d2d650f36bcff7da819539446031e56858",
   "skills": [
     {
       "name": "pr0ta",
@@ -178,11 +178,11 @@
     {
       "name": "pr0ta-development",
       "description": "PR0TA development from idea to approved direction: logline, treatment, beat sheet, writers' room, writing or importing a screenplay, drafting scenes from beats, revisions, publishing a locked draft, and the Producer/Director Creative Direction approval. Read when a production has a story, a script, or a script to write.",
-      "content_sha256": "04a0fd41a238b3cc38a3ed63233871dc9c0d176efc81596e305bdb69e3432e6b",
+      "content_sha256": "d9fb1f93c8ecbda6d60496367ca92e1b4effc261db08a6a2ba22ba0c259ca892",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "6667469bcca9ab6972f582c54ef5a205416d1cebefa7f5c695f27ce781c4cee6"
+          "sha256": "c04bc64316ab7486d2adaf14c355a9aa36ffa6644929ddefe8b4f9cc2d61f844"
         }
       ]
     },

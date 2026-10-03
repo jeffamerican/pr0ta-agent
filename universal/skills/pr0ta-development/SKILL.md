@@ -128,7 +128,7 @@ Three ways in, all ending in one working draft:
   script text; read the result with `get_screenplay_text(working_draft: true)`.
   Text scripts can be added with `document_add_text` first.
 - **Write**: `screenplay_save(content)` saves the whole script. Always send the
-  complete text in Fountain or standard screenplay format; it replaces the
+  complete text in screenplay format ("Screenplay format" below); it replaces the
   working draft. `new_revision: true` starts a new revision when the text
   changed instead of overwriting the current one.
 - **Draft from beats**: read the draft with `get_screenplay_text(working_draft:
@@ -140,6 +140,28 @@ Three ways in, all ending in one working draft:
   placed in the script: show them to the user, merge the accepted ones into the
   full text, then `screenplay_save`. `budgets` sets page length per beat id in
   eighths.
+
+### Screenplay format
+
+Every script, spots and commercials included, is a standard screenplay in
+Fountain. The breakdown, shot lists and the Writers' Room read it that way.
+
+- **Title page**: `Title:`, `Credit: Written by`, `Author:`, `Draft date:`.
+  Put the deliverable and target length in `Notes:` (for example
+  `Notes: 9:16 social spot, about 43 seconds`), never as a body line.
+- **Scene headings**: one per place, `INT. STUDIO - DAY` with a hyphen. A
+  passage across several places is `INT./EXT. VARIOUS - DAY` followed by
+  `MONTAGE:` (or `SERIES OF SHOTS:`) and one `-- ` line per image.
+- **Action** is only what we see and hear, in present tense. Instructions to
+  the editor or crew, references, rationale and timing go in `[[notes]]`,
+  which publishing strips. Never timecodes at the start of action.
+- **On-screen text** is its own line: `SUPER: AN IDEA ISN'T A FILM.`, then a
+  blank line. An app or device screen is `INSERT - <SCREEN>` on its own line,
+  a blank line, then what it shows.
+- **Dialogue**: character cue in caps, `(V.O.)` or `(O.S.)` extensions, short
+  parentheticals. A character's first appearance in action is in caps.
+- `>` marks a transition only (`> CUT TO:`); end with `FADE OUT.` or
+  `CUT TO BLACK.`
 
 Revise with the Writer through `agent_chat_send(role: "writer", ...)`, then
 save the result. Before every revision or save, read the current draft with
