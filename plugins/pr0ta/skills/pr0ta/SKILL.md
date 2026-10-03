@@ -107,9 +107,11 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
    (storyboard frames aside) and every full render or export is reviewed
    automatically and free, story and continuity first.
    `shot_quality_review` (a take) or `cut_quality_review` (a render) returns
-   the verdict: `pass`, `fixable` (with a revised prompt), `fail` or
-   `uncertain`. Never present a take that did not pass as good; say what the
-   review found (`pr0ta-video` → "Automatic QC of Every Take").
+   the verdict: `pass`, `repair` (usable; its faults are repaired once the user
+   keeps it), `fixable` (needs a new take; with a revised prompt), `fail` or
+   `uncertain`, judged against the project's delivery target. Never present a
+   take that did not pass as good; say what the review found (`pr0ta-video` →
+   "Automatic QC of Every Take").
 
 ## Local ledger
 

@@ -327,6 +327,7 @@ the tool listing in your MCP client.
 
 - `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts, camera wobble…
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
+- `video_stutter_repair`(**asset_id**, user_requested, force): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams, trims a settle jolt at the head and st…
 
 ## voices
 

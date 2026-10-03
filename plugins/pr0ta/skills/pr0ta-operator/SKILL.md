@@ -87,8 +87,9 @@ Operator page) by the user.
 
 Every take a mission generates is reviewed automatically before the mission
 continues, free of credits; the verdict is in the dependency results of its
-checkpoint. The Operator regenerates a `fixable` take with the review's revised
-prompt, at most twice per shot. A `fail` verdict, or a third failed attempt at
+checkpoint. A `repair` take is usable as it is: its listed repairs wait until
+the user keeps it. The Operator regenerates a `fixable` take with the review's
+revised prompt, at most twice per shot. A `fail` verdict, or a third failed attempt at
 the same shot, saves a draft titled `QC: scene N shot M` with the takes as
 evidence and puts the mission in `review`. Show the user that draft; they
 answer it in the app (keep the best take, or give a direction).

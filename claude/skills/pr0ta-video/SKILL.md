@@ -151,11 +151,14 @@ Speech-bearing results need a transcript before timeline use. PR0TA indexes gene
 Every generated take is reviewed automatically and free, before an Operator mission sees it. Gemini watches the take with its sound against the shot's intent: the shot plan and scene, the storyboard frame, the approved cast, set and prop references, and the last frame of the previous shot and first frame of the next. It judges story first, then continuity, dialogue, prompt, technical faults and sound. Measured motion cadence, loudness and the script check of speech are added. Read the verdict with `shot_quality_review` (in a mission it is already in the dependency result):
 
 - `pass`: use the take.
-- `fixable`: regenerate with its `revised_prompt` (or its fixes), at most twice for the same shot, then pick the best take by verdict.
+- `repair`: the take is usable; each issue's `remedy` says how its faults are put right later (cadence repair, a trim, the mix, a grade). Never regenerate for a repairable fault, and repair only once the user keeps the take (they circle or favorite it, or approve a cut that uses it; your own selections do not count).
+- `fixable`: the content itself is wrong; regenerate with its `revised_prompt` (or its fixes), at most twice for the same shot, then pick the best take by verdict.
 - `fail`: a prompt change is unlikely to fix it; stop and ask the person.
 - `uncertain`: the review lacked the shot's intent or references; check the take yourself and say what could not be verified.
 
-`video_cadence_check` measures stutter, skipped frames, seams and wobble directly; a vision model sampling a few frames per second misses them.
+How strict QC is about technical faults follows the project's delivery target, the `deliveryTarget` project setting: `social` forgives a brief stutter a phone viewer scrolls past, `web` minds a clear one, `broadcast` and `cinema` reject any. Set it from the brief with `project_metadata_patch` with `updates: {"deliveryTarget": "social"}` when the user names the platform; unset, QC reads it from the cut (vertical or a social platform is social) and otherwise uses `web`.
+
+`video_cadence_check` measures stutter, skipped frames, seams and wobble directly; a vision model sampling a few frames per second misses them. `video_stutter_repair` fixes them on a kept take and saves the result as a new asset.
 
 ## On-Screen Text
 
