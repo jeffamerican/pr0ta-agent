@@ -26,7 +26,7 @@ Each length is cut from its own spine. Never derive the 15 from the 30 by trimmi
 The feed decides in about a second. The first frame is also the thumbnail.
 
 - Open on the most arresting image you have: motion, a face looking at the lens, the payoff itself, a striking contrast. Never a logo, a slow fade-up, an establishing wide where nothing happens, or black.
-- Put the hook in text too (a title or caption clip from frame 0), because most viewers start with the sound off.
+- Put the hook on screen too from frame 0, because most viewers start with the sound off: generated typography in the shot or a generated title (`pr0ta-video/reference/generative-typography.md`), or a caption clip when the hook is spoken.
 - The first cut lands inside the first 1–2 seconds. A long first shot loses the scroll.
 - Check it: `post_frames_get` at `times` `[0, 0.5, 1.0, 1.5, 2.0]` on the render. Would you stop scrolling on frame 0?
 
@@ -50,11 +50,11 @@ Feed apps cover parts of a vertical frame with their own interface: the account 
 
 ## Captions and On-Screen Text
 
-Assume the sound is off. Every spoken line is captioned (`text.role: "caption"`), and the message is on screen as text at the moments it matters.
+Assume the sound is off. Every spoken line is captioned (`text.role: "caption"`), and the message is on screen at the moments it matters. Caption clips are the only burned-in text; titles and end cards are generated typography (`pr0ta-video/reference/generative-typography.md`), never text clips.
 
 - Captions are verbatim, one or two lines, short lines (about 32 characters or fewer), each on screen exactly while its words are spoken; time them from word timing (`transcription_get`), never by guess. Break lines at phrase boundaries.
 - High contrast: white on the default dark box, or a bold color the brand allows. Never over a face, never over the product.
-- On-screen titles carry the hook, the claim and the offer in a few words each; one idea per card. Read every card aloud, character by character, against the script.
+- Generated titles carry the hook, the claim and the offer in a few words each; one idea per card. Read every card aloud, character by character, against the script.
 - Caption clips also export as an SRT sidecar; upload it with the video where the platform accepts one.
 
 ## Pacing for 15–60 Seconds
@@ -82,7 +82,7 @@ The seven criteria hold, read for the format:
 6. The tail is the end card, held to be read.
 7. For 15–30 s ads the end card (brand, offer, call to action) replaces the credits card; no credits card is required. Longer branded pieces and anything citing sources keep the credits rule.
 
-Plus, before handoff: the first frame stops the scroll; no `letterboxed_source`, `no_on_screen_text` or `double_audio_risk` findings remain; loudness is on target; captions are inside the safe zones on the rendered frames.
+Plus, before handoff: the first frame stops the scroll; no `letterboxed_source`, `no_captions` or `double_audio_risk` findings remain; loudness is on target; captions are inside the safe zones on the rendered frames.
 
 Save the cut with `provenance.deliverable` naming the platform, shape and length (for example "Instagram Reel 9:16, ≤30 s") so the checks use the social targets, and `provenance.intent` stating its spine.
 

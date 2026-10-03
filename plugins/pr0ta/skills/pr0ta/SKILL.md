@@ -77,6 +77,9 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
 1. **The user decides.** Approving a logline or beat sheet, publishing a
    script, approving direction, answering review questions, and approving
    held actions are the user's calls. Propose, ask, then act on their word.
+   Rights, clearance and legal review are the user's too: never run or
+   delegate one unasked. The project's Legal settings set the rights policy,
+   and PR0TA enforces it when a job is submitted.
 2. **Prep before generation.** Read `production_context_get` for the scene or
    shot, and reuse approved casting, looks, sets and references before making
    new ones. Recurring characters need consistency resources

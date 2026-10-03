@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.4",
+  "skills_version": "6.1.6",
   "released_at": "2026-10-02",
-  "source_revision": "v6.1.4",
-  "minimum_platform_version": "1.25.124",
+  "source_revision": "v6.1.6",
+  "minimum_platform_version": "1.25.126",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,17 +12,17 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04663-wuz",
-  "bundle_sha256": "86731754987e6a650a2fa6837ff8e9c08acf2cc60d0c656b20a81a43104a27ba",
+  "platform_revision": "pr0ta-platform-04675-dap",
+  "bundle_sha256": "377f4189c9d81276491653dcfcac0e5c23256505f86d3af2c77794580f558f55",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA (ProtaFilm|maker, app.pr0ta.com) orchestration hub for AI film and video production: script to screen, from logline and screenplay through breakdown, casting, shot lists and storyboards to image, video, voice and music generation, editing and export. Read first for any PR0TA production, then load the one companion skill for the next step.",
-      "content_sha256": "6995364ea4b61cfd0964f8fa978a07a827faa81ab5b4a30b911152c28d8a5b61",
+      "content_sha256": "f5f80dab78437698345515a74b07468eba9f2b81d59abfc1c7ded6f86c6b2dfa",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "43db8b44c067d8616aa5b57f69228fb4f2b39134ba8ee800484aaf9d4533e06d"
+          "sha256": "84a5268e4d1849fe0c1e90adbbb57cabe7fc571b20e846eacb18c2b8030aa3b9"
         }
       ]
     },
@@ -200,11 +200,11 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "84ab504f5ea3990df8d4bc19b17a5897b813301db1d7cfe4f2bbe2e316960a97",
+      "content_sha256": "5941a6a6118cec65fc4490fb3f3714ee1aa5704e8184fe3ac3b1ea0b4292b468",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "905fae65211a4e832de1cd22234f751e53f294055e5026c69d94745f931e98d2"
+          "sha256": "e8a98ce5ed00394e81022ae646eb1b2b5790fd64e9815cfb0f0d08cbf1141d8a"
         },
         {
           "path": "reference/review-and-gates.md",
@@ -216,7 +216,7 @@
         },
         {
           "path": "reference/vertical-and-cutdowns.md",
-          "sha256": "1c359393f8ffd0830b5c0e65152a95f002668e56c97ce55301d36e5e2c3078b8"
+          "sha256": "1a1945771ec9b1f89e23948dce789a872c9b9c5efc773b46a4652f58ab989604"
         }
       ]
     },
@@ -364,11 +364,11 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut.",
-      "content_sha256": "999084512f25cea9eb0d334610b7917b875a74b6d869b166cbff42b4615d4108",
+      "content_sha256": "5b7192da6ff461bf134efeb2a174f812c3ba5fed03e1800bc80b71f609dca44f",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "c0dc1521c441e0e140d793cf1e8034673e31d7744dddaa80280076e642f54f22"
+          "sha256": "4d386f35c33626ba0c1b4cdfb58f9679e0e65108b5cfb1b00de4176905c27dea"
         },
         {
           "path": "reference/repairs-and-diagnostics.md",
@@ -376,7 +376,7 @@
         },
         {
           "path": "reference/verification-loop.md",
-          "sha256": "8af49b961ca2ce4579f92da91819c79d12fa69cb86b873b9a7c0e8cf778efcd7"
+          "sha256": "fa17673294403a7c61e4c452b6dd42fb0a347cbf8aa669b29be4e79ae0159e3c"
         }
       ]
     },

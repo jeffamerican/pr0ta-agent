@@ -105,7 +105,7 @@ Set `kenBurns` on create or `PATCH`; the renderer computes the motion. Presets: 
 
 ## Text and Captions
 
-Title-track clips with no asset are text clips: their `text` object is drawn in preview and burned in at render, and `role: "caption"` clips also export as an SRT sidecar.
+Title-track clips with no asset are text clips, burned in at render; `role: "caption"` clips also export as an SRT sidecar. Only for captions and subtitles: titles and end cards are generated typography (`pr0ta-video` → "On-Screen Text").
 
 ```json
 { "id": "cap_01", "type": "title", "start": 0.4, "duration": 2.1,
@@ -115,7 +115,7 @@ Title-track clips with no asset are text clips: their `text` object is drawn in 
 | Field | Values and defaults |
 |---|---|
 | `content` | Required; `\n` breaks lines |
-| `role` | `title` (default), `caption`, `lower_third` |
+| `role` | `caption`; `title` (default) and `lower_third` are plain type |
 | `position` | `top`, `center`, `bottom`, `lower_third`; caption → bottom, lower third → lower_third, title → center |
 | `fontSizePct` | Percent of frame height: caption 4.5, lower third 4, title 8 |
 | `color`, `background` | `#RRGGBB`; caption box `rgba(0,0,0,0.55)` by default, others none |
@@ -124,7 +124,7 @@ Title-track clips with no asset are text clips: their `text` object is drawn in 
 
 Captions: one or two short lines, each on screen for its spoken words. Time them from word timing (`transcription_get`, `pr0ta-audio`), not by guess. A title clip with an image or video asset stays an overlay. `text` is always an object; a title clip with no asset and empty `text.content` renders nothing and is reported as `empty_text_clip`.
 
-**Social deliverables.** A cut counts as social when its frame is portrait 4:5 or taller (width/height ≤ 0.8) or square, or when `provenance.deliverable` names a platform (Instagram, Reel(s), TikTok, YouTube Shorts, Shorts, Stories, Facebook, LinkedIn, Snapchat). A social cut with no text clip at all gets `no_on_screen_text`; one with audible speech (a dialogue or narration clip, or a video's own sound) and no caption clips gets `no_captions`. Both are warnings.
+**Social deliverables.** A cut counts as social when its frame is portrait 4:5 or taller (width/height ≤ 0.8) or square, or when `provenance.deliverable` names a platform (Instagram, Reel(s), TikTok, YouTube Shorts, Shorts, Stories, Facebook, LinkedIn, Snapchat). One with audible speech (a dialogue or narration clip, or a video's own sound) and no caption clips gets the `no_captions` warning.
 
 ## Audio
 
@@ -197,7 +197,7 @@ For a narration or dialogue fix, also transcribe the rendered audio. `video_qual
 1. **Generate or gather** material: scripted shots in the Production Queue (`pr0ta-prep`), others with `pr0ta-image`, `pr0ta-video`, `pr0ta-audio`, `pr0ta-music`.
 2. **Probe sources** (`assets_probe`) and **set the sequence** to the deliverable's shape; create tracks: `video`, `dialogue`, `music`, `sfx`, `titles` as needed.
 3. **Build the edit**: narration-driven work through the narration timeline and `narration_materialize_to_post`; otherwise clips with placement, `fit`, and Ken Burns.
-4. **Frame and caption**: reframe mismatched sources, add caption and title clips.
+4. **Frame and caption**: reframe mismatched sources, add captions, place generated titles.
 5. **Sound**: link picture to its sound, disable stray generated audio, set ducking and levels.
 6. **Snapshot**, then run **the verification loop** until it is clean.
 7. **Hand off** with provenance; read the user's changes back and address notes with targeted edits.

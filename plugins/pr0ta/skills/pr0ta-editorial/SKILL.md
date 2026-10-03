@@ -54,7 +54,7 @@ Feeds have their own rules. Read `reference/vertical-and-cutdowns.md` before any
 
 - **A recut is a new film.** Write its own spine for its length and viewer. Never a highlights reel: the original's best shots, shorter, in the original order.
 - **Hook in the first 1–2 seconds.** Frame 0 is the thumbnail and the scroll-stopper: motion, a face, the payoff; never a logo or a fade from black.
-- **Sound off by default.** Caption every spoken line and put the message on screen.
+- **Sound off by default.** Caption every spoken line; put the message on screen as generated typography.
 - **Reframe for 9:16.** Each shot native vertical, covered and repositioned, or regenerated vertical; never 16:9 with bars. Text and faces stay inside the safe zones.
 - **Pace for the clock.** Fast early, one idea per shot, brand by the midpoint, an end card held long enough to read.
 
