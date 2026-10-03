@@ -212,7 +212,7 @@ Four task-specific model IDs run the same ModelArk model with the task fixed, so
 
 The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p, review, then finish the approved draft at 1080p (`reference/draft-to-final.md`). Edit and extend cannot draft; review them at 480p or 720p before a 1080p run.
 
-ModelArk refuses input images that may show a real person (`InputImageSensitiveContentDetected.PrivacyInformation`, "may contain real person"), which includes realistic character references from Prep. Send such shots to the same task on MuAPI (`muapi/seedance-2.5-omni-reference`, `-image-to-video`, `-first-last-frame`, `-video-edit`, `-video-extend`); the Production Queue does this automatically and notes the fallback on the task.
+ModelArk refuses input images that may show a real person (`InputImageSensitiveContentDetected.PrivacyInformation`, "may contain real person"), which includes realistic character references from Prep. PR0TA resubmits such a refusal as the same task on MuAPI (`muapi/seedance-2.5-omni-reference`, `-image-to-video`, `-first-last-frame`, `-video-edit`, `-video-extend`) on every path; the submission result carries `model_fallback`. Do not resubmit it yourself; mention the switch in one line.
 
 ### Seedance 2.5 Motion Control (`muapi/seedance-2.5-motion-control`)
 
