@@ -117,7 +117,7 @@ Capabilities, for when the user asks for one: the Topaz image families cover fai
 
 The best reference is sometimes a real photograph, a sketch, a location scout, a product shot, or a frame from footage. Upload it and use the returned asset `id` anywhere an asset id is accepted: `image_asset_id`, `start_image_asset_id`, `reference_image_asset_ids[]`, or Element and Character sources.
 
-Use `assets_upload_start` (or `assets_upload_batch_start` for several files) to get a signed upload handoff, PUT the bytes, and let the storage event finalize the asset; call `assets_upload_finalize` only if it did not. Optional metadata on finalize: `category`, `subject`, and `labels`.
+Use `assets_upload_start` (or `assets_upload_batch_start` for several files) to get a signed upload handoff, PUT the bytes, then call `assets_upload_finalize` and check the asset is `ready`. Optional metadata on finalize: `category`, `subject`, and `labels`.
 
 REST multipart alternative: `POST /api/v2/projects/{project_id}/assets/upload` with one or more `files` fields (images only); it returns `AssetRead` objects and stamps `labels.source = "upload_api"`. With the Python client:
 

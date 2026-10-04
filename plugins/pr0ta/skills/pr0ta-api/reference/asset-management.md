@@ -145,11 +145,11 @@ attempt never blocks a retry.
 
 ### MCP Signed Upload Lifecycle
 
-Use `assets_upload_start` or `assets_upload_batch_start` to create upload handoffs, then PUT bytes to each returned signed URL. For a single upload, supply a stable `idempotency_key` and reuse it after any ambiguous timeout; PR0TA returns the same placeholder instead of creating a duplicate. Supplying `checksum_sha256` at start binds that digest to fallback finalization. In production, a storage object-finalize notification should call PR0TA and transition the placeholder to `ready` automatically.
+Use `assets_upload_start` or `assets_upload_batch_start` to create upload handoffs, then PUT bytes to each returned signed URL. For a single upload, supply a stable `idempotency_key` and reuse it after any ambiguous timeout; PR0TA returns the same placeholder instead of creating a duplicate. Supplying `checksum_sha256` at start binds that digest to finalization. After each PUT succeeds, call `assets_upload_finalize` and check that it returns `status: "ready"`.
 
 Asset MCP timeouts return `retryable: true` with a `retry_token` (the upload-start token is the idempotency key). Retry unchanged requests with that token. `assets_list` uses a short database deadline, and `assets_get_download_link` returns a scoped proxy handoff without waiting for object-store signing.
 
-If storage event delivery is unavailable or delayed and the asset remains in `uploading` status, call the fallback finalizer:
+Finalize each uploaded asset:
 
 ```json
 {
@@ -161,7 +161,7 @@ If storage event delivery is unavailable or delayed and the asset remains in `up
 }
 ```
 
-The start tools only create placeholders and signed upload URLs. Until the storage event finalizer or fallback `assets_upload_finalize` succeeds, uploaded assets remain in `uploading` status and may be absent from filtered `assets_list` results, normal project asset lists, and Asset Browser selectors. The fallback verifies object existence and any declared byte size/SHA-256 before transitioning the record to `ready`; integrity failures leave it non-ready. Successful finalization applies metadata/category/labels/folder updates and runs post-upload processing for media metadata and thumbnails.
+The start tools only create placeholders and signed upload URLs. Until `assets_upload_finalize` succeeds, uploaded assets remain in `uploading` status and may be absent from filtered `assets_list` results, normal project asset lists, and Asset Browser selectors. If you never call it, PR0TA finds the uploaded object and finalizes the asset within a few minutes; an asset whose object never arrives is marked failed once its upload URL has expired. `assets_probe` measuring a file does not mean the asset is ready. Finalize verifies object existence and any declared byte size/SHA-256 before transitioning the record to `ready`; integrity failures leave it non-ready. Successful finalization applies metadata/category/labels/folder updates and runs post-upload processing for media metadata and thumbnails.
 
 ---
 

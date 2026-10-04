@@ -94,10 +94,11 @@ REST.
 - Errors are structured: `error`, `error_reason`, `error_detail`, validation
   messages, and retry or fail-fast hints when available.
 - File bytes move through upload and download handoffs, never inside MCP
-  payloads. After a PUT to a signed upload URL, PR0TA finalizes the asset from
-  the storage event; if it stays in `uploading`, call `assets_upload_finalize`,
-  which verifies existence and any declared size or SHA-256 before marking it
-  ready.
+  payloads. After a PUT to a signed upload URL, call `assets_upload_finalize`,
+  which verifies existence and any declared size or SHA-256 before marking the
+  asset ready, and confirm it returns `ready`. An upload you never finalize is
+  confirmed by PR0TA within a few minutes; a probe result is not a ready
+  asset.
 - Use `voices_list` before TTS when the user has not named an exact voice, and
   copy the returned `selection` fields into `generation_submit`.
 - Project memory: `SKILL.md` → "Project memory" owns the contract
