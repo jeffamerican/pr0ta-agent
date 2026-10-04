@@ -108,7 +108,8 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
    and the user can find them.
 10. **Read the QC verdict before using a take.** Every generated take
    (storyboard frames aside) and every full render or export is reviewed
-   automatically and free, story and continuity first.
+   automatically and free, story and continuity first; a speech take is
+   also compared with the speaker's approved voice.
    `shot_quality_review` (a take) or `cut_quality_review` (a render) returns
    the verdict: `pass`, `repair` (usable; its faults are repaired once the user
    keeps it), `fixable` (needs a new take; with a revised prompt), `fail` or

@@ -28,6 +28,9 @@ image, or one preset voice. PR0TA rejects `audio_urls` together with
 `image_url`. A request carries at most one preset voice, and scene rendering
 never mixes a preset voice with reference clips, so for a multi-speaker take
 either give every speaker a reference clip or describe the voices in writing.
+On `generation_submit` one request speaks for one named speaker: the
+Operator renders a multi-speaker scene on the Performances page, or as
+single-speaker lines each naming its speaker.
 
 ## Writing a Seed Audio prompt
 
@@ -51,8 +54,14 @@ JONAS (voiced by @Audio2) says: "[a long pause] Then we go out the back."
 - Bracketed cues are direction, not words. Put them before the line they shape.
 - Without a reference, describe each speaker's voice in a few words (age,
   timbre, accent, energy) and keep that description identical across requests.
-- Keep reference clips short and clean: in scene rendering PR0TA uses only the
-  first clip per speaker and trims it to under 30 seconds.
+- A reference clip is one person speaking for 10 to 30 seconds, never speech
+  PR0TA generated: PR0TA refuses a generated or shorter clip, removes music
+  and noise when it can, and trims every clip to under 30 seconds (a scene
+  render uses only the first clip per speaker). An approved Casting voice is
+  used exactly as approved.
+- A recurring speaker needs a fixed voice, not a fresh clip per request:
+  name the speaker (`character_name`) and their approved Casting voice is
+  applied (`pr0ta-audio` → "One voice per speaker").
 
 ## Scene dialogue with Seed Audio
 

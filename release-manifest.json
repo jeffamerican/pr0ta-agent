@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.8",
-  "released_at": "2026-10-02",
-  "source_revision": "v6.1.8",
-  "minimum_platform_version": "1.25.129",
+  "skills_version": "6.1.9",
+  "released_at": "2026-10-03",
+  "source_revision": "v6.1.9",
+  "minimum_platform_version": "1.25.132",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,17 +12,17 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04693-piy",
-  "bundle_sha256": "4a733908a6c085a89ff70ad1441bf79cd2ec9c2068dbb85fc21adf6a47a4dd33",
+  "platform_revision": "pr0ta-platform-04719-reg",
+  "bundle_sha256": "7d62b32a5959ce911c2c3e361b4835eb7c000d280835937d50f75ddde5e73250",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA (ProtaFilm|maker, app.pr0ta.com) orchestration hub for AI film and video production: script to screen, from logline and screenplay through breakdown, casting, shot lists and storyboards to image, video, voice and music generation, editing and export. Read first for any PR0TA production, then load the one companion skill for the next step.",
-      "content_sha256": "f5f80dab78437698345515a74b07468eba9f2b81d59abfc1c7ded6f86c6b2dfa",
+      "content_sha256": "10fb67abed0739caeba00691b8d6de41803f6c95d65de8c31002a5741d67e4ac",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "84a5268e4d1849fe0c1e90adbbb57cabe7fc571b20e846eacb18c2b8030aa3b9"
+          "sha256": "9c3ff7bbe1a35a73ec4e5046d2abcc75a282c0955f7e9287f9a96c8c2df9ffa8"
         }
       ]
     },
@@ -140,11 +140,11 @@
     {
       "name": "pr0ta-audio",
       "description": "PR0TA speech and voice: narration, voiceover, dialogue and scene dialogue takes (text-to-speech), voice clone, voice design, voice changer (speech-to-speech), lip sync audio, transcription, word timing, subtitles, and the time-indexing rule every edit relies on. Read before generating, transcribing or cutting any speech.",
-      "content_sha256": "0ff2263e099da9c85dd02faa2380e926d1f266e6a2ee40eadc2432c8d022942c",
+      "content_sha256": "dc86647a1c5fe95cb0134e5f4fcf269f36be901144a001a69f5e51ac5f8f914d",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "31cb8227de7a4c0d221c266ddb826c60d0ed1fe7a63fc8aced784f8d8e4eed2c"
+          "sha256": "1545f4be1001b8c98986f0dd7670555c9bc8841afe63545686c93b9dcc1bccdf"
         },
         {
           "path": "reference/elevenlabs-v3-audio-tags.md",
@@ -156,7 +156,7 @@
         },
         {
           "path": "reference/seed-audio.md",
-          "sha256": "b109bea5af8ffbd0bbcf3e8319826e57dc62145463efba2e361b2490feecd1a5"
+          "sha256": "6b6554448ae622735e100c054efdb7885cbb40253e4a82cfa857a4e1cfccfa53"
         }
       ]
     },
@@ -383,11 +383,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "a80a255c3677a80435854722fe08c62e91fb9baf5a1c3257915034b1d2714a7f",
+      "content_sha256": "aeadb94c5c6ea96dff8ffcee6eb9591fa6c67b3b8cc4cef5b1460b90f04d4c84",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "b743bdc617eebb6860c486aa0abfc14127eed519ca8b0c682b336382f210cd62"
+          "sha256": "d1561f2b9b9c3024b1ec2a518df3966834cc6b05dcdffa6f521f638094511a2e"
         },
         {
           "path": "reference/draft-to-final.md",

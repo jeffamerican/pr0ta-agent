@@ -56,9 +56,52 @@ Capabilities, for when the user asks for one:
   `style_instructions` and `speakers`; the Fal Gemini 3.1 Flash TTS route also
   takes `language_code`, `temperature` and `output_format`.
 - **Voice from a reference clip without cloning:** Seed Audio takes up to three
-  reference audio clips, or one reference image, per request.
+  reference audio clips, or one reference image, per request. The Operator
+  uses a clip only as a named speaker's approved voice; a recurring speaker
+  needs a fixed voice (see "One voice per speaker").
 - **A cloned or designed voice:** `voices_clone` and `voices_design` create
   ElevenLabs voices; use them with an ElevenLabs TTS model.
+
+## One voice per speaker
+
+A narrator, host or character who speaks in more than one take must speak in
+one fixed voice. A model copying a voice from a clip guesses again on every
+request, so the voice drifts from shot to shot even when the words are right.
+
+- **Establish the voice before any lines.** Clone it from at least 30 s of
+  clean speech by that one person (`voices_clone`; one to three minutes clones
+  best), or design it. Generate one short audition line, save the voice to the
+  speaker's cast entry (`cast_list_save`, `pr0ta-prep`), and ask the user to
+  listen and approve it in Casting. A real person's voice needs their
+  approval of the audition.
+- **Then name the speaker** (`character_name`) on every `generation_submit`
+  speech request and omit the voice. A speaker with an approved voice speaks
+  in it there and in Production Queue dialogue: the platform applies it, and
+  refuses a different `voice_id`, a different reference clip, or a model that
+  cannot speak it. Seed Audio speaks an approved voice from its approved clip.
+  Change an approved voice only in Casting.
+- **Never copy a voice from a clip** (`voice_settings.audio_urls`) for a
+  speaker without an approved voice; the Operator's request is refused.
+- **Only the user approves a voice, in Casting.** `cast_list_save` does not
+  save `approved_voice` or a voice design's approval from an agent; the
+  stored approval stays as it is.
+- **What a voice clip must be:** never speech PR0TA generated (an earlier
+  take, or a trim or cleaned copy of one); at least 10 s for a reference clip
+  and 30 s in total for a clone; one person speaking. The platform refuses
+  generated or short clips, and removes music and noise when it can (clones
+  remove it unless `remove_background_noise: false`). An approved Casting
+  voice is used exactly as approved.
+- Correct words and clean levels are not a voice match. Automatic review
+  compares each speech take with the speaker's approved voice and reports a
+  different-sounding voice as a `voice` issue. When the take has one speaker
+  and their voice is an ElevenLabs voice the remedy is `repair`: once the
+  user keeps the take,
+  change its voice with `voices_speech_to_speech` (`target_voice_id` = the
+  speaker's `approved_voice.voice_id` from `cast_list_get`), which keeps the
+  performance and timing; for a video take, ask the user to run Voice Change
+  on it. A voice change turns the whole track into one voice, so a take with
+  several speakers, or an approved voice that is only a clip, needs a new
+  take (or clone the voice in Casting first).
 
 ## Voices
 
@@ -113,7 +156,8 @@ carries `result.asset_id`. Add the resolved model's own fields
   what was actually said. Regenerate a take that misreads them.
 - `audio_meter` with the take's `asset_id` checks it before it is placed:
   loudness, true peak, clipping and silent dropouts inside the take. Every
-  generated take is also reviewed automatically (`shot_quality_review`).
+  generated take is also reviewed automatically (`shot_quality_review`),
+  including whether it sounds like the speaker's approved voice.
 - Non-English speech: write the text in the target language and set the
   language field the model exposes.
 
@@ -133,8 +177,9 @@ Whole-scene takes have no MCP tool. With MCP tools (and in-app):
 
 - ask the user to render the scene on the Performances page; or
 - generate line by line: for each line, `generation_submit` a
-  `txt_to_speech` request (above) with the speaker's cast voice from
-  `cast_list_get` and the line's cues written in the resolved model's syntax,
+  `txt_to_speech` request (above) naming the speaker (`character_name`, no
+  voice: their approved voice is applied; without one, the cast voice from
+  `cast_list_get`) and the line's cues written in the resolved model's syntax,
   then place the takes in order on the timeline (`pr0ta-timeline`); or
 - for Production Queue audio items whose modality is text-to-speech,
   `production_queue_regenerate` renders the item's line in the speaker's cast
@@ -151,7 +196,8 @@ and `attachToAssetUid`. It returns a `task_id`; poll it with `tasks_get`.
 
 - **Clone from recordings:** `voices_clone(request: {name, sample_asset_ids |
   sample_urls, description?, remove_background_noise?})` returns a reusable
-  ElevenLabs `voice_id` right away (no task). Use clean, single-speaker samples.
+  ElevenLabs `voice_id` right away (no task). Use clean, single-speaker samples
+  of at least 30 s in total; generated speech is refused as a sample.
 - **Design from a description (two steps):** `voices_design(request:
   {voice_description, model_id, text? | auto_generate_text?})` with `model_id`
   from `models_preferred(modality: "voice_design_model")` returns `previews[]`,
