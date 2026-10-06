@@ -227,10 +227,10 @@ Clip data is nested under a `clip` key; placement under a `placement` key. Use `
 **Clip-level timing fields:**
 - `start` — clip start position on the timeline in seconds (authoritative).
 - `duration` — clip playback duration in seconds (authoritative).
-- `startFrame` / `durationFrames` — frame-native inputs accepted by clip create/update and resolved against the sequence frame rate into canonical seconds.
+- `startFrame` / `durationFrames` — frame-native inputs accepted by clip create/update and by full sequence saves (`post_sequence_save`, `POST /timeline`), resolved against the sequence frame rate into canonical seconds. When a clip sends both, the seconds win, unless only the frames changed from the saved clip (a `post_sequence_save` of a read-back sequence with edited frames moves the clip).
 - `start_ms` / `duration_ms` — millisecond-precision equivalents (`start_ms = start × 1000`). These are compatibility/precision helpers, not a separate model. Do not assume `start` is always `0.0` or `duration` is always `1.0`.
 - `in_point` / `out_point` — trim points within the source asset.
-- `sourceInFrame` / `sourceOutFrame` — frame-native source trim inputs accepted by clip create/update and resolved into `inPoint` / `outPoint`.
+- `sourceInFrame` / `sourceOutFrame` — frame-native source trim inputs accepted by clip create/update and full sequence saves, resolved into `inPoint` / `outPoint`.
 - `fitToFill` / `speed` — explicit retime state when a source range is stretched/compressed to a program duration. A negative `speed` plays the clip reversed at `|speed|` (head = out point, tail = in point; `0` is refused). Changing `speed` through the clip PATCH keeps the frames that play (unless the update also sets the source points), measured on the clip as the PATCH leaves it: `{"speed": -1, "duration": 8}` reverses the 8 s the clip will play, not the 4 s it played before. It applies to the clip's same-media linked partners (link group or legacy `linkedClipId`); a partner whose duration equalled the clip's takes the new duration too, and partners on locked tracks are left alone. A reversed clip slips by `−delta·|speed|`; see `reference/source-shortfalls-and-fit-to-fill.md` → "Reversed Clips".
 - `kenBurns` — Ken Burns motion (see below).
 - `transition` — an object, never a bare name: `{"type": "dissolve", "duration": 0.5}` with `duration` in seconds (0 < duration ≤ 10). `null` removes it. Types, which clip carries each, defaults, and adjacency rules: `pr0ta-timeline` → "Transitions".

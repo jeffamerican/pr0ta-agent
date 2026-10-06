@@ -58,7 +58,7 @@ Response shape:
 - `next_offset` — offset to pass on the next request; **`null` when the listing is exhausted**
 - `total` — total count of assets matching the filters (useful for progress reporting)
 
-**Rule:** When searching for a known asset ID or name, iterate until `next_offset` is `null` (or the returned page is empty) before concluding the asset doesn't exist. MCP `assets_list` pages the same way (`offset`, `limit`) and filters by `task_id`, `kind`, `category`, `reference_type`, `subject`, `q`, and more.
+**Rule:** When searching for a known asset ID or name, iterate until `next_offset` is `null` (or the returned page is empty) before concluding the asset doesn't exist. MCP `assets_list` pages the same way (`offset`, `limit`) and filters by `task_id`, `kind`, `category`, `reference_type`, `subject`, `q`, and more. It returns compact summaries with `next_offset` and `total` unless you pass `compact: false`; `total` is `null` only for a `browser_category` filter with more pages to go.
 
 ```python
 import subprocess, json

@@ -159,7 +159,11 @@ turned off).
 
 The analysis returns `tempo_bpm`, `beat_confidence`, `beat_times`,
 `downbeat_times`, `transients` (time and strength) and `editorial_anchors`, a
-single stream of downbeat, beat and transient anchors to snap cuts to.
+single stream of downbeat, beat and transient anchors to snap cuts to. When
+`grid_reliable` is false there is no steady pulse: the beat grid is a guess and
+`editorial_anchors` holds transients only. Music generated at an exact tempo
+("120 BPM" in its prompt or plan styles) is locked to that tempo when the audio
+agrees (`tempo_source: "requested"`).
 
 Pick the stream for the cut:
 

@@ -28,7 +28,7 @@
 | `loudness_out_of_range` | Integrated loudness is off the deliverable's target (`targetLufs`). | Adjust track and clip volumes; render again. |
 | `true_peak_over_ceiling` | True peak above −1 dBTP; it will clip after platform encoding. | Lower the loudest track or its peaks. |
 
-The structural lists sit beside them: `gaps` and `primaryVisualGaps` (uncovered program on picture tracks), `overlaps`, `sourceShortfalls`, `timelineMediaGaps`, `shortVisualClips`, `reusedMedia` (a source whose same frames appear twice; slices of one take that never overlap are not reuse), and `summary` counts including `letterboxedClipCount`, `adjacentSourceSliceCount` and `deliveryWarningCount`. Render and export results add `renderDiagnostics`, `timelineMediaGaps[]` and `renderedPixelGaps[]`; repair those by frame range (`reference/repairs-and-diagnostics.md`).
+The structural lists sit beside them: `gaps` (holes on each track; caption and title holes are fine) and `primaryVisualGaps` (program time no visible video track covers: black in the render), `overlaps`, `sourceShortfalls`, `timelineMediaGaps`, `shortVisualClips`, `reusedMedia` (a source whose same frames appear twice; slices of one take that never overlap are not reuse), and `summary` counts including `letterboxedClipCount`, `adjacentSourceSliceCount` and `deliveryWarningCount`. Render and export results add `renderDiagnostics`, `timelineMediaGaps[]` and `renderedPixelGaps[]`; repair those by frame range (`reference/repairs-and-diagnostics.md`).
 
 ## Loudness Targets
 

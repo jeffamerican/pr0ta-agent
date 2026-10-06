@@ -53,28 +53,33 @@ Response:
   "asset_id": "asset-uuid",
   "download_url": "/api/v2/projects/{project_id}/assets/{asset_id}/download",
   "analysis": {
-    "analysis_version": 1,
+    "analysis_version": 2,
     "generated_at": "2026-04-10T12:34:56.000000+00:00",
     "duration_seconds": 31.8421,
-    "tempo_bpm": 118.73,
+    "tempo_bpm": 120.0,
+    "tempo_source": "requested",
+    "requested_bpm": 120.0,
     "beat_confidence": 0.71,
+    "grid_reliable": true,
+    "warnings": [],
     "beats_per_bar": 4,
-    "beat_times": [0.0, 0.5061, 1.0122],
-    "downbeat_times": [0.0, 2.0244, 4.0488],
-    "transient_times": [0.0, 0.5061, 1.0122],
+    "beat_times": [0.0, 0.5, 1.0],
+    "downbeat_times": [0.0, 2.0, 4.0],
+    "transient_times": [0.0, 0.5, 1.0],
     "transients": [
       { "time": 0.0, "strength": 0.98 }
     ],
     "editorial_anchors": [
       { "time": 0.0, "kind": "section_start", "label": "Start" },
       { "time": 0.0, "kind": "downbeat", "label": "Bar 1" },
-      { "time": 0.5061, "kind": "beat", "label": "Beat 2" }
+      { "time": 0.5, "kind": "beat", "label": "Beat 2" }
     ],
     "summary": {
       "beat_count": 63,
       "downbeat_count": 16,
       "transient_count": 84,
-      "anchor_count": 165
+      "anchor_count": 165,
+      "grid_reliable": true
     }
   }
 }
@@ -89,6 +94,12 @@ Analysis is persisted to the asset record in database metadata:
 - `music_analysis_summary` — compact summary for lightweight consumers.
 
 This mirrors the dialogue-timing storage pattern (`whisper_index` on audio asset metadata after transcription).
+
+## Tempo, Confidence, and Reliability
+
+- **`beat_confidence`** (0–1) is the strength of the steady pulse. Below 0.15, **`grid_reliable`** is `false`: `beat_times` and `downbeat_times` are still returned as a guess, but `editorial_anchors` carries transients only and `warnings` says why.
+- **`tempo_source`** is `"requested"` when the asset was generated at an exact tempo ("120 BPM" in its prompt, composition-plan styles, or a `bpm` field) and the audio agrees, so the grid is locked to that tempo; otherwise `"detected"`. `requested_bpm` echoes the tempo found on the asset. A requested tempo the audio does not follow is reported in `warnings`, and the measured grid is kept.
+- An analysis made by an older analyzer (`analysis_version` below 2) is recomputed by the next `POST`; `GET` returns whatever is stored.
 
 ## Consumer Guidance
 
