@@ -1,6 +1,6 @@
 ---
 name: pr0ta-music
-description: "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points. Read before generating, analyzing or placing any non-speech audio."
+description: "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points; stem separation (isolate vocals, drums, bass) from a mixed track. Read before generating, analyzing or placing any non-speech audio."
 ---
 
 # PR0TA Music and Sound Effects
@@ -181,6 +181,32 @@ must land on a frame; most effects are placed by their marker time.
 REST: `POST /api/v2/projects/{project_id}/music/analyze` starts or returns
 analysis; `GET /api/v2/projects/{project_id}/music/analyze/{asset_id}` reads it
 (404 when none exists). Contract: `pr0ta-api` → `reference/music-analysis.md`.
+
+## Stem separation
+
+To work on one part of a mixed track, split it:
+`audio_stem_separate(asset_id)` takes a project audio or video asset (a
+video's soundtrack is extracted first) and runs Demucs (`fal-ai/demucs`),
+which returns `vocals`, `drums`, `bass` and `other`. It is paid: Fal's
+per-second price for the source's length. It returns a `task_id`; when
+`tasks_get` shows it succeeded, `result_refs.stems` lists each stem's
+`asset_id`, and `assets_list(task_id)` finds the same assets (category `stem`,
+labels `stem` and `task_id`). The source is left unchanged.
+
+Typical uses:
+
+- **Off-sync singing:** isolate `vocals`, re-time or trim the vocal stem
+  against the picture (`pr0ta-sync`), and lay it back over the `other`, `bass`
+  and `drums` stems, or replace the take's singing with it before lip sync
+  (`pr0ta-video`).
+- **Instrumental bed:** drop `vocals` and use the remaining stems under
+  dialogue or narration.
+- **One named sound:** `model_id: "fal-ai/sam-audio/separate"` with a
+  `prompt` ("lead female vocal", "crowd cheer") returns `target` and
+  `residual`.
+
+Separate once per source and reuse the stems; listen to the vocal stem before
+building on it, since bleed from loud instruments can remain.
 
 ## Put it in the cut
 

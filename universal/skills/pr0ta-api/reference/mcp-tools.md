@@ -20,6 +20,7 @@ the tool listing in your MCP client.
 - `assets_favorite_set`(**asset_id**, **favorite**): Favorite or unfavorite a project asset for Prep and Production curation.
 - `assets_get_download_link`(**asset_id**, as_attachment, artifact): Get a signed/proxy download handoff for one asset.
 - `assets_get_download_links`(**asset_ids**, as_attachment, artifact): Get signed/proxy download handoffs for multiple assets in one MCP call.
+- `assets_import_url`(**url**, subject, category, labels, folder_path): Import a public image, video or audio file from a web address into the project as a ready asset (free): PR0TA downloads it server-side, so no upload…
 - `assets_list`(offset, limit, kind, category, browser_category, reference_type, subject, source, task_id, q, favorite_only, asset_ids, folder_path, recursive, include_virtual_references, include_download, compact): List PR0TA project assets with simple filters.
 - `assets_probe`(**asset_ids**, refresh): Measure video, image and audio assets (free): width, height, aspect_ratio, orientation, fps, duration_seconds, has_audio and codecs, read from each f…
 - `assets_trim`(**asset_id**, **asset_type**, **in_point**, **out_point**, category, subject, idempotency_key, background): Trim a project audio or video asset into a new registered derivative.
@@ -31,6 +32,7 @@ the tool listing in your MCP client.
 
 - `audio_analyze`(sequence_id, from_time, to_time, windows, track, tracks): Predict timeline audio levels for one range or multiple windows.
 - `audio_meter`(asset_id, sequence_id, from_time, to_time, windows, track, tracks, allow_long, timeout_seconds): Run actual LUFS/true-peak metering for one short range or multiple short windows of a sequence.
+- `audio_stem_separate`(**asset_id**, model_id, prompt, options): Separate a project audio or video asset into stems (paid: Fal's price for its length): Demucs splits music into vocals, drums, bass and other, so you…
 
 ## beat
 

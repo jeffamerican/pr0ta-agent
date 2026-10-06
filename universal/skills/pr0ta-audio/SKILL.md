@@ -214,6 +214,12 @@ and `attachToAssetUid`. It returns a `task_id`; poll it with `tasks_get`.
   when the performance is right and the voice is wrong; regenerate TTS when the
   words, pace or delivery must change.
 
+To pull a voice out of a mixed recording (a sung line over music, dialogue
+under a bed), use `audio_stem_separate(asset_id)` on the audio or video asset:
+its `vocals` stem is a new audio asset to re-time, trim, transcribe or feed to
+speech-to-speech. `model_id: "fal-ai/elevenlabs/audio-isolation"` keeps only
+the voice. Stems and results: `pr0ta-music` → "Stem separation".
+
 New voices are not attached to cast members by themselves; save the choice to
 the cast (`pr0ta-prep`) and record it in memory. Field-level contracts:
 `pr0ta-api` → `reference/voice-v2.md`.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.11",
-  "released_at": "2026-10-05",
-  "source_revision": "v6.1.11",
-  "minimum_platform_version": "1.25.158",
+  "skills_version": "6.1.12",
+  "released_at": "2026-10-06",
+  "source_revision": "v6.1.12",
+  "minimum_platform_version": "1.25.168",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,24 +12,24 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-04895-zab",
-  "bundle_sha256": "ab9131819e79233c4f8d97b9c7163bb00675588696d279d7c8eeb60604295ea3",
+  "platform_revision": "pr0ta-platform-04943-fuy",
+  "bundle_sha256": "f1428bf579c3fe9d0636cb6f973243238fcc29329f9e74ace0e4f4bcca6d5a2a",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA (ProtaFilm|maker, app.pr0ta.com) orchestration hub for AI film and video production: script to screen, from logline and screenplay through breakdown, casting, shot lists and storyboards to image, video, voice and music generation, editing and export. Read first for any PR0TA production, then load the one companion skill for the next step.",
-      "content_sha256": "10fb67abed0739caeba00691b8d6de41803f6c95d65de8c31002a5741d67e4ac",
+      "content_sha256": "ccca09debdd62fb68a15c2380eac5449cf5c264c2391518aeccbd1ce44c587a4",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "9c3ff7bbe1a35a73ec4e5046d2abcc75a282c0955f7e9287f9a96c8c2df9ffa8"
+          "sha256": "389e1ce9ebd7441caa7994f97a080266c5bc1675d804acff0e162dea02beb612"
         }
       ]
     },
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "d0e1b074f22af984b9e5f635c4aef958c97e9b8ae8c767d669d2bb464979d5af",
+      "content_sha256": "a361100919a744c45135e5d02bcd7221b5edbda45befe7cd6a2df18f0336fb01",
       "documents": [
         {
           "path": "SKILL.md",
@@ -37,7 +37,7 @@
         },
         {
           "path": "reference/asset-management.md",
-          "sha256": "6d0246d463d76ed5867f2d63890b383f3d77bffbbeaf83d285d8e5b640268841"
+          "sha256": "71c8526afa042b435e789ee6129dc7794a7b7aa230cefca121ad0747902bd32e"
         },
         {
           "path": "reference/asset-tags-and-analysis.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "1b8f68c9444a9164a313a0d5405e65e8b828124d5506b8a7a21fcfd43a9bf4bf"
+          "sha256": "4e0a6b9d8994fd63746bc2f52ef789c402671e0251027e839d27d7e68a0622a4"
         },
         {
           "path": "reference/music-analysis.md",
@@ -140,11 +140,11 @@
     {
       "name": "pr0ta-audio",
       "description": "PR0TA speech and voice: narration, voiceover, dialogue and scene dialogue takes (text-to-speech), voice clone, voice design, voice changer (speech-to-speech), lip sync audio, transcription, word timing, subtitles, and the time-indexing rule every edit relies on. Read before generating, transcribing or cutting any speech.",
-      "content_sha256": "dc86647a1c5fe95cb0134e5f4fcf269f36be901144a001a69f5e51ac5f8f914d",
+      "content_sha256": "35762c14007259a5e79391c51b7b2a8fb896beb497186171f1dfea3a4f036913",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "1545f4be1001b8c98986f0dd7670555c9bc8841afe63545686c93b9dcc1bccdf"
+          "sha256": "e7f2abe94fb351a5cdee46e09f2088d67097a3f61fdee905b00de80d082152dc"
         },
         {
           "path": "reference/elevenlabs-v3-audio-tags.md",
@@ -266,22 +266,22 @@
     {
       "name": "pr0ta-image",
       "description": "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, and fan-out for hard text shots. Read when generating, editing, uploading, or choosing image models.",
-      "content_sha256": "864a3eb15396c7c0b1fc5d76ae0dc73cb738428104fe2d388c9c893d0c469085",
+      "content_sha256": "33a51d805941f593cbd531fdf2909429bdb24a89386da70741f94c2e60ee08ab",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "413768dfae72d4756a847969bdef2dee73c109fa3cd643f8dff3b827263bde5e"
+          "sha256": "e1e1349debf393a8945734242d3cb6568da82a96ab019e8ddb2250c080c73c8b"
         }
       ]
     },
     {
       "name": "pr0ta-music",
-      "description": "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points. Read before generating, analyzing or placing any non-speech audio.",
-      "content_sha256": "84ded08150e51edf1fec6e0b81e4b1d4e79517d5eafadd67afae87a54dbc289b",
+      "description": "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points; stem separation (isolate vocals, drums, bass) from a mixed track. Read before generating, analyzing or placing any non-speech audio.",
+      "content_sha256": "32eefefad27c6011ecd1d86314c6fc8818b1d10add5176e7dba1f6c18016023f",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "07b139228da4e9465f5581d17179cf960684cd7a967055a72d2a8c89a0c15451"
+          "sha256": "8fca36c0f06f1fbb7b0d47061fb5160bcc759c0734588f8ec84e62d9220aa286"
         },
         {
           "path": "reference/eleven-music.md",
@@ -470,6 +470,7 @@
     "assets_favorite_set",
     "assets_get_download_link",
     "assets_get_download_links",
+    "assets_import_url",
     "assets_list",
     "assets_probe",
     "assets_trim",
@@ -478,6 +479,7 @@
     "assets_upload_start",
     "audio_analyze",
     "audio_meter",
+    "audio_stem_separate",
     "beat_sheet_approve",
     "beat_sheet_generate",
     "blender_job_submit",
@@ -656,5 +658,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "4e2b11c57d1e91a0d34b20d1a1cae5d14a2ff785458a17d99e943b0346c1c6d3"
+  "mcp_connector_tools_sha256": "99e0d63b46a1940557300cae7e1e7ed6a0fbc6d6637de21ecae13f6722d8a315"
 }

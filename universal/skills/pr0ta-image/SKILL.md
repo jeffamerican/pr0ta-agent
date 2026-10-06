@@ -119,6 +119,8 @@ The best reference is sometimes a real photograph, a sketch, a location scout, a
 
 Use `assets_upload_start` (or `assets_upload_batch_start` for several files) to get a signed upload handoff, PUT the bytes, then call `assets_upload_finalize` and check the asset is `ready`. Optional metadata on finalize: `category`, `subject`, and `labels`.
 
+A picture already on the web (a real person's photograph, a product shot, a logo) needs no upload: `assets_import_url` with its address downloads it server-side and returns a ready `asset_id`. A page address imports the page's preview image (og:image). Check the result is the picture you meant before using it as a reference. Ask the user to upload only when the site blocks the download.
+
 REST multipart alternative: `POST /api/v2/projects/{project_id}/assets/upload` with one or more `files` fields (images only); it returns `AssetRead` objects and stamps `labels.source = "upload_api"`. With the Python client:
 
 ```python

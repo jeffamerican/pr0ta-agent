@@ -143,6 +143,14 @@ labels), or with the same `Idempotency-Key` header / `idempotency_key`, joins
 the existing task (`deduplicated: true`) instead of trimming twice; a failed
 attempt never blocks a retry.
 
+### Import a File from the Web
+
+`assets_import_url` downloads a public image, video or audio file server-side and registers it as a ready asset (category `imported`, labels `source: web_import` and `source_url`). No signed URL, PUT or finalize step. Pass the file's direct address; a page address imports the page's `og:image`. Private and internal addresses are refused, every redirect is re-checked, and images are capped at 50 MB (video and audio at 500 MB). A `fetch_failed` error means the site refused the download: try another copy of the file, or ask the user to upload it.
+
+```json
+{"tool": "assets_import_url", "project_id": "project-id", "url": "https://upload.wikimedia.org/.../portrait.jpg", "subject": "Dario"}
+```
+
 ### MCP Signed Upload Lifecycle
 
 Use `assets_upload_start` or `assets_upload_batch_start` to create upload handoffs, then PUT bytes to each returned signed URL. For a single upload, supply a stable `idempotency_key` and reuse it after any ambiguous timeout; PR0TA returns the same placeholder instead of creating a duplicate. Supplying `checksum_sha256` at start binds that digest to finalization. After each PUT succeeds, call `assets_upload_finalize` and check that it returns `status: "ready"`.
