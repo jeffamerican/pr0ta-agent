@@ -97,8 +97,12 @@ the approved logline.
 
 Treatments, outlines, research and reference scripts are project documents.
 `document_add_text(filename, content)` adds `.txt`, `.md` or `.fountain` text;
-`documents_list` shows what exists. PDFs and Final Draft files are uploaded
-through the app or the REST documents route (see `pr0ta-api`).
+`documents_list` shows what exists. A file the user attaches (PDF, Final Draft,
+Highland, Fountain, Word .docx, RTF, text) arrives as an asset: read it with
+`document_read(asset_id)` (scanned PDFs are OCR'd; long files come in pages,
+continue with `offset: next_offset`) and add it to the documents with
+`document_add_asset(asset_id)`. `document_read(filename)` reads a document
+already in the list.
 
 ## 4. Beat sheet
 
@@ -121,12 +125,15 @@ answers on a task.
 
 Three ways in, all ending in one working draft:
 
-- **Import** an existing script: upload it as a document (app or REST), then
-  `screenplay_import(filename?)` makes it the primary script's working draft
-  (it cannot import into another library script; save that one's text with
-  `screenplay_save(script_id, content)`). It returns no
-  script text; read the result with `get_screenplay_text(working_draft: true)`.
-  Text scripts can be added with `document_add_text` first.
+- **Import** an existing script: `screenplay_import(asset_id)` for an attached
+  file, or `screenplay_import(filename?)` for a project document, makes it the
+  primary script's working draft (it cannot import into another library
+  script: read that file with `document_read` and save its text with
+  `screenplay_save(script_id, content)`). It returns no script text; read the
+  result with `get_screenplay_text(working_draft: true)`. Only import when the
+  user wants the file to become the working draft; to pick or study scenes,
+  `document_read` is enough. Text scripts can be added with `document_add_text`
+  first.
 - **Write**: `screenplay_save(content)` saves the whole script. Always send the
   complete text in screenplay format ("Screenplay format" below); it replaces the
   working draft. `new_revision: true` starts a new revision when the text

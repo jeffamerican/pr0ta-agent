@@ -61,8 +61,8 @@ the tool listing in your MCP client.
 ## casting
 
 - `casting_avatar_demo_generate`(**request**): Queue an avatar performance demo from a cast portrait and voice sample.
-- `casting_character_sheet_prompt_resolve`(**character**, **portrait_url**, casting_prompt, voice_prompt, sample_line): Resolve the app's cinematic character-design-sheet brief for a cast member.
-- `casting_descriptive_prompt_generate`(**image_url**, character, current_prompt): Generate a detailed casting prompt from an approved portrait image.
+- `casting_character_sheet_prompt_resolve`(**character**, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line): Resolve the app's cinematic character-design-sheet brief for a cast member.
+- `casting_descriptive_prompt_generate`(image_asset_id, image_url, character, current_prompt): Generate a detailed casting prompt from an approved portrait image.
 - `casting_read_generate`(**script**, **producer_analysis**, **director_analysis**, script_supervisor_characters): Run and persist the Casting breakdown and canonical cast list; returns a task for polling.
 - `casting_voice_design`(**request**): Design and persist a MiniMax/Fal voice for one project cast member.
 - `casting_voice_sample_generate`(**request**): Generate or queue a named cast-member voice sample.
@@ -103,7 +103,9 @@ the tool listing in your MCP client.
 
 ## document
 
+- `document_add_asset`(**asset_id**, filename): Add an attachment to the documents.
 - `document_add_text`(**filename**, **content**): Add a text document (treatment, outline, research, or a .fountain/.txt screenplay) to the project's documents.
+- `document_read`(asset_id, filename, offset, max_chars): Read a document's text.
 
 ## documents
 
@@ -124,7 +126,7 @@ the tool listing in your MCP client.
 - `get_character_references`(**character_name**): Retrieve character reference data: portrait URLs, physical description, voice configuration, wardrobe notes, and look timeline from casting read.
 - `get_review_annotations`(submission_id, review_round_id, resolution_status): Retrieve client review comments, decisions, annotations, and time-coded feedback for the project.
 - `get_scene_breakdown`(**scene_number**, scene_range_end): Retrieve the script supervisor's scene breakdown for one or more scenes.
-- `get_scene_shotlist`(**scene_number**): Retrieve the director's shot list for a scene, including shot number, size, angle, lens, aspect ratio, movement, duration, description, action, and c…
+- `get_scene_shotlist`(**scene_number**, offset, compact): Retrieve the director's shot list for a scene, including shot number, size, angle, lens, aspect ratio, movement, duration, description, action, and c…
 - `get_screenplay_text`(scene_number, offset, limit, include_workspace_context, working_draft, script_id, workspace_session_id): Retrieve the screenplay.
 - `get_set_references`(scene_number, location): Retrieve production design reference images and descriptions for a location or scene.
 - `get_shot_assets`(**scene_number**, **shot_number**): Retrieve generated media assets (video takes, audio takes, storyboard frames) for a specific shot identified by scene and shot number.
@@ -245,7 +247,7 @@ the tool listing in your MCP client.
 ## screenplay
 
 - `screenplay_draft_beats`(**content**, budgets, script_id): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
-- `screenplay_import`(filename, force): Make an uploaded screenplay document (PDF, Final Draft, Fountain, or text) the working draft of the PRIMARY script.
+- `screenplay_import`(filename, asset_id, force): Make a screenplay the PRIMARY script's working draft.
 - `screenplay_publish`(title, actual_length_eighths, script_id): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
 - `screenplay_save`(**content**, new_revision, script_id): Save the complete working draft of one script in the project's library.
 
@@ -274,7 +276,7 @@ the tool listing in your MCP client.
 
 - `shotlist_generate`(**scene**, **producer_analysis**, **director_analysis**): Generate and durably save a Director shot list for one scene; returns a task for polling.
 - `shotlist_generate_batch`(**scenes**, **producer_analysis**, **director_analysis**): Generate and save Director shot lists for multiple scenes in one background task.
-- `shotlist_scene_chat`(**scene**, **messages**, producer_analysis, director_analysis): Ask the Director agent to revise or discuss one scene using its persisted planning context.
+- `shotlist_scene_chat`(**scene**, **messages**, producer_analysis, director_analysis): Ask the Director agent to revise or discuss one scene.
 - `shotlist_scene_descriptions_generate`(**script_supervisor_data**, producer_analysis, director_analysis): Generate concise Director scene descriptions for Shotlisting; returns a task for polling.
 
 ## storyboard
