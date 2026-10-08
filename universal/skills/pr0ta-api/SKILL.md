@@ -14,8 +14,9 @@ MCP tools and REST routes are two doors to the same services, with the same
 access checks, credits, and durable tasks. Use the MCP tool when one exists;
 REST is for routes MCP does not expose, standalone scripts, and fetching file
 bytes from links MCP returns. Call `prep_production_capabilities` for the
-page-to-tool map; `reference/mcp-tools.md` is the complete generated tool
-catalog.
+page-to-tool map; `reference/mcp-tools.md` indexes the complete generated
+tool catalog, whose parts (`reference/mcp-tools-1.md` and on) list each tool's
+arguments.
 
 ## Connecting
 
@@ -373,7 +374,7 @@ the mission.
 | Read | For |
 | --- | --- |
 | `reference/mcp-server.md` | MCP connection and OAuth, compatibility rules, prompt orchestration, pending Operator actions |
-| `reference/mcp-tools.md` | Complete generated MCP tool catalog |
+| `reference/mcp-tools.md` | Index of the generated MCP tool catalog: every tool by group, and the part (`mcp-tools-N.md`) that lists its arguments |
 | `reference/projects-models-resources.md` | Project CRUD, model discovery routes, Elements, Characters, consistency bundles |
 | `reference/unified-generation.md` | Request shapes per generator, capability notes, asset-ID resolution |
 | `reference/batch-and-events.md` | Batch submission and the generation event feed |

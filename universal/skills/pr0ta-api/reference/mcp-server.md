@@ -7,7 +7,8 @@ wherever it is called.
 
 **Finding tools.** Call `prep_production_capabilities` for the page-to-tool map
 (which tools serve Development, Prep, Production, and Post pages). The complete
-generated catalog, with every tool's arguments, is `reference/mcp-tools.md`.
+generated catalog, with every tool's arguments, is indexed in
+`reference/mcp-tools.md`.
 Your MCP client's tool listing has the full JSON schemas.
 
 ## Connecting

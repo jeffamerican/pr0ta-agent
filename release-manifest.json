@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.12",
-  "released_at": "2026-10-06",
-  "source_revision": "v6.1.12",
-  "minimum_platform_version": "1.25.168",
+  "skills_version": "6.1.13",
+  "released_at": "2026-10-07",
+  "source_revision": "v6.1.13",
+  "minimum_platform_version": "1.25.186",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05039-hih",
-  "bundle_sha256": "10fe5de9b80b9f4321f0f6f4a40dea317deb646065e980985114674fa239a5ef",
+  "platform_revision": "pr0ta-platform-05045-ril",
+  "bundle_sha256": "7fd8183f3750e22bab9aa093a7c1c634172343923b4f5dc17216c14f3aa78e8f",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "6cef12f58e5a045c1ab0eab7c86f96abb4087e435fff2fd9a9f893dd1dc6a938",
+      "content_sha256": "b132e8fac2cd522091639f51bdf98e83149a51fcc41ae2fa0ad777f6d88c7efd",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "0eb2401b629a83d29ca27a735387d68223feffb02632d18d13d9d8c2a03bede9"
+          "sha256": "1cf52a8d6d64e63754eb234120f526a47489009da85b27e2c894426476376ebb"
         },
         {
           "path": "reference/asset-management.md",
@@ -73,11 +73,23 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "b70a5328ada615d506f58fa7bd8b62fa9d31c110a701dbd7832236cc5948a519"
+          "sha256": "b1cc78a3b42fac54b4bbaae4154806958cd7a5a74ac38b5a27873bc72f595202"
+        },
+        {
+          "path": "reference/mcp-tools-1.md",
+          "sha256": "afcc7fcf55b1e78e721e359193be46f21a5ee3f028ea5c2b886e2c154b8a7726"
+        },
+        {
+          "path": "reference/mcp-tools-2.md",
+          "sha256": "cafd48da2c5f6904aca6c47bbfc05de03418aa80005492fda1f0f42ddaa170fb"
+        },
+        {
+          "path": "reference/mcp-tools-3.md",
+          "sha256": "94b05a9b85f6c9c67af4c27ece6d0924c045e795d16694931f32b73bec9871df"
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "8e56ec72b7d30f0b4d7739d2946294c3af9f0c46625da13b2651037f05a826f7"
+          "sha256": "253a664e252300b8de3b54f9a86885fa9052b23e9236e3544b2a92346b3399e3"
         },
         {
           "path": "reference/music-analysis.md",
