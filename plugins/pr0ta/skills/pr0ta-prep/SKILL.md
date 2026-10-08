@@ -106,7 +106,25 @@ variant; `set_environment_upsert`, `set_environment_asset_link` and
 `set_environment_collider_materialize` build them. See `pr0ta-hybrid` for
 world-anchored references; its Recipe F inspects a set's objects and moves
 existing ones by exact name with `blender_job_submit`
-`scene_plan.object_updates`, never by recreating them. A set variant is a Locations look registered in
+`scene_plan.object_updates`, never by recreating them.
+
+Characters in a set are `scene_plan.figures`, never cylinders or spheres. Each
+figure is a posable mannequin: `body` (adult_male, adult_female, teen, child,
+heavy, slim), `height` in meters from the cast, a named `pose` (stand, walk,
+run, sit, sit_ground, crouch, kneel, lean_rail, point, wave, drink, phone,
+throw_windup, throw_release, fight_stance, punch, charge, push, carry, climb,
+lie_back, fall and more; the live schema lists them all), plus `look_at` and
+left or right hand targets in world meters, and `joint_rotations` for fine
+adjustments. Once a cast member has a rigged model (a Meshy `rigged_character`
+GLB), set `character_asset_id` and the same plan poses that model. For video
+blocking, give a figure timed `keys` (poses and positions over seconds), a
+walk or run `path` that ends in `end_pose`, or `motion` with an animated
+humanoid asset (Meshy walking/running or animation GLBs, DeepMotion Animate 3D,
+Hunyuan motion FBX). Naming a figure that an earlier job built replaces it, so
+re-pose a character by sending its figure again; move a whole figure with
+`object_updates` on its name. Old primitive stand-ins (cylinders, spheres) are
+deleted with `scene_plan.object_removals` by exact name, with their children,
+in the same job that adds the figures; a figure may take a removed name. A set variant is a Locations look registered in
 Prep: `department_heads_save` (designer) returns `set_variants`, mapping each
 saved look to its `variantId`. `set_environment_upsert` takes that id, or the
 look's id or label with `scene_number`; `set_environments_get(scene_number)`

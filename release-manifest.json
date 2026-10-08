@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.16",
+  "skills_version": "6.1.18",
   "released_at": "2026-10-08",
-  "source_revision": "v6.1.16",
-  "minimum_platform_version": "1.25.200",
+  "source_revision": "v6.1.18",
+  "minimum_platform_version": "1.25.204",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05129-luy",
-  "bundle_sha256": "b5d0bd070e02a756ffe77f1428e41351ebe2995596ed374d7423cfbe25e1200f",
+  "platform_revision": "pr0ta-platform-05159-jok",
+  "bundle_sha256": "02fd3838e4d4d1c957647965aa7c86d90dbbed165017400081d87761cf65c6de",
   "skills": [
     {
       "name": "pr0ta",
@@ -235,7 +235,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "295fb501032d4e996525bf4166b5ff8e6a4c924fcbb5351c63db113865c0d417",
+      "content_sha256": "bddf58b9586f574c61e0d4bed973e67f26b014968311706b0b2119808c160f03",
       "documents": [
         {
           "path": "SKILL.md",
@@ -271,7 +271,7 @@
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "95f96deab957ac7e286fa562bcc41750269d2aee0fe3c9a6df48f33e6fea8952"
+          "sha256": "86559de3a7e676d81b050ded79829dc1e88eac1aeb774b8ef71f03fb689e926a"
         }
       ]
     },
@@ -315,11 +315,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "a967147b0ec888b77630af99a3dd27270ca47a6fa8751c5c7636e4eeea3eae57",
+      "content_sha256": "7d14cb2382c39d168fc11f28a1f6ae1bf6c543a37f8a53c9d96af3c5c6131075",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ededc9cf7fc35e2d71aea19e70225953b7389262796d3403f46b00a9b9c4c1bd"
+          "sha256": "6c5c79fa9a268efa717e9b8a315c42670dfbfc3df00642c39ce851a38f41dd36"
         }
       ]
     },
