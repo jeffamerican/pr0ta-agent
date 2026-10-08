@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.14",
+  "skills_version": "6.1.16",
   "released_at": "2026-10-08",
-  "source_revision": "v6.1.14",
-  "minimum_platform_version": "1.25.192",
+  "source_revision": "v6.1.16",
+  "minimum_platform_version": "1.25.200",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05087-weq",
-  "bundle_sha256": "cdc134c6c7340a87b91544572bd33cd912940a8982a0209c34bd24cd939b18fa",
+  "platform_revision": "pr0ta-platform-05129-luy",
+  "bundle_sha256": "b5d0bd070e02a756ffe77f1428e41351ebe2995596ed374d7423cfbe25e1200f",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "0cf85ae313c54b91f5fc5627e1363cca41fff2c1c3781bd432eee843b22b4fa5",
+      "content_sha256": "1735463fd501c36f5ae9bcf3104ace20c3d625358094552155234a1e393bccfc",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "1fb494ef0ce1ed7575a05f34351c7a782c00aacdcbd9f3356ef6fa2dd3babe0c"
+          "sha256": "c6e0b082407c5953e138ff6e0ed6876d00c1eb8d6bdb0f00349715d81f5a42be"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "38d72df660c5d2aa431ed33051c37be9ae145920252e58069f77f97aa2ad052c"
+          "sha256": "1a9b469b1faee2a313e0b4b619cced37c6b9ffbbeead82b5cb29a1851f18503a"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "b2e9221b169bdbe271b8accab274e08b3ac725745a7fe7a6eed80f4f90820140"
+          "sha256": "23afcaa7774143b3e06148db402e20660ee78b370df5722a198326fe753056c6"
         },
         {
           "path": "reference/music-analysis.md",
@@ -235,7 +235,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "ac98c4cee0d98fe676fe4512f449e328b5819c7d3fd666a524e3a365d5201fd9",
+      "content_sha256": "295fb501032d4e996525bf4166b5ff8e6a4c924fcbb5351c63db113865c0d417",
       "documents": [
         {
           "path": "SKILL.md",
@@ -271,7 +271,7 @@
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "9fb7cce13c657002dbf72b5c756788e037d96aa7fd737068b0b701a2094229c1"
+          "sha256": "95f96deab957ac7e286fa562bcc41750269d2aee0fe3c9a6df48f33e6fea8952"
         }
       ]
     },
@@ -315,11 +315,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "ea17bad0c1f76346bbf5aacce6f406773943274c2f50c66270fb0e7444f63740",
+      "content_sha256": "a967147b0ec888b77630af99a3dd27270ca47a6fa8751c5c7636e4eeea3eae57",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "d06fd0a53307855b6e03e19e1bbe3857a64514fb4a2489aa12fadf9669a24bc5"
+          "sha256": "ededc9cf7fc35e2d71aea19e70225953b7389262796d3403f46b00a9b9c4c1bd"
         }
       ]
     },
@@ -639,6 +639,7 @@
     "storyboard_first_frame_propose",
     "storyboard_generate",
     "storyboard_generate_batch",
+    "storyboard_pdf_export",
     "storyboard_reference_sheet_generate",
     "storyboard_reference_sheets_list",
     "storyboard_sequences_get",
@@ -673,5 +674,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "fcdc4d4c09d15a0d0e2ff8c6fe0be61ceea952726939cdaf9840de9515f63ea3"
+  "mcp_connector_tools_sha256": "a623e0f6b030f7afe11e0da8f056edbfa45187b2e87535f5f9c809fece61ca16"
 }

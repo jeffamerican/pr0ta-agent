@@ -15,6 +15,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `storyboard_first_frame_propose`(**scene_number**, **shot_number**, **asset_id**): Put a ready storyboard image on a shot as its first-frame candidate (the take Storyboarding shows selected).
 - `storyboard_generate`(**scene**, **director_shotlist**, **producer_analysis**, **director_analysis**): Generate and durably save storyboard prompts for one scene; returns a task for polling.
 - `storyboard_generate_batch`(**scenes**, **director_shotlists**, **producer_analysis**, **director_analysis**): Generate and save storyboard prompts for multiple scenes in one background task.
+- `storyboard_pdf_export`(scene_number, scene_range_end, scene_numbers, layout, paper, approved_only, skip_empty, fields, include_cover, scene_breaks, title, subtitle): Export the storyboard as a printable PDF (free) and file it as a project document.
 - `storyboard_reference_sheet_generate`(**chunk_id**, variation_count, quality, model, reference_asset_ids, reference_image_urls, include_chunk_reference_urls, storyboard_sheet_prompt): Generate a GPT Image 2.5 Sunburst optimized Seedance storyboard reference sheet for one beat chunk.
 - `storyboard_reference_sheets_list`(chunk_id, limit, offset, include_download): List generated Seedance storyboard reference sheet assets.
 - `storyboard_sequences_get`(): List the manual and generated Storyboarding sequence records used by the Storyboarding and Queue pages.

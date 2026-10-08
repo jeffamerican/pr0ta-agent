@@ -104,7 +104,13 @@ Props pages. The two write tools name the departments differently:
 3D sets: `set_environments_get` lists environments per Production Design
 variant; `set_environment_upsert`, `set_environment_asset_link` and
 `set_environment_collider_materialize` build them. See `pr0ta-hybrid` for
-world-anchored references.
+world-anchored references; its Recipe F inspects a set's objects and moves
+existing ones by exact name with `blender_job_submit`
+`scene_plan.object_updates`, never by recreating them. A set variant is a Locations look registered in
+Prep: `department_heads_save` (designer) returns `set_variants`, mapping each
+saved look to its `variantId`. `set_environment_upsert` takes that id, or the
+look's id or label with `scene_number`; `set_environments_get(scene_number)`
+lists `set_variants` and `unregistered_looks`. No generation is involved.
 
 ## 7. Shot lists
 
@@ -139,6 +145,14 @@ Take `producer_analysis` and `director_analysis` from `project_metadata_get`
   approves_first_frames=true): approving it approves them, asking for changes
   withdraws them. The person can also approve in Storyboarding. `get_shot_assets` reports each shot's
   `first_frame` state. Never approve on the person's behalf.
+- A native storyboard is one first-frame image per shot. A multi-panel sheet
+  is a reference, not per-shot frames: nothing splits it onto shots, so
+  generate or edit one image per shot (the sheet can be a reference) and
+  propose each.
+- `storyboard_pdf_export(scene_number?, scene_range_end?, scene_numbers?,
+  layout?, approved_only?, ...)` prints the board as the Storyboarding export
+  does (six standard layouts, at most 600 panels), free. It files the PDF as a
+  project document and returns `asset_id` and a `download_url` for the person.
 
 ## 9. Production Queue
 

@@ -260,7 +260,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `set_environment_asset_link`(**environment_id**, **asset_id**, **role**, modality, status, pass_type, metadata): Attach an existing project asset to a 3D set environment with a typed role, modality, technical pass, and approval state.
 - `set_environment_collider_materialize`(**environment_id**, **world_asset_id**): Download a World Labs Marble world's collider mesh, register it as a project GLB asset, and link it to a 3D set environment as the Blender source so…
-- `set_environment_upsert`(**variant_id**, status, build_brief, revision_notes, render_settings, metadata): Create or revise the 3D environment contract for a canonical Production Design set variant.
+- `set_environment_upsert`(**variant_id**, scene_number, status, build_brief, revision_notes, render_settings, metadata): Create or revise the 3D environment contract for a canonical Production Design set variant.
 - `set_environments_get`(scene_number): List canonical 3D set environments, their Production Design variants, assigned scenes, render contract, and linked Blender, runtime, world, still, vi…
 
 ## shot

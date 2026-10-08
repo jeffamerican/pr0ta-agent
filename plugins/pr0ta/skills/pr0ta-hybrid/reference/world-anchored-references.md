@@ -41,7 +41,7 @@ Never bend this for convenience. A prompt that lets a gray render "inspire the l
 
 ## Recipe A: Collider to Structure Passes to a Designed-World Still
 
-1. Find the world asset and the set environment with `set_environments_get` for the scene.
+1. Find the world asset and the set environment with `set_environments_get` for the scene. With no environment yet, call `set_environment_upsert` with a `variantId` from its `set_variants`, or a look id or label from `unregistered_looks` and `scene_number`.
 2. Call `set_environment_collider_materialize` with `environment_id` and `world_asset_id`. It downloads the collider once, registers it as a project GLB, links it as `blender_source`, and reuses the same asset on later calls.
 3. Call `blender_job_submit` with `request.environment_id`, `request.source_world_asset_id`, a `scene_plan.camera` that matches the intended shot camera, and `render: {"kind": "still", "passes": ["flat_structural", "depth_normalized"]}`. When the imported collider needs registration, set `scene_plan.world_alignment` with `location`, degree-based `rotation`, and `uniform_scale`; Blender parents the source world under that transform without moving the declared camera. Both passes are mandatory together and only stills are allowed for guidance renders. `source_world_asset_id` and `source_asset_id` are mutually exclusive.
 4. Poll with `tasks_get`. The task's `result_refs.guidance_packages` lists both pass asset IDs and their metadata.
@@ -76,6 +76,15 @@ Shooting a reference from a splat, pano, or mesh view in the Image Editor now sa
 ## Recipe E: Camera-Take Import
 
 A camera-performance take records position, quaternion, and focal length samples in the previs coordinate frame. Import it from the previs stage to replace the shot camera's keyframes; pre-roll samples and samples without tracking are dropped, other targets keep their animation, and the take's focal length maps one to one onto the previs lens. Then render a world-only guide from that camera for Recipe B.
+
+## Recipe F: Inspect a Set, Then Move Objects Already in It
+
+1. Inspect first. Call `blender_job_submit` with `source_asset_id` set to the set's `blender_source` asset, no `scene_plan.objects` or `object_updates`, `render.passes: []`, `save_blend: false`, and `export_glb: false`. Nothing changes and nothing renders. The task's `result_refs.scene_inventory` lists every object's exact `name`, `type`, `parent`, world `location`, `rotation` (degrees), `scale`, `dimensions`, and world `bounds`, plus `warnings` for names that look like Blender `.001` duplicates.
+2. Move by exact name with `scene_plan.object_updates`: `[{"name": "MIKE_head", "location": [x, y, z]}]`, with optional `rotation`, and `scale` or `dimensions`. Values are world space after `world_alignment`, the same space `scene_plan.objects` uses; leave `world_alignment` at identity to work in the set's own frame. Only named objects change, and children follow a moved parent.
+3. Keep `save_blend: true` so the result is a new `blender_source`. Use `render.passes: []` and `export_glb: false` for a transform-only job; keep `export_glb: true` when the runtime GLB must show the change.
+4. Read the receipt in `result_refs.scene_inventory.changes.updated`: each object's `before` and `after`, and `moved_with_parent`. The new `.blend` is `result_refs.blender_source_asset_id`; use it as the next source.
+
+Never recreate an existing object through `scene_plan.objects`. A name already in the source fails the job instead of producing a silent `.001` duplicate. An update name that matches no object, or more than one, fails before rendering and lists the closest names. A plan cannot both create and update the same name.
 
 ## Building the World from the Location Itself
 
