@@ -51,7 +51,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **set** (`mcp-tools-1.md`): set_environment_asset_link, set_environment_collider_materialize, set_environment_upsert, set_environments_get
 - **shot** (`mcp-tools-1.md`): shot_performances_list, shot_quality_review
 - **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate
-- **storyboard** (`mcp-tools-2.md`): storyboard_chunks_list, storyboard_generate, storyboard_generate_batch, storyboard_reference_sheet_generate, storyboard_reference_sheets_list, storyboard_sequences_get, storyboard_sequences_save
+- **storyboard** (`mcp-tools-2.md`): storyboard_chunks_list, storyboard_first_frame_propose, storyboard_generate, storyboard_generate_batch, storyboard_reference_sheet_generate, storyboard_reference_sheets_list, storyboard_sequences_get, storyboard_sequences_save
 - **style** (`mcp-tools-2.md`): style_package_get, style_package_save, style_world_assign_scenes, style_world_create, style_world_delete, style_world_update
 - **submit** (`mcp-tools-2.md`): submit_assets_for_review
 - **supervisor** (`mcp-tools-2.md`): supervisor_review_answer, supervisor_review_list

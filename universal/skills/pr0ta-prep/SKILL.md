@@ -131,6 +131,14 @@ Take `producer_analysis` and `director_analysis` from `project_metadata_get`
 - For multi-shot video routes that take storyboard sheets, `storyboard_chunks_list`
   assembles beat chunks and `storyboard_reference_sheet_generate` renders a
   reference sheet per chunk; see `pr0ta-video`.
+- A chunk's sheet needs every shot's first frame approved, and only the person
+  approves. Generate first-frame images (category `storyboard`), then
+  `storyboard_first_frame_propose(scene, shot, asset_id)` puts one on the shot
+  as its candidate. Show the candidates on their own review card
+  (operator_checkpoint: requires_review=true, asset_ids,
+  approves_first_frames=true): approving it approves them, asking for changes
+  withdraws them. The person can also approve in Storyboarding. `get_shot_assets` reports each shot's
+  `first_frame` state. Never approve on the person's behalf.
 
 ## 9. Production Queue
 

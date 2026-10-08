@@ -151,7 +151,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## memory
 
 - `memory_claim_update`(**claim_id**, **status**, supersedes_claim_id): Approve, reject, supersede, or return a memory claim to candidate status; supply supersedes_claim_id for an exact replacement.
-- `memory_claims_list`(status, department, scope_type, scope_id, include_system_claims): List memory claims with the same filters as the Memory workspace.
+- `memory_claims_list`(status, department, scope_type, scope_id, include_system_claims, offset, limit): List memory claims with the same filters as the Memory workspace.
 - `memory_conflicts_list`(): List unresolved and historical conflicts detected in ProtaFilm|memory.
 - `memory_context_pack`(task_intent, scope): Get the current, role-scoped ProtaFilm|memory snapshot for this agent.
 - `memory_get_confirmation`(): Resolve the latest eligible explicit user approval for a durable memory write in this role's global project chat.
