@@ -138,7 +138,18 @@ Hunyuan motion FBX). Naming a figure that an earlier job built replaces it, so
 re-pose a character by sending its figure again; move a whole figure with
 `object_updates` on its name. Old primitive stand-ins (cylinders, spheres) are
 deleted with `scene_plan.object_removals` by exact name, with their children,
-in the same job that adds the figures; a figure may take a removed name. A set variant is a Locations look registered in
+in the same job that adds the figures; a figure may take a removed name.
+
+Most library poses are recorded motion, not hand-set angles (kneel_sit is
+kneeling back on the heels; kneel_both is kneeling tall). When no library pose
+fits a beat, prefer recorded motion over `joint_rotations`: give the figure
+`motion` from a Meshy animation preset GLB or a Hunyuan text-to-motion take
+(12–20 words describing one body, ending with it holding still); in a still
+render `clip_offset` picks the frame. A hand target the arm cannot reach makes
+the figure stoop or lean toward it. After a job, read `figures` in its
+`scene_inventory`: `hand_targets.*.hand_surface_m` is how far the deformed hand
+is from each target and `mesh_lowest_z` shows whether the body rests on the
+floor; report contact only when those agree. A set variant is a Locations look registered in
 Prep: `department_heads_save` (designer) returns `set_variants`, mapping each
 saved look to its `variantId`. `set_environment_upsert` takes that id, or the
 look's id or label with `scene_number`; `set_environments_get(scene_number)`
