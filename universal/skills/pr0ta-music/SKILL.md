@@ -42,7 +42,18 @@ Pass `project_id` on every call; parallel submission limits are in `pr0ta-api` �
 |---|---|
 | ElevenLabs Music routes | `reference/eleven-music.md` |
 | Lyria routes | `pr0ta-prompting` → `reference/model-modality-guides.md` → "Lyria" |
+| Suno routes (`muapi/suno-*`) | the notes below, then its `models_get_defaults` fields |
 | Any other route | its `models_get_defaults` fields |
+
+Suno routes return **two takes per request** (both saved; circle one). The prompt
+is the style and mood (up to 1,000 characters: genre, instruments, tempo, energy,
+arc). The result is instrumental unless you pass `parameters.lyrics` (your words,
+`[Verse]`/`[Chorus]` tags welcome) or `parameters.instrumental: false` (Suno
+writes the lyrics and picks the song length, so a requested duration only trims
+an overrun). Optional: `parameters.title`, `parameters.vocal_gender`
+(`male`/`female`), `parameters.negative_tags` (styles to avoid). Suno treats
+`duration` (up to 360 s) as a target and often runs long; PR0TA trims each take
+to the requested length, so end the prompt's arc where you want the cut.
 
 Capabilities, for when the user asks for one:
 
