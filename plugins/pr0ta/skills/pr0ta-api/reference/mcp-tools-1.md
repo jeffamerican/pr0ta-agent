@@ -59,6 +59,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `casting_avatar_demo_generate`(**request**): Queue an avatar performance demo from a cast portrait and voice sample.
 - `casting_character_sheet_prompt_resolve`(**character**, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line): Resolve the app's cinematic character-design-sheet brief for a cast member.
 - `casting_descriptive_prompt_generate`(image_asset_id, image_url, character, current_prompt): Generate a detailed casting prompt from an approved portrait image.
+- `casting_portrait_prompt_write`(**character**, direction, save): Have the Casting Director write a character's portrait prompt and save it to the cast record, where Casting shows it (Portrait tab).
 - `casting_read_generate`(**script**, **producer_analysis**, **director_analysis**, script_supervisor_characters): Run and persist the Casting breakdown and canonical cast list; returns a task for polling.
 - `casting_voice_design`(**request**): Design and persist a MiniMax/Fal voice for one project cast member.
 - `casting_voice_sample_generate`(**request**): Generate or queue a named cast-member voice sample.

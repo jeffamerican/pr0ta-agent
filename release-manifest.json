@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.18",
-  "released_at": "2026-10-08",
-  "source_revision": "v6.1.18",
-  "minimum_platform_version": "1.25.204",
+  "skills_version": "6.1.20",
+  "released_at": "2026-10-09",
+  "source_revision": "v6.1.20",
+  "minimum_platform_version": "1.25.208",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05159-jok",
-  "bundle_sha256": "02fd3838e4d4d1c957647965aa7c86d90dbbed165017400081d87761cf65c6de",
+  "platform_revision": "pr0ta-platform-05188-yus",
+  "bundle_sha256": "df5c3825fe8efd506c699d578efd2d062a8bdf8e9742f831a3e2a4c0a23317e0",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "1735463fd501c36f5ae9bcf3104ace20c3d625358094552155234a1e393bccfc",
+      "content_sha256": "27861b96a9e941ba19b5c64d35808501eec381d74e353d82cadf40de9c727326",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "c6e0b082407c5953e138ff6e0ed6876d00c1eb8d6bdb0f00349715d81f5a42be"
+          "sha256": "63a9173ac73391310668a9f460d4b4df72dc1915d4f4d1a721d881afe4c79472"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "23afcaa7774143b3e06148db402e20660ee78b370df5722a198326fe753056c6"
+          "sha256": "d200d684e0a830078c42ce113fb147bd1b4d18ddbcc0d2122e24f45649f51100"
         },
         {
           "path": "reference/music-analysis.md",
@@ -235,7 +235,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "bddf58b9586f574c61e0d4bed973e67f26b014968311706b0b2119808c160f03",
+      "content_sha256": "87f4f628cc4d62f495bf37a47aa7e3aa7079b8d9a244c59c5a33b25217000ecf",
       "documents": [
         {
           "path": "SKILL.md",
@@ -271,7 +271,7 @@
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "86559de3a7e676d81b050ded79829dc1e88eac1aeb774b8ef71f03fb689e926a"
+          "sha256": "d74efb3e615f07d7a19401f271596c90680f3a7774ba289cdce3c2121dc781c1"
         }
       ]
     },
@@ -315,11 +315,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "7d14cb2382c39d168fc11f28a1f6ae1bf6c543a37f8a53c9d96af3c5c6131075",
+      "content_sha256": "6f04b6eecdca2e471961eba12d9ec38a639b1c0b125050140420d42952d7af2e",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "6c5c79fa9a268efa717e9b8a315c42670dfbfc3df00642c39ce851a38f41dd36"
+          "sha256": "ffb5b8a7ab8b9ef705a98b934630534ff3a2f86eaad975335384052dec79ff55"
         }
       ]
     },
@@ -504,6 +504,7 @@
     "casting_avatar_demo_generate",
     "casting_character_sheet_prompt_resolve",
     "casting_descriptive_prompt_generate",
+    "casting_portrait_prompt_write",
     "casting_read_generate",
     "casting_voice_design",
     "casting_voice_sample_generate",
@@ -674,5 +675,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "a623e0f6b030f7afe11e0da8f056edbfa45187b2e87535f5f9c809fece61ca16"
+  "mcp_connector_tools_sha256": "f9d99904c570817723a48c68db34a871ff3292ca24151f72f64a8cb0c178aab1"
 }

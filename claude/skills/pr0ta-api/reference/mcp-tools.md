@@ -18,7 +18,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **breakdown** (`mcp-tools-1.md`): breakdown_element_review_decide, breakdown_rerun, breakdown_status
 - **bug** (`mcp-tools-1.md`): bug_report_create
 - **cast** (`mcp-tools-1.md`): cast_list_get, cast_list_save
-- **casting** (`mcp-tools-1.md`): casting_avatar_demo_generate, casting_character_sheet_prompt_resolve, casting_descriptive_prompt_generate, casting_read_generate, casting_voice_design, casting_voice_sample_generate
+- **casting** (`mcp-tools-1.md`): casting_avatar_demo_generate, casting_character_sheet_prompt_resolve, casting_descriptive_prompt_generate, casting_portrait_prompt_write, casting_read_generate, casting_voice_design, casting_voice_sample_generate
 - **character** (`mcp-tools-1.md`): character_consistency_get
 - **consistency** (`mcp-tools-1.md`): consistency_resources_create, consistency_resources_delete, consistency_resources_get, consistency_resources_list, consistency_resources_update
 - **cut** (`mcp-tools-1.md`): cut_quality_review

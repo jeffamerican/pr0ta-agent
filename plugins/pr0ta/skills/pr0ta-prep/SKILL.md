@@ -75,9 +75,19 @@ assets. Style prompts feed every downstream prompt; agree them with the user.
 ## 5. Casting and voices
 
 `cast_list_get` returns the cast with portraits, character sheets and voices.
-Casting runs in the breakdown; refine with the user, then `cast_list_save`.
+Casting runs in the breakdown; refine with the user, then `cast_list_save`
+(`reconcile_existing: true` changes the fields you send for the members you
+list and keeps the rest; without it the list you send is the whole cast).
 
-- Portraits and character sheets: resolve the model with
+- Portrait prompts: `casting_portrait_prompt_write(character, direction)` has the
+  Casting Director write the prompt from the screenplay, Producer and Director
+  reads, the Style world, project memory and the person's description in
+  `direction`, and saves it to the cast record where Casting shows it. It works
+  without a breakdown, for characters described only in conversation, and
+  revises an existing prompt. Do not write portrait prompts yourself or
+  delegate them to a Casting worker.
+- Portraits and character sheets: generate the portrait with `generation_submit`
+  (`category: "portrait"`, `subject`: the character) so it lands in Casting; resolve the model with
   `models_preferred(modality: "image_model")` (or `image_edit_model` for edits of
   an approved portrait); `casting_character_sheet_prompt_resolve` builds the
   app's character-sheet brief; `casting_descriptive_prompt_generate` describes
@@ -106,7 +116,11 @@ variant; `set_environment_upsert`, `set_environment_asset_link` and
 `set_environment_collider_materialize` build them. See `pr0ta-hybrid` for
 world-anchored references; its Recipe F inspects a set's objects and moves
 existing ones by exact name with `blender_job_submit`
-`scene_plan.object_updates`, never by recreating them.
+`scene_plan.object_updates`, never by recreating them. For a consistent
+camera across a scene's boards, give every job the same `scene_plan.camera`
+`gate` (`super35`, `full_frame`) or `sensor_width_mm` / `sensor_height_mm` and
+`sensor_fit`, and confirm the lens and rendered FOV in
+`result_refs.scene_inventory.camera`.
 
 Characters in a set are `scene_plan.figures`, never cylinders or spheres. Each
 figure is a posable mannequin: `body` (adult_male, adult_female, teen, child,
