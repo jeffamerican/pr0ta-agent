@@ -52,7 +52,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## cast
 
 - `cast_list_get`(): Load the Casting-page cast list with enriched portrait, character-sheet, and voice fields.
-- `cast_list_save`(**cast_members**, reconcile_existing): Atomically persist the Casting-page cast list to castingRead, castingIndex, and cast CSV.
+- `cast_list_save`(cast_members, reconcile_existing, merge): Atomically persist the Casting-page cast list to castingRead, castingIndex, and cast CSV.
 
 ## casting
 

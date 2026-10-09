@@ -78,6 +78,11 @@ assets. Style prompts feed every downstream prompt; agree them with the user.
 Casting runs in the breakdown; refine with the user, then `cast_list_save`
 (`reconcile_existing: true` changes the fields you send for the members you
 list and keeps the rest; without it the list you send is the whole cast).
+A character is one cast member under every name: a write under its full name,
+alias or screenplay cue ("Will Henning" for WILL) saves to that member. If the
+cast already holds one character twice, fold the duplicate in with
+`cast_list_save(merge: {from, into})`; it keeps the kept member's cast number,
+portrait, references and approved voice and loses nothing.
 
 - Portrait prompts: `casting_portrait_prompt_write(character, direction)` has the
   Casting Director write the prompt from the screenplay, Producer and Director
@@ -149,7 +154,10 @@ render `clip_offset` picks the frame. A hand target the arm cannot reach makes
 the figure stoop or lean toward it. After a job, read `figures` in its
 `scene_inventory`: `hand_targets.*.hand_surface_m` is how far the deformed hand
 is from each target and `mesh_lowest_z` shows whether the body rests on the
-floor; report contact only when those agree. A set variant is a Locations look registered in
+floor; report contact only when those agree. A rigged character in a standing,
+kneeling or ground-sitting pose is set so its mesh (soles, not joints) rests on
+the figure's `location` height (`mesh_grounding_m` says by how much), so place
+it at the floor's height and do not add z lifts of your own. A set variant is a Locations look registered in
 Prep: `department_heads_save` (designer) returns `set_variants`, mapping each
 saved look to its `variantId`. `set_environment_upsert` takes that id, or the
 look's id or label with `scene_number`; `set_environments_get(scene_number)`
