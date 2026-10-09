@@ -151,10 +151,21 @@ fits a beat, prefer recorded motion over `joint_rotations`: give the figure
 `motion` from a Meshy animation preset GLB or a Hunyuan text-to-motion take
 (12–20 words describing one body, ending with it holding still); in a still
 render `clip_offset` picks the frame. A hand target the arm cannot reach makes
-the figure stoop or lean toward it. After a job, read `figures` in its
-`scene_inventory`: `hand_targets.*.hand_surface_m` is how far the deformed hand
-is from each target and `mesh_lowest_z` shows whether the body rests on the
-floor; report contact only when those agree. A rigged character in a standing,
+a standing or kneeling figure stoop or lean toward it (folding only for low
+targets); a lying figure slides along the floor toward it, at most about a third
+of its height (`slid_m`). Lying poses point their head by the figure's
+rotation: lie_front toward its front, lie_back with its feet to the front,
+lie_side toward its right. To hold something (a weapon, a phone, a prop picked
+up), name the scene object in `left_hand_grip`/`right_hand_grip`: the palm
+closes on it (on its centre, or on the hand target you give as the grip point,
+such as a sword's handle), the fingers curl, and the object is attached to the
+hand so it moves with it; a keyed figure picks it up at its first key. A bare
+hand target only touches. After a job, read `figures` in its `scene_inventory`:
+each `hand_targets` side has `contact` (`grip`, `touch`, `near` or `none`, with
+`reason: out_of_reach` when the arm could not get there), `hand_surface_m` and,
+for a grip, `grip.palm_to_object_m` and `grip.fingers`; `mesh_lowest_z` shows
+whether the body rests on the floor. Report holding only for `grip` and contact
+only for `grip` or `touch`. A rigged character in a standing,
 kneeling or ground-sitting pose is set so its mesh (soles, not joints) rests on
 the figure's `location` height (`mesh_grounding_m` says by how much), so place
 it at the floor's height and do not add z lifts of your own. A set variant is a Locations look registered in
