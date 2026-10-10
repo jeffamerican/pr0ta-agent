@@ -23,6 +23,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## style
 
+- `style_candidates_generate`(**style_id**, note): Generate one round of 4 candidate look frames for a Style world from its look text, on the world's candidate model (generation_overrides.style_frame)…
 - `style_package_get`(include_assets): Load the Style-page package from project metadata and optionally include persisted style-reference assets.
 - `style_package_save`(**styles**, asset_annotations): Persist a complete Style-page package and annotate its PR0TA assets.
 - `style_world_assign_scenes`(**style_id**, **scene_numbers**): Replace one alternate Style world's screenplay-scene assignments.

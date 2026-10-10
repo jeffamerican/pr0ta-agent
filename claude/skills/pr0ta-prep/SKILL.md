@@ -72,6 +72,12 @@ when the user wants the departments to follow the new world, run
 `breakdown_rerun(scenes)` for the moved scenes. `style_package_save` persists the whole Style page with its reference
 assets. Style prompts feed every downstream prompt; agree them with the user.
 
+Each world's approved look image steers every reference, read and storyboard in
+it. When a world's look text changes (or it has no approved image), offer a new
+round: `style_candidates_generate(style_id, note)` makes 4 candidate frames on
+the world's model (paid, quoted). The user approves one on the Style page; never
+approve a look yourself.
+
 ## 5. Casting and voices
 
 `cast_list_get` returns the cast with portraits, character sheets and voices.
