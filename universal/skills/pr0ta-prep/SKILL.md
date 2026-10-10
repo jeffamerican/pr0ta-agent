@@ -102,7 +102,12 @@ portrait, references and approved voice and loses nothing.
   `models_preferred(modality: "image_model")` (or `image_edit_model` for edits of
   an approved portrait); `casting_character_sheet_prompt_resolve` builds the
   app's character-sheet brief; `casting_descriptive_prompt_generate` describes
-  an approved portrait for reuse.
+  an approved portrait for reuse. To make a take the character's portrait, send
+  its asset id: `cast_list_save(reconcile_existing: true, cast_members:
+  [{character, portrait_asset_id}])` (`character_sheet_asset_id` for a sheet).
+  That selects it as Casting does, so `get_character_references` and character
+  identity references accept it; a URL that is not a project image selects
+  nothing and comes back under `reference_selections.unresolved`.
 - Voices: `voices_list` to browse, `casting_voice_design` or `voices_design` to
   design, `voices_clone` from a sample, `casting_voice_sample_generate` for a
   line in the character's voice. Model choices follow `models_preferred`
@@ -124,7 +129,16 @@ Props pages. The two write tools name the departments differently:
 
 3D sets: `set_environments_get` lists environments per Production Design
 variant; `set_environment_upsert`, `set_environment_asset_link` and
-`set_environment_collider_materialize` build them. See `pr0ta-hybrid` for
+`set_environment_collider_materialize` build them. Each Blender job that
+exports runtime GLBs is one build (`builds[]`, newest first); the person
+approves one build, which pins it (`approvedRevision`), and later builds stay
+candidates, so hand a finished build over with status `review` and say which
+build to look at; agents cannot approve. Builds older than the five newest
+candidates become history (`historyCount`, read with `include_superseded`).
+Scene-changing builds are limited to the initial build plus the Build quality
+refinements (`budget.used` of `budget.limit`); when `blender_job_submit` refuses
+one, stop and ask the person. Renders through existing cameras are not limited.
+See `pr0ta-hybrid` for
 world-anchored references; its Recipe F inspects a set's objects and moves
 existing ones by exact name with `blender_job_submit`
 `scene_plan.object_updates`, never by recreating them. For a consistent

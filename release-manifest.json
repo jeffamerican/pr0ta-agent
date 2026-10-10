@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.26",
-  "released_at": "2026-10-09",
-  "source_revision": "v6.1.26",
-  "minimum_platform_version": "1.25.230",
+  "skills_version": "6.1.27",
+  "released_at": "2026-10-10",
+  "source_revision": "v6.1.27",
+  "minimum_platform_version": "1.25.237",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05314-cew",
-  "bundle_sha256": "e6665ea0b7b57667d8ea82e8be9973a05572a4942178ef7e75db16a52e99b539",
+  "platform_revision": "pr0ta-platform-05362-han",
+  "bundle_sha256": "0e747138d25cecff53474d7429bcbef48303dfbd84d1ae2a3908fc1bc08f38b9",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "60c1920c60af6aebfc34431a08664fb498769d5fed06f576651f6313d0417c3d",
+      "content_sha256": "68d3e1fb1f2b9f48c1aebc4f72c7a2541f443289d60930455c4a76b7c627f072",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "66e2bd3652826919390002752f4fdec5e343dcee205b979b6fa9b1653f7065da"
+          "sha256": "184cddca083c3d9aab523cac32921768111f3714a64867572b7110b92efc96eb"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -315,11 +315,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "28a0969c6ac39f28b0ae6c5d3d41cef7c4ff8eedd2c74314d66568ef84752895",
+      "content_sha256": "43e5e60b9079014ee0abff90db29aa992c707e6f96774c1ecdca8d8bf466ce66",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "c6c7c47d774c75ed1bc7b7085ca4b3f9178e5df7fe7224282e9453f503f08a22"
+          "sha256": "286dfd4bd5d62638c5a7eeabda864a058a9bb0a36446713759ede64905e0e112"
         }
       ]
     },
