@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.1.24",
+  "skills_version": "6.1.25",
   "released_at": "2026-10-09",
-  "source_revision": "v6.1.24",
-  "minimum_platform_version": "1.25.226",
+  "source_revision": "v6.1.25",
+  "minimum_platform_version": "1.25.227",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,7 +12,7 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05290-vad",
+  "platform_revision": "pr0ta-platform-05308-mew",
   "bundle_sha256": "e490a324a7a9e79cbdf537cc29b5df39a86af6a7e7a52025118fa32b5ee30701",
   "skills": [
     {
