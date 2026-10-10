@@ -155,6 +155,8 @@ Use a small coherent reference set first. Maximum capacity is a ceiling, not a t
 
 Before an expensive prompt-orchestration fan-out, verify that the actual pixels support every declared exact authority claim. A role such as "exact face identity" requires a readable face; exact prop, wardrobe, or set authority requires the claimed feature to be visible. Treat hidden faces, off-frame objects, incompatible angles, and unresolved prop state across requested actions as clarification needs. PR0TA defaults `reference_preflight_mode` to `enforce`, returning a typed `prompt_assessment` before department calls when the reference packet is insufficient. Use `shadow` only for non-blocking diagnostics and explicit `off` only for controlled rollback.
 
+The Omni reference gates (an approved voice for every speaker, a selected portrait or turnaround for every visible character, the image-slot and 15-second reference-audio limits) can be relaxed only when the person asks, with `validation_overrides`: `native_voices`, `character_visual_references`, `reference_limits`. See `pr0ta-prompting` → "Validation overrides"; the result receipts every override applied.
+
 ### Advanced 2.5 reference patterns
 
 - **Clay-render or previs control:** Attach the clay render as an image reference and say it controls spatial blocking, subject paths, camera height, and lens trajectory while approved identity/style images control final appearance.

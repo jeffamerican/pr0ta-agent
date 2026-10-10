@@ -72,8 +72,8 @@ request, so the voice drifts from shot to shot even when the words are right.
   clean speech by that one person (`voices_clone`; one to three minutes clones
   best), or design it. Generate one short audition line, save the voice to the
   speaker's cast entry (`cast_list_save`, `pr0ta-prep`), and ask the user to
-  listen and approve it in Casting. A real person's voice needs their
-  approval of the audition.
+  listen and approve it (in Casting, or on a voice review card; see below).
+  A real person's voice needs their approval of the audition.
 - **Then name the speaker** (`character_name`) on every `generation_submit`
   speech request and omit the voice. A speaker with an approved voice speaks
   in it there and in Production Queue dialogue: the platform applies it, and
@@ -82,9 +82,19 @@ request, so the voice drifts from shot to shot even when the words are right.
   Change an approved voice only in Casting.
 - **Never copy a voice from a clip** (`voice_settings.audio_urls`) for a
   speaker without an approved voice; the Operator's request is refused.
-- **Only the user approves a voice, in Casting.** `cast_list_save` does not
-  save `approved_voice` or a voice design's approval from an agent; the
-  stored approval stays as it is.
+- **Only the user approves a voice.** `cast_list_save` does not save
+  `approved_voice` or a voice design's approval from an agent; the stored
+  approval stays as it is. The user approves in Casting, or, in an Operator
+  mission, on a review card: `operator_checkpoint` with a `requires_review`
+  notes draft whose `approves_casting_voices` names each character, the voice
+  saved on its Casting record now (`voice_config.voice_id` in
+  `cast_list_get`) and the audition asset they hear
+  (`[{character, voice_id, sample_asset_id}]`). Approving that card approves
+  exactly those voices in Casting; asking for changes approves nothing. When
+  the user approves voices in chat or on a plain card, send this card: nothing
+  else changes Casting. Never report a voice approved until the card's
+  `casting_voice_results` say `approved`; `cast_list_get` then shows its
+  `approved_voice`.
 - **What a voice clip must be:** never speech PR0TA generated (an earlier
   take, or a trim or cleaned copy of one); at least 10 s for a reference clip
   and 30 s in total for a clone; one person speaking. The platform refuses

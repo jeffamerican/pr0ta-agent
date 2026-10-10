@@ -4,7 +4,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## agent
 
-- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow that converts a creative brief and ordered references into a terminal Cinematographer provider-ready pro…
+- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow that converts a creative brief and ordered references into a terminal Cinematographer provider-ready pro…
 - `agent_chat_resume`(**retry_token**): Resume a retryable failed prompt-orchestration task from its preserved department checkpoint.
 - `agent_chat_send`(**role**, **topic**, **message**, attachments, generation_mode, request_id): Send a project-scoped message to a PR0TA department agent using the same chat, project context, credits, persistence, and tool runtime as the app.
 
