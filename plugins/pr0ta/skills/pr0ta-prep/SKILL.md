@@ -174,7 +174,41 @@ whether the body rests on the floor. Report holding only for `grip` and contact
 only for `grip` or `touch`. A rigged character in a standing,
 kneeling or ground-sitting pose is set so its mesh (soles, not joints) rests on
 the figure's `location` height (`mesh_grounding_m` says by how much), so place
-it at the floor's height and do not add z lifts of your own. A set variant is a Locations look registered in
+it at the floor's height and do not add z lifts of your own.
+
+Cameras on people and props are composed, not placed. Give
+`scene_plan.camera.framing` the shot as a director asks for it: `subjects`
+(figure names, or scene object names for props), `size` (ECU, CU, MCU, MS, MWS,
+FS, WS, EWS), and optionally `angle` (eye_level, low, high) or `elevation_deg`,
+`azimuth_deg`, `subject_x`, `foreground` (the figure whose shoulder frames an
+over-the-shoulder) and `lens`. The worker solves the camera on the posed
+figures: eyes near the upper third with the right headroom, the bottom edge
+between joints, look room on the side the subject looks, a level horizon, the
+lens fixed by size (longer over the shoulder) and the camera dollying to fit;
+it swings around the subject when a wall or set piece blocks the view. A prop's
+CU is an insert that fills the frame, seen along its thinnest side (a gun's
+profile, a clock's face, a journal from above); its ECU is a detail around
+`focus`. A figure with a prop keeps the figure's framing and backs off to fit
+the prop. Never hand-place a camera on a character; read
+`scene_inventory.camera.framing` for what the frame holds (eyes, headroom,
+`reads_as`, `cuts_at_joint`, `look_room_ok`, `blocked_by`) and fix the
+framing, not the transform.
+
+Block a scene's coverage in one still job: `scene_plan.shot_cameras` lists
+setups in cut order, each with `framing` (or location and rotation) and
+optionally the `scene_number`/`shot_number` it covers, and each renders
+`shot_<name>.jpg` over the same posed scene. `coverage_from_shotlist
+{scene_number, shot_numbers?}` builds those setups from the saved shot list
+(its `framing`, else its size, angle, OTS and subject words), filed under each
+shot. The line runs between the two people in an exchange (`scene_plan.axis`
+sets it, and `axis.side` the side); setups that leave `azimuth_deg` unset keep
+to the first setup's side. Read `scene_inventory.coverage` before calling
+blocking done: an `error` (`crossed_the_line`, `screen_direction`) is a cut that
+will not play and goes to the person as a review item, never a pass; `warn`s
+(`eyeline`, `eye_height`, `weighting`, `matching`, `jump_cut`, `on_the_line`)
+are notes to fix or to justify.
+
+A set variant is a Locations look registered in
 Prep: `department_heads_save` (designer) returns `set_variants`, mapping each
 saved look to its `variantId`. `set_environment_upsert` takes that id, or the
 look's id or label with `scene_number`; `set_environments_get(scene_number)`
