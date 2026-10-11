@@ -269,6 +269,17 @@ Take `producer_analysis` and `director_analysis` from `project_metadata_get`
   layout?, approved_only?, ...)` prints the board as the Storyboarding export
   does (six standard layouts, at most 600 panels), free. It files the PDF as a
   project document and returns `asset_id` and a `download_url` for the person.
+  To deliver an approved selection that differs from the native board (exact
+  images, exact order, a shot's camera move as 3A then 3B, sound-only entries
+  left out), pass `panels`: an ordered list of `{asset_id, scene_number,
+  shot_number?, panel_label?, caption?, group_id?, panel_role?,
+  movement_label?, camera?}`. It prints exactly that list and never writes the
+  native boards, first frames or timeline, so do not overwrite them to export.
+  Panels sharing a `group_id` are one continuous move: 2-4 consecutive panels
+  in one scene. `layout: "presentation"` or `"shooting_board"` with
+  `orientation: "landscape"` draws a move side by side with arrows; put
+  accepted compromises in `cover_notes`. Every asset must be a ready image of
+  the project or the export is refused, naming the bad ids.
 
 ## 9. Production Queue
 
