@@ -239,6 +239,9 @@ approved reads:
 - `get_scene_shotlist(scene_number)` reads a result; `shotlist_scene_chat`
   asks the Director to revise a scene; `save_scene_shotlist` saves an edited
   list.
+- A scene missing its style lock, approved references, provenance or shot
+  slugs: `save_scene_shotlist(scene_number, refresh_scene_context=true)`
+  re-derives them from the scene's approved context (no `shots` needed).
 
 Take `producer_analysis` and `director_analysis` from `project_metadata_get`
 (`producerRead`, `directorRead`).
