@@ -7,6 +7,7 @@
 - Timeline preview gate
 - Client review feedback
 - Review revision protocol
+- Correcting a faulty passage
 - Mark-driven editing
 - Narration-timeline verification gate
 
@@ -43,6 +44,15 @@ For review-driven revisions, prefer boring reliability over clever patching.
 6. **Render for the audience.** Low quality is for internal checks only. Client review links get a full-quality render or export. Keep internal words such as "review cut" off client-facing title and credit cards.
 7. **Verify before handoff.** Dimensions, duration, audio levels, render diagnostics, the review URL resolving, and the review asset ID matching the export you intended to show. For narration fixes, verify the narration in the exported file itself, not only the source narration asset.
 8. **Close the loop.** When the replacement review exists, mark the old annotations addressed where possible and link the replacement review round in a note or metadata.
+
+## Correcting a Faulty Passage
+
+A note that one passage is wrong (a prop in the wrong state, a staging, a performance) is about the passage, not one clip. A multi-shot take carries several shots, and the same passage often runs across more than one clip.
+
+1. **Find every clip that carries it.** Watch each clip around the note on the render (`post_frames_get` with the render's `asset_id`), multi-shot takes included, and list every clip in which the faulty version appears.
+2. **Replace or trim each one.** Swap in the corrected take, or trim the old one so it ends before the faulty version starts. Replacing only the last clip leaves the faulty version on screen before it.
+3. **Change over at the real shot boundary**, where the old take cuts to its next shot. Cutting into the same angle mid-shot from the old take to the new one plays as a jump cut: people jump to new marks and props or wardrobe change state.
+4. **Check every join you touched.** `post_sequence_save` lists the cuts a save made or moved in `changedJoins`, each with `check_times` on both sides: look at the last outgoing and first incoming frame of each (`post_frames_get` with the `sequence_id` and those `times`, then on the render). The same angle on both sides with anything in a different state is not a fix. The automatic cut review reports same-angle joins too, with their timecode.
 
 ## Mark-Driven Editing
 

@@ -194,7 +194,7 @@ Restarting is discipline, not failure. The generated assets remain; you are thro
 - **Client review rounds**: pull annotations with `get_review_annotations`, make every `open` annotation a checklist item keyed to its time and clip, fix it, and mark it addressed. Do not ship with open annotations the user has not waived.
 - **Narration timeline productions** pass a drift gate between Pass 3 and Pass 4.
 
-Read `reference/review-and-gates.md` for the preview gate, the review revision protocol, mark-driven editing, and the narration-timeline gate, and `reference/verification-protocol.md` for render QC.
+Read `reference/review-and-gates.md` for the preview gate, the review revision protocol, fixing a passage (replace every clip carrying it), mark-driven editing, and the narration-timeline gate, and `reference/verification-protocol.md` for render QC.
 
 ## The Voice You Should Adopt With The User
 

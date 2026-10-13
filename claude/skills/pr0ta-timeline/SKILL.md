@@ -38,10 +38,10 @@ Relative REST paths sit under the post-production prefix, as in `GET /api/post-p
 **Editing through the MCP tools.** The MCP tools save whole sequences. Edit safely:
 
 1. Keep a restore point: save the sequence you read to a backup `sequence_id` (REST clients use `POST /timeline/snapshot`).
-2. Call `post_sequence_get` immediately before `post_sequence_save`, never from an earlier read, and send `baseVersion` set to the `version` it returned. A full replace of an existing sequence without `baseVersion` fails with `428 base_version_required`; one built on an older version fails with `409 stale_write` (both carry `current_version`): read again and reapply. A save to a deleted sequence fails with `410 sequence_deleted`. Creating a new sequence needs no base; `merge_existing: true` patches need none either.
+2. Call `post_sequence_get` immediately before `post_sequence_save`, never from an earlier read, and send `baseVersion` set to the `version` it returned. A full replace of an existing sequence without `baseVersion` fails with `428 base_version_required`; one built on an older version fails with `409 stale_write` (both carry `current_version`): read again and reapply. A save to a deleted sequence fails with `410 sequence_deleted`. A new sequence or a `merge_existing: true` patch needs no base.
 3. Change only the clips you mean to change and send everything else exactly as you read it.
 
-Every save answers with `validationWarnings`; its `deliveryWarnings` list names letterboxed sources, doubled audio, missing captions and same-source slices. Fix them before rendering.
+Every save answers with `validationWarnings` (`deliveryWarnings`: letterboxed sources, doubled audio, missing captions, same-source slices; fix before rendering) and `changedJoins` (cuts it made: look at each).
 
 
 REST clients use the clip and track routes for targeted edits and the MCP tools for reads, whole-sequence saves, checks, renders and exports. The user opens the same sequence at `https://app.pr0ta.com/timeline?sequence_id={sequence_id}`.

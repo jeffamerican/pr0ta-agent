@@ -239,7 +239,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## save
 
-- `save_scene_shotlist`(**scene_number**, stylistic_approach, **shots**): Save or update the director shotlist for a specific scene.
+- `save_scene_shotlist`(**scene_number**, stylistic_approach, **shots**, replace): Save or update the director shotlist for a specific scene.
 
 ## screenplay
 
