@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.2.2",
+  "skills_version": "6.2.4",
   "released_at": "2026-10-14",
-  "source_revision": "v6.2.2",
-  "minimum_platform_version": "1.25.267",
+  "source_revision": "v6.2.4",
+  "minimum_platform_version": "1.25.271",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05538-mep",
-  "bundle_sha256": "fc82667a31071ce2b36ac9f54fbab5a3553eadc2dc2c903822504a5375e70bad",
+  "platform_revision": "pr0ta-platform-05562-kif",
+  "bundle_sha256": "a7936533648bac5947ab490441279d2a597448d5f247757605e9fc199c791804",
   "skills": [
     {
       "name": "pr0ta",
@@ -323,11 +323,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "2e669ed49476cd8d1bc282132a7036b65705e4d8df3b61ebad26216ab200ec78",
+      "content_sha256": "778833d1b6ce4a545e21e4822e0976f9548e19883997bc74de0ea290f98082d2",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "aeb10d260c93514a8fbc8e91e98e9d7930a5eb165eaa6851ba7bc3d30d505724"
+          "sha256": "fdb493c2dce65789d26f25c95d939017cb6d5f413fff0d1c2c927513fef4f87e"
         }
       ]
     },
@@ -403,11 +403,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "d4fd246149316c1413085af564a1c66d0a00cf607d1ac4b7a7a348b98c83d096",
+      "content_sha256": "f9fe04a6fd70562834b1a25903e58a12c4dc297f780c60537fc0941763537f9d",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "d1561f2b9b9c3024b1ec2a518df3966834cc6b05dcdffa6f521f638094511a2e"
+          "sha256": "2e3abd5cbd66ed1976cfacd01f81043f24134d501184088f68343bb15aa93b4a"
         },
         {
           "path": "reference/draft-to-final.md",

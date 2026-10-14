@@ -295,8 +295,13 @@ takes. It is where scripted shots are generated; `pr0ta-image` and
    multi-shot sequence item (`virtual_sequence_…`, `labels.component_shot_ids`)
    stands in for its shots, which are hidden: list with `include_hidden: true`
    to see them (`labels.multi_group_parent_asset_uid` names their sequence).
-   Render the shots one by one by their own ids, or the sequence item as one
-   multi-shot take after `production_queue_analyze` on it. A planned shot's
+   Render the sequence item as one multi-shot take by default
+   (`production_queue_analyze` on it, then preview, then regenerate): one long
+   generation holds continuity better than shots made piece by piece and
+   avoids per-shot minimum durations (Seedance 2.5 renders at least 4 s).
+   Fix afterwards: trim the take, replace a weak shot with a patch render, or
+   inpaint a region. Render shots one by one by their own ids only when a
+   shot needs its own model or the sequence cannot carry it. A planned shot's
    `virtual_{scene}-{shot}` id keeps working after the shot is stored under an
    asset id, but take the current `id` from a fresh list when you can.
 2. `production_queue_refresh(asset_uids, reset_analysis?, full_reconstruct?)`
