@@ -37,8 +37,9 @@ curl -H "Authorization: Bearer $PR0TA_PAT" https://app.pr0ta.com/api/v2/projects
 ```
 
 PATs are automation credentials. They cannot reach account, admin, or billing
-routes; the exceptions are `GET /api/auth/me` and
-`GET /api/billing/credits/balance`. Create, list, and revoke PATs
+routes; the exceptions are `GET /api/auth/me`,
+`GET /api/billing/credits/balance`, and `GET /api/billing/credits/ledger`
+(your itemized usage, newest first; `since`, `limit` up to 200). Create, list, and revoke PATs
 (`/api/auth/personal-access-tokens`) from a signed-in browser session. Project asset downloads accept the bearer token or the scoped
 `asset_token` URL PR0TA hands out. `GET /api/v2/models` needs no auth.
 

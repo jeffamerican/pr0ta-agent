@@ -155,8 +155,9 @@ Every generated take is reviewed automatically and free, before an Operator miss
 
 - `pass`: use the take.
 - `repair`: the take is usable; each issue's `remedy` says how its faults are put right later (cadence repair, a trim, the mix, a grade). Never regenerate for a repairable fault, and repair only once the user keeps the take (they circle or favorite it, or approve a cut that uses it; your own selections do not count).
-- `fixable`: the content itself is wrong; regenerate with its `revised_prompt` (or its fixes), at most twice for the same shot, then pick the best take by verdict.
-- `fail`: a prompt change is unlikely to fix it; stop and ask the person.
+- `fixable`: QC thinks the content is wrong and suggests a new take (`revised_prompt`). `fail`: QC judges the take unusable.
+
+QC flags; the person decides, once the cut is final: a flag may be acceptable, or a creative choice. Never regenerate, repair, trim or re-edit a take or cut because of a verdict alone. A flagged clip keeps its verdict on the take: use it and move on. A flagged still that further work builds on (a first frame, key frame or look) waits for the person (in a mission the harness stops with a `QC:` card), and so does any flagged take before you use it as a reference. When you present the cut, list its flagged clips with their findings and QC's suggested fixes.
 - `uncertain`: the review lacked the shot's intent or references; check the take yourself and say what could not be verified.
 
 How strict QC is about technical faults follows the project's delivery target, the `deliveryTarget` project setting: `social` forgives a brief stutter a phone viewer scrolls past, `web` minds a clear one, `broadcast` and `cinema` reject any. Set it from the brief with `project_metadata_patch` with `updates: {"deliveryTarget": "social"}` when the user names the platform; unset, QC reads it from the cut (vertical or a social platform is social) and otherwise uses `web`.

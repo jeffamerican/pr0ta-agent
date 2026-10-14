@@ -35,6 +35,10 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `beat_sheet_approve`(structure, beats, script_id): Record a script's beat sheet as approved so screenplay drafting follows it.
 - `beat_sheet_generate`(**prompt**, structure, logline, template, quality_gate, script_id): Queue the Story Editor to write a script's beat sheet; returns a task to poll with tasks_get.
 
+## billing
+
+- `billing_usage_get`(since, limit): Read your own itemized credit usage, newest first: each credit ledger entry with its time, credits and USD (negative = spent), reason (generation_cha…
+
 ## blender
 
 - `blender_job_submit`(**request**): Build or revise a canonical set in the isolated Blender worker, optionally starting from an existing self-contained .blend, GLB, or FBX asset.

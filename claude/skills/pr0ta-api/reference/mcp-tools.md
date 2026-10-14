@@ -14,6 +14,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **assets** (`mcp-tools-1.md`): assets_annotations_batch_update, assets_annotations_update, assets_download, assets_favorite_set, assets_get_download_link, assets_get_download_links, assets_import_url, assets_list, assets_probe, assets_trim, assets_upload_batch_start, assets_upload_finalize, assets_upload_start
 - **audio** (`mcp-tools-1.md`): audio_analyze, audio_meter, audio_stem_separate
 - **beat** (`mcp-tools-1.md`): beat_sheet_approve, beat_sheet_generate
+- **billing** (`mcp-tools-1.md`): billing_usage_get
 - **blender** (`mcp-tools-1.md`): blender_job_submit
 - **breakdown** (`mcp-tools-1.md`): breakdown_element_review_decide, breakdown_rerun, breakdown_status
 - **bug** (`mcp-tools-1.md`): bug_report_create
