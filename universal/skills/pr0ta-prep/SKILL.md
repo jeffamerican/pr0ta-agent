@@ -291,7 +291,14 @@ takes. It is where scripted shots are generated; `pr0ta-image` and
 `pr0ta-video` hold the per-model knowledge the prompts follow.
 
 1. `production_queue_list(offset?, limit?)` pages the Queue; each item's `id`
-   is the `asset_uid` the other Queue tools take. List first.
+   is the `asset_uid` the other Queue tools take. List first. A ready
+   multi-shot sequence item (`virtual_sequence_…`, `labels.component_shot_ids`)
+   stands in for its shots, which are hidden: list with `include_hidden: true`
+   to see them (`labels.multi_group_parent_asset_uid` names their sequence).
+   Render the shots one by one by their own ids, or the sequence item as one
+   multi-shot take after `production_queue_analyze` on it. A planned shot's
+   `virtual_{scene}-{shot}` id keeps working after the shot is stored under an
+   asset id, but take the current `id` from a fresh list when you can.
 2. `production_queue_refresh(asset_uids, reset_analysis?, full_reconstruct?)`
    rebuilds those items from Storyboarding after the storyboards change.
 3. `production_queue_analyze(asset_uids)` has the Cinematographer or Composer
@@ -311,7 +318,10 @@ takes. It is where scripted shots are generated; `pr0ta-image` and
    settings and the admin pins, unless the item already names one. A
    storyboard-sequence or chunk video item fails with
    `cinematographer_optimization_required` until `production_queue_analyze`
-   has finalized its prompt and model.
+   has finalized its prompt and model. Before a paid render,
+   `production_queue_request_preview(asset_uid, generation_params?)` shows
+   what it would render (prompt, model, duration, references, credits) or
+   why it cannot run yet, and changes nothing.
 5. `production_queue_take_select`, `production_queue_take_favorite` and
    `production_queue_component_selection_set` record choices.
 

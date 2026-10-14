@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.2.0",
-  "released_at": "2026-10-13",
-  "source_revision": "v6.2.0",
-  "minimum_platform_version": "1.25.263",
+  "skills_version": "6.2.2",
+  "released_at": "2026-10-14",
+  "source_revision": "v6.2.2",
+  "minimum_platform_version": "1.25.267",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05512-laf",
-  "bundle_sha256": "75f0ea951b2c065d68c5cbf465c384fbf180a40f2368cff019766b0b34cb88f7",
+  "platform_revision": "pr0ta-platform-05538-mep",
+  "bundle_sha256": "fc82667a31071ce2b36ac9f54fbab5a3553eadc2dc2c903822504a5375e70bad",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "4ca2a5fa6099aae90df28da36a4f7ec9840560c904d6e2a598f19734e25a8502",
+      "content_sha256": "69ca6cf6f9341417a14afe8ca88088a0aab070b60c81fa00ca140f05de9ed55f",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "404f4d74b83c3dfafe17464e6fa84a13e817aba42cc222bd75ea5935868f2b98"
+          "sha256": "ee9f668862110e0de2b3bfa20bd43a0b9dbbd1ccab45ea7175677a1b4dd93108"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "6e469e313762d1f74b846f94cd3a3fbb357d8f7b3d243d1e0995ae0c879f054b"
+          "sha256": "59a5727085eab06dab2ed0ae40f569b4bb5eed8b0ac57c4a093b0ec772a5ee6f"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "88ee7acfc4a208035d413dc807c69088311d1b3f8d677139040491832d478550"
+          "sha256": "47bfba81eb6d1dee27aab2157f8961e0ae78f0fa173c4c7d49e7c2298f0610b4"
         },
         {
           "path": "reference/music-analysis.md",
@@ -323,11 +323,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "a825d5042830984d3de6c197275f1d9bd9ab49e777d95e0300d941b09fbf4ea4",
+      "content_sha256": "2e669ed49476cd8d1bc282132a7036b65705e4d8df3b61ebad26216ab200ec78",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "27564594e8c799143e7987f1d14598f72d0d887c5c482d340ff1dff3e5060b46"
+          "sha256": "aeb10d260c93514a8fbc8e91e98e9d7930a5eb165eaa6851ba7bc3d30d505724"
         }
       ]
     },
@@ -619,6 +619,7 @@
     "production_queue_refresh",
     "production_queue_regenerate",
     "production_queue_regenerate_batch",
+    "production_queue_request_preview",
     "production_queue_take_favorite",
     "production_queue_take_select",
     "production_queue_upload_retry",
@@ -687,5 +688,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "baca1d12d8b784f9f48fb389ee1221c7dcee1ee64af24fcbb5ef1e7420c873d2"
+  "mcp_connector_tools_sha256": "09643352cc3692d1b36b5d72ae90a32d9ec735f7d343aea1759b571f3ffe21a7"
 }
