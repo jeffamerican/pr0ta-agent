@@ -58,7 +58,7 @@ models per modality and each user may override them in Settings → Tools.
 | Generating the scripted shots: through the Production Queue | `pr0ta-prep` |
 | Model grammar and prompts for those shots | `pr0ta-image`, `pr0ta-video`, `pr0ta-prompting` |
 | Dialogue, narration, voices | `pr0ta-audio` |
-| Score, sound effects, stem separation | `pr0ta-music` |
+| Score, songs and Suno, spotting and themes, sound effects, stem separation | `pr0ta-music` |
 | Cut, mix, review, export | `pr0ta-timeline`, `pr0ta-editorial` |
 
 **A short piece with no story (promo, montage, title card, music video):** plan

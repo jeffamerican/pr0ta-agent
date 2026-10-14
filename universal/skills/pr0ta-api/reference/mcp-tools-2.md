@@ -2,6 +2,11 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## shot
+
+- `shot_performances_list`(shot_uid, scene_number, shot_number, kinds, limit): List the performances filed on a shot, newest first: human takes recorded in Human Performances, dialogue takes, and camera takes.
+- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio).
+
 ## shotlist
 
 - `shotlist_generate`(**scene**, **producer_analysis**, **director_analysis**): Generate and durably save a Director shot list for one scene; returns a task for polling.
@@ -62,9 +67,9 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## video
 
-- `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts, camera wobble…
+- `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts and single-subj…
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
-- `video_stutter_repair`(**asset_id**, user_requested, force): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams, trims a settle jolt at the head and st…
+- `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, sa…
 
 ## voices
 

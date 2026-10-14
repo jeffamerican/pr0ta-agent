@@ -301,6 +301,11 @@ Official source: [ByteDance Seed Audio 1.0](https://seed.bytedance.com/en/seedau
 
 ## Music
 
+What the cue does (spotting, dialogue, hit points, themes) is in `pr0ta-music` →
+`reference/scoring-to-picture.md`. Suno routes have their own guide: `pr0ta-music` →
+`reference/suno-v6.md` (style text order, section tags, exclusions, sliders, Cover, Extend,
+Sounds). ElevenLabs Music: `pr0ta-music` → `reference/eleven-music.md`.
+
 ### Lyria
 
 | Operation | Prompt order | Critical rule |

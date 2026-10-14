@@ -35,7 +35,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **hybrid** (`mcp-tools-1.md`): hybrid_generation_capabilities, hybrid_sequences_apply_setup, hybrid_sequences_approve, hybrid_sequences_create, hybrid_sequences_generate, hybrid_sequences_get, hybrid_sequences_job, hybrid_sequences_list, hybrid_sequences_update, hybrid_shot_generate, hybrid_shots_create, hybrid_shots_get, hybrid_shots_list, hybrid_shots_update
 - **memory** (`mcp-tools-1.md`): memory_claim_update, memory_claims_list, memory_conflicts_list, memory_context_pack, memory_get_confirmation, memory_graph, memory_ingest_app, memory_overview, memory_propose_alternate, memory_propose_change, memory_record_decision, memory_record_note, memory_report_conflict, memory_request_confirmation, memory_search, memory_source_create, memory_source_process, memory_sources_list
 - **models** (`mcp-tools-1.md`): models_get_defaults, models_list, models_preferred
-- **music** (`mcp-tools-1.md`): music_analyze
+- **music** (`mcp-tools-1.md`): music_analyze, music_singing_voices_list
 - **narration** (`mcp-tools-1.md`): narration_materialize_to_post, narration_timeline_get
 - **post** (`mcp-tools-1.md`): post_clip_slow_motion, post_clips_link, post_export_start, post_frames_get, post_render_start, post_sequence_analyze, post_sequence_debug_report, post_sequence_get, post_sequence_save
 - **prep** (`mcp-tools-1.md`): prep_production_capabilities
@@ -45,11 +45,12 @@ below, then read the part named beside it (another reference file of this skill)
 - **read** (`mcp-tools-1.md`): read_pr0ta_skill, read_web_page
 - **review** (`mcp-tools-1.md`): review_submit_assets
 - **save** (`mcp-tools-1.md`): save_scene_shotlist
+- **score** (`mcp-tools-1.md`): score_bible_get, score_bible_save
 - **screenplay** (`mcp-tools-1.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
 - **script** (`mcp-tools-1.md`): script_create, script_supervisor_read_generate
 - **scripts** (`mcp-tools-1.md`): scripts_list
 - **set** (`mcp-tools-1.md`): set_environment_asset_link, set_environment_collider_materialize, set_environment_upsert, set_environments_get
-- **shot** (`mcp-tools-1.md`): shot_performances_list, shot_quality_review
+- **shot** (`mcp-tools-2.md`): shot_performances_list, shot_quality_review
 - **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate
 - **storyboard** (`mcp-tools-2.md`): storyboard_chunks_list, storyboard_first_frame_propose, storyboard_generate, storyboard_generate_batch, storyboard_pdf_export, storyboard_reference_sheet_generate, storyboard_reference_sheets_list, storyboard_sequences_get, storyboard_sequences_save
 - **style** (`mcp-tools-2.md`): style_candidates_generate, style_package_get, style_package_save, style_world_assign_scenes, style_world_create, style_world_delete, style_world_update

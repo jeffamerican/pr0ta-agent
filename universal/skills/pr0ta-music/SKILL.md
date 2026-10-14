@@ -1,6 +1,6 @@
 ---
 name: pr0ta-music
-description: "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; sound effects (SFX), foley and ambience; music prompts, composition plans and section editing; beat analysis for beat sync and hit points; stem separation (isolate vocals, drums, bass) from a mixed track. Read before generating, analyzing or placing any non-speech audio."
+description: "PR0TA music and sound design: score, soundtrack, underscore, ambient beds, stingers and songs with lyrics; spotting and cue sheets, themes and the score bible; Suno v6 prompting (style text, section tags, exclusions, Cover, Extend, Sounds, singing voices); sound effects (SFX), foley and ambience; composition plans and section editing; beat analysis for beat sync and hit points; stem separation (isolate vocals, drums, bass) from a mixed track. Read before generating, analyzing or placing any non-speech audio."
 ---
 
 # PR0TA Music and Sound Effects
@@ -18,6 +18,24 @@ direction, motif, cue or sound rule with `memory_record_decision` or
 `memory_record_note`.
 
 Pass `project_id` on every call; parallel submission limits are in `pr0ta-api` → "Rate limits and concurrency".
+
+
+Decide what the music does before choosing how to prompt it: spotting, cue types, music under
+dialogue, hit points, endings, themes and an emotion-to-palette table are in
+`reference/scoring-to-picture.md`. Read it before scoring a scene.
+
+## The score bible
+
+Every project with more than one cue keeps a score bible: the musical concept, the style core
+every cue's prompt starts from, the exclude core, palette, key centers, tempo family, how music
+sits under dialogue, and the recurring themes with the cue that states each. Read it with
+`score_bible_get` before writing any music prompt; save it with `score_bible_save` once the
+music's direction is agreed, and again when a theme's cue is approved (`themes` replaces the
+whole list, so send every theme you keep). Start each cue's prompt from `style_core` and its
+exclusions from `exclude_core`, then add the cue's specifics.
+
+REST: `GET` and `PUT /api/v2/projects/{project_id}/music/score-bible` (PUT takes the fields to
+replace).
 
 ## Two jobs
 
@@ -42,18 +60,13 @@ Pass `project_id` on every call; parallel submission limits are in `pr0ta-api` �
 |---|---|
 | ElevenLabs Music routes | `reference/eleven-music.md` |
 | Lyria routes | `pr0ta-prompting` → `reference/model-modality-guides.md` → "Lyria" |
-| Suno routes (`muapi/suno-*`) | the notes below, then its `models_get_defaults` fields |
+| Suno routes (`muapi/suno-*`) | `reference/suno-v6.md` |
 | Any other route | its `models_get_defaults` fields |
 
-Suno routes return **two takes per request** (both saved; circle one). The prompt
-is the style and mood (up to 1,000 characters: genre, instruments, tempo, energy,
-arc). The result is instrumental unless you pass `parameters.lyrics` (your words,
-`[Verse]`/`[Chorus]` tags welcome) or `parameters.instrumental: false` (Suno
-writes the lyrics and picks the song length, so a requested duration only trims
-an overrun). Optional: `parameters.title`, `parameters.vocal_gender`
-(`male`/`female`), `parameters.negative_tags` (styles to avoid). Suno treats
-`duration` (up to 360 s) as a target and often runs long; PR0TA trims each take
-to the requested length, so end the prompt's arc where you want the cut.
+Suno routes return **two takes per request** (both saved; measure and circle one). The prompt
+is Suno's style text; lyrics, exclusions, sliders, Cover, Extend, Sounds, WAV and singing
+voices all go in `parameters` as `reference/suno-v6.md` describes. Its section tags shape
+instrumentals too, so every Suno cue gets an arc in `parameters.lyrics`.
 
 Capabilities, for when the user asks for one:
 
@@ -62,6 +75,12 @@ Capabilities, for when the user asks for one:
   Music routes; other music routes ignore or reject a plan.
 - **Reference inputs** (an image or audio to score from) vary by route: supply
   one only when `models_get_defaults` lists the field.
+- **Restyling a theme while keeping its melody** (Cover), **continuing a cue from
+  a chosen second** (Extend), **short stings, logo buttons and loops at a set tempo
+  and key** (Sound) and **a person's own singing voice** exist on Suno routes
+  (`reference/suno-v6.md` → "Operations" and "Singing voices"). Only the person
+  makes a singing voice, in the Music editor; agents list ready ones with
+  `music_singing_voices_list` and sing with them.
 
 ## Generate
 
@@ -109,7 +128,8 @@ body. See `pr0ta-api` for auth and task polling.
 
 ## Writing music prompts
 
-Specify five things:
+For Suno routes follow `reference/suno-v6.md`; it supersedes this section. For
+other routes, specify five things:
 
 1. **Genre and style:** "cinematic orchestral", "lo-fi hip-hop", "ambient
    electronic", "jazz trio".
@@ -152,9 +172,11 @@ stitching.
 
 1. Take the total length and the arc from the cue sheet (`pr0ta-sync`); in
    picture-first work, take the length from the locked timeline.
-2. Generate one piece covering it. When it is longer than the route allows,
-   generate two or three sections that overlap by 3 to 5 seconds and crossfade
-   them on the timeline (`pr0ta-timeline` → "Transitions").
+2. Generate one piece covering it. When it is longer than the route allows (or,
+   on Suno, longer than about three minutes, where quality falls off), continue
+   it with Extend on Suno routes, or generate two or three sections that overlap
+   by 3 to 5 seconds and crossfade them on the timeline (`pr0ta-timeline` →
+   "Transitions").
 3. For structure that must land on exact times, use a composition plan where
    the resolved route supports one.
 
@@ -218,6 +240,15 @@ Typical uses:
 
 Separate once per source and reuse the stems; listen to the vocal stem before
 building on it, since bleed from loud instruments can remain.
+
+## Judge the takes before calling a cue done
+
+A prompt does not guarantee its result. For every take: `music_analyze` for the
+real tempo and downbeats, `audio_meter` on short windows of the asset for where
+the peak lands and whether a bed stays level, and a listen for stray vocals, a
+melody under dialogue, and the ending. Pick the take whose hits land, say why,
+and fix with the cheapest edit (trim the head to a hit, trim the tail at a phrase
+end, strip a stem) before regenerating.
 
 ## Put it in the cut
 

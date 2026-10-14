@@ -143,7 +143,8 @@ Optional fields: `width`, `height`, `image_size`, `num_images`, `format`, `negat
 | FLUX 3 video | video | 5–20s | `auto`, `21:9`, `2:1`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16` where exposed | Eleven T2V/I2V/first-last/24 fps keyframe/extension/Draft/Enhance routes | Generation defaults `generate_audio` on; Enhance requires only `draft_cache_url` as creative input |
 | LTX 2.5 | video / lipsync | Pro 6/8/10; Fast even 6–20 by resolution/FPS; A2V source 2–20 | `16:9`, `9:16`, or route `auto` | Six canonical Pro/Fast T2V, I2V, and audio-to-video routes | T2V/I2V default `generate_audio` on; A2V carries source audio and has a narrower field surface |
 | ElevenLabs v3 | audio | Auto (by text length) | n/a | ElevenLabs voice library (`voice_id`), audio tags | Max 5000 chars per call |
-| Music v1 | music | 1–300s | n/a | Duration param, emotional arc prompts | Prompt for temporal cues |
+| Suno v6 (`muapi/suno-v6`, `-wild`, `-mini`) | music | 30–360s honored (shorter is generated at 30 and trimmed) | n/a | Style text plus lyrics and section tags, exclusions, sliders; operations create, cover, extend, sound; singing voices; WAV | Two takes per request; `pr0ta-music` → `reference/suno-v6.md` |
+| ElevenLabs Music | music | per route | n/a | Duration param, composition plans, section editing | `pr0ta-music` → `reference/eleven-music.md` |
 
 Always verify current capabilities with `models_get_defaults` or `GET /api/v2/models`. For the per-model duration and aspect matrix see `pr0ta-video` → "Duration and Shape".
 
@@ -341,14 +342,20 @@ Notes:
   "generator": "music",
   "mode": "txt_to_music",
   "model": "<model_id from models_preferred(modality=\"music_model\")>",
-  "prompt": "Playful Mozart-style piano piece, major key, light and cheerful",
+  "prompt": "Playful classical-era piano miniature, Alberti bass, bright major key, light and cheerful, 112 BPM, ends on a crisp cadence",
   "duration": 30,
   "output_format": "mp3_44100_192"
 }
 ```
 
 Required fields: `generator`, `mode`, `model`, `prompt`
-Optional fields: `duration`, `output_format`
+Optional fields: `duration`, `output_format`, `parameters` (route fields: `lyrics`, `instrumental`
+or `vocals`, `title`, `vocal_gender`, `negative_tags`; on ElevenLabs routes `composition_plan`;
+on Suno routes also `style_weight`, `weirdness_constraint`, `audio_weight`, `singing_voice_id`,
+and `operation` with its inputs: `cover` and `extend` take `audio_asset_id`, `extend` takes
+`parameters.continue_at`, `sound` takes `parameters.sound_loop`, `sound_tempo`, `sound_key`;
+a `video_asset_id` on create scores from a clip). Never name an artist or composer in a music
+prompt. Field rules: `pr0ta-music` and its model references.
 
 **`output_format` is the canonical field** for specifying audio output format. Accepted values: `mp3_22050_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`, `pcm_16000`, `pcm_22050`, `pcm_44100`, `pcm_48000`, `opus_48000_32`, `opus_48000_64`, `opus_48000_96`, `opus_48000_128`, `opus_48000_192`, `ulaw_8000`, `alaw_8000`. The legacy `format` shorthand (e.g. `"mp3"`, `"wav"`, `"opus"`) is still accepted and normalized (e.g. `"mp3"` → `"mp3_44100_192"`, `"wav"` → `"pcm_44100"`). Unsupported values return `400`.
 
