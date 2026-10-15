@@ -20,6 +20,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `shotlist_generate_batch`(**scenes**, **producer_analysis**, **director_analysis**): Generate and save Director shot lists for multiple scenes in one background task.
 - `shotlist_scene_chat`(**scene**, **messages**, producer_analysis, director_analysis): Ask the Director agent to revise or discuss one scene.
 - `shotlist_scene_descriptions_generate`(**script_supervisor_data**, producer_analysis, director_analysis): Generate concise Director scene descriptions for Shotlisting; returns a task for polling.
+- `shotlist_shots_move`(**from_scene**, **to_scene**, **shot_uids**, dry_run, spanning_sequences): Move shots from one scene's saved shot list to another scene, for coverage filed under the wrong scene (a breakdown re-run that split a scene).
 
 ## storyboard
 

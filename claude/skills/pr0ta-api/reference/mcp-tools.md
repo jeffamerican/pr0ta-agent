@@ -52,7 +52,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **scripts** (`mcp-tools-1.md`): scripts_list
 - **set** (`mcp-tools-2.md`): set_environment_asset_link, set_environment_collider_materialize, set_environment_upsert, set_environments_get
 - **shot** (`mcp-tools-2.md`): shot_performances_list, shot_quality_review
-- **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate
+- **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate, shotlist_shots_move
 - **storyboard** (`mcp-tools-2.md`): storyboard_chunks_list, storyboard_first_frame_propose, storyboard_generate, storyboard_generate_batch, storyboard_pdf_export, storyboard_reference_sheet_generate, storyboard_reference_sheets_list, storyboard_sequences_get, storyboard_sequences_save
 - **style** (`mcp-tools-2.md`): style_candidates_generate, style_package_get, style_package_save, style_world_assign_scenes, style_world_create, style_world_delete, style_world_update
 - **submit** (`mcp-tools-2.md`): submit_assets_for_review

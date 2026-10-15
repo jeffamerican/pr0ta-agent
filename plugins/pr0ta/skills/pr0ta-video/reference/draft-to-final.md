@@ -21,7 +21,7 @@ No `draft_mode` block means no drafts: generate normally. Never send `draft: tru
 
 ## When to draft
 
-Draft when the resolved model offers it and any of these hold:
+Drafting is the default way to explore. On a model that offers drafts, draft first whenever any of these hold (the Video editor's Draft toggle likewise starts on for every draft-capable model, and the Production Queue drafts first on them):
 
 - The shot is new, or its prompt or references changed since the last approved take.
 - You expect more than one attempt (blocking, camera move, performance, continuity with neighbouring shots).

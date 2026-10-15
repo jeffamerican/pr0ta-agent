@@ -238,10 +238,15 @@ approved reads:
   scene, `shotlist_generate_batch(scenes, ...)` for many; both return tasks.
 - `get_scene_shotlist(scene_number)` reads a result; `shotlist_scene_chat`
   asks the Director to revise a scene; `save_scene_shotlist` saves an edited
-  list.
+  list (with `replace=true`, pass the `revision` the read returned; a 409
+  means the scene changed since: read it again).
 - A scene missing its style lock, approved references, provenance or shot
   slugs: `save_scene_shotlist(scene_number, refresh_scene_context=true)`
   re-derives them from the scene's approved context (no `shots` needed).
+- Coverage filed under the wrong scene (a breakdown re-run split a scene):
+  `shotlist_shots_move(from_scene, to_scene, shot_uids, dry_run=true)`, show
+  the person the plan, then run it without `dry_run`. Shots keep their
+  `shot_uid`, frames, takes and Queue rows; old planned ids keep resolving.
 
 Take `producer_analysis` and `director_analysis` from `project_metadata_get`
 (`producerRead`, `directorRead`).

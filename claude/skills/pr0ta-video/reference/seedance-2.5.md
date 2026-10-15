@@ -1,18 +1,35 @@
-# Seedance 2.5 on MuAPI
+# Seedance 2.5 on BytePlus ModelArk and MuAPI
 
-Use this reference when the resolved model is a Seedance 2.5 route: the MuAPI family below, Seedance 2.5 Motion Control, or the BytePlus ModelArk routes (`byteplus/seedance-2.5` and its task routes). Pick the route by operation: Omni Reference (`muapi/seedance-2.5-omni-reference`) for image-, video-, or audio-led shots, T2V for prompt-only, I2V for one opening image, first/last for two keyframes, Edit for a source clip, and Extend for continuation. Every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID. Seedance 2.5 renders natively up to 1080p; MuAPI's `-4k` routes upscale that native render to 4K. Standard, Spicy, and International 1080p and 4K routes are curated in each corresponding modality; the existing 720p Spicy/International T2V and I2V routes remain available. Every current route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
+Use this reference when the resolved model is a Seedance 2.5 route: the BytePlus ModelArk routes (`byteplus/seedance-2.5` and its task routes), the MuAPI family below, or Seedance 2.5 Motion Control. Pick the provider first (Provider Choice below), then the route by operation: reference-led (`byteplus/seedance-2.5`, or Omni Reference `muapi/seedance-2.5-omni-reference`) for image-, video-, or audio-led shots, T2V for prompt-only, I2V for one opening image, first/last for two keyframes, Edit for a source clip, and Extend for continuation. On MuAPI every standard modality has dedicated 480p, 720p, 1080p, and 4K routes selected by model ID; on ModelArk `resolution` is a request field. Seedance 2.5 renders natively up to 1080p; MuAPI's `-4k` routes upscale that native render to 4K. Standard, Spicy, and International 1080p and 4K routes are curated in each corresponding modality; the existing 720p Spicy/International T2V and I2V routes remain available. Every current MuAPI route accepts optional `high_bitrate`; it defaults to `false` and trades larger output files for better visual fidelity. **Every Seedance 2.5 route returns audio-bearing video.** Standard MuAPI T2V, I2V, first/last, and Omni routes expose no audio toggle; Edit and Extend expose `generate_audio` for route-specific regeneration or preservation behavior. Use each live endpoint schema for request fields without mistaking a missing audio field for silent output.
+
+## Provider Choice
+
+A model the user named, or the one `models_preferred` resolves, is used as given. When you choose the Seedance 2.5 route yourself, choose by what the shot needs:
+
+| Need | Route |
+|---|---|
+| 480p, 720p, or 1080p: prompt-only, reference-led, first frame, first/last frame, edit, extend | BytePlus ModelArk, the default: `byteplus/seedance-2.5` or its task route, with `resolution` set (BytePlus ModelArk below) |
+| Drafts (480p draft, 1080p finish) | `byteplus/seedance-2.5`, `-image-to-video`, `-first-last-frame` (`draft-to-final.md`) |
+| 4K delivery | MuAPI `-4k` routes (an upscale of the native render) |
+| Spicy or International variants | MuAPI `spicy` / `intl` routes |
+| Performance transfer from a driving video | `muapi/seedance-2.5-motion-control` |
+| Trained character identity (Seedance Characters, `@omni-character`) or positional `@image1` binding | Seedance 2.0 Omni on MuAPI (`seedance-omni.md`); Seedance 2.5 has neither |
+
+ModelArk costs less per second than MuAPI up to 1080p (check `GET /api/crew/model_pricing` for exact rates). It refuses any reference image or driving video that may show a real person, including realistic Casting portraits; PR0TA then renders the same task on MuAPI automatically, at the resolution the request asked for, so character shots with realistic references often land on MuAPI. That is expected: do not avoid ModelArk for it and do not resubmit (Real-person fallback below).
 
 ## Contents
 
+- Provider choice
 - Endpoint selector and current standard contract
 - Shared prompting principles
 - T2V, I2V, first/last, Omni, Edit, and Extend techniques
+- BytePlus ModelArk routes and the real-person fallback
 - Identity/audio boundaries and failure repairs
 - Sources and authority order
 
 ## Endpoint Selector
 
-Mode by route: T2V routes use `txt_to_vid`; I2V, first/last, and Omni use `ref_to_vid`; Edit uses `video_to_video`; Extend uses `extend_video`. Confirm with `models_get_defaults(model_id).supported_modes`. The suffix selects the resolution tier; Spicy and International are regional or interpretive variants of the same request shape.
+The MuAPI routes are listed here; the ModelArk routes are under BytePlus ModelArk below. Mode by route: T2V routes use `txt_to_vid`; I2V, first/last, and Omni use `ref_to_vid`; Edit uses `video_to_video`; Extend uses `extend_video`. Confirm with `models_get_defaults(model_id).supported_modes`. The suffix selects the resolution tier; Spicy and International are regional or interpretive variants of the same request shape.
 
 | PR0TA model ID | Resolution | Use when |
 |---|---:|---|
@@ -186,11 +203,11 @@ Continue naturally from the source clip's last frame. [Next causal action]. Pres
 
 Do not restart the source action or introduce an unrelated shot. A target last image is a landing constraint, not a replacement for describing the physical bridge.
 
-## Other Seedance 2.5 Routes
+## BytePlus ModelArk Routes
 
 ### BytePlus ModelArk (`byteplus/seedance-2.5`)
 
-A single first-party route that covers text-, image-, and reference-led generation, source-clip editing, and extension (`supported_modes`: `txt_to_vid`, `ref_to_vid`, `video_to_video`, `extend_video`). It differs from the MuAPI family:
+The default Seedance 2.5 route at 480p, 720p, and 1080p, and the default for the Production Queue's sequence items (storyboard chunks of up to 30 s) unless the chunk needs Seedance 2.0. A single first-party route that covers text-, image-, and reference-led generation, source-clip editing, and extension (`supported_modes`: `txt_to_vid`, `ref_to_vid`, `video_to_video`, `extend_video`). It differs from the MuAPI family:
 
 - `resolution` is a request field: `480p`, `720p`, or `1080p` (1080p output is 10-bit).
 - `output_format`: `mp4` or `mov`; `mov` is H.264 yuv444p (4:4:4) with PCM audio for colour-critical edit and extend work.
@@ -214,7 +231,21 @@ Four task-specific model IDs run the same ModelArk model with the task fixed, so
 
 The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p, review, then finish the approved draft at 1080p (`reference/draft-to-final.md`). Edit and extend cannot draft; review them at 480p or 720p before a 1080p run.
 
-ModelArk refuses input images that may show a real person (`InputImageSensitiveContentDetected.PrivacyInformation`, "may contain real person"), which includes realistic character references from Prep. PR0TA resubmits such a refusal as the same task on MuAPI (`muapi/seedance-2.5-omni-reference`, `-image-to-video`, `-first-last-frame`, `-video-edit`, `-video-extend`) on every path; the submission result carries `model_fallback`. Do not resubmit it yourself; mention the switch in one line.
+#### Real-person fallback
+
+ModelArk refuses input images or a driving video that may show a real person (`InputImageSensitiveContentDetected.PrivacyInformation`, "may contain real person"), which includes realistic character references from Prep and live-action plates. PR0TA resubmits such a refusal as the same task on MuAPI on every path (generation, Production Queue, Hybrid Studio):
+
+| Refused route | MuAPI route |
+|---|---|
+| `byteplus/seedance-2.5` | `muapi/seedance-2.5-omni-reference` |
+| `byteplus/seedance-2.5-image-to-video` | `muapi/seedance-2.5-image-to-video` |
+| `byteplus/seedance-2.5-first-last-frame` | `muapi/seedance-2.5-first-last-frame` |
+| `byteplus/seedance-2.5-video-edit` | `muapi/seedance-2.5-video-edit` |
+| `byteplus/seedance-2.5-video-extend` | `muapi/seedance-2.5-video-extend` |
+
+The fallback keeps the requested resolution: a `1080p` request renders on the route's `-1080p` variant, `480p` on `-480p`, and 720p (or no resolution) on the unsuffixed route. A draft keeps the unsuffixed route, the one that drafts at 480p and finishes at 1080p. The refused attempt is hidden, the submission result carries `model_fallback`, and the Queue notes it on the take. Do not resubmit it yourself; mention the switch in one line.
+
+## Other Seedance 2.5 Routes
 
 ### Seedance 2.5 Motion Control (`muapi/seedance-2.5-motion-control`)
 
@@ -230,7 +261,7 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 
 ### Identity and Audio Boundaries
 
-- Seedance 2.5 has no provider character-token field in the current MuAPI schema. Repeat defining identity/wardrobe traits and supply clear, compatible images. Use Seedance 2.0 Omni when a trained character resource is required.
+- Seedance 2.5 has no provider character-token field on ModelArk or in the current MuAPI schema. Repeat defining identity/wardrobe traits and supply clear, compatible images. Use Seedance 2.0 Omni when a trained character resource is required.
 - Audio references are documented as mood/pacing guidance. They are not a documented verbatim dialogue or lip-sync input on these routes.
 - Every Seedance 2.5 route returns audio-bearing video. T2V, I2V, first/last, Omni, Spicy, and International expose no audio opt-out. Edit and Extend expose `generate_audio`; disabling it requests source-audio preservation, but the delivered result still requires verification.
 - Seedance 2.5 enforces a four-second minimum and can pad shorter requested material at native speed. Trim the completed asset to the intended duration; do not retime the padded output.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.2.9",
+  "skills_version": "6.2.11",
   "released_at": "2026-10-14",
-  "source_revision": "v6.2.9",
-  "minimum_platform_version": "1.25.287",
+  "source_revision": "v6.2.11",
+  "minimum_platform_version": "1.25.292",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05658-duf",
-  "bundle_sha256": "65066c35c34579b631e2cf8e6bf4ff8ad5f58d6180f3fe10349d997f67cd71fb",
+  "platform_revision": "pr0ta-platform-05688-xof",
+  "bundle_sha256": "7754cf0d99e853c8432e7f8b8abcc2d7f883c0bdbbd644fb93e4cf37623765a6",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "874a6b421ad93565619c69282bf14a1239fa60d1fdf16e20c44e6ce474cbf782",
+      "content_sha256": "67a059b598c2255384b1461ef4e78c201224eb1e3bd3e48c079f53f03c23f82d",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "975ab982d5d5e5ddc5ea78b389753a085ce049c4271aca29e0bc138058cb77be"
+          "sha256": "7e9d8191fa15b5dcffd51ae77da93b4cf46214c68af3f228be90a49e62bc57e1"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "59a5727085eab06dab2ed0ae40f569b4bb5eed8b0ac57c4a093b0ec772a5ee6f"
+          "sha256": "932d7914b7e660cb50430e45b15a36c486fa2d0f66a009ddf1d32b7647d4ee03"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "f97f939a2be00b931def481047c3050e31221f08b186d78d2c32fa0f70546996"
+          "sha256": "1840dd8cfd82adb984e803d817dd7e45c13617fb80c700d6d4666cee21e4ec0e"
         },
         {
           "path": "reference/music-analysis.md",
@@ -235,7 +235,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "87f4f628cc4d62f495bf37a47aa7e3aa7079b8d9a244c59c5a33b25217000ecf",
+      "content_sha256": "28367ecc500c83c04304ce7bfefb9686207a5b6d20fdcdda931e69737d083e33",
       "documents": [
         {
           "path": "SKILL.md",
@@ -259,7 +259,7 @@
         },
         {
           "path": "reference/route-selection.md",
-          "sha256": "33de5928848e250a9fdcc31573772a62b8c76011415ac8635d77962c3bbcb904"
+          "sha256": "0ccb942cbde5ab026da6388b852cf0a07d92d1eb350ea14253953d3a1a7a05f8"
         },
         {
           "path": "reference/switchx-2.md",
@@ -323,11 +323,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "778833d1b6ce4a545e21e4822e0976f9548e19883997bc74de0ea290f98082d2",
+      "content_sha256": "d5056c0b51670807f9f8ef64a8188149a0631ae2318e8d0ba04c0f2d06a3b9e0",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "fdb493c2dce65789d26f25c95d939017cb6d5f413fff0d1c2c927513fef4f87e"
+          "sha256": "9c1b1e0f908d50c1a0b888937b534ada4ad60102285dc40986ba5c27e76fd9cd"
         }
       ]
     },
@@ -403,15 +403,15 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "60fc75587f7281b2abae16009dc846b1d1e1d06dda3a9b44ef980e4f91b1e4bb",
+      "content_sha256": "5ae0298de05858fb89996728fd7cff24a99428a6e4843cf66084e02113d11974",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "b7f6224c66359b14c6f2cad2acffcee66361aed581b262dba1ff28658e4855ee"
+          "sha256": "1c792b3f9b77a541921acdb4d7d121a89c1603447e60521a6ce7fa220ff1af95"
         },
         {
           "path": "reference/draft-to-final.md",
-          "sha256": "4e3367467167666bcc929f662a4c5c0be18e49d6358b9b168207d18939dca954"
+          "sha256": "b2c4308c9f4263e259b7ec38ab9189160d6fd8b4609acf4a101f8cf99787f452"
         },
         {
           "path": "reference/flux-3.md",
@@ -459,7 +459,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "8b04c76f351ae4156b649a51e11f332e507a5fc749da876f6ca3649a6f346dfa"
+          "sha256": "be72d288ef158e1c92d3cdb241f7fa9399c897bad9b71a95604b9b6b94bb6821"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
@@ -651,6 +651,7 @@
     "shotlist_generate_batch",
     "shotlist_scene_chat",
     "shotlist_scene_descriptions_generate",
+    "shotlist_shots_move",
     "storyboard_chunks_list",
     "storyboard_first_frame_propose",
     "storyboard_generate",
@@ -691,5 +692,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "7be9d7d81a54c77b35dff9fd73494f6d4d2c0d13483ac1f6fdf7fda18e636f76"
+  "mcp_connector_tools_sha256": "263a43066baf9b55d4564c780e3c6185bb221c44e560c954320a55a2d81c9d9e"
 }
