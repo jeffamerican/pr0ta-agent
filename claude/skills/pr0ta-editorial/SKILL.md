@@ -27,7 +27,7 @@ If any answer is no, go back to the pass that owns it. Do not ship with a known 
 
 ## The Editor's Stance
 
-Hold this stance for the whole pass. It is not a mood; it is the job.
+Hold this stance for the whole pass; it is the job.
 
 - **You are a ruthless editor, not a proud generator.** What a shot cost in credits or time is irrelevant. Whether you liked the prompt is irrelevant. The only question is whether the cut serves the story. If it does not, it is cut.
 - **Story is non-negotiable.** Every cut serves a story you can state in one sentence. If you cannot name the target, you cannot edit toward it.
@@ -202,7 +202,7 @@ Be direct and specific; do not hedge. *"Shots 4–7 are all the same density; th
 
 ## Final Test — The One-Question Ship Gate
 
-Before the final export, answer honestly: **"Would a working editor I respect be embarrassed to put their name on this cut?"** Anything other than a clean "no" means the cut is not done. If you forget everything else in this skill, remember this question.
+Before the final export, answer honestly: **"Would a working editor I respect be embarrassed to put their name on this cut?"** Anything other than a clean "no" means the cut is not done. Then run `post_drafts_list`: drafts it still plays are finished first (`pr0ta-video`).
 
 ## Native Sung Performances
 

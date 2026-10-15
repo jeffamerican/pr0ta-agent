@@ -80,8 +80,16 @@ A mission in `review` holds actions for approval: effects with status
 there (credit spends, changes to shared work). Show the user what is held and
 why; `operator_mission_review(mission_id, effect_id, decision)` approves or
 rejects one, and only on the user's explicit decision. Draft artifacts marked
-`requires_review` and actions in `attention` are resolved in the app (the
-Operator page) by the user.
+`requires_review` are review cards: the user answers them in the app, or you
+relay their answer with `operator_mission_review(mission_id, artifact_id,
+decision, note?)`. A card with `options` (2 to 4 labelled choices, such as
+"Fix it" / "Leave as is") takes `decision: "choose"` and `choice` set to one
+label; others take `approve` or `request_changes`. Cards that approve first
+frames, Casting voices or draft finishing, and actions in `attention`, are
+resolved in the app. A cut presented as final that still plays draft
+renders comes with a card "Finish N drafts at 1080p — X credits" (unless the
+project or mission keeps drafts): approving it in the app finishes those drafts
+and swaps the finals into the cut in place (`pr0ta-video`, draft to final).
 
 ## Quality control
 
@@ -94,7 +102,7 @@ keeps its verdict and the mission moves on; its cut lists the flagged clips. A
 flagged still that further work builds on saves a draft titled
 `QC: scene N shot M` with the findings and QC's suggested fix, and puts the
 mission in `review`. Show the user that draft; they answer it in the app (keep
-the take, or give a direction).
+the take, have a new one made, or something else they describe).
 
 ## Costs and limits
 

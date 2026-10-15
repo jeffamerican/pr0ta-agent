@@ -38,7 +38,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **models** (`mcp-tools-1.md`): models_get_defaults, models_list, models_preferred
 - **music** (`mcp-tools-1.md`): music_analyze, music_singing_voices_list
 - **narration** (`mcp-tools-1.md`): narration_materialize_to_post, narration_timeline_get
-- **post** (`mcp-tools-1.md`): post_clip_slow_motion, post_clips_link, post_export_start, post_frames_get, post_render_start, post_sequence_analyze, post_sequence_debug_report, post_sequence_get, post_sequence_save
+- **post** (`mcp-tools-1.md`): post_clip_slow_motion, post_clips_link, post_drafts_finish, post_drafts_list, post_export_start, post_frames_get, post_render_start, post_sequence_analyze, post_sequence_debug_report, post_sequence_get, post_sequence_save
 - **prep** (`mcp-tools-1.md`): prep_production_capabilities
 - **producer** (`mcp-tools-1.md`): producer_read_generate
 - **production** (`mcp-tools-1.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry

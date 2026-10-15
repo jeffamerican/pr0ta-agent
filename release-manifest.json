@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.2.7",
+  "skills_version": "6.2.9",
   "released_at": "2026-10-14",
-  "source_revision": "v6.2.7",
-  "minimum_platform_version": "1.25.277",
+  "source_revision": "v6.2.9",
+  "minimum_platform_version": "1.25.287",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05598-mav",
-  "bundle_sha256": "bcc69cefb1aa2ab763b5d764338d369c0c35f56dcb87985b0d5744232b7eacca",
+  "platform_revision": "pr0ta-platform-05658-duf",
+  "bundle_sha256": "65066c35c34579b631e2cf8e6bf4ff8ad5f58d6180f3fe10349d997f67cd71fb",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "49f1eec7332600c3fc2020a19433df4948bbcd04e2995a5b6c1cad34fb78affe",
+      "content_sha256": "874a6b421ad93565619c69282bf14a1239fa60d1fdf16e20c44e6ce474cbf782",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "49c0af48d53be9e8afee009d61de1c73d5d0aded84931b777d1883aba96fbded"
+          "sha256": "27bf09045ef527582da981c0b3a7306c489360e49c03f0dc1833d68f76ec0d61"
         },
         {
           "path": "reference/asset-management.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "607ba3dc60fe3341d60771e8507b9ed1011b516bd16b398c8db95755554bf9f5"
+          "sha256": "975ab982d5d5e5ddc5ea78b389753a085ce049c4271aca29e0bc138058cb77be"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -85,11 +85,11 @@
         },
         {
           "path": "reference/mcp-tools-3.md",
-          "sha256": "94b05a9b85f6c9c67af4c27ece6d0924c045e795d16694931f32b73bec9871df"
+          "sha256": "b732a9fb916f601e9df70e8cb745420c072524a96024fe4f05c11f96f9e0b9e4"
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "fd76ef80ff597133e1e2fb40ca4df0f4ced5e7cee1a01257b3b81169df6d18f3"
+          "sha256": "f97f939a2be00b931def481047c3050e31221f08b186d78d2c32fa0f70546996"
         },
         {
           "path": "reference/music-analysis.md",
@@ -212,11 +212,11 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "4918d2818106aebacaddfb4995bc05cc5fdf7ae1922960b292cb577d34e10a58",
+      "content_sha256": "538bb66019a5845fc8efaed1a9f07c930f7ff69a973f4e6c3a2bcf21d0892dfe",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "2c57df34abfd574c56cfc5b161cfbdb0b784bb29f4124f518cbb352a2afb861a"
+          "sha256": "c38ecd72bede22862b036fe2b8c737a321e9682d4007e84ab67269fab2a3385c"
         },
         {
           "path": "reference/review-and-gates.md",
@@ -312,11 +312,11 @@
     {
       "name": "pr0ta-operator",
       "description": "Hand work to PR0TA's own Operator as a durable mission: long or many-step production goals (draft a screenplay from beats, prep a set of scenes, storyboard an act, generate and review a batch) that run inside the app with its permissions, credit budget, and approval stops. Read when delegating, running work unattended, or waiting on a mission.",
-      "content_sha256": "1f851ac8e7ae7210be1d5393039916655035575d8270bfa7b25f4086d86f24ed",
+      "content_sha256": "2e11d01b8a6040590176485e891e833338215137f6af705c1247a8071ddaca36",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "79e25d1581f8b97a7b1a67f9a2b2ced5ac1ab5e37855a877e1b515ef7e8739da"
+          "sha256": "965e9a1488d8654eeeb336326883b6d3b23a51a450a7128822753b0b3725bc18"
         }
       ]
     },
@@ -403,15 +403,15 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "7dd796709ece2438ffa08f74f4b7f6aeecc225c8618738080b111f595fa7421c",
+      "content_sha256": "60fc75587f7281b2abae16009dc846b1d1e1d06dda3a9b44ef980e4f91b1e4bb",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "5f159245346ae8d0b8d6e5e04f3e6d3834d2c2f9b716a7268e14ff2105dc5f40"
+          "sha256": "b7f6224c66359b14c6f2cad2acffcee66361aed581b262dba1ff28658e4855ee"
         },
         {
           "path": "reference/draft-to-final.md",
-          "sha256": "47b6a70563f906f0f942bab18aae9ce46b9f46910128cd561e1ec5a0998dca78"
+          "sha256": "4e3367467167666bcc929f662a4c5c0be18e49d6358b9b168207d18939dca954"
         },
         {
           "path": "reference/flux-3.md",
@@ -599,6 +599,8 @@
     "operator_missions_list",
     "post_clip_slow_motion",
     "post_clips_link",
+    "post_drafts_finish",
+    "post_drafts_list",
     "post_export_start",
     "post_frames_get",
     "post_render_start",
@@ -689,5 +691,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "6eb285a931811207fb4491e8beafdb114c15d8983942f3cb6fc707ce6905e9e6"
+  "mcp_connector_tools_sha256": "7be9d7d81a54c77b35dff9fd73494f6d4d2c0d13483ac1f6fdf7fda18e636f76"
 }

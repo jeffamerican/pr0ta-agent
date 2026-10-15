@@ -355,7 +355,7 @@ same either way; `pr0ta-operator` owns when and how to delegate.
 | `operator_mission_get` | Status, summary, checkpoint, actions pending review, usage, events after `after` (pass the previous `cursor`) |
 | `operator_mission_send` | `text`, `mode` `steer` (change current work) or `follow_up` (queue next) → new `receipt_task_id` |
 | `operator_mission_control` | `action`: `pause`, `resume`, `cancel`, `archive`, `unarchive`; resume returns a `receipt_task_id` |
-| `operator_mission_review` | `effect_id`, `decision` `approve` or `reject`; only on the user's explicit instruction |
+| `operator_mission_review` | `effect_id` + `decision` `approve`/`reject`, or a card's `artifact_id` + `approve`/`request_changes`/`choose` (`choice`: an option's label), `note`; only on the user's explicit instruction |
 
 Each command returns a receipt task that settles when the mission next stops
 (done, idle, review, attention, paused, failed, cancelled). Wait on it with

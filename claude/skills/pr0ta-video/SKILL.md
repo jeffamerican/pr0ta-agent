@@ -31,7 +31,7 @@ The platform chooses models, not this skill. The admin pins models per modality 
 
 2. If the user named a model, use it. Otherwise resolve the key with `models_preferred(modality=...)`; `pr0ta-api` → "Choosing a model" owns the full rule, including a null `model_id`.
 3. Call `models_get_defaults(model_id)`. Send a `mode` from its `supported_modes` unless the model reference documents a route-specific mode, and treat its schema as the field, enum, duration, and resolution authority. Several image-to-video routes (Gemini Omni Flash 1.1, H3 Max, Wan 3.0 Prime, Grok Imagine Video 1.5, and others) accept only `ref_to_vid`.
-4. If the `models_get_defaults` response has a `draft_mode` block, the model can draft: render a cheap low-resolution draft, review it, and finish only the approved draft at full resolution. Draft by default for new or changed shots and anything likely to need more than one attempt; generate directly only for an already-approved shot or an edit or extend. Read `reference/draft-to-final.md`.
+4. If the `models_get_defaults` response has a `draft_mode` block, the model can draft: render a cheap low-resolution draft, review it, and finish only the approved draft at full resolution. Draft by default for new or changed shots and anything likely to need more than one attempt; generate directly only for an already-approved shot or an edit or extend. Before presenting a cut as final, finish the drafts it plays (`post_drafts_list`). Read `reference/draft-to-final.md`.
 5. Read the model reference for the resolved id (routing table below) before writing its prompt.
 6. For cost-sensitive choices, query `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate and output configuration. Skills carry no prices.
 
