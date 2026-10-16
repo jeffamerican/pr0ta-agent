@@ -2,6 +2,15 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## script
+
+- `script_create`(**title**, kind): Create a new, empty script in the project's library and return it (id, title, kind, blockStart).
+- `script_supervisor_read_generate`(**script**, **producer_analysis**, **director_analysis**, casting_analysis): Run and persist normalized Script Supervisor scenes, characters, locations, and continuity; returns a task.
+
+## scripts
+
+- `scripts_list`(): List the project's screenplay library: id, title, kind (feature, episode, spot, short, alternate, other), blockStart (its first production scene numb…
+
 ## set
 
 - `set_environment_asset_link`(**environment_id**, **asset_id**, **role**, modality, status, pass_type, metadata): Attach an existing project asset to a 3D set environment with a typed role, modality, technical pass, and approval state.

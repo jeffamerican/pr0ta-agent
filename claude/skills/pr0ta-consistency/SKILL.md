@@ -37,11 +37,14 @@ Read what Prep already has before creating anything. Do not keep a private conti
 | Set references for a scene or location | `get_set_references(scene_number, location)` |
 | 3D set environments, variants, and linked world assets | `set_environments_get(scene_number)` |
 | Cast and reference elements for one Production Queue shot | `production_queue_character_elements_get(asset_uid)` |
+| The exact references a Production Queue row's render sends: each image's role, the gaps that stop it, what the model's limits leave out | `references_resolve(asset_uid, model)` |
 | Tagged reference assets | `assets_list(reference_type: "character_reference", subject)` |
 
 With a `scene_number`, `production_context_get` overlays the approved structured Prep references for that scene's sets, looks, and props, so it is the first call for any shot. Approved Prep references win over anything older or unlabeled.
 
 Approval belongs to the user. Propose takes and let the user approve them in Prep; do not approve Prep takes on their behalf.
+
+**Queue reference ledgers.** When a render stops on references, or before you choose references for a Production Queue row, call `references_resolve(asset_uid)` (read-only). It lists the references the row's ledger holds, each with one canonical role ("Image 2 role: character identity — MILO (approved portrait)"), built from approved sources only: the approved first frame, the faces of the cast in frame (the shot list's `characters_in_frame`; uncast background roles get no face), the scene's approved set, the in-frame cast's approved looks, the props the shot names, the previous shot's selected take, and the speakers' approved voices. If it reports `enforced: true`, the queue renders with exactly these references: a missing approved face, set, look, prop or voice stops the render before any model call, listing each gap and how to go on. Either the user approves one of the candidate pictures (bring them as pictures, never a text brief), or you save a reference choice made only of APPROVED assets that covers the gap (`production_queue_asset_update` with `sequence_reference_asset_ids` for a sequence row, `reference_image_asset_ids` for a shot row); never put an unapproved image in a saved choice. A row with an approved first frame or sheet is stopped only for a face. A row whose prompt was written for other references is refused until you analyse it again. If it reports `enforced: false`, the ledger is advisory: renders use the row's references as before, and nothing stops on a gap. To settle who is in frame for an older shot, `references_settle_in_frame` (writes the shot list, bills one small classification). When you write a shot list, fill `characters_in_frame` on every picture shot.
 
 ## 2. Generate Only the Missing References
 

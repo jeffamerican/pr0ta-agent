@@ -44,12 +44,13 @@ below, then read the part named beside it (another reference file of this skill)
 - **production** (`mcp-tools-1.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry
 - **project** (`mcp-tools-1.md`): project_metadata_get, project_metadata_patch
 - **read** (`mcp-tools-1.md`): read_pr0ta_skill, read_web_page
+- **references** (`mcp-tools-1.md`): references_resolve, references_settle_in_frame
 - **review** (`mcp-tools-1.md`): review_submit_assets
 - **save** (`mcp-tools-1.md`): save_scene_shotlist
 - **score** (`mcp-tools-1.md`): score_bible_get, score_bible_save
 - **screenplay** (`mcp-tools-1.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
-- **script** (`mcp-tools-1.md`): script_create, script_supervisor_read_generate
-- **scripts** (`mcp-tools-1.md`): scripts_list
+- **script** (`mcp-tools-2.md`): script_create, script_supervisor_read_generate
+- **scripts** (`mcp-tools-2.md`): scripts_list
 - **set** (`mcp-tools-2.md`): set_environment_asset_link, set_environment_collider_materialize, set_environment_upsert, set_environments_get
 - **shot** (`mcp-tools-2.md`): shot_performances_list, shot_quality_review
 - **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate, shotlist_shots_move

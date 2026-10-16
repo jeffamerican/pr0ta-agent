@@ -241,6 +241,11 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.
 - `read_web_page`(**url**, max_chars): Open one web page in a browser and return its text as Markdown, after its scripts have run.
 
+## references
+
+- `references_resolve`(**asset_uid**, model): Read the references a Production Queue row's render sends (its reference ledger), without rendering or saving anything: each image, video and audio f…
+- `references_settle_in_frame`(**asset_uid**, model): Settle who is in frame for a shot written before the shot list recorded it: one billed classification call whose answer is saved on the shot list (ch…
+
 ## review
 
 - `review_submit_assets`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, recipient_emails): Publish assets to a PR0TA public client review room.
@@ -260,12 +265,3 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `screenplay_import`(filename, asset_id, force): Make a screenplay the PRIMARY script's working draft.
 - `screenplay_publish`(title, actual_length_eighths, script_id): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
 - `screenplay_save`(**content**, new_revision, script_id): Save the complete working draft of one script in the project's library.
-
-## script
-
-- `script_create`(**title**, kind): Create a new, empty script in the project's library and return it (id, title, kind, blockStart).
-- `script_supervisor_read_generate`(**script**, **producer_analysis**, **director_analysis**, casting_analysis): Run and persist normalized Script Supervisor scenes, characters, locations, and continuity; returns a task.
-
-## scripts
-
-- `scripts_list`(): List the project's screenplay library: id, title, kind (feature, episode, spot, short, alternate, other), blockStart (its first production scene numb…

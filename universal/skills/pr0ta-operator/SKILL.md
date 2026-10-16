@@ -30,8 +30,8 @@ stop for approvals under the project's policy.
 ## Starting
 
 `operator_mission_start(objective, title?, scene_numbers?, character?,
-shot_number?, client_id?, completion_subscription_id?)` returns `mission_id`
-and `receipt_task_id`.
+shot_number?, client_id?, completion_subscription_id?, continues_mission_id?)`
+returns `mission_id` and `receipt_task_id`.
 
 - Write the objective as a brief: the outcome, the scope, what "done" means,
   and what to leave alone. Scope it with `scene_numbers`, `character` or
@@ -40,6 +40,10 @@ and `receipt_task_id`.
   key and the same title, objective and scope returns the same mission instead
   of starting another; the same key with a different title, objective or scope
   fails with `409`.
+- To carry on an earlier mission (an idle or finished one), pass its id as
+  `continues_mission_id`. The new mission starts from that mission's handoff
+  and can read its drafts, checkpoint and receipts; missions are otherwise
+  isolated from each other. Only your own missions in the project qualify.
 
 ## Waiting: receipts
 
