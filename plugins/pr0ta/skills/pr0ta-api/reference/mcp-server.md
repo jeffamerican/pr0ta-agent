@@ -137,7 +137,7 @@ Cinematographer boundary. Poll with `tasks_get` and branch on `result.type`:
 
 The boundary repairs one invalid agent result, then fails with
 `AGENT_RESULT_CONTRACT_VIOLATION`. Orchestration is a single pass: each
-department resolves from the project's Settings → Agents configuration, gets
+department resolves from the project's agent configuration, gets
 one structured call, and may get one retry of that same runtime or one focused
 repair call. Exhausted attempts set `resume_safe: false` and omit
 `retry_token`; `tasks_get.error.details.target_generation` states whether the
@@ -249,6 +249,6 @@ Poll the returned analysis task before reporting QC findings.
 Inside PR0TA, department agents and the Operator call the same registry tools
 through their configured model runtimes; the registry enforces which roles may
 call each tool. The Operator runs durable missions on PR0TA's agent harness or,
-when the project selects it in Settings → Agents, the Managed Codex runtime.
+when the project selects it in its agent settings, the Managed Codex runtime.
 External agents reach it through the `operator_mission_*` tools (see
 `SKILL.md` → "Operator missions" and `pr0ta-operator`).

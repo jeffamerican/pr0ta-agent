@@ -345,7 +345,7 @@ user's explicit instruction.
 `operator_mission_start` hands a goal to PR0TA's own Operator as a durable
 mission. It runs inside PR0TA under the project's Operator permissions and
 credit budget, with review stops, on PR0TA's agent harness or, when the project
-selects it in Settings → Agents, the Managed Codex runtime. The tools are the
+selects it in its agent settings, the Managed Codex runtime. The tools are the
 same either way; `pr0ta-operator` owns when and how to delegate.
 
 | Tool | Contract |
