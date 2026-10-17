@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05849-nuz",
-  "bundle_sha256": "b513f6f9ce9266679729481976ae6eda1fc704e666a86439986056b65b9845bd",
+  "platform_revision": "pr0ta-platform-05867-vuh",
+  "bundle_sha256": "fa03bac5e1dc41efa72a0a14ab15371c8d02b502d53bd00c937af86febb88b2b",
   "skills": [
     {
       "name": "pr0ta",
@@ -323,11 +323,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "d5056c0b51670807f9f8ef64a8188149a0631ae2318e8d0ba04c0f2d06a3b9e0",
+      "content_sha256": "f87adae1e3a1908c76e6ae1a4ccb306307c5801f1bcace72f35423fd78a3eca7",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "9c1b1e0f908d50c1a0b888937b534ada4ad60102285dc40986ba5c27e76fd9cd"
+          "sha256": "70355c6d20469fa9572297903f0ea125d7217526e59c12a3a8240e3bb5458f67"
         }
       ]
     },
@@ -403,7 +403,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "5ae0298de05858fb89996728fd7cff24a99428a6e4843cf66084e02113d11974",
+      "content_sha256": "d9a464fb66fa054f6e7f131efe39faa0ab0549899788f8cec0373480031d4442",
       "documents": [
         {
           "path": "SKILL.md",
@@ -459,7 +459,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "be72d288ef158e1c92d3cdb241f7fa9399c897bad9b71a95604b9b6b94bb6821"
+          "sha256": "9ef639b100c026f42ff05d2b45f8d49af8cd652ac0e49c4ac09b334c8339888d"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
