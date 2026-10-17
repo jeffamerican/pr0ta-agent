@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05897-mem",
-  "bundle_sha256": "560dee12d076bc32087c4df6fbfdd7d8e43bea725531d4214d5ca12f325bbd65",
+  "platform_revision": "pr0ta-platform-05939-xib",
+  "bundle_sha256": "c9d63b3f66fa3fb7c2d2c8792192354d63dd0adca2a2e5c097ee63d6e8adbff0",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "273aa9f742fdc7cfe5af635892c1b2da52da0e3f8ff0df3013ec7980ec637490",
+      "content_sha256": "e5dbf924e669ec638d1853c2ef47527efd9a533176db07f6c4f18548a607dff7",
       "documents": [
         {
           "path": "SKILL.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "ab40d6b7a573e9f8e637d17227917ccb63b9b13cf629e2b8f8eef3b10b57af26"
+          "sha256": "4204d74938b7124f701a262bf961b0f2d7b9bf0ac40b68841d7f2baf7de2945d"
         },
         {
           "path": "reference/mcp-tools-3.md",
