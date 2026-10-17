@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.2.13",
+  "skills_version": "6.3.0",
   "released_at": "2026-10-16",
-  "source_revision": "v6.2.13",
-  "minimum_platform_version": "1.25.311",
+  "source_revision": "v6.3.0",
+  "minimum_platform_version": "1.25.326",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,28 +12,28 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05867-vuh",
-  "bundle_sha256": "fa03bac5e1dc41efa72a0a14ab15371c8d02b502d53bd00c937af86febb88b2b",
+  "platform_revision": "pr0ta-platform-05897-mem",
+  "bundle_sha256": "560dee12d076bc32087c4df6fbfdd7d8e43bea725531d4214d5ca12f325bbd65",
   "skills": [
     {
       "name": "pr0ta",
       "description": "PR0TA (ProtaFilm|maker, app.pr0ta.com) orchestration hub for AI film and video production: script to screen, from logline and screenplay through breakdown, casting, shot lists and storyboards to image, video, voice and music generation, editing and export. Read first for any PR0TA production, then load the one companion skill for the next step.",
-      "content_sha256": "0bccd6b6dae34e586ef28c10d54a4cc5823dd41c2599a0565d068c79724da12a",
+      "content_sha256": "2dee1e64aeb0f5f10e3c4fa0955d542a85616f9633d0d79f17000aa6a6115dc4",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "14ba8c4696371b21cadc78a54c4f906bb1e88589c237e58a0b411adbf22bb5b0"
+          "sha256": "aa5be2c28984d2871c29d97cc889724e879dfdec47bd66e3a08f8dfaf82ecbc7"
         }
       ]
     },
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "1444a397ad6bc8fde3cb421af31dd6a9fb8de7c524a1db258c7692d4e38522c9",
+      "content_sha256": "273aa9f742fdc7cfe5af635892c1b2da52da0e3f8ff0df3013ec7980ec637490",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "2cc65f8cae8b33f65b74089f7f152a34caa134013de8ee8c7123bdf9a9e45dd6"
+          "sha256": "6f19ff9277059f9780199e264dafc7bceae63f2400607e363a4174860bbbf56a"
         },
         {
           "path": "reference/asset-management.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "db9cb292abad93b86ebc17e68ee62455a6171fb56eee18a255260792ff273b8a"
+          "sha256": "3f4fcca6cdd80e81457824a6748c60261a9f94cb707b9ce441ad93560c6ae4d7"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "2b8a04fd887b0bbeda54799efbf96e3d4ea70e72232f856b7fe9ef3daf30330c"
+          "sha256": "ab40d6b7a573e9f8e637d17227917ccb63b9b13cf629e2b8f8eef3b10b57af26"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "e8c4c9d819e71661d83953ae4c7f290c8faff1f98e88628d6c7f90f05bc6320c"
+          "sha256": "a295b13c52d40be782d9b9422511f493d04f3a4d6eaacdfb9b653c0a812b1f18"
         },
         {
           "path": "reference/music-analysis.md",
@@ -323,11 +323,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "f87adae1e3a1908c76e6ae1a4ccb306307c5801f1bcace72f35423fd78a3eca7",
+      "content_sha256": "d5492505eb55a2054d12b7c563a1db5e0f1bf4ea8f14234269d786d13b524307",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "70355c6d20469fa9572297903f0ea125d7217526e59c12a3a8240e3bb5458f67"
+          "sha256": "33ac444d92d46709cc81166fc74a3a353ae3d817a7d81b2a019152199267e9b2"
         }
       ]
     },
@@ -403,7 +403,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "d9a464fb66fa054f6e7f131efe39faa0ab0549899788f8cec0373480031d4442",
+      "content_sha256": "10dbe528328012aeda6ef1cacb94e7c885a98b442b822ee8c1ff87feec3306b3",
       "documents": [
         {
           "path": "SKILL.md",
@@ -459,7 +459,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "9ef639b100c026f42ff05d2b45f8d49af8cd652ac0e49c4ac09b334c8339888d"
+          "sha256": "755eb8b6ad3e41855353801ee466f681c00360c7ce04d16a005067d8c90ac119"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
@@ -504,6 +504,9 @@
     "beat_sheet_generate",
     "billing_usage_get",
     "blender_job_submit",
+    "blocking_animatic_render",
+    "blocking_get",
+    "blocking_save",
     "breakdown_element_review_decide",
     "breakdown_rerun",
     "breakdown_status",
@@ -694,5 +697,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "a7a076b644d8ae6d91b0b924227d18d82357d67ef7ff3f1cb0fb2636258baf16"
+  "mcp_connector_tools_sha256": "da6ef94d3928ba78fdb4ca2d5d13f4ffbba281f32c57b76893d7c519e8f492dd"
 }

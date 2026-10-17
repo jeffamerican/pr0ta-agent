@@ -43,6 +43,12 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `blender_job_submit`(**request**): Build or revise a canonical set in the isolated Blender worker, optionally starting from an existing self-contained .blend, GLB, or FBX asset.
 
+## blocking
+
+- `blocking_animatic_render`(**scene_number**, **chunk_id**): Render a sequence chunk's animatic in Blender: the scene's approved set with the chunk's figures and props, cut between composed setups for the chunk…
+- `blocking_get`(**scene_number**): Read a scene's blocking: the set it is staged on (and whether its build is approved), the cast as Blender figures (body, height, rigged model) plus c…
+- `blocking_save`(**scene_number**, **plan**, base_revision): Save a scene's whole blocking plan (send back what blocking_get returned in plan, edited, with its revision as base_revision; a stale revision is ref…
+
 ## breakdown
 
 - `breakdown_element_review_decide`(**scene_number**, **fingerprint**, **version**, **mention_id**, **action**, target_id): Decide one element mention in a scene's element review: link it to target_id, keep it separate, leave it unresolved, or exclude it.
@@ -258,10 +264,3 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `score_bible_get`(): Read the project's score bible: the musical concept, the style core and exclude core every cue's prompt starts from, palette, key centers, tempo fami…
 - `score_bible_save`(concept, style_core, exclude_core, palette, key_centers, tempo_family, dialogue_strategy, themes, notes): Save score bible fields.
-
-## screenplay
-
-- `screenplay_draft_beats`(**content**, budgets, script_id): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
-- `screenplay_import`(filename, asset_id, force): Make a screenplay the PRIMARY script's working draft.
-- `screenplay_publish`(title, actual_length_eighths, script_id): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
-- `screenplay_save`(**content**, new_revision, script_id): Save the complete working draft of one script in the project's library.

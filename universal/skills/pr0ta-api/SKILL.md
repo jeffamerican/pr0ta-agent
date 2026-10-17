@@ -62,7 +62,8 @@ consistency bundles): `reference/projects-models-resources.md`.
 ## Choosing a model
 
 The platform owns model choice. The admin pins models per modality, and each
-user may set their own in Settings → Tools. Resolve before every generation:
+user may set their own in Settings → Tools (a team's editors get their team
+owner's and cannot change them). Resolve before every generation:
 
 1. Call `models_preferred(modality=...)` (REST
    `GET /api/v2/models/preferred?modality=...`) and pass

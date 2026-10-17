@@ -16,6 +16,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **beat** (`mcp-tools-1.md`): beat_sheet_approve, beat_sheet_generate
 - **billing** (`mcp-tools-1.md`): billing_usage_get
 - **blender** (`mcp-tools-1.md`): blender_job_submit
+- **blocking** (`mcp-tools-1.md`): blocking_animatic_render, blocking_get, blocking_save
 - **breakdown** (`mcp-tools-1.md`): breakdown_element_review_decide, breakdown_rerun, breakdown_status
 - **bug** (`mcp-tools-1.md`): bug_report_create
 - **cast** (`mcp-tools-1.md`): cast_list_get, cast_list_save
@@ -48,7 +49,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **review** (`mcp-tools-1.md`): review_submit_assets
 - **save** (`mcp-tools-1.md`): save_scene_shotlist
 - **score** (`mcp-tools-1.md`): score_bible_get, score_bible_save
-- **screenplay** (`mcp-tools-1.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
+- **screenplay** (`mcp-tools-2.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
 - **script** (`mcp-tools-2.md`): script_create, script_supervisor_read_generate
 - **scripts** (`mcp-tools-2.md`): scripts_list
 - **set** (`mcp-tools-2.md`): set_environment_asset_link, set_environment_collider_materialize, set_environment_upsert, set_environments_get

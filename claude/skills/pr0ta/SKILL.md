@@ -32,7 +32,9 @@ the companion skill that owns each step. Read only the companion you need next.
 ## Choosing models
 
 Never pick a model from memory or from these skills. The project's admin pins
-models per modality and each user may override them in Settings → Tools.
+models per modality and each user may override them in Settings → Tools. A
+team's editors use their team owner's Tools settings and have no Tools tab:
+when a model is missing for one of them, tell them to ask the team owner.
 
 - Call `models_preferred(modality)` and put its `model_id` in the request.
   Modalities include `image_model`, `image_edit_model`,

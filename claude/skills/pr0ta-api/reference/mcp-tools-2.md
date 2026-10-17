@@ -2,6 +2,13 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## screenplay
+
+- `screenplay_draft_beats`(**content**, budgets, script_id): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
+- `screenplay_import`(filename, asset_id, force): Make a screenplay the PRIMARY script's working draft.
+- `screenplay_publish`(title, actual_length_eighths, script_id): Publish the working screenplay as a locked revision and start its breakdown: the Producer and Director reads run, then the breakdown pauses for Creat…
+- `screenplay_save`(**content**, new_revision, script_id): Save the complete working draft of one script in the project's library.
+
 ## script
 
 - `script_create`(**title**, kind): Create a new, empty script in the project's library and return it (id, title, kind, blockStart).
