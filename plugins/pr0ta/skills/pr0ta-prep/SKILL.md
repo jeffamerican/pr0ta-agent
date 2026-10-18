@@ -17,7 +17,8 @@ tools. Call `memory_context_pack(task_intent, scope)` before each department's
 creative work; project memory holds the approved decisions, and approved
 memory outranks everything else. Record accepted decisions with
 `memory_record_decision` and notes with `memory_record_note` (contract:
-`pr0ta-api` → "Project memory").
+`pr0ta-api` → "Project memory"). A gate naming a `workflow_bypasses` entry is
+yours to judge (`pr0ta-api` → "Workflow gates").
 
 ## 1. Follow the breakdown
 
@@ -69,14 +70,17 @@ scene assignments. `style_package_get` reads them. Refine with
 `style_world_update`, add with `style_world_create`, move scenes with
 `style_world_assign_scenes`. Moving scenes does not reread them by itself:
 when the user wants the departments to follow the new world, run
-`breakdown_rerun(scenes)` for the moved scenes. `style_package_save` persists the whole Style page with its reference
-assets. Style prompts feed every downstream prompt; agree them with the user.
+`breakdown_rerun(scenes)` for the moved scenes.
 
-Each world's approved look image steers every reference, read and storyboard in
-it. When a world's look text changes (or it has no approved image), offer a new
-round: `style_candidates_generate(style_id, note)` makes 4 candidate frames on
-the world's model (paid, quoted). The user approves one on the Style page; never
-approve a look yourself.
+Each world has one look line, added by the server to every image and video in
+its scenes. Write it as `look_slots` (medium, palette, light, texture, lens) with
+`style_world_update`: about 40 words of what is in the frame; fix any
+`look_issues`. Never repeat the look in prompts you write.
+
+Style travels as words. Put the client's look-books, treatment pages or brand
+images on the world as `client_references`; set `match_client_references` only
+when the user asks to match them. `style_preview_generate(style_id)` renders one
+paid image of a real moment to judge the look (never a reference).
 
 ## 5. Casting and voices
 
@@ -132,8 +136,8 @@ variant; `set_environment_upsert`, `set_environment_asset_link` and
 `set_environment_collider_materialize` build them. Each Blender job that
 exports runtime GLBs is one build (`builds[]`, newest first); the person
 approves one build, which pins it (`approvedRevision`), and later builds stay
-candidates, so hand a finished build over with status `review` and say which
-build to look at; agents cannot approve. Builds older than the five newest
+candidates, so hand a finished build over with status `review`, or approve it
+(`status: "approved"` + `approval_reason`). Builds older than the five newest
 candidates become history (`historyCount`, read with `include_superseded`).
 Scene-changing builds are limited to the initial build plus the Build quality
 refinements (`budget.used` of `budget.limit`); when `blender_job_submit` refuses
@@ -287,14 +291,13 @@ Take `producer_analysis` and `director_analysis` from `project_metadata_get`
 - For multi-shot video routes that take storyboard sheets, `storyboard_chunks_list`
   assembles beat chunks and `storyboard_reference_sheet_generate` renders a
   reference sheet per chunk; see `pr0ta-video`.
-- A chunk's sheet needs every shot's first frame approved, and only the person
-  approves. Generate first-frame images (category `storyboard`), then
-  `storyboard_first_frame_propose(scene, shot, asset_id)` puts one on the shot
-  as its candidate. Show the candidates on their own review card
-  (operator_checkpoint: requires_review=true, asset_ids,
-  approves_first_frames=true): approving it approves them, asking for changes
-  withdraws them. The person can also approve in Storyboarding. `get_shot_assets` reports each shot's
-  `first_frame` state. Never approve on the person's behalf.
+- A chunk's sheet needs every shot's first frame approved. Generate
+  first-frame images (category `storyboard`); `storyboard_first_frame_propose
+  (scene, shot, asset_id)` makes one the shot's candidate. Show candidates on a
+  review card (operator_checkpoint: requires_review=true, asset_ids,
+  approves_first_frames=true): approving approves them, changes withdraw them.
+  The person approves in Storyboarding, or you with `approve: true` +
+  `approval_reason` after looking. `get_shot_assets` reports `first_frame`.
 - A native storyboard is one first-frame image per shot. A multi-panel sheet
   is a reference, not per-shot frames: nothing splits it onto shots, so
   generate or edit one image per shot (the sheet can be a reference) and

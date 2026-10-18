@@ -11,6 +11,7 @@ below, then read the part named beside it (another reference file of this skill)
 ## Tools by group
 
 - **agent** (`mcp-tools-1.md`): agent_chat_orchestrate_prompt, agent_chat_resume, agent_chat_send
+- **asset** (`mcp-tools-1.md`): asset_move, asset_rename
 - **assets** (`mcp-tools-1.md`): assets_annotations_batch_update, assets_annotations_update, assets_download, assets_favorite_set, assets_get_download_link, assets_get_download_links, assets_import_url, assets_list, assets_probe, assets_trim, assets_upload_batch_start, assets_upload_finalize, assets_upload_start
 - **audio** (`mcp-tools-1.md`): audio_analyze, audio_meter, audio_stem_separate
 - **beat** (`mcp-tools-1.md`): beat_sheet_approve, beat_sheet_generate
@@ -43,12 +44,13 @@ below, then read the part named beside it (another reference file of this skill)
 - **prep** (`mcp-tools-1.md`): prep_production_capabilities
 - **producer** (`mcp-tools-1.md`): producer_read_generate
 - **production** (`mcp-tools-1.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry
-- **project** (`mcp-tools-1.md`): project_metadata_get, project_metadata_patch
+- **project** (`mcp-tools-1.md`): project_metadata_get, project_metadata_patch, project_rename
+- **qr** (`mcp-tools-1.md`): qr_code_generate, qr_code_verify
 - **read** (`mcp-tools-1.md`): read_pr0ta_skill, read_web_page
-- **references** (`mcp-tools-1.md`): references_resolve, references_settle_in_frame
-- **review** (`mcp-tools-1.md`): review_submit_assets
-- **save** (`mcp-tools-1.md`): save_scene_shotlist
-- **score** (`mcp-tools-1.md`): score_bible_get, score_bible_save
+- **references** (`mcp-tools-2.md`): references_resolve, references_settle_in_frame
+- **review** (`mcp-tools-2.md`): review_submit_assets
+- **save** (`mcp-tools-2.md`): save_scene_shotlist
+- **score** (`mcp-tools-2.md`): score_bible_get, score_bible_save
 - **screenplay** (`mcp-tools-2.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
 - **script** (`mcp-tools-2.md`): script_create, script_supervisor_read_generate
 - **scripts** (`mcp-tools-2.md`): scripts_list
@@ -56,7 +58,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **shot** (`mcp-tools-2.md`): shot_performances_list, shot_quality_review
 - **shotlist** (`mcp-tools-2.md`): shotlist_generate, shotlist_generate_batch, shotlist_scene_chat, shotlist_scene_descriptions_generate, shotlist_shots_move
 - **storyboard** (`mcp-tools-2.md`): storyboard_chunks_list, storyboard_first_frame_propose, storyboard_generate, storyboard_generate_batch, storyboard_pdf_export, storyboard_reference_sheet_generate, storyboard_reference_sheets_list, storyboard_sequences_get, storyboard_sequences_save
-- **style** (`mcp-tools-2.md`): style_candidates_generate, style_package_get, style_package_save, style_world_assign_scenes, style_world_create, style_world_delete, style_world_update
+- **style** (`mcp-tools-2.md`): style_earlier_look_list, style_package_get, style_package_save, style_preview_generate, style_restyle, style_world_assign_scenes, style_world_create, style_world_delete, style_world_update
 - **submit** (`mcp-tools-2.md`): submit_assets_for_review
 - **supervisor** (`mcp-tools-2.md`): supervisor_review_answer, supervisor_review_list
 - **tasks** (`mcp-tools-2.md`): tasks_acknowledge, tasks_batch_get, tasks_cancel, tasks_completion_events, tasks_get, tasks_subscribe, tasks_unsubscribe, tasks_watch

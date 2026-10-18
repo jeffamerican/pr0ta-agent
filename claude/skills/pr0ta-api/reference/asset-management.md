@@ -1,6 +1,6 @@
 # Asset Management
 
-MCP: `assets_list`, `assets_get_download_link` (or `assets_get_download_links` for many), `assets_upload_start`, `assets_upload_batch_start`, `assets_upload_finalize`, `assets_annotations_update`, `assets_trim`. The REST routes below need a bearer token or, for downloads and thumbnails, a scoped `asset_token` URL.
+MCP: `assets_list`, `assets_get_download_link` (or `assets_get_download_links` for many), `assets_upload_start`, `assets_upload_batch_start`, `assets_upload_finalize`, `assets_annotations_update`, `assets_trim`, and `asset_rename`, `asset_move` and `project_rename` for organizing. The REST routes below need a bearer token or, for downloads and thumbnails, a scoped `asset_token` URL.
 
 ## Listing and Reading Assets
 
@@ -150,6 +150,16 @@ attempt never blocks a retry.
 ```json
 {"tool": "assets_import_url", "project_id": "project-id", "url": "https://upload.wikimedia.org/.../portrait.jpg", "subject": "Dario"}
 ```
+
+### Organize a Project
+
+Tidy what you make as you go: clear names and folders are how the person finds work later. Three tools organize without deleting anything; each needs the person's edit access to the project, and a view-only member is refused.
+
+- `asset_rename` sets display names, up to 100 per call: `{"renames": [{"asset_id": "...", "name": "Sc04 Sh02 Dario close"}]}`. Storage paths and download links stay the same; a name without an extension keeps the old one. Names are unique in a project, and a clash fails that entry only. A renamed asset is marked manually named, so the project's naming convention never renames it again.
+- `asset_move` files up to 200 assets into one folder: `{"asset_ids": ["..."], "folder_path": "/Casting/Portraits"}`. Missing folders, parents included, are created (`folder_created: true`); `/` is the library root. Each moved entry reports its previous folder (`from`), so a move can be undone.
+- `project_rename` changes the project's display name; its id, slug and files stay. The logline is set with `development_logline_set`.
+
+Every batch result lists what changed and what failed (`renamed`/`moved` and `failed`, each with `asset_id` and a reason); one failed entry never stops the rest. Folders cannot be deleted or renamed with these tools; ask the person to do that in the asset library.
 
 ### MCP Signed Upload Lifecycle
 

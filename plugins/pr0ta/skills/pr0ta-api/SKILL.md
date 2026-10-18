@@ -24,8 +24,8 @@ arguments.
 remote-MCP settings and complete PR0TA's browser OAuth. The installed
 distribution carries host-specific setup; `reference/mcp-server.md` has the
 OAuth metadata and troubleshooting. Start a fresh session if the host keeps its
-old tool inventory, then run the connect canary: call `list_projects`. If it
-returns the user's projects, the connection works.
+old tool inventory, then run the connect canary: `list_projects` lists the
+user's projects.
 
 **REST.** Send a bearer token to base URL `https://app.pr0ta.com`. Use a
 personal access token (PAT): the user creates one at app.pr0ta.com → Settings →
@@ -43,7 +43,7 @@ routes; the exceptions are `GET /api/auth/me`,
 (`/api/auth/personal-access-tokens`) from a signed-in browser session. Project asset downloads accept the bearer token or the scoped
 `asset_token` URL PR0TA hands out. `GET /api/v2/models` needs no auth.
 
-A standalone Python REST client lives in `reference/python-client.py`.
+A standalone Python REST client: `reference/python-client.py`.
 
 
 ## Projects
@@ -176,8 +176,7 @@ Both return a task, never finished media.
   `POST /api/v2/projects/{project_id}/generate/batch`) carries up to 10
   requests; more returns `413`. Items are validated up front and submitted one
   by one, so a batch can partly succeed.
-- The initial task may show `provider: null` and `model_id: null`; that is
-  normal.
+- An initial task may show `provider: null` and `model_id: null`.
 
 Per-generator request shapes, capability notes, the asset-ID resolution table,
 and the submission response: `reference/unified-generation.md`.
@@ -265,6 +264,11 @@ A failed task carries `error`, `error_reason`, and `error_detail`.
 retry; `invalid_parameters` means fix the payload. Report platform faults with
 `bug_report_create`.
 
+### Workflow gates
+
+A `workflow_bypasses` gate an error names is yours to judge (not money,
+rights, access): `reference/workflow-gates.md`.
+
 ## Rate limits and concurrency
 
 Requests per minute per authenticated user, by subscription tier: FREE 50,
@@ -335,10 +339,10 @@ imported draft with `get_screenplay_text(working_draft: true)`.
 `development_settings`; its top-level `logline` is the Producer read's, not the
 working logline. `script_id` scopes it to one library script.
 
-Approving a logline or beat sheet, publishing, approving direction, rerunning a
-breakdown, and answering review questions are the user's decisions. Publishing,
-approving direction, and rerunning spend credits. Call those tools only on the
-user's explicit instruction.
+Publishing, rerunning a breakdown and answering review questions are the
+user's (publishing and rerunning spend credits): call those only on their
+explicit instruction. You may approve a logline, beat sheet or direction
+yourself (`reference/workflow-gates.md`).
 
 ## Operator missions
 
@@ -356,7 +360,7 @@ same either way; `pr0ta-operator` owns when and how to delegate.
 | `operator_mission_get` | Status, summary, checkpoint, actions pending review, usage, events after `after` (pass the previous `cursor`) |
 | `operator_mission_send` | `text`, `mode` `steer` (change current work) or `follow_up` (queue next) → new `receipt_task_id` |
 | `operator_mission_control` | `action`: `pause`, `resume`, `cancel`, `archive`, `unarchive`; resume returns a `receipt_task_id` |
-| `operator_mission_review` | `effect_id` + `decision` `approve`/`reject`, or a card's `artifact_id` + `approve`/`request_changes`/`choose` (`choice`: an option's label), `note`; only on the user's explicit instruction |
+| `operator_mission_review` | `effect_id` + `decision` `approve`/`reject`, or a card's `artifact_id` + `approve`/`request_changes`/`choose` (`choice`: an option's label), `note`; effects on the user's word (cards: "Workflow gates") |
 
 Each command returns a receipt task that settles when the mission next stops
 (done, idle, review, attention, paused, failed, cancelled). Wait on it with

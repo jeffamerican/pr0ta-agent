@@ -52,7 +52,7 @@ Build the final reference order before writing any positional or ordinal name. R
 - **Net-new character, hero prop, or wardrobe references with no approved image yet:** read `reference/reference-design-bootstrap.md` and use `prompt_profile: "character_reference_design"`, `"prop_reference_design"`, or `"wardrobe_reference_design"`. These return a candidate package for user approval before any generation.
 - **World Labs Marble 3D environments:** read `reference/marble-world-generation.md`. Marble is spatial-environment prompting, not shot prompting.
 - **Compact Seedance 2.0 Omni storyboard sequences:** call `agent_chat_orchestrate_prompt` with `prompt_profile: "seedance_storyboard_sequence"` and read `pr0ta-video/reference/seedance-global-storyboard.md`. Every production-prompt orchestration consults Stylist and Propmaster (as the project configures them) before Storyboarder; selecting Director, Storyboarder, or Cinematographer as the entry role does not shorten the configured department chain. Contributed department facts are binding prompt authority within the endpoint's prompt budget; Storyboarder owns reference accounting and shot bindings, and Cinematographer renders the provider-ready prompt. Seedance 2.5 omits this profile and uses the generic model-aware path with natural-language reference roles.
-- **Validation overrides, only when the person asked:** a prompt package fails when a speaking character has no approved Casting voice, a visible character lacks a selected portrait or turnaround, or the references exceed the model's image slots or 15-second reference-audio budget; each of those errors names its override. When the person explicitly asked for a provisional result (previs, an experiment), pass `validation_overrides` (REST `validationOverrides`) to `agent_chat_orchestrate_prompt`: `native_voices` lets the video model voice speakers without an approved voice (approved voices still bind); `character_visual_references` binds the character images that exist, skips missing ones and generates no turnaround; `reference_limits` drops the lowest-priority references instead of failing (keeps required plates, then portraits, then turnarounds, and the voices of the speakers with the most lines). Never set one on your own judgment. The result's `validation_overrides` receipt lists what each one changed and who set it; tell the person the output is provisional. The Script Supervisor dialogue audit, identity claims and Director contracts are never overridable.
+- **Workflow gates, on your own judgment:** eight orchestration gates are yours to pass with `workflow_bypasses` and a one-sentence `bypass_reason`, only after the gate refused and named itself (the error says the risk). `dialogue_audit`: the Script Supervisor checks the Director's lines against the screenplay (pass for silent previs, or when you checked the lines yourself; never for a final dialogue take). `character_tokens`: Omni `@omni-character` tokens must match bound approved characters, or identities swap or blend (the three-character provider limit is not a gate). `prompt_sections`: a designed-world prompt missing a required section can drop camera, action or continuity facts (pass when the content is there under another structure). `reference_ambiguity`: several selected references for one character can blend a face (the first required one is kept; pass only when they are near-identical, else fix Casting). `reference_preflight`: pixels must support the role claimed for each image (passing it, like `reference_preflight_mode: "shadow"`, keeps warnings). `native_voices`: speakers without an approved Casting voice are voiced by the video model (approved voices still bind); those voices are provisional and will not match later takes (pass for previs or a one-off speaker such as a crowd). `character_visual_references`: binds the character images that exist, skips missing ones and generates no turnaround; the missing characters can drift (pass for previs or a figure seen once). `reference_limits`: over the image slots or the 15-second reference-audio budget, drops the lowest-priority references (keeps required plates, then portraits, then turnarounds, and the voices of the speakers with the most lines). `validation_overrides` is the older spelling of the last three. Each pass is in the result's `workflow_bypass_receipts`; tell the person what you passed and when output is provisional. Identity claims and Director contracts are never passable; see `pr0ta-api` → "Workflow gates".
 - **Speech and dialogue:** `reference/model-modality-guides.md` has each TTS model's prompt order; `pr0ta-audio` owns voices, request fields, and indexing (Gemini TTS: `pr0ta-audio/reference/gemini-tts.md`; ElevenLabs V4/V3 tags: `pr0ta-audio/reference/elevenlabs-v3-audio-tags.md`; Seed Audio: `pr0ta-audio/reference/seed-audio.md`).
 
 
@@ -195,7 +195,7 @@ Model references can reorder this (reference-role ledgers first, audiovisual sec
 3. **Action.** Sequential and unambiguous: "First [A], then [B], finally [C]." One clear action per five seconds. Describe physics and body mechanics ("Sarah pivots on her heel and strides toward the door").
 4. **Camera.** Precise terms: dolly in/out, truck left/right, tracking, orbit, pan, whip pan, tilt, rack focus, low/high angle, POV/FPV, static wide, slow push-in. Match to the shot: establishing (static wide or slow reveal), dialogue (medium, minimal movement), action (tracking or handheld), emotional beat (slow push-in). Avoid "cinematic camera."
 5. **Lighting.** Describe sources, not moods: "single overhead fluorescent tube casting hard shadows," not "dramatic lighting"; "golden hour sunlight through office windows, long warm shadows," not "warm feeling." Backlight, low-key, and hazy light often look most convincing.
-6. **Technical style.** End with one project style sentence copied verbatim across prompts: lens ("85mm portrait lens"), stock ("Kodak Portra 400 aesthetic"), grade ("teal and orange"), texture ("subtle film grain").
+6. **Style.** In a project, leave it out: the server adds the scene's look line (Style page) to every image and video prompt, so a style you write would repeat or contradict it. Outside a project, end with one style sentence copied verbatim across prompts: medium, palette, light, texture, lens.
 
 ## The Prompt Bible
 
@@ -207,18 +207,18 @@ SARAH (Protagonist):
   Wardrobe: fitted navy blazer, cream linen shirt, tailored grey trousers
   Distinctive: slight scar above left eyebrow, gold wedding ring
   Element ID: element-uuid-sarah
-  Style anchor: "Sarah, a tall athletic woman with olive skin and shoulder-length black hair, wearing a navy blazer over cream linen, gold wedding ring visible"
+  Anchor: "Sarah, a tall athletic woman with olive skin and shoulder-length black hair, wearing a navy blazer over cream linen, gold wedding ring visible"
 
 THE GARDEN STUDY:
   Architecture: Victorian study, 12-foot ceilings, crown molding, east-facing bay windows
   Lighting default: morning light through east windows, warm dappled shadows
-  Style anchor: "a Victorian study with crown molding and east-facing bay windows, morning light casting dappled shadows across a mahogany desk and Persian rug"
+  Anchor: "a Victorian study with crown molding and east-facing bay windows, morning light casting dappled shadows across a mahogany desk and Persian rug"
 
 THE ARTIFACT:
-  Style anchor: "an ancient palm-sized bronze compass with jade-green patina and inscribed symbols"
+  Anchor: "an ancient palm-sized bronze compass with jade-green patina and inscribed symbols"
 
-VISUAL STYLE:
-  "Cinematic, 35mm Kodak Portra film aesthetic, shallow depth of field, slightly warm grade with cool blue shadows."
+VISUAL STYLE (in a project: the world's look line on the Style page, added by the server):
+  "Photoreal 35mm film frame. Warm grade with cool blue shadows. Soft window light. Fine grain. Shallow focus."
 ```
 
 Copy anchors verbatim into each shot. Do not paraphrase or abbreviate.

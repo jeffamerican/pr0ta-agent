@@ -88,9 +88,10 @@ rejects one, and only on the user's explicit decision. Draft artifacts marked
 relay their answer with `operator_mission_review(mission_id, artifact_id,
 decision, note?)`. A card with `options` (2 to 4 labelled choices, such as
 "Fix it" / "Leave as is") takes `decision: "choose"` and `choice` set to one
-label; others take `approve` or `request_changes`. Cards that approve first
-frames, Casting voices or draft finishing, and actions in `attention`, are
-resolved in the app. A cut presented as final that still plays draft
+label; others take `approve` or `request_changes`. You may approve a card
+that approves first frames or Casting voices on your own judgment with a
+`note` saying why; it shows as answered by agent. Cards that finish drafts
+(they spend credits) and actions in `attention` are resolved in the app. A cut presented as final that still plays draft
 renders comes with a card "Finish N drafts at 1080p — X credits" (unless the
 project or mission keeps drafts): approving it in the app finishes those drafts
 and swaps the finals into the cut in place (`pr0ta-video`, draft to final).
@@ -106,7 +107,17 @@ keeps its verdict and the mission moves on; its cut lists the flagged clips. A
 flagged still that further work builds on saves a draft titled
 `QC: scene N shot M` with the findings and QC's suggested fix, and puts the
 mission in `review`. Show the user that draft; they answer it in the app (keep
-the take, have a new one made, or something else they describe).
+the take, have a new one made, or something else they describe). Choosing
+"Keep as is" yourself is recorded as a `qc_still_stop` receipt: say why in
+the `note` (or a `bypass_reason`). Keep a still nothing builds on yet, or one
+you checked against the findings.
+
+A tool call aimed at a scene outside the mission's focus is refused; when the
+scene is plainly part of the job (shared continuity), add
+`workflow_bypasses: ["scope_guard"]` and a `bypass_reason` to its arguments.
+Another project, or a tool the worker cannot use, never passes. A package stop
+or a repeated-step pause is reset only by new direction from the user. Every
+pass is receipted on the mission (`pr0ta-api` → "Workflow gates").
 
 ## Costs and limits
 

@@ -82,10 +82,20 @@ request, so the voice drifts from shot to shot even when the words are right.
   Change an approved voice only in Casting.
 - **Never copy a voice from a clip** (`voice_settings.audio_urls`) for a
   speaker without an approved voice; the Operator's request is refused.
-- **Only the user approves a voice.** `cast_list_save` does not save
-  `approved_voice` or a voice design's approval from an agent; the stored
-  approval stays as it is. The user approves in Casting, or, in an Operator
-  mission, on a review card: `operator_checkpoint` with a `requires_review`
+- **Workflow gates.** The approved-voice lock (`approved_voice_lock`) and the
+  clip rules below (`voice_reference_policy`) protect voice continuity. Pass
+  one only when a different voice is intended (a flashback, a disguise, a temp
+  narrator) or the clip is known clean: `workflow_bypasses` + `bypass_reason`
+  on `generation_submit`, the `voices_clone` request, or Production Queue
+  `generation_params`; the receipt is kept on the task (`pr0ta-api` →
+  "Workflow gates").
+- **Approving a voice.** `cast_list_save` never saves `approved_voice` or a
+  voice design's approval sent in `cast_members`; the stored approval stays.
+  After listening to an audition you judge right, you may approve it yourself:
+  `cast_list_save(approve_voices: [{character, voice_id, sample_asset_id}],
+  approval_reason)`; it is recorded and shown as approved by agent. Prefer the
+  user's approval when they are around or the casting is contested: in Casting,
+  or, in an Operator mission, on a review card: `operator_checkpoint` with a `requires_review`
   notes draft whose `approves_casting_voices` names each character, the voice
   saved on its Casting record now (`voice_config.voice_id` in
   `cast_list_get`) and the audition asset they hear

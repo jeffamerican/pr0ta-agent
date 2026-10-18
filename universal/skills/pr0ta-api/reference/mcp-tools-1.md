@@ -4,9 +4,14 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## agent
 
-- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow that converts a creative brief and ordered references into a terminal Cinematographer provider-ready pro…
+- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_bypasses, bypass_reason, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow that converts a creative brief and ordered references into a terminal Cinematographer provider-ready pro…
 - `agent_chat_resume`(**retry_token**): Resume a retryable failed prompt-orchestration task from its preserved department checkpoint.
 - `agent_chat_send`(**role**, **topic**, **message**, attachments, generation_mode, request_id): Send a project-scoped message to a PR0TA department agent using the same chat, project context, credits, persistence, and tool runtime as the app.
+
+## asset
+
+- `asset_move`(**asset_ids**, **folder_path**): Move up to 200 project assets into a folder of the asset library, creating the folder (and its parents) when it does not exist yet.
+- `asset_rename`(**renames**): Rename the display names of up to 100 project assets in one call, to tidy what you made.
 
 ## assets
 
@@ -32,7 +37,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## beat
 
-- `beat_sheet_approve`(structure, beats, script_id): Record a script's beat sheet as approved so screenplay drafting follows it.
+- `beat_sheet_approve`(structure, beats, approval_reason, replace_person_approval, script_id): Record a script's beat sheet as approved so screenplay drafting follows it.
 - `beat_sheet_generate`(**prompt**, structure, logline, template, quality_gate, script_id): Queue the Story Editor to write a script's beat sheet; returns a task to poll with tasks_get.
 
 ## billing
@@ -45,7 +50,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## blocking
 
-- `blocking_animatic_render`(**scene_number**, **chunk_id**): Render a sequence chunk's animatic in Blender: the scene's approved set with the chunk's figures and props, cut between composed setups for the chunk…
+- `blocking_animatic_render`(**scene_number**, **chunk_id**, workflow_bypasses, bypass_reason): Render a sequence chunk's animatic in Blender: the scene's approved set with the chunk's figures and props, cut between composed setups for the chunk…
 - `blocking_get`(**scene_number**): Read a scene's blocking: the set it is staged on (and whether its build is approved), the cast as Blender figures (body, height, rigged model) plus c…
 - `blocking_save`(**scene_number**, **plan**, base_revision): Save a scene's whole blocking plan (send back what blocking_get returned in plan, edited, with its revision as base_revision; a stale revision is ref…
 
@@ -62,12 +67,12 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## cast
 
 - `cast_list_get`(): Load the Casting-page cast list with enriched portrait, character-sheet, and voice fields.
-- `cast_list_save`(cast_members, reconcile_existing, merge): Atomically persist the Casting-page cast list to castingRead, castingIndex, and cast CSV.
+- `cast_list_save`(cast_members, reconcile_existing, merge, approve_voices, approval_reason): Atomically persist the Casting-page cast list to castingRead, castingIndex, and cast CSV.
 
 ## casting
 
 - `casting_avatar_demo_generate`(**request**): Queue an avatar performance demo from a cast portrait and voice sample.
-- `casting_character_sheet_prompt_resolve`(**character**, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line): Resolve the app's cinematic character-design-sheet brief for a cast member.
+- `casting_character_sheet_prompt_resolve`(**character**, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line, workflow_bypasses, bypass_reason): Resolve the app's cinematic character-design-sheet brief for a cast member.
 - `casting_descriptive_prompt_generate`(image_asset_id, image_url, character, current_prompt): Generate a detailed casting prompt from an approved portrait image.
 - `casting_portrait_prompt_write`(**character**, direction, save): Have the Casting Director write a character's portrait prompt and save it to the cast record, where Casting shows it (Portrait tab).
 - `casting_read_generate`(**script**, **producer_analysis**, **director_analysis**, script_supervisor_characters): Run and persist the Casting breakdown and canonical cast list; returns a task for polling.
@@ -98,11 +103,11 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## development
 
-- `development_logline_set`(**logline**, approve, script_id): Save a script's working logline; with approve=true also record it as the approved logline the beat sheet and screenplay build on.
+- `development_logline_set`(**logline**, approve, approval_reason, replace_person_approval, script_id): Save a script's working logline; with approve=true also record it as the approved logline the beat sheet and screenplay build on.
 
 ## direction
 
-- `direction_approve`(producer_read, director_read): Approve Creative Direction: accept the Producer and Director reads (optionally edited) and let the Script Supervisor and departments run.
+- `direction_approve`(producer_read, director_read, approval_reason, replace_person_approval): Approve Creative Direction: accept the Producer and Director reads (optionally edited) and let the Script Supervisor and departments run.
 
 ## director
 
@@ -241,26 +246,14 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `project_metadata_get`(keys, lightweight): Read full project metadata or selected top-level keys.
 - `project_metadata_patch`(**updates**): Merge top-level project metadata updates with editor authorization.
+- `project_rename`(**name**): Rename the project (its display name; the project id, slug and files stay).
+
+## qr
+
+- `qr_code_generate`(data, url, error_correction, dark, light, scale, size, border, version, micro, svg, subject, folder_path): Make a real, scannable QR code as a project image asset (free, no credits, no model): a PNG (optionally also an SVG), read back before it is saved so…
+- `qr_code_verify`(**asset_id**, expected_payload, times, count, record): Scan check (free): does an image asset, or sampled frames of a video asset, carry a QR code that actually decodes, and to the expected payload?
 
 ## read
 
 - `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.
 - `read_web_page`(**url**, max_chars): Open one web page in a browser and return its text as Markdown, after its scripts have run.
-
-## references
-
-- `references_resolve`(**asset_uid**, model): Read the references a Production Queue row's render sends (its reference ledger), without rendering or saving anything: each image, video and audio f…
-- `references_settle_in_frame`(**asset_uid**, model): Settle who is in frame for a shot written before the shot list recorded it: one billed classification call whose answer is saved on the shot list (ch…
-
-## review
-
-- `review_submit_assets`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, recipient_emails): Publish assets to a PR0TA public client review room.
-
-## save
-
-- `save_scene_shotlist`(**scene_number**, stylistic_approach, shots, replace, revision, refresh_scene_context): Save or update the director shotlist for a specific scene.
-
-## score
-
-- `score_bible_get`(): Read the project's score bible: the musical concept, the style core and exclude core every cue's prompt starts from, palette, key centers, tempo fami…
-- `score_bible_save`(concept, style_core, exclude_core, palette, key_centers, tempo_family, dialogue_strategy, themes, notes): Save score bible fields.

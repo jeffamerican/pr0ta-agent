@@ -1,6 +1,6 @@
 ---
 name: pr0ta-image
-description: "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, and fan-out for hard text shots. Read when generating, editing, uploading, or choosing image models."
+description: "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models."
 ---
 
 # Image Generation and Editing
@@ -106,6 +106,16 @@ curl -X POST "https://app.pr0ta.com/api/v2/projects/$PROJECT_ID/generate" \
 
 Batch: `POST /api/v2/projects/{project_id}/generate/batch` takes up to 10 items.
 
+### The project look
+
+In a project, the server adds the scene's look line (Style page) to every new
+image: give `metadata.scene_number` and leave style words out of the prompt.
+A new frame built from references is `ref_to_img`. Edits of an existing image
+(`img_to_img` with a source image, inpaint, outpaint), upscales and mattes keep
+their source's look; set `metadata.project_look: true` to restyle
+one. Set `metadata.project_look: false` for title cards, flash cards and
+anything that should not take the film's medium (a logo, a website graphic).
+
 ## Enhancement and Restoration
 
 Upscaling, denoising, sharpening and restoration resolve through `image_upscale_model`: call `models_preferred(modality: "image_upscale_model")`, and when the user asks for a specific repair, pick from `models_list(modality: "image_upscale_model")`. These routes are image-to-image processors: they accept no text-generation inputs unless the schema exposes a prompt, and controls do not transfer between families (`models_get_defaults`).
@@ -174,6 +184,10 @@ This is a reliability rule. If the still has any rendered text (title, brand, ta
 2. **Check every glyph after generation.** Look at the still at full resolution, zoomed to the text (`post_frames_get` with the image's `asset_id` and a `region` around the copy), read it letter by letter against the intended copy, and regenerate on any mismatch. The automatic QC review (`shot_quality_review`) also checks rendered text, but a letter-by-letter read is the gate.
 
 Brand names, exact-copy titles, and anything a stakeholder will read at full size are worth fanning out.
+
+### QR Codes
+
+Never ask a model to draw a QR code: it looks right and encodes nothing. Generate the real code with `qr_code_generate`, place it by an edit (or composite it in post for motion), and check every result with `qr_code_verify`. Read `reference/qr-codes.md` first.
 
 ## Fan-Out and Pick for Hard Shots
 

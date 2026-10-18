@@ -2,6 +2,24 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## references
+
+- `references_resolve`(**asset_uid**, model): Read the references a Production Queue row's render sends (its reference ledger), without rendering or saving anything: each image, video and audio f…
+- `references_settle_in_frame`(**asset_uid**, model): Settle who is in frame for a shot written before the shot list recorded it: one billed classification call whose answer is saved on the shot list (ch…
+
+## review
+
+- `review_submit_assets`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, recipient_emails): Publish assets to a PR0TA public client review room.
+
+## save
+
+- `save_scene_shotlist`(**scene_number**, stylistic_approach, shots, replace, revision, refresh_scene_context): Save or update the director shotlist for a specific scene.
+
+## score
+
+- `score_bible_get`(): Read the project's score bible: the musical concept, the style core and exclude core every cue's prompt starts from, palette, key centers, tempo fami…
+- `score_bible_save`(concept, style_core, exclude_core, palette, key_centers, tempo_family, dialogue_strategy, themes, notes): Save score bible fields.
+
 ## screenplay
 
 - `screenplay_draft_beats`(**content**, budgets, script_id): Queue the Writer to draft a scene for every approved beat the script does not cover yet; returns a task.
@@ -22,7 +40,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `set_environment_asset_link`(**environment_id**, **asset_id**, **role**, modality, status, pass_type, metadata): Attach an existing project asset to a 3D set environment with a typed role, modality, technical pass, and approval state.
 - `set_environment_collider_materialize`(**environment_id**, **world_asset_id**): Download a World Labs Marble world's collider mesh, register it as a project GLB asset, and link it to a 3D set environment as the Blender source so…
-- `set_environment_upsert`(**variant_id**, scene_number, status, build_brief, revision_notes, render_settings, metadata): Create or revise the 3D environment contract for a canonical Production Design set variant.
+- `set_environment_upsert`(**variant_id**, scene_number, status, approved_revision, approval_reason, replace_person_approval, build_brief, revision_notes, render_settings, metadata): Create or revise the 3D environment contract for a canonical Production Design set variant.
 - `set_environments_get`(scene_number, include_superseded): List canonical 3D set environments, their Production Design variants, assigned scenes, render contract, and linked Blender, runtime, world, still, vi…
 
 ## shot
@@ -32,8 +50,8 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## shotlist
 
-- `shotlist_generate`(**scene**, **producer_analysis**, **director_analysis**): Generate and durably save a Director shot list for one scene; returns a task for polling.
-- `shotlist_generate_batch`(**scenes**, **producer_analysis**, **director_analysis**): Generate and save Director shot lists for multiple scenes in one background task.
+- `shotlist_generate`(**scene**, **producer_analysis**, **director_analysis**, workflow_bypasses, bypass_reason): Generate and durably save a Director shot list for one scene; returns a task for polling.
+- `shotlist_generate_batch`(**scenes**, **producer_analysis**, **director_analysis**, workflow_bypasses, bypass_reason): Generate and save Director shot lists for multiple scenes in one background task.
 - `shotlist_scene_chat`(**scene**, **messages**, producer_analysis, director_analysis): Ask the Director agent to revise or discuss one scene.
 - `shotlist_scene_descriptions_generate`(**script_supervisor_data**, producer_analysis, director_analysis): Generate concise Director scene descriptions for Shotlisting; returns a task for polling.
 - `shotlist_shots_move`(**from_scene**, **to_scene**, **shot_uids**, dry_run, spanning_sequences): Move shots from one scene's saved shot list to another scene, for coverage filed under the wrong scene (a breakdown re-run that split a scene).
@@ -41,24 +59,26 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## storyboard
 
 - `storyboard_chunks_list`(scene_number, scene_range_end, max_duration_seconds): List Seedance-ready storyboard beat chunks assembled from screenplay, shotlist, storyboard prompts, and approved references.
-- `storyboard_first_frame_propose`(**scene_number**, **shot_number**, **asset_id**): Put a ready storyboard image on a shot as its first-frame candidate (the take Storyboarding shows selected).
-- `storyboard_generate`(**scene**, **director_shotlist**, **producer_analysis**, **director_analysis**): Generate and durably save storyboard prompts for one scene; returns a task for polling.
-- `storyboard_generate_batch`(**scenes**, **director_shotlists**, **producer_analysis**, **director_analysis**): Generate and save storyboard prompts for multiple scenes in one background task.
+- `storyboard_first_frame_propose`(**scene_number**, **shot_number**, **asset_id**, approve, approval_reason, replace_person_approval): Put a ready storyboard image on a shot as its first-frame candidate (the take Storyboarding shows selected).
+- `storyboard_generate`(**scene**, **director_shotlist**, **producer_analysis**, **director_analysis**, workflow_bypasses, bypass_reason): Generate and durably save storyboard prompts for one scene; returns a task for polling.
+- `storyboard_generate_batch`(**scenes**, **director_shotlists**, **producer_analysis**, **director_analysis**, workflow_bypasses, bypass_reason): Generate and save storyboard prompts for multiple scenes in one background task.
 - `storyboard_pdf_export`(scene_number, scene_range_end, scene_numbers, layout, paper, approved_only, skip_empty, fields, include_cover, scene_breaks, title, subtitle, orientation, cover_notes, panels): Export the storyboard as a printable PDF (free) and file it as a project document.
-- `storyboard_reference_sheet_generate`(**chunk_id**, variation_count, quality, model, reference_asset_ids, reference_image_urls, include_chunk_reference_urls, storyboard_sheet_prompt): Generate a GPT Image 2.5 Sunburst optimized Seedance storyboard reference sheet for one beat chunk.
+- `storyboard_reference_sheet_generate`(**chunk_id**, variation_count, quality, model, reference_asset_ids, reference_image_urls, include_chunk_reference_urls, storyboard_sheet_prompt, workflow_bypasses, bypass_reason): Generate a GPT Image 2.5 Sunburst optimized Seedance storyboard reference sheet for one beat chunk.
 - `storyboard_reference_sheets_list`(chunk_id, limit, offset, include_download): List generated Seedance storyboard reference sheet assets.
 - `storyboard_sequences_get`(): List the manual and generated Storyboarding sequence records used by the Storyboarding and Queue pages.
 - `storyboard_sequences_save`(**sequences**, replace_scene_numbers): Update Storyboarding sequence records (selected sheets, prompts, references).
 
 ## style
 
-- `style_candidates_generate`(**style_id**, note, model): Generate one round of 4 candidate look frames for a Style world from its look text.
-- `style_package_get`(include_assets): Load the Style-page package from project metadata and optionally include persisted style-reference assets.
-- `style_package_save`(**styles**, asset_annotations): Persist a complete Style-page package and annotate its PR0TA assets.
+- `style_earlier_look_list`(): List the approved pictures made with an earlier look than their style world has now: cast portraits and character sheets, Prep sets, wardrobe looks a…
+- `style_package_get`(include_assets): Load the project's style worlds: each world's look line (stylePrompt, compiled from lookSlots), scene assignments, client references and previews.
+- `style_package_save`(**styles**, asset_annotations): Persist several style worlds at once and annotate their assets.
+- `style_preview_generate`(**style_id**): Render one preview of a Style world's look line on a real moment from its scenes, with the project's default image model.
+- `style_restyle`(**key**, again): Restyle one approved picture listed by style_earlier_look_list toward its world's current look: one paid image edit that keeps its people, place and…
 - `style_world_assign_scenes`(**style_id**, **scene_numbers**): Replace one alternate Style world's screenplay-scene assignments.
-- `style_world_create`(**name**, style_id, scope, style_prompt, typography_prompt, usage_notes, scene_numbers, is_default): Create and persist one new Style-page world without replacing existing worlds.
+- `style_world_create`(**name**, style_id, scope, look_slots, style_prompt, typography_prompt, usage_notes, scene_numbers, is_default): Create and persist one new Style-page world without replacing existing worlds.
 - `style_world_delete`(**style_id**): Delete one Style world while preserving at least one world and a valid default.
-- `style_world_update`(**style_id**, name, scope, style_prompt, typography_prompt, usage_notes, generation_overrides, make_default): Update and persist one existing Style world without replacing unrelated worlds.
+- `style_world_update`(**style_id**, name, scope, look_slots, style_prompt, typography_prompt, usage_notes, client_references, match_client_references, make_default): Update one existing Style world without replacing the others: its look (look_slots, compiled into the look line every generation gets), name, scope,…
 
 ## submit
 

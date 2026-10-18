@@ -22,15 +22,21 @@ map, and `memory_context_pack` before creative work (see `pr0ta-api` →
 
 ## Who decides
 
-Approvals are the user's. At each gate, show the user what you propose, ask,
-and call the approving tool only on their explicit instruction:
+Publishing a draft is the user's: it spends credits and starts the breakdown,
+so publish only on their explicit instruction. The other approvals may be
+yours once you have read the material and judge it right: pass an
+`approval_reason`. Each is recorded and shown as approved by agent, distinct
+from the user's approval, and the user can change it. When the user is around
+or the call is contested, show what you propose and ask first. Replacing the
+user's approval, or their unapproved edits to the direction, is refused unless
+they asked and you pass `replace_person_approval: true`.
 
-| Gate | Tool that records it |
-|------|----------------------|
-| Logline | `development_logline_set` with `approve: true` |
-| Beat sheet | `beat_sheet_approve` |
-| Publishing a draft (spends credits: starts the breakdown) | `screenplay_publish` |
-| Creative Direction (spends credits: runs the departments) | `direction_approve` |
+| Gate | Tool that records it | Whose |
+|------|----------------------|-------|
+| Logline | `development_logline_set` with `approve: true`, `approval_reason` | yours or the user's |
+| Beat sheet | `beat_sheet_approve(approval_reason)` | yours or the user's |
+| Publishing a draft (spends credits: starts the breakdown) | `screenplay_publish` | the user's |
+| Creative Direction (starts the department reads; they spend credits through the usual checks) | `direction_approve(approval_reason)` | yours or the user's |
 
 Working saves (a draft logline, an unapproved beat sheet, screenplay saves) need
 no approval.
@@ -90,7 +96,8 @@ overwrite an approved stage without the user asking.
 
 Draft two or three options in conversation. Save the chosen one with
 `development_logline_set(logline)`; record it as approved with
-`approve: true` once the user accepts it. The beat sheet and screenplay build on
+`approve: true` once the user accepts it or you judge it right (with an
+`approval_reason`). The beat sheet and screenplay build on
 the approved logline.
 
 ## 3. Treatment and source material
@@ -115,6 +122,8 @@ the sheet must cover, as `{name, description?, children?[]}`.
 The finished sheet is saved as `beatSheet`. Review it with the user. Edit by
 passing `structure` and `beats` to `beat_sheet_approve`, which saves the edited
 sheet and approves it together; with no arguments it approves the saved sheet.
+Approve when the user accepts the beats or you judge them right (pass an
+`approval_reason`); `screenplay_draft_beats` drafts only from an approved sheet.
 
 For notes and rewrites, talk to the Story Editor: `agent_chat_send(role:
 "story_editor", topic, message)`. It reads the same project context and
@@ -197,8 +206,9 @@ direction waiting for approval:
    genre, palette, style worlds, main cast).
 2. Present them to the user as a brief. Discuss changes; the Producer and
    Director can be asked through `agent_chat_send(role: "producer" | "director")`.
-3. On the user's approval, `direction_approve(producer_read?, director_read?)`
-   records it. Pass edited reads to approve them as edited; the departments
+3. On the user's approval, or when you judge both reads right for the film,
+   `direction_approve(producer_read?, director_read?, approval_reason?)`
+   records it (yours shows as approved by agent). Pass edited reads to approve them as edited; the departments
    read the approved versions. Approval lets the Script Supervisor and the
    departments run.
 

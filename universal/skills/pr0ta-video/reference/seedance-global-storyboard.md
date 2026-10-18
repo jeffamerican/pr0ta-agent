@@ -85,7 +85,7 @@ Create one high-density still or contact sheet for the whole production. It shou
 - recurring locations and set dressing
 - hero props and wardrobe
 - color palette, lighting, lens/texture notes
-- one or two approved style frames
+- the scene's style world (its look line is added to every generation)
 
 Store it as a normal PR0TA asset and annotate it so future agents can find it:
 
