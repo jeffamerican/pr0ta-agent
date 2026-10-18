@@ -104,10 +104,29 @@ REST.
   copy the returned `selection` fields into `generation_submit`.
 - Project memory: `SKILL.md` → "Project memory" owns the contract
   (`memory_context_pack` arguments, what `memory_record_decision` requires).
-  A decision becomes Current only from a signed Operator approval or a
-  verified user confirmation; a missing reference returns
-  `confirmation_required` and `created: false`, so do not retry blindly or
-  claim the Bible changed. Confirmation references:
+  A decision becomes Current from a signed Operator approval, a verified
+  user confirmation, or an agent at the highest permission level (below); a
+  missing reference returns `confirmation_required` and `created: false`, so
+  do not retry blindly or claim the Bible changed.
+- Recording a decision directly (highest permission level). When the MCP
+  connection is signed in as the project's **owner** (any credential: OAuth
+  connector, personal access token, or session; tokens carry one `mcp`
+  scope, so the project role decides), `memory_record_decision` records the
+  decision without a confirmation reference. Inside PR0TA the same holds for
+  an Operator mission in **Full access** mode. It requires:
+  - `reason`: where the ruling came from, ideally a quote of the person's
+    instruction (`The person wrote: "Lock the orange hoodie for Scene 2."`).
+    Without it the call returns `status: "reason_required"` and records
+    nothing. Never invent a ruling the person did not give.
+  - the usual `semantic_key` (or `replaces_claim_id`) and memory guard.
+  The decision is stamped `recorded_by_agent` (agent kind, mission id or
+  token id, reason, level) on the claim and shows in Memory as "Recorded by
+  agent" with its source. The person can revise or withdraw it as usual. An
+  editor or viewer connection, or a mission in any other mode, still gets
+  `confirmation_required`; that result names `caller_level` and
+  `direct_record_level`. Then ask the person for confirmation with the
+  references below (or ask the owner to run the step).
+- Confirmation references:
   - After the user approves in PR0TA chat, call `memory_get_confirmation` and
     pass its `persisted-agent-chat-message-id` unchanged as
     `user_confirmation_ref`. Quoted approval prose is not an ID.

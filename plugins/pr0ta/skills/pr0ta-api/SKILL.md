@@ -296,8 +296,8 @@ section owns the memory contract; other skills point here.
     (the claim it supersedes);
   - `memory_snapshot_id` from the `memory_context_pack` you read, or
     `expected_head_ids`, so a decision made on stale memory is refused;
-  - a confirmation reference, `user_confirmation_ref`:
-    `memory_get_confirmation` (approval given in PR0TA chat),
+  - `user_confirmation_ref` (an owner may pass `reason` instead):
+    `memory_get_confirmation` (approval in PR0TA chat),
     `memory_request_confirmation` (an elicitation-capable MCP client asks the
     user), or an approving review event from `get_review_annotations` passed
     with its exact `approved_asset_id`. Without one it returns
