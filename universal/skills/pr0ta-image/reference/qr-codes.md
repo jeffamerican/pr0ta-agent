@@ -32,13 +32,13 @@ The PNG is read back before it is saved, so a returned `asset_id` always decodes
 2. Set `metadata.expected_qr_payload` to the code's data. Any generation that expects a payload, or uses a generated QR asset as a reference, is scanned automatically when it finishes: the verdict lands on each take as `labels.qr_check` and a failure as a take flag (`qr_code_unreadable` or `qr_code_mismatch`).
 3. Read the result (`tasks_get`, or the take's `labels.qr_check`), or run `qr_code_verify` with `expected_payload` yourself.
 4. On a failure, retry the edit (fan out two to four edits and keep the ones that pass). Keep the code large in frame, flat and frontal; curved, angled, tiny or heavily stylised placements fail most.
-5. Still failing after a few tries: composite the real code onto the generated still in post instead (2b), or ask the person.
+5. Still failing after a few tries: composite the real code onto the generated still with `planar_composite` instead (2b), or ask the person.
 
 A failed check is a flag for the person, never a reason to delete a take on your own: they may prefer a take whose code only needs a post fix.
 
 ## 2b. Motion: composite in post
 
-Video models do not hold a code's modules steady across frames. For moving shots, generate the take without the code (leave a clean, flat area where it belongs), then lay the generated QR asset (transparent ground if it sits on a design) as an overlay clip on a track above the take in the timeline: `transform` scale and position place it, keyframes follow a slow move (`pr0ta-timeline` → framing and transforms). For an end card or a screen insert, a held still with the code composited is the reliable route.
+Video models do not hold a code's modules steady across frames. Generate the take without the code (leave a clean, flat area where it belongs), then `planar_composite` it with `qr_data` and the surface's 4 corners: it tracks the surface, matches light, blur and grain, and reports how many frames decode (`pr0ta-hybrid` → "Real Inserts on Flat Surfaces"). A code on a static, front-on area can also be an overlay clip in the timeline (`transform` scale and position; `pr0ta-timeline` → framing and transforms). For an end card, a held still with the code composited is the reliable route.
 
 ## 3. Verify the final render: `qr_code_verify`
 

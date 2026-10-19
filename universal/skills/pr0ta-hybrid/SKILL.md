@@ -17,6 +17,7 @@ Read `pr0ta` first for the production hub, then this skill for any shot that sta
 - Recurring locations must stay geometrically consistent across shots by anchoring generation to a Marble world, a scan, or a collider mesh.
 - A recorded camera performance must drive a previs or structure reference.
 - A green-screen or blue-screen plate needs a clean matte and a new background.
+- A real QR code, screen UI, sign, label or logo must sit on a flat surface in a generated shot.
 
 If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 
@@ -124,6 +125,17 @@ Recurring locations stay consistent when every shot draws geometry from the same
 - **Camera-take import:** a recorded camera-performance take can drive the previs camera, so a real camera move produces the structure guide.
 
 Read `reference/world-anchored-references.md` for the recipes and the authority rules.
+
+## Real Inserts on Flat Surfaces
+
+Models cannot render a scannable QR code, legible small screen UI or an exact logo; put the real thing on a flat surface afterwards.
+
+1. Mark the surface on a clear frame: 4 corners (top-left, top-right, bottom-right, bottom-left), in pixels or 0..1 fractions.
+2. Optionally `planar_track` (`preview: true`) and check `summary.lost_ranges`. For a screen whose picture changes, use `track_region: "around"`.
+3. `planar_composite` with `insert_asset_id` (image, or video for a moving screen) or `qr_data`. `surface: "screen"` for displays; `fit: "contain"` with `fill` blanks a label first; `fade_in_frames` for a reveal. Tone, shading, blur, motion blur and grain are matched.
+4. Report `qr_check` as it is ("decodes on N of M frames"); never call a partial or failed code working. Fixes: bigger quad, `margin` 0, less blur, a steadier `start_time`/`end_time`.
+
+Free; the result is a new asset and the source is untouched. Limits: 60 s, 4096×2160. Nothing crossing in front of the surface is kept (no occlusion matte).
 
 ## Pricing
 

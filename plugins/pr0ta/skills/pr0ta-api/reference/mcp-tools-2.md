@@ -2,6 +2,17 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## project
+
+- `project_metadata_get`(keys, lightweight): Read full project metadata or selected top-level keys.
+- `project_metadata_patch`(**updates**): Merge top-level project metadata updates with editor authorization.
+- `project_rename`(**name**): Rename the project (its display name; the project id, slug and files stay).
+
+## qr
+
+- `qr_code_generate`(data, url, error_correction, dark, light, scale, size, border, version, micro, svg, subject, folder_path): Make a real, scannable QR code as a project image asset (free, no credits, no model): a PNG (optionally also an SVG), read back before it is saved so…
+- `qr_code_verify`(**asset_id**, expected_payload, times, count, record): Scan check (free): does an image asset, or sampled frames of a video asset, carry a QR code that actually decodes, and to the expected payload?
+
 ## read
 
 - `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.

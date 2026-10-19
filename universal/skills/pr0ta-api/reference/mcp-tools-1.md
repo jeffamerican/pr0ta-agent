@@ -205,6 +205,11 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `narration_materialize_to_post`(sequence_name, base_version, lock_token): Materialize narration cuts into the post-production sequence.
 - `narration_timeline_get`(): Load the complete narration timeline for a project.
 
+## planar
+
+- `planar_composite`(**asset_id**, track_asset_id, quad, frame, time, coords, track_region, track_margin, smoothing, insert_asset_id, loop_insert, qr_data, qr_url, qr_error_correction, qr_dark, qr_light, expected_qr_payload, fit, margin, plane_aspect, fill, surface, color_match, shading, blur, motion_blur, grain, feather, opacity, fade_in_frames, fade_out_frames, on_lost, start_time, end_time, subject): Composite a real insert onto a flat surface in a video or still (free, local, runs as a task): screen replacement, signs, labels, posters, logos, pic…
+- `planar_track`(**asset_id**, **quad**, frame, time, coords, track_region, track_margin, smoothing, preview): Track a flat surface through a video (free, local, runs as a task): give the asset and a seed quad (its 4 corners on one frame).
+
 ## post
 
 - `post_clip_slow_motion`(clip_id, sequence_id, **engine**, quote_only, confirm_credits, idempotency_key, lock_token, asset_id, source_in, source_out, speed, fps): Make smooth slow motion for a slowed clip (|speed| < 1): interpolated frames, not repeated ones.
@@ -245,14 +250,3 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `production_queue_take_favorite`(**asset_uid**, **take_id**, favorite): Favorite a generated take for one Queue item, or remove the favorite with favorite=false.
 - `production_queue_take_select`(**asset_uid**, take_id, take_type): Select or clear a generated image, video, or audio take for one Queue item.
 - `production_queue_upload_retry`(**asset_id**): Retry permanent-storage recovery for one failed Production Queue asset.
-
-## project
-
-- `project_metadata_get`(keys, lightweight): Read full project metadata or selected top-level keys.
-- `project_metadata_patch`(**updates**): Merge top-level project metadata updates with editor authorization.
-- `project_rename`(**name**): Rename the project (its display name; the project id, slug and files stay).
-
-## qr
-
-- `qr_code_generate`(data, url, error_correction, dark, light, scale, size, border, version, micro, svg, subject, folder_path): Make a real, scannable QR code as a project image asset (free, no credits, no model): a PNG (optionally also an SVG), read back before it is saved so…
-- `qr_code_verify`(**asset_id**, expected_payload, times, count, record): Scan check (free): does an image asset, or sampled frames of a video asset, carry a QR code that actually decodes, and to the expected payload?

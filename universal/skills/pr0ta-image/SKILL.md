@@ -190,7 +190,7 @@ Brand names, exact-copy titles, and anything a stakeholder will read at full siz
 
 ### QR Codes
 
-Never ask a model to draw a QR code: it looks right and encodes nothing. Generate the real code with `qr_code_generate`, place it by an edit (or composite it in post for motion), and check every result with `qr_code_verify`. Read `reference/qr-codes.md` first.
+Never ask a model to draw a QR code: it looks right and encodes nothing. Generate the real code with `qr_code_generate`, place it by an edit (or composite it in post for motion), and check every result with `qr_code_verify`. Read `reference/qr-codes.md` first. To place a real QR code, logo, label or screen UI on a still's flat surface, use `planar_composite` with a quad (`pr0ta-hybrid`).
 
 ## Fan-Out and Pick for Hard Shots
 
