@@ -58,7 +58,7 @@ Seedance 2.5 has no `negative_prompt` field. The provider guide recommends posit
 | Known artifacts | "Natural skin texture, no excessive beautification or skin smoothing." / "No stuttering, no flickering." |
 | Recording overlays | "A clean full-frame recording image; no REC indicator, timestamp, viewfinder grid, or subtitles." |
 
-Pair each negative with the positive it protects, and list only problems you have seen or that the look invites. Write the action you want positively (`pr0ta-prompting` → Technique 4): whether negated actions still render the forbidden action on 2.5 is untested. When in doubt, compare both phrasings on 480p drafts before a final run.
+Pair each negative with the positive it protects, and list only problems you have seen or that the look invites. Write the action you want positively (`pr0ta-prompting` → Technique 4), because a positive end state also tells the model what to show. A small 12-draft A/B at 480p (a waiter carrying a tall stack of plates, a boy holding a balloon in strong wind, a man on a bench seen from behind) found no penalty for negation: "He does not drop the plates", "He does not let go of the balloon" and "He never turns around" never rendered the forbidden action. Neither did the positive phrasings, so those scenes never provoked the failure and the test does not prove negation safe where the model leans toward the forbidden action (shattering, falling). If a take shows the forbidden action, rewrite that line positively first.
 
 ### When an exclusion does not hold
 

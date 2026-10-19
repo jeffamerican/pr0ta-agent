@@ -142,7 +142,7 @@ Current image and video models can render strong typography; do not assume older
 
 ### 4. State Motion Positively; Pair Every Exclusion
 
-Write the action and the state you want in positive terms. A negated action can still render the forbidden action ("don't destroy the carving" renders the destruction), so describe the desired end state and the motion toward it.
+Write the action and the state you want in positive terms. Some models render a negated action ("don't destroy the carving" renders the destruction); a small Seedance 2.5 A/B saw none. Describe the end state and motion toward it.
 
 **Bad:** "The craftsman polishes the carving. Don't destroy the carving. No cutting motions."
 

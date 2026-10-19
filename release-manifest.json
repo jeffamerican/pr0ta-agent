@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.7.0",
+  "skills_version": "6.7.2",
   "released_at": "2026-10-19",
-  "source_revision": "v6.7.0",
-  "minimum_platform_version": "1.25.346",
+  "source_revision": "v6.7.2",
+  "minimum_platform_version": "1.25.348",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06017-vah",
-  "bundle_sha256": "4c1bd0a148126cf23d61fc57546b7720cf775f2364278d7d9a926e6b07a8656b",
+  "platform_revision": "pr0ta-platform-06029-zey",
+  "bundle_sha256": "8d2716faaf852a5b9793fe8af321c1979d313dc473f24a72df0fc659c36273fd",
   "skills": [
     {
       "name": "pr0ta",
@@ -216,7 +216,7 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "94d7a08314726a974587f454fd85abd346217e8b295f15c0ff93830f8a20a05b",
+      "content_sha256": "7b3e9aaf55b91a290783173b4a4b544cf5b8f17401fce62de563c26188d052f0",
       "documents": [
         {
           "path": "SKILL.md",
@@ -228,7 +228,7 @@
         },
         {
           "path": "reference/verification-protocol.md",
-          "sha256": "7ae35b8e4e53070fc025d04822e3a9e81f3c7e74aa539d5b1ace29c35082805e"
+          "sha256": "79e176456bc2e5d7a9cd68ba3ed530a8792ef749118f107de4c1168ad1946feb"
         },
         {
           "path": "reference/vertical-and-cutdowns.md",
@@ -342,11 +342,11 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "79c4454444ccbb39e0318117208e6c29e9f94be608dabbfb93fd67476a635663",
+      "content_sha256": "36af4a37d7b77a05522f92628ca5b02fe73de6dc4ff577c692aa2b2b86e6dc8e",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "0502a153e2709c30e06fd3923be15a3c16a2c301060c3812aff1e53e5e03ebc1"
+          "sha256": "ba61cd37e0ec32f06ea84b6c0ca5647c5ca8777b39ea60e58e1ffde03914eebe"
         },
         {
           "path": "reference/anti-patterns.md",
@@ -415,11 +415,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "865af5acce44be9ad8bda7daf814d78cf337b20cc2fb19d2e055efd87a8aec3d",
+      "content_sha256": "47ae5791b8a62137826eaab9a634e5bfde5a0757bfc51541090179c8e83e6552",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "10bf7b58a85c9fdec823c3bf2732235091c0133ace0926651728649200648a01"
+          "sha256": "1a25f2a17cdee9f86410768cdfe2a8ac05d6e387fa9b58b7e231ca1fef26adbe"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -467,7 +467,7 @@
         },
         {
           "path": "reference/seedance-2.5-prompt-craft.md",
-          "sha256": "e8c13604dd17aa864884a6fab0f603915fabca8d8828f7cfd263e76dc56d1bb7"
+          "sha256": "038ea4f1b339b1931a774c06ca4503a41a79d169bea242a9bb947600df7cedc3"
         },
         {
           "path": "reference/seedance-2.5-sync-sound.md",
