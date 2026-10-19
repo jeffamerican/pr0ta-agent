@@ -413,6 +413,10 @@ You can also pass URLs directly (`start_image_url`, `end_image_url`, `reference_
 - `status` -- usually `queued` or `started`
 - `estimated_seconds` -- optional estimate
 - `credits_cost` -- optional and nullable; do not assume it is always populated
+- `applied_style_look` -- image and video: `{applied: true, look_line, position, world_id, world_name}` with the exact project look text the server added to the prompt, or `{applied: false, reason}`. The task records it as `metadata.style_look_applied`.
+- `look_warnings` -- advisory `[{term, why}]`: words in the applied look that make pictures read as generated (glow, sparkles, "flawless", "8K"). Nothing was blocked; fix the style world's look (`style_world_update`) or opt out per request.
+
+Request field `apply_style_look` (image and video): `false` keeps the project look out of this one request, `true` adds it even to an edit; omit it for the usual rule. Recorded on the task as `metadata.apply_style_look`.
 
 **Note on task status:** The `provider` and `model_id` fields on initial task objects may be `null` -- this does not indicate a dispatch failure. The task transitions through `queued` -> `started`/`running` -> `succeeded`/`failed` as normal.
 

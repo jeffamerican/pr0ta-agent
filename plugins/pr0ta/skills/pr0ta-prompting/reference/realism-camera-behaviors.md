@@ -68,6 +68,15 @@ Realism makes an image believable; contrast makes it worth watching, especially 
 
 Use this while developing ideas with the person; it does not override an approved script.
 
+## Photographed, Not Rendered
+
+When a polished shot still reads as AI-made, these levers make it read as a photograph (any image or video model):
+
+- Name a real camera body, lens and T-stop, and a film stock with its grain and halation.
+- One motivated light source; mixed colour temperatures where the scene has them; true blacks.
+- Skin with pores, freckles and uneven tone; props with wear; "an unretouched photograph".
+- Leave out glow, sparkles, particles, "flawless", "premium", "8K". The same words in a style world's look reach every shot: read `look_warnings` and `applied_style_look` in the result, and propose a cleaner look or pass `apply_style_look: false` for a shot whose prompt carries its own complete look.
+
 ## Reusing a Look
 
 When the person likes a still or take and wants its capture look again, distil its capture sentence and two or three texture qualities into a proposed update to the style world's look text (`pr0ta-prep` → style worlds), so every later prompt starts from the same medium. Agree the wording with the person before saving it, and never approve a look yourself.

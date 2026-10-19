@@ -36,6 +36,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **get** (`mcp-tools-1.md`): get_breakdown_element_review, get_character_references, get_review_annotations, get_scene_breakdown, get_scene_shotlist, get_screenplay_text, get_set_references, get_shot_assets
 - **grounded** (`mcp-tools-1.md`): grounded_web_search
 - **hybrid** (`mcp-tools-1.md`): hybrid_generation_capabilities, hybrid_sequences_apply_setup, hybrid_sequences_approve, hybrid_sequences_create, hybrid_sequences_generate, hybrid_sequences_get, hybrid_sequences_job, hybrid_sequences_list, hybrid_sequences_update, hybrid_shot_generate, hybrid_shots_create, hybrid_shots_get, hybrid_shots_list, hybrid_shots_update
+- **learning** (`mcp-tools-1.md`): learning_record
 - **memory** (`mcp-tools-1.md`): memory_claim_update, memory_claims_list, memory_conflicts_list, memory_context_pack, memory_get_confirmation, memory_graph, memory_ingest_app, memory_overview, memory_propose_alternate, memory_propose_change, memory_record_decision, memory_record_note, memory_report_conflict, memory_request_confirmation, memory_search, memory_source_create, memory_source_process, memory_sources_list
 - **models** (`mcp-tools-1.md`): models_get_defaults, models_list, models_preferred
 - **music** (`mcp-tools-1.md`): music_analyze, music_singing_voices_list
@@ -46,7 +47,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **production** (`mcp-tools-1.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry
 - **project** (`mcp-tools-1.md`): project_metadata_get, project_metadata_patch, project_rename
 - **qr** (`mcp-tools-1.md`): qr_code_generate, qr_code_verify
-- **read** (`mcp-tools-1.md`): read_pr0ta_skill, read_web_page
+- **read** (`mcp-tools-2.md`): read_pr0ta_skill, read_web_page
 - **references** (`mcp-tools-2.md`): references_resolve, references_settle_in_frame
 - **review** (`mcp-tools-2.md`): review_submit_assets
 - **save** (`mcp-tools-2.md`): save_scene_shotlist

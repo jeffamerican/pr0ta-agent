@@ -2,6 +2,11 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## read
+
+- `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.
+- `read_web_page`(**url**, max_chars): Open one web page in a browser and return its text as Markdown, after its scripts have run.
+
 ## references
 
 - `references_resolve`(**asset_uid**, model): Read the references a Production Queue row's render sends (its reference ledger), without rendering or saving anything: each image, video and audio f…
@@ -92,10 +97,10 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## tasks
 
 - `tasks_acknowledge`(**subscription_id**, **client_id**, **workflow_id**, **thread_id**, **event_id**): Acknowledge that the bound agent has accepted responsibility for a completed task.
-- `tasks_batch_get`(**task_ids**): Get multiple PR0TA tasks in one MCP call for efficient generation polling.
+- `tasks_batch_get`(**task_ids**, detail): Get multiple PR0TA tasks in one MCP call for efficient generation polling.
 - `tasks_cancel`(**task_id**): Cancel one queued or running PR0TA task.
 - `tasks_completion_events`(**subscription_id**, cursor): Read completion receipts for recovery.
-- `tasks_get`(**task_id**): Get one PR0TA task by id and return its canonical status/result.
+- `tasks_get`(**task_id**, detail): Get one PR0TA task by id and return its canonical status/result.
 - `tasks_subscribe`(**request**): Register a durable HTTPS completion receiver bound to one client/workflow/thread.
 - `tasks_unsubscribe`(**subscription_id**): Disable completion delivery and pending email escalation for this subscription.
 - `tasks_watch`(**subscription_id**, **task_ids**): Add task IDs to a completion subscription.

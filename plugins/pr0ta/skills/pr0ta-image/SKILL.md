@@ -89,7 +89,7 @@ Take the mode from `supported_modes`; some families list only edit modes even wh
 }
 ```
 
-Edit modes are the tool for consistency correction: fixing character drift in a key frame before it goes to video. See `pr0ta-consistency`.
+Edit modes are the tool for consistency correction: fixing character drift in a key frame before it goes to video. See `pr0ta-consistency`. Edit passes can drift apparent age, most visibly in hands and skin: name the character's age in edit prompts and compare the result against the character.
 
 `format` accepts `png`, `jpeg`, `jpg` (normalized to `jpeg`), and `webp`; other values return `400`. Some models return PNG regardless of the requested format, so check the delivered file's type.
 
@@ -112,9 +112,12 @@ In a project, the server adds the scene's look line (Style page) to every new
 image: give `metadata.scene_number` and leave style words out of the prompt.
 A new frame built from references is `ref_to_img`. Edits of an existing image
 (`img_to_img` with a source image, inpaint, outpaint), upscales and mattes keep
-their source's look; set `metadata.project_look: true` to restyle
-one. Set `metadata.project_look: false` for title cards, flash cards and
-anything that should not take the film's medium (a logo, a website graphic).
+their source's look; set `apply_style_look: true` to restyle one. Set
+`apply_style_look: false` (older: `metadata.project_look`) for title cards,
+flash cards and anything that should not take the film's medium (a logo, a
+website graphic). The result's `applied_style_look` is the exact look text
+added, or why none was; `look_warnings` flag words in it that make pictures
+read as generated (advisory).
 
 ## Enhancement and Restoration
 

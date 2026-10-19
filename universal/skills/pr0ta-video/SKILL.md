@@ -112,12 +112,15 @@ Generic reference validation and provider-native contracts are separate layers. 
 - Generic `reference_video_urls[]` / `reference_audio_urls[]` arrays work only on the multimodal reference routes listed there; FLUX 3 and LTX 2.5 use operation-specific fields.
 - H3 and H3 Max R2V reject audio-only reference sets.
 
+First/last-frame and keyframe routes interpolate between the frames you give, so stage motion a body can make: a held object moves locked to a moving hand (stage a reveal as the whole hand turning), never inside a still grip.
+
 ### The project look
 
 In a project, the server appends the scene's look line (Style page) to every
 new video: give `metadata.scene_number` and leave style words out. Video edits,
-extends and lipsync keep their source's look; `metadata.project_look: true`
-restyles, `false` opts out (an animated title card, a client logo).
+extends and lipsync keep their source's look; `apply_style_look: true`
+restyles, `false` opts out (an animated title card, a client logo). The
+result's `applied_style_look` and advisory `look_warnings` show what was added.
 
 ## Duration and Shape
 

@@ -4,7 +4,7 @@ Full polling contract: routes, in-progress / succeeded / failed response shapes,
 
 ## Task Status and Polling Fallback
 
-**Task status is authoritative.** Poll until a terminal state. MCP: `tasks_get` for one task, `tasks_batch_get` for several.
+**Task status is authoritative.** Poll until a terminal state. MCP: `tasks_get` for one task, `tasks_batch_get` for several. `tasks_batch_get` returns a compact record per task (status, progress, model, the prompt once, `result` with asset ids and links, other `result_refs`, error, times); pass `detail: "full"` for parameters, provider request and costs. `tasks_get` returns full detail with the prompt once at `metadata.prompt` and repeats shown as `"(same as <path>)"`; it accepts `detail: "compact"`. Result links are absolute; private asset links carry a token valid for about 6 hours, so re-read the task or call `assets_get_download_link` for a fresh one.
 
 With a configured completion subscription, await the notification, acknowledge actual pickup, and read `tasks_get` to reconcile its result; see [completion notifications](task-completion.md). If a subscribed task finishes during active work and you accept its result through a status read, reconcile and acknowledge its completion event now; follow [active-work pickup](task-completion.md#results-picked-up-during-active-work).
 

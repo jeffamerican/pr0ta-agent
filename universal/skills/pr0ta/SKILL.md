@@ -120,6 +120,12 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
    of a verdict alone.
    Never present a take that did not pass as good; say what the review found
    (`pr0ta-video` → "Automatic QC of Every Take").
+11. **Report what the platform should learn.** A lesson that will recur on
+   other productions (a model's consistent behavior, a prompting rule, a
+   missing tool) goes to `learning_record` with a `general_principle` that
+   names no shot, scene, asset or project. A fix for one shot or project
+   belongs in that project's asset notes or memory; broken things go to
+   `bug_report_create`.
 
 ## Local ledger
 

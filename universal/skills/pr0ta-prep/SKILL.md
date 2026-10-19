@@ -68,14 +68,15 @@ Answer only with the user's decision or with what the screenplay itself states.
 The Director read seeds style worlds: named visual languages, one default, with
 scene assignments. `style_package_get` reads them. Refine with
 `style_world_update`, add with `style_world_create`, move scenes with
-`style_world_assign_scenes`. Moving scenes does not reread them by itself:
-when the user wants the departments to follow the new world, run
+`style_world_assign_scenes`. Moving scenes does not reread them: when the
+departments should follow the new world, run
 `breakdown_rerun(scenes)` for the moved scenes.
 
 Each world has one look line, added by the server to every image and video in
 its scenes. Write it as `look_slots` (medium, palette, light, texture, lens) with
 `style_world_update`: about 40 words of what is in the frame; fix any
-`look_issues`. Never repeat the look in prompts you write.
+`look_issues` (and `look_warnings` for photographic work). Never
+repeat the look in prompts you write.
 
 Style travels as words. Put the client's look-books, treatment pages or brand
 images on the world as `client_references`; set `match_client_references` only
@@ -89,7 +90,7 @@ Casting runs in the breakdown; refine with the user, then `cast_list_save`
 (`reconcile_existing: true` changes the fields you send for the members you
 list and keeps the rest; without it the list you send is the whole cast).
 A character is one cast member under every name: a write under its full name,
-alias or screenplay cue ("Will Henning" for WILL) saves to that member. If the
+alias or screenplay cue saves to that member. If the
 cast already holds one character twice, fold the duplicate in with
 `cast_list_save(merge: {from, into})`; it keeps the kept member's cast number,
 portrait, references and approved voice and loses nothing.

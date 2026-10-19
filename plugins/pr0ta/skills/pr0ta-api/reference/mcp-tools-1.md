@@ -164,6 +164,10 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `hybrid_shots_list`(): List saved Hybrid Studio shots.
 - `hybrid_shots_update`(**shot_id**, **request**): Update saved Hybrid Studio shots.
 
+## learning
+
+- `learning_record`(**title**, area, **symptom**, cause, **general_principle**, suggested_change, **scope**, models, evidence_asset_ids): Record a reusable production lesson for the PR0TA developer team, who may turn it into an operator skill edit or a new platform feature or utility.
+
 ## memory
 
 - `memory_claim_update`(**claim_id**, **status**, supersedes_claim_id): Approve, reject, supersede, or return a memory claim to candidate status; supply supersedes_claim_id for an exact replacement.
@@ -252,8 +256,3 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `qr_code_generate`(data, url, error_correction, dark, light, scale, size, border, version, micro, svg, subject, folder_path): Make a real, scannable QR code as a project image asset (free, no credits, no model): a PNG (optionally also an SVG), read back before it is saved so…
 - `qr_code_verify`(**asset_id**, expected_payload, times, count, record): Scan check (free): does an image asset, or sampled frames of a video asset, carry a QR code that actually decodes, and to the expected payload?
-
-## read
-
-- `read_pr0ta_skill`(name, section, reference, offset): Read the PR0TA production playbook.
-- `read_web_page`(**url**, max_chars): Open one web page in a browser and return its text as Markdown, after its scripts have run.

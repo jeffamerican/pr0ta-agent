@@ -50,7 +50,7 @@ Build the final reference order before writing any positional or ordinal name. R
 
 - **Controlled designed-world reference images:** read `reference/designed-world-reference-image.md` (paired flat/depth guidance, department authority, QC, receipts, approval).
 - **Net-new character, hero prop, or wardrobe references with no approved image yet:** read `reference/reference-design-bootstrap.md` and use `prompt_profile: "character_reference_design"`, `"prop_reference_design"`, or `"wardrobe_reference_design"`. These return a candidate package for user approval before any generation.
-- **Realism (a person holding the camera):** `reference/realism-camera-behaviors.md`.
+- **Realism (handheld capture; photographed, not rendered):** `reference/realism-camera-behaviors.md`.
 - **World Labs Marble 3D environments:** read `reference/marble-world-generation.md`. Marble is spatial-environment prompting, not shot prompting.
 - **Compact Seedance 2.0 Omni storyboard sequences:** call `agent_chat_orchestrate_prompt` with `prompt_profile: "seedance_storyboard_sequence"` and read `pr0ta-video/reference/seedance-global-storyboard.md`. Every production-prompt orchestration consults Stylist and Propmaster (as the project configures them) before Storyboarder; selecting Director, Storyboarder, or Cinematographer as the entry role does not shorten the configured department chain. Contributed department facts are binding prompt authority within the endpoint's prompt budget; Storyboarder owns reference accounting and shot bindings, and Cinematographer renders the provider-ready prompt. Seedance 2.5 omits this profile and uses the generic model-aware path with natural-language reference roles.
 - **Workflow gates, on your own judgment:** eight orchestration gates are yours to pass with `workflow_bypasses` and a one-sentence `bypass_reason`, only after the gate refused and named itself (the error says the risk). `dialogue_audit`: the Script Supervisor checks the Director's lines against the screenplay (pass for silent previs, or when you checked the lines yourself; never for a final dialogue take). `character_tokens`: Omni `@omni-character` tokens must match bound approved characters, or identities swap or blend (the three-character provider limit is not a gate). `prompt_sections`: a designed-world prompt missing a required section can drop camera, action or continuity facts (pass when the content is there under another structure). `reference_ambiguity`: several selected references for one character can blend a face (the first required one is kept; pass only when they are near-identical, else fix Casting). `reference_preflight`: pixels must support the role claimed for each image (passing it, like `reference_preflight_mode: "shadow"`, keeps warnings). `native_voices`: speakers without an approved Casting voice are voiced by the video model (approved voices still bind); those voices are provisional and will not match later takes (pass for previs or a one-off speaker such as a crowd). `character_visual_references`: binds the character images that exist, skips missing ones and generates no turnaround; the missing characters can drift (pass for previs or a figure seen once). `reference_limits`: over the image slots or the 15-second reference-audio budget, drops the lowest-priority references (keeps required plates, then portraits, then turnarounds, and the voices of the speakers with the most lines). `validation_overrides` is the older spelling of the last three. Each pass is in the result's `workflow_bypass_receipts`; tell the person what you passed and when output is provisional. Identity claims and Director contracts are never passable; see `pr0ta-api` → "Workflow gates".
@@ -100,7 +100,7 @@ For countdowns, timers, tickers, scores, progress bars, dates, or any on-screen 
 
 **Good:** "A digital seven-segment timer on a black background. At 0.0s display `00:00:09`. At 0.3s display `00:00:08`. … At 2.4s display `00:00:01`. Numerals are amber-gold, massive, centered, no other elements on screen."
 
-Field case: on an identical-reference countdown, Kling O3 Pro produced `08 → 00 → 09` from "count down from 9", while Seedance 2.0 Omni executed the enumerated version cleanly on the first try.
+Field case: Kling O3 Pro rendered "count down from 9" as `08 → 00 → 09`; the enumerated version rendered cleanly.
 
 ### 2. Hold the Existing Composition
 
@@ -110,7 +110,7 @@ For minimal-motion shots (a text pulse, a slight push-in, a blink, a flag rippli
 
 > "A man in his 40s in a charcoal suit sits at a cherry-wood desk, warm tungsten key light from camera-right, cool blue fill from the window. Shallow depth of field, 85mm. **Hold the existing composition. Minimal camera movement. Only his eyes blink once and his mouth slightly parts as if about to speak.**"
 
-This sharply reduces scene rewrites, camera drift, and invented motion on reference-to-video, title cards, talking-head B-roll, and "breathing still" shots.
+This reduces scene rewrites, camera drift, and invented motion on reference-to-video, title cards, talking-head B-roll, and "breathing still" shots.
 
 ### 3. Line-Locked Poster Prompt (Text-Heavy Stills)
 
@@ -193,10 +193,10 @@ Model references can reorder this (reference-role ledgers first, audiovisual sec
 
 1. **Environment first.** Name the location specifically ("a glass-walled corner office on the 40th floor"), include a ground plane, time of day, weather, and architectural terms. Unanchored subjects float.
 2. **Subject and appearance.** Name characters ("Sarah", or `@Element1`), list defining features and distinctive marks, and describe props by material and color. Use the exact same words every time.
-3. **Action.** Sequential and unambiguous: "First [A], then [B], finally [C]." One clear action per five seconds. Describe physics and body mechanics ("Sarah pivots on her heel and strides toward the door").
+3. **Action.** Sequential and unambiguous: "First [A], then [B], finally [C]." One clear action per five seconds. Describe physics and body mechanics ("Sarah pivots and strides to the door").
 4. **Camera.** Precise terms: dolly in/out, truck left/right, tracking, orbit, pan, whip pan, tilt, rack focus, low/high angle, POV/FPV, static wide, slow push-in. Match to the shot: establishing (static wide or slow reveal), dialogue (medium, minimal movement), action (tracking or handheld), emotional beat (slow push-in). Avoid "cinematic camera." For footage a person filmed (phone, camcorder, found footage, documentary), the capture medium leads (via the look line in a project) and the camera reacts like an operator (`reference/realism-camera-behaviors.md`).
 5. **Lighting.** Describe sources, not moods: "single overhead fluorescent tube casting hard shadows," not "dramatic lighting"; "golden hour sunlight through office windows, long warm shadows," not "warm feeling." Backlight, low-key, and hazy light often look most convincing.
-6. **Style.** In a project, leave it out: the server adds the scene's look line (Style page) to every image and video prompt, so a style you write would repeat or contradict it. Outside a project, end with one style sentence copied verbatim across prompts: medium, palette, light, texture, lens.
+6. **Style.** In a project, leave it out: the server adds the scene's look line (Style page) to every image and video prompt, so a style you write would repeat or contradict it. `applied_style_look` in the result shows it; `apply_style_look: false` skips it once. Outside a project, end with one style sentence copied verbatim across prompts: medium, palette, light, texture, lens.
 
 ## The Prompt Bible
 
