@@ -59,7 +59,7 @@ Route by the resolved `model_id`:
 
 | Resolved model id | Read |
 |---|---|
-| `muapi/seedance-2.5-*`, `byteplus/seedance-2.5` | `reference/seedance-2.5.md`; for songs and sung performance also `reference/seedance-2.5-sync-sound.md` |
+| `muapi/seedance-2.5-*`, `byteplus/seedance-2.5` | `reference/seedance-2.5.md` and `reference/seedance-2.5-prompt-craft.md` (writing); for songs and sung performance also `reference/seedance-2.5-sync-sound.md` |
 | `muapi/seedance-2-*`, `muapi/sd-2-vip-*` (Seedance 2.0) | `reference/seedance-omni.md`; for storyboard chunks with a global visual bible also `reference/seedance-global-storyboard.md` |
 | `muapi/wan3.0-*`, `alibaba/wan-3.0-prime/*` | `reference/wan-3.0.md` |
 | `google/gemini-omni-flash/v1.1/*` | `reference/gemini-omni-flash-1.1.md` |

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.5.1",
-  "released_at": "2026-10-17",
-  "source_revision": "v6.5.1",
-  "minimum_platform_version": "1.25.341",
+  "skills_version": "6.6.0",
+  "released_at": "2026-10-19",
+  "source_revision": "v6.6.0",
+  "minimum_platform_version": "1.25.345",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-05987-woz",
-  "bundle_sha256": "2d5736b2c1287bef1f32de6e9a0d284f6385da0eeac34d733bbf694c3dd4206b",
+  "platform_revision": "pr0ta-platform-06011-wuk",
+  "bundle_sha256": "f04b9fade885eb891ea69268b8ff73f6eb8e39d9d95dde536f538a15ed39f796",
   "skills": [
     {
       "name": "pr0ta",
@@ -216,11 +216,11 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "538bb66019a5845fc8efaed1a9f07c930f7ff69a973f4e6c3a2bcf21d0892dfe",
+      "content_sha256": "94d7a08314726a974587f454fd85abd346217e8b295f15c0ff93830f8a20a05b",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "c38ecd72bede22862b036fe2b8c737a321e9682d4007e84ab67269fab2a3385c"
+          "sha256": "3b97a6764b780f9394f66e3d315a23774b52ea9b31141768ae8a0a51a1c3825e"
         },
         {
           "path": "reference/review-and-gates.md",
@@ -342,15 +342,15 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "54be8bb929baae59d89e2549188ec3db81db8fa7125bb5c649b28f4934b30a74",
+      "content_sha256": "f6e4a2cf3d5d7ce51fcd91be0001951d21a42e19ae7bc5ea983e6dc059aba5ce",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "a35e5e2806ff3a7afca64213141c299be26a75aec0db9116c2a8f8b142697f0d"
+          "sha256": "38e661cededa331281cdadaf6ef24777db8b2ca398bbdbc8e14af1b03417c566"
         },
         {
           "path": "reference/anti-patterns.md",
-          "sha256": "1ba598b26cfa4c2dbee3881aaf705406fc648876e5d3e260fdce04123bdfa779"
+          "sha256": "8a6c05433930d39eda2d9874c6b4700309e90e55e72539c88a3a3f9c93d9c386"
         },
         {
           "path": "reference/designed-world-reference-image.md",
@@ -371,6 +371,10 @@
         {
           "path": "reference/motion-prompting.md",
           "sha256": "23c457968560e0a0dde0d7accd22ba03434602f1e6661ffba9271b8a0b4ba5c3"
+        },
+        {
+          "path": "reference/realism-camera-behaviors.md",
+          "sha256": "d0475b7fd875ded5ddbef315ced59932aa2d488034612cbbe4548cbae95eb1fd"
         },
         {
           "path": "reference/reference-design-bootstrap.md",
@@ -411,11 +415,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "00fe259a4efb2711955ab69d41ba6f74ca5d80ae39a811a9decf2d961e25e961",
+      "content_sha256": "c0df6cc93f7ff1b564e7e735f34c7cdea0685cb46676862a6a5cf243e48722e2",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3cfbfa85f63b6086bd697db89c736c05015c2c461f8a283faca8cbc9daeaff9e"
+          "sha256": "38942f3993618bc3d125c34df96937e9132810c6a220c208118aedb0cdfc30dd"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -462,12 +466,16 @@
           "sha256": "150763a6f7938cda1894cba6bf4cc5157abb69abda2e84d87082eaba01755e3c"
         },
         {
+          "path": "reference/seedance-2.5-prompt-craft.md",
+          "sha256": "e8c13604dd17aa864884a6fab0f603915fabca8d8828f7cfd263e76dc56d1bb7"
+        },
+        {
           "path": "reference/seedance-2.5-sync-sound.md",
           "sha256": "f28cbb63d73fa74682d0f848afd7fbb04f8532ec2c03caedcb3c55214cd94353"
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "2789a8b08b3e108346f3bfaef8ca59de154f8d0870e113adb3e78db87b84bbb9"
+          "sha256": "0ed7070336faeaca0767024303418e2e1cb43f37cb946675cc5d9caf664b9800"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

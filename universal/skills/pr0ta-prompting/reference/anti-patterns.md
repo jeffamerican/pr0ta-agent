@@ -42,6 +42,6 @@ The following anti-patterns break visual consistency and cause generation failur
 **Bad:** "The same scene, now at sunset." (prompt is not self-contained -- reference may be ignored)
 **Good:** Name the subject, intended change, and continuity constraints. Restate key visual anchors for loose-reference Kling/Seedance 2.0 work; for H3 and Seedance 2.5 I2V, preserve the first frame's appearance/composition and prompt its motion, camera, atmosphere changes, and end state.
 
-### 11. Negations Embedded in Prose
+### 11. Negated Actions
 **Bad:** "The craftsman polishes the statue. Don't break it. No cutting."
-**Good:** Rewrite as a positive assertion of the preserved state -- see Technique 4. Video models drop `don't` / `no` / `does not` from prose prompts and render the forbidden action. Keep negations in the dedicated `negative_prompt` field; never in the main prompt body.
+**Good:** Rewrite as a positive assertion of the preserved state -- see Technique 4. A negated action can still render the forbidden action. Exclusions are different: use the route's `negative_prompt` field where it has one; on Seedance 2.5, which has none, write short paired exclusions ("No subtitles.", "No BGM; generate only environmental sounds and action sounds.").

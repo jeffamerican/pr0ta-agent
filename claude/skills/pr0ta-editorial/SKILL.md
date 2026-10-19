@@ -131,7 +131,7 @@ Audit with extra suspicion: the hero shot you fell in love with first (usually t
 
 When stuck, the answer is almost always more material, not forcing what you have. Legitimate interventions: a missing reaction shot, a cutaway for something the narration names, an intermediate beat to soften a hard scene change, a title card (a verified text-capable model, or a verified still animated on the timeline; `pr0ta-video` covers on-screen text), a longer take instead of a stretch, an alt angle for a key beat, a held still for a silence. Their cost is trivial next to shipping a cut that feels stapled together.
 
-If a regenerated shot keeps failing the same way, look for negations in the prompt ("don't break the glass"): video models drop them and render the forbidden action. Rewrite as a positive statement of the preserved state (`pr0ta-prompting` → Technique 4).
+If a regenerated shot keeps failing the same way, look for negated actions ("don't break the glass"): models can render the forbidden action. Rewrite as a positive statement of the preserved state (`pr0ta-prompting` → Technique 4).
 
 Anti-pattern: generating more because a section is boring before asking whether it should be shorter.
 

@@ -90,7 +90,7 @@ The Edit and Extend families use the same prompt, duration, aspect-ratio, seed, 
 
 ## Prompting Principles
 
-ByteDance does not publish an optimal word count for Seedance 2.5. Use the shortest prompt that fully specifies the shot. Order information by causality rather than by a keyword checklist:
+Writing craft (prompt shape, the sectioned template for multi-character and dialogue shots, reference roles, cast and identity, negatives and exclusions, dialogue, subtitle and music leaks) lives in `seedance-2.5-prompt-craft.md`; read it before writing. ByteDance does not publish an optimal word count for Seedance 2.5. Use the shortest prompt that fully specifies the shot. Order information by causality rather than by a keyword checklist:
 
 `shot intent/framing → subject and setting → chronological performance → camera trajectory → light/atmosphere/style → observable end state`
 
@@ -101,7 +101,7 @@ Prefer concrete visible behavior:
 - Describe body mechanics and object physics.
 - Name how the camera moves and what it reveals or follows.
 - State the final visible state.
-- Phrase preservation requirements positively.
+- Phrase the action positively; short paired exclusions are supported (`seedance-2.5-prompt-craft.md` → Negatives and Exclusions).
 - Avoid competing camera paths, contradictory reference roles, and a cut list too dense for the duration.
 
 ## Text-to-Video
@@ -160,7 +160,7 @@ Omni accepts:
 - Up to 50 total inputs when all three media budgets are combined.
 - At least one reference in the current PR0TA flow. Audio-only and video-only requests are valid.
 
-MuAPI describes images as environment/style guidance, video as camera-motion/rhythm guidance, and audio as mood/pacing guidance. Its current route pages do not guarantee positional reference-token binding. Upstream ByteDance 2.5 examples use spaced, capitalized UI labels such as `@Image 1`, `@Video 1`, and `@Clay Render 1`, but that UI syntax is not the Seedance 2.0 lowercase compact token contract and is not documented by MuAPI for PR0TA's routes. In PR0TA, assign reference roles in natural language unless the exact live MuAPI route begins documenting token binding. Never invent a clay-render payload field; provide a clay render as an ordinary image reference and state that it controls blocking, composition, or camera motion. Seedance 2.5 also exposes no trained-character field.
+MuAPI describes images as environment/style guidance, video as camera-motion/rhythm guidance, and audio as mood/pacing guidance. The provider guide numbers assets by upload order (Image 1, Video 1, Audio 1) and asks for every asset to be bound in the prompt. PR0TA compiles those numbered role declarations from the reference plan when it builds the prompt package; on a direct submission, write them yourself. Do not write Seedance 2.0 `@image1` tokens or Higgsfield-style `@Image 1` labels (`seedance-2.5-prompt-craft.md` → Reference Roles). Never invent a clay-render payload field; provide a clay render as an ordinary image reference and state that it controls blocking, composition, or camera motion. Seedance 2.5 also exposes no trained-character field.
 
 Assign roles in natural language, then describe the shot:
 
@@ -280,6 +280,8 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 | Omni reference claims unseen authority | Supply an image where the claimed face/object/state is visible, narrow the declared role, or resolve continuity before orchestration |
 | Identity drifts | Use clearer images, repeat defining traits, or switch to a trained-character workflow on Seedance 2.0 Omni |
 | Long clip meanders | Reduce beats; preserve one causal arc and explicit end state |
+| Subtitles, background music, or glowing eyes despite the prompt | `seedance-2.5-prompt-craft.md` → When an exclusion does not hold |
+| A line replaced by laughter, or extras wearing the lead's face | `seedance-2.5-prompt-craft.md` → Dialogue; Cast and Identity |
 | 4K route or audio control rejected | Select 1080p or 4K (upscaled) with the suffixed model ID; PR0TA sends the matching `resolution`. Omit audio controls on standard routes and use `generate_audio` only on Edit/Extend. The absence of a control does not mean silent output |
 | Positional reference label is ignored | Replace upstream UI labels with explicit natural-language roles unless the exact MuAPI route documents token binding |
 | Edit changes too much | Request one focused transformation and list preserved source traits |
