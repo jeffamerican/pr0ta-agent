@@ -93,3 +93,65 @@ with their gaps in time (`start_time`) and speeds, and follow them with `follow`
   over the feet on the way. The seat's front edge belongs under the knees.
 - Seated figures talk with their hands too; lying figures only breathe.
 
+
+## The motion check: block, check, fix, render
+
+`blocking_check(scene_number, chunk_id)` renders nothing and answers in well under a second for most chunks. It solves every figure
+frame by frame (after the chunk's actions expand) against the approved set build's objects and the other
+figures, and returns issues grouped by check and figure:
+
+| Check | Means | Typical fix (the hint says it in metres or seconds) |
+|---|---|---|
+| `set_penetration` | a body part inside a set object or prop (not the seat it sits on, legs under a table, stairs it stands on, or a room it is in) | move the key or path point by the push-out the hint gives |
+| `people_overlap` | two bodies inside each other (hands may touch) | move one figure apart |
+| `floating` / `sinking` | the lowest point off what the figure stands on | lower or raise the key's location z |
+| `foot_slide` | a planted figure glides between two keys of the same pose | give the move a walk path, or keep the location |
+| `reach` | a hand misses its declared target | move the figure toward it, or the target nearer |
+| `pop` | a joint jumps in one frame | give the change more time, or add a key between |
+| `path_blocked` | a path line runs through an object | insert the detour point the hint gives |
+
+Each issue names its `cause` (e.g. `figures[Kai].keys[2]→[3] (1.5–2.1 s)`), `worst_time` and `severity`.
+`beats` lists which shot each key lands in, to check beats against the notes. Pass `chunk: {figures,
+objects, actions}` to check a candidate before saving. The loop: fix the worst error, check again, render
+once the errors are gone. A chunk may render with open issues (they ride on the response and the Blocking
+page shows them); the person decides. It is an approximation on mannequin capsules and object bounds; the
+animatic is the authority.
+
+## Action skills (`actions` on a chunk)
+
+Write intent; each skill expands into keys, paths, talk spans and props before the check and the render
+(`include_expanded: true` on blocking_check shows the result). They run in order, so later skills build on
+earlier ones. A figure is keyed or on a path within a chunk; a skill that needs the other says so (end a
+line with a bail, then key the figure in the next chunk). Numbers may be ranges, `{"range": [0.5, 1.5]}`:
+the check tries values across each range and keeps the one with the fewest issues (`actions.chosen`).
+
+| Skill | Arguments | Expands to |
+|---|---|---|
+| `skate_line` | figure, points, speed?, start_time, stance, push_until?, board?, dismount | a skate path plus a skateboard that rides it |
+| `bike_ride` | figure, points, speed?, start_time, bike?, dismount | a bike path plus a bicycle that rides it |
+| `walk_to` / `run_to` | figure, points (from where it stands), speed?, start_time, end_pose | a walk or run path |
+| `ollie` | figure, at [x,y], height 0.35, length 1.4 | a hop in the skate line over that spot (kerbs, gaps) |
+| `bail` | figure, time?, land | the line ends at `time`; the rider pitches over and lands lying; the board rolls on 1.5 m (a bike tips over) |
+| `chase` | pursuer, target, gap s, offset m, gait?, speed? | the target's line, coming from `gap` seconds back along it, `offset` to its left; a kit if it rides. Give an offset (or end the target's line with a bail) or the pursuer runs into a stopped target |
+| `fight_exchange` | attacker, defender, time, punches, interval, hand, hit | squared-up guards, punches at the head, hits rocking the defender back |
+| `shoot` | shooter, target (figure or point), time, shots, interval, gun?, hit | the pistol comes up 0.5 s before, recoil per shot; a hit figure falls |
+| `take_cover` | figure, behind (object), threat, time | a run to the far side of the object, crouched by `time` |
+| `fall` | figure, time, toward (forward, back, left, right, or a world direction [dx, dy]), distance | stumble then lie (face down forward, on the back backward) |
+| `sit_down` / `stand_up` | figure, seat (object or point), time, duration, facing? | the planted sit-down and stand-up keys |
+| `conversation` | lines [{figure, words or seconds, energy}], start, gap, listeners | talk and listen spans timed from the words; still figures look at each other |
+| `knock_over` | figure, prop (a chunk prop), time | a reach to the prop and its tip-over away from the hand |
+
+Example, a chase that ends in a bail:
+
+```json
+"actions": [
+  {"skill": "skate_line", "figure": "Kai", "points": [[0,0,0],[14,0,0]], "stance": "goofy"},
+  {"skill": "ollie", "figure": "Kai", "at": [4,0]},
+  {"skill": "chase", "pursuer": "Dez", "target": "Kai", "gait": "bike", "gap": {"range": [0.6, 1.4]}, "offset": 1.0},
+  {"skill": "bail", "figure": "Kai", "time": 3.0}
+]
+```
+
+For a performance the procedural skills cannot give (a kickflip, a choreographed fight, a stunt fall),
+generate a clip with text_to_motion and give the figure `motion` instead; the check skips clips and the
+animatic shows them.

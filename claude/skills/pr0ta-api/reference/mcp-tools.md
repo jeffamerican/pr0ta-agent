@@ -17,7 +17,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **beat** (`mcp-tools-1.md`): beat_sheet_approve, beat_sheet_generate
 - **billing** (`mcp-tools-1.md`): billing_usage_get
 - **blender** (`mcp-tools-1.md`): blender_job_submit
-- **blocking** (`mcp-tools-1.md`): blocking_animatic_render, blocking_get, blocking_save
+- **blocking** (`mcp-tools-1.md`): blocking_animatic_render, blocking_check, blocking_get, blocking_save
 - **breakdown** (`mcp-tools-1.md`): breakdown_element_review_decide, breakdown_rerun, breakdown_status
 - **bug** (`mcp-tools-1.md`): bug_report_create
 - **cast** (`mcp-tools-1.md`): cast_list_get, cast_list_save
@@ -45,7 +45,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **post** (`mcp-tools-1.md`): post_clip_slow_motion, post_clips_link, post_drafts_finish, post_drafts_list, post_export_start, post_frames_get, post_render_start, post_sequence_analyze, post_sequence_debug_report, post_sequence_get, post_sequence_save
 - **prep** (`mcp-tools-1.md`): prep_production_capabilities
 - **producer** (`mcp-tools-1.md`): producer_read_generate
-- **production** (`mcp-tools-1.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry
+- **production** (`mcp-tools-2.md`): production_context_get, production_queue_analyze, production_queue_asset_create, production_queue_asset_delete, production_queue_asset_update, production_queue_character_elements_get, production_queue_component_selection_set, production_queue_list, production_queue_prompt_set, production_queue_refresh, production_queue_regenerate, production_queue_regenerate_batch, production_queue_request_preview, production_queue_take_favorite, production_queue_take_select, production_queue_upload_retry
 - **project** (`mcp-tools-2.md`): project_metadata_get, project_metadata_patch, project_rename
 - **qr** (`mcp-tools-2.md`): qr_code_generate, qr_code_verify
 - **read** (`mcp-tools-2.md`): read_pr0ta_skill, read_web_page

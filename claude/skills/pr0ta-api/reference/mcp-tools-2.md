@@ -2,6 +2,25 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## production
+
+- `production_context_get`(scene_number, shot_number, character_names, include_provider_guidance): Fetch existing PR0TA screenplay breakdown, casting, set, prop, look, and approved reference context for a scene or shot.
+- `production_queue_analyze`(**asset_uids**, asset_contexts): Queue Cinematographer or Composer analysis and return a task id.
+- `production_queue_asset_create`(**asset**): Create a manual Production Queue item using the same schema as the Queue UI.
+- `production_queue_asset_delete`(**asset_uid**): Delete or exclude one Production Queue item.
+- `production_queue_asset_update`(**asset_uid**, **updates**): Update a Production Queue item's description, prompts, modality, model, analysis, labels, or saved render settings.
+- `production_queue_character_elements_get`(**asset_uid**): Resolve cast and reference elements for one Queue shot before character-consistent generation.
+- `production_queue_component_selection_set`(**asset_uid**, image_take_id, audio_take_id): Set the selected image and audio component takes for a composite Queue item.
+- `production_queue_list`(include_hidden, offset, limit): List one bounded page of the synthesized Production Queue, including prompts, generated takes, selections, and status.
+- `production_queue_prompt_set`(**asset_uid**, **generation_prompt**, component, trim_config, modality): Set a component prompt, trim configuration, or modality for one Queue item.
+- `production_queue_refresh`(**asset_uids**, reset_analysis, full_reconstruct): Refresh Queue items from Storyboarding, optionally resetting analysis or reconstructing the full queue.
+- `production_queue_regenerate`(**asset_uid**, **generation_params**, generation_prompt, batch_id, batch_label): Queue generation or regeneration for one Production Queue row and return a task id.
+- `production_queue_regenerate_batch`(**asset_uids**, **generation_params**): Queue generation or regeneration for several Production Queue rows (each as production_queue_regenerate does).
+- `production_queue_request_preview`(**asset_uid**, generation_params): Show what production_queue_regenerate would render for one row, without rendering or storing anything: the row it reaches, the prompt, model, modalit…
+- `production_queue_take_favorite`(**asset_uid**, **take_id**, favorite): Favorite a generated take for one Queue item, or remove the favorite with favorite=false.
+- `production_queue_take_select`(**asset_uid**, take_id, take_type): Select or clear a generated image, video, or audio take for one Queue item.
+- `production_queue_upload_retry`(**asset_id**): Retry permanent-storage recovery for one failed Production Queue asset.
+
 ## project
 
 - `project_metadata_get`(keys, lightweight): Read full project metadata or selected top-level keys.
