@@ -117,6 +117,16 @@ once the errors are gone. A chunk may render with open issues (they ride on the 
 page shows them); the person decides. It is an approximation on mannequin capsules and object bounds; the
 animatic is the authority.
 
+### The render's own QA (on the meshes)
+
+Every animatic render measures its figures again on their real meshes and rigs against the set's own
+geometry (not boxes): `set_penetration`, `people_overlap`, `floating`/`sinking` and `reach`, written to
+the render's `scene_inventory.motion_qa` and shown under the animatic on the Blocking page. It also makes
+small fixes and lists them in `motion_qa.fixed`: feet settled onto what is under them (up to 12 cm off)
+and a hand or forearm eased out of a surface it went up to 5 cm into (when no target puts it there).
+Anything bigger is reported, never moved: fix it in the blocking. Read `motion_qa` with the cut check
+when the render finishes; an approved animatic with open errors shows an amber ring on its chunk.
+
 ## Action skills (`actions` on a chunk)
 
 Write intent; each skill expands into keys, paths, talk spans and props before the check and the render
