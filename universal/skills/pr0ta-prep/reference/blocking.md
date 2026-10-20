@@ -45,3 +45,30 @@ the chunk whose shots it cuts exactly, as its first reference video (ledger
 kind `blocking`), with the instruction that its grey figures are placeholders:
 Seedance takes camera, moves, cuts and timing from it, not the mannequins'
 look or motion.
+
+## Props that move, and riding
+
+Props in a chunk's `objects` can move over the chunk's seconds:
+- **`keys`**: where the prop is at given times (eased between them).
+- **`fall`**: it tips over in place, pivoting on its base edge toward a direction, and ends on its
+  side (a knocked bottle, a toppled bike). It does not drop: something let go in mid-air needs a key
+  on the floor.
+- **`ride`**: it travels with a figure, on the body (a skateboard under a skater, a bicycle under a
+  rider) or in a hand (`hand_l`, `hand_r`: a bag, a phone, a gun). Set `until` to let go: the prop
+  stays where it was, then its keys or fall move it. A bail: the board rides until the let-go, then
+  keys roll it on and a fall tips the bike. A drop or a throw: keys carry it to where it lands.
+- A prop a hand grips (`left_hand_grip`/`right_hand_grip`) moves with the hand, so give it no ride,
+  keys or fall. Keys, falls and let-gos must fall inside the render.
+- A rider stays on the board or bike when its path ends. A figure has a path or keys, not both, so
+  stepping off is the next chunk's blocking.
+
+Built-in kits need no model: `primitive: "skateboard"` and `primitive: "bicycle"`. A kit riding under
+its rider is sized to the rider (a bike for a 1.5 m rider is smaller), so leave its scale alone. A project 3D model
+(`asset_id`, e.g. an approved prop from Prep) works too; it is scaled to the prop's dimensions.
+
+A figure rides on its path: `gait: "skate"` stands sideways on the deck (`stance` regular leads with the
+left foot, goofy the right; `push_until` keeps the back foot pushing until then), and `gait: "bike"`
+sits on the saddle pedalling at the speed's cadence. Give the skater a skateboard and the rider a
+bicycle that `ride` them; the kit sits where its rider needs it. For a chase, put the riders on paths
+with their gaps in time (`start_time`) and speeds, and follow them with `follow` setups.
+
