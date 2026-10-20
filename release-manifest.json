@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.10.0",
+  "skills_version": "6.11.0",
   "released_at": "2026-10-19",
-  "source_revision": "v6.10.0",
-  "minimum_platform_version": "1.25.354",
+  "source_revision": "v6.11.0",
+  "minimum_platform_version": "1.25.356",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06065-kam",
-  "bundle_sha256": "8b26b95a4a8835e0a51fd8e9543830ae5769a5ae18cfc9fd55498bc45badbf70",
+  "platform_revision": "pr0ta-platform-06077-xer",
+  "bundle_sha256": "e2b65f2cebe44e5140e80464f83836ab1ddab3b3daa249d31911ec83ac968077",
   "skills": [
     {
       "name": "pr0ta",
@@ -331,7 +331,7 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "e017f3b799df906c858995f545144f7164d1e9880e2fd14dfd03cb6b69833eb5",
+      "content_sha256": "37a86876d0bea87068ece86255a9fe9f55ef26d3adcac0578d53f5e6d8d80c7d",
       "documents": [
         {
           "path": "SKILL.md",
@@ -339,7 +339,7 @@
         },
         {
           "path": "reference/blocking.md",
-          "sha256": "ad984477691dbaaf6a70b270a13e254559a176850d39fb5c134a50b52e9fad0e"
+          "sha256": "fddb7897f1b15949a76caa7a99b9aba200f6b4cf319f11f5a2ecc2dc1a1d0976"
         }
       ]
     },

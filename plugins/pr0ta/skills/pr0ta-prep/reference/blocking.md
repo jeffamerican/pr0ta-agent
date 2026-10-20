@@ -72,3 +72,24 @@ sits on the saddle pedalling at the speed's cadence. Give the skater a skateboar
 bicycle that `ride` them; the kit sits where its rider needs it. For a chase, put the riders on paths
 with their gaps in time (`start_time`) and speeds, and follow them with `follow` setups.
 
+## Everyday performance: walking, running, sitting, idling, talking
+
+- **Walk and run** on a path (`gait: "walk"` 1.4 m/s, `"run"` 3.6 m/s, or set `speed`); the figure
+  settles into `end_pose` when the path ends. Stagger entrances with `start_time`.
+- **Idle** is automatic in a video: a figure holding a pose or between keys breathes, shifts its weight
+  and lets its gaze drift, out of step with everyone else. Set `idle: "still"` only for a freeze (a
+  held breath, a body, a statue).
+- **Talk and listen**: add `talk` spans to the figure, timed from the dialogue in the shot list
+  (about 2.5 words a second, a beat of 0.3 s between lines):
+  `{"start": 1.2, "end": 3.8, "kind": "talk", "energy": "normal"}`. Talking nods the head on the
+  stresses, turns into the line and gestures with the right hand (both for `energy: "animated"`, the
+  free one when a hand holds something; `hands` overrides). Give the person spoken to a `listen` span
+  over the same seconds: slow nods, head tipped. Pair it with `look_at` on each other; nods ride on
+  the gaze. Walk-and-talk works on a path (the head talks, the arms keep the stride). Spans must not
+  overlap, and a motion clip carries its own performance.
+- **Sit down / stand up**: a `sit` key's location is where the hips land on the seat (the feet rest
+  about 0.3 m in front). Key `stand` 0.3 m further forward, facing away from the seat, then `sit` at
+  the seat 1.0 to 1.4 s later, so the feet stay put (reverse it to stand up). The body hinges forward
+  over the feet on the way. The seat's front edge belongs under the knees.
+- Seated figures talk with their hands too; lying figures only breathe.
+
