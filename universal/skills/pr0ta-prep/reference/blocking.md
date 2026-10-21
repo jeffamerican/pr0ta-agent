@@ -117,6 +117,18 @@ once the errors are gone. A chunk may render with open issues (they ride on the 
 page shows them); the person decides. It is an approximation on mannequin capsules and object bounds; the
 animatic is the authority.
 
+### Retime (opt-in per chunk)
+
+`retime: true` on a chunk gives keyed moves that are too fast for what they are the time they need: the
+base gliding faster than a jog between two keyed poses (2.5 m/s), a limb whipping faster than a big
+gesture (4 m/s against the body), or sitting down, standing up or going to the floor in under 0.8 s. The
+time comes from the intervals on either side (each keeps what its own move needs; the first key may start
+earlier, the last land later), so the keys around them and the chunk's length stay put. Action poses
+(punch, throw, push, fight stance, stumble, fall, charge, climb, lying) stay fast. It applies to keys the
+actions write too, before the check and the render; blocking_check's `retimed` lists every key it moved
+and any move it could not give enough time (block that one with more time). Paths and motion clips are
+not retimed.
+
 ### The render's own QA (on the meshes)
 
 Every animatic render measures its figures again on their real meshes and rigs against the set's own
