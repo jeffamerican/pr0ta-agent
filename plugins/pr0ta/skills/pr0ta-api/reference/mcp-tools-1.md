@@ -67,13 +67,13 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## cast
 
-- `cast_list_get`(): Load the Casting-page cast list with enriched portrait, character-sheet, and voice fields.
+- `cast_list_get`(): Load the Casting-page cast list with enriched portrait, sheet, and voice fields: face sheet (faceSheetAssetId; the face at every shot size), outfit s…
 - `cast_list_save`(cast_members, reconcile_existing, merge, approve_voices, approval_reason): Atomically persist the Casting-page cast list to castingRead, castingIndex, and cast CSV.
 
 ## casting
 
 - `casting_avatar_demo_generate`(**request**): Queue an avatar performance demo from a cast portrait and voice sample.
-- `casting_character_sheet_prompt_resolve`(**character**, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line, workflow_bypasses, bypass_reason): Resolve the app's cinematic character-design-sheet brief for a cast member.
+- `casting_character_sheet_prompt_resolve`(**character**, preset, wardrobe, hair_and_makeup, portrait_asset_id, portrait_url, casting_prompt, voice_prompt, sample_line, workflow_bypasses, bypass_reason): Resolve a Casting sheet prompt.
 - `casting_descriptive_prompt_generate`(image_asset_id, image_url, character, current_prompt): Generate a detailed casting prompt from an approved portrait image.
 - `casting_portrait_prompt_write`(**character**, direction, save): Have the Casting Director write a character's portrait prompt and save it to the cast record, where Casting shows it (Portrait tab).
 - `casting_read_generate`(**script**, **producer_analysis**, **director_analysis**, script_supervisor_characters): Run and persist the Casting breakdown and canonical cast list; returns a task for polling.
@@ -136,7 +136,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## get
 
 - `get_breakdown_element_review`(**scene_number**, offset, limit): Read saved, source-cited element types, presence, identity suggestions and reviewer decisions for a scene.
-- `get_character_references`(**character_name**): Retrieve character reference data: portrait URLs, physical description, voice configuration, wardrobe notes, and look timeline from casting read.
+- `get_character_references`(**character_name**): Retrieve character reference data: portrait, face sheet, outfit sheet and body sheet URLs, physical description, voice configuration, wardrobe notes,…
 - `get_review_annotations`(submission_id, review_round_id, resolution_status): Retrieve client review comments, decisions, annotations, and time-coded feedback for the project.
 - `get_scene_breakdown`(**scene_number**, scene_range_end): Retrieve the script supervisor's scene breakdown for one or more scenes.
 - `get_scene_shotlist`(**scene_number**, offset, compact): Retrieve the director's shot list for a scene, including shot number, size, angle, lens, aspect ratio, movement, duration, description, action, and c…

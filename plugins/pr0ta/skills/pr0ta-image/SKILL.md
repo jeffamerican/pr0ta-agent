@@ -1,6 +1,6 @@
 ---
 name: pr0ta-image
-description: "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models."
+description: "PR0TA image generation and editing: key frames, reference stills, character sheets (face turnaround, outfit, full-body), posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models."
 ---
 
 # Image Generation and Editing
@@ -158,6 +158,30 @@ The general guidance in `pr0ta-prompting` applies: self-contained, specific subj
 ### Key Frame for Video
 
 A still that will be animated should show the state before the action, not its peak (`pr0ta-prompting` → Technique 6). Generate it at the delivery aspect ratio: several image-to-video routes follow the input image's shape.
+
+### Character Reference Sheets
+
+A character's identity references are split by job (`pr0ta-consistency` → "Face and Outfit Sheets"). Make them from the approved portrait in Casting's order: the face turnaround, the outfit, then the optional full-body character sheet.
+
+1. **Prompt:** `casting_character_sheet_prompt_resolve(character, portrait_asset_id, preset)` returns the platform's prompt: `preset: "face_turnaround"` for the face sheet, `"outfit_sheet"` for the outfit sheet, no preset for the full-body sheet. Use it as returned: it keeps the face sheet free of clothes and the outfit sheet free of a face.
+2. **Model:** `models_preferred(modality: "casting_character_sheet_model")`, the same resolution Casting uses (it falls back along the image-edit chain); when `model_id` is null, choose with `models_list`.
+3. **Generate** with the approved portrait as `image_asset_id` (for the outfit sheet, add the selected body sheet in `reference_image_asset_ids` when there is one), `category` `face_sheet` or `outfit_sheet`, `subject` the character, and `aspect_ratio` `3:2` for the face sheet (a 3x2 grid of six head panels) or `1:1` for the outfit sheet (front and back side by side). Take the mode from `supported_modes`.
+4. **Check and select:** every face panel reads as the same person with nothing worn; the outfit sheet shows no head, face or skin. Fan out a few takes, then select the approved one in Casting (`pr0ta-prep` → "Casting and voices").
+
+```json
+{
+  "generator": "image",
+  "mode": "img_to_img",
+  "model": "<model_id from models_preferred(modality=\"casting_character_sheet_model\")>",
+  "prompt": "<prompt from casting_character_sheet_prompt_resolve(preset: \"face_turnaround\")>",
+  "image_asset_id": "uuid-approved-portrait",
+  "category": "face_sheet",
+  "subject": "MARA",
+  "aspect_ratio": "3:2"
+}
+```
+
+A Stylist look's own face and outfit sheets come from the same prompts with the look's hair and makeup or wardrobe, made and approved in Looks (`pr0ta-prep` → "Locations, sets, looks, props").
 
 ### Flash Card (Sub-One-Second Shots)
 

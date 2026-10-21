@@ -175,6 +175,22 @@ PATCH /api/v2/projects/{project_id}/characters/{character_id}
 DELETE /api/v2/projects/{project_id}/characters/{character_id}
 ```
 
+### Casting Reference Sheets
+
+A character's identity references are split by job (`pr0ta-consistency` → "Face and Outfit Sheets"). Each Casting slot has its own asset category, selection key and cast record fields:
+
+| Sheet | Asset category | Selection key | Cast record URL / asset id | Prompt field | Brief preset |
+|---|---|---|---|---|---|
+| Portrait | `portrait` | `image\|portrait\|{NAME}` | `ref_portrait_url` / `portraitAssetId` | `prompt` | `casting_portrait_prompt_write` |
+| Face sheet (360° head turnaround) | `face_sheet` | `image\|face_sheet\|{NAME}` | `ref_face_sheet_url` / `faceSheetAssetId` | `face_sheet_prompt` | `face_turnaround` |
+| Outfit sheet (front and back, no face) | `outfit_sheet` | `image\|outfit_sheet\|{NAME}` | `ref_outfit_sheet_url` / `outfitSheetAssetId` | `outfit_sheet_prompt` | `outfit_sheet` |
+| Full-body character sheet (optional body reference) | `character_sheet` | `image\|character_sheet\|{NAME}` | `ref_character_sheet_url` / `characterSheetAssetId` | `character_sheet_prompt` | (none: the default brief) |
+
+- `casting_character_sheet_prompt_resolve(character, portrait_asset_id, preset)` returns the brief for the preset named in the table.
+- Generate with `generation_submit` (`generator: "image"`, the approved portrait as `image_asset_id`, `category` from the table, `subject` the character); the face sheet is 3:2, the outfit sheet 1:1.
+- Select a take with `cast_list_save(reconcile_existing: true, cast_members: [{character, face_sheet_asset_id}])` (`outfit_sheet_asset_id` for the outfit; `face_sheet_url` / `outfit_sheet_url` are accepted too). `cast_list_get` and `get_character_references` return the selected sheets in the fields above.
+- A Stylist look's own sheets are takes on its Prep reference variant (`GET /api/projects/{project_id}/prep-references`) with `generationOptions.sheetKind` set to `face_sheet` or `outfit_sheet`. Approving one fills the variant's `approvedSheets.face_sheet` / `approvedSheets.outfit_sheet` (`takeId`, `url`, `assetId`) without changing the look's `approved_url`; in that look's scenes they replace the Casting sheets.
+
 ### Character Consistency Bundles
 
 Before multi-shot character-consistent generation, read the character's consistency bundle — a single endpoint that returns all approved reference assets, stored Kling Elements, stored Seedance/MuAPI tokens, and provider-ready payload snippets in one response.
@@ -198,6 +214,6 @@ Response includes:
   - `provider_payloads.kling` — `element_ids[]` for direct use in generation requests
   - `provider_payloads.seedance` — `character_ids[]` and `prompt_tokens[]` for Omni Reference
 
-**Workflow:** Tag approved reference images with `reference_type: "character_reference"` and `category: "portrait"` or `"character_sheet"` via `PATCH /api/assets/{project_name}/annotations`. Store Kling Elements via `POST /elements` and Seedance tokens via `POST /characters`. Then read the bundle before generation and use the `provider_payloads` directly. See `pr0ta-consistency` → "Character Consistency Bundles" for the full workflow.
+**Workflow:** Tag approved reference images with `reference_type: "character_reference"` and `category: "portrait"`, `"face_sheet"`, `"outfit_sheet"` or `"character_sheet"` via `PATCH /api/assets/{project_name}/annotations`. Store Kling Elements via `POST /elements` and Seedance tokens via `POST /characters`. Then read the bundle before generation and use the `provider_payloads` directly. See `pr0ta-consistency` → "Character Consistency Bundles" for the full workflow.
 
 ---

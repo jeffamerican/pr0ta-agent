@@ -113,6 +113,16 @@ portrait, references and approved voice and loses nothing.
   That selects it as Casting does, so `get_character_references` and character
   identity references accept it; a URL that is not a project image selects
   nothing and comes back under `reference_selections.unresolved`.
+- Reference sheets: Casting's tabs are Portrait, Face Turnaround, Outfit and
+  Character Sheet. Make them in that order: the portrait, the face turnaround
+  from the approved portrait, the outfit, then the optional full-body sheet.
+  Each has one job (`pr0ta-consistency` → "Face and Outfit Sheets"; making them:
+  `pr0ta-image` → "Character Reference Sheets"). Takes land in categories
+  `face_sheet` and `outfit_sheet`; select one as above with
+  `face_sheet_asset_id` or `outfit_sheet_asset_id`. The record keeps
+  `ref_face_sheet_url`/`faceSheetAssetId` and
+  `ref_outfit_sheet_url`/`outfitSheetAssetId` (selections
+  `image|face_sheet|NAME`, `image|outfit_sheet|NAME`).
 - Voices: `voices_list` to browse, `casting_voice_design` or `voices_design` to
   design, `voices_clone` from a sample, `casting_voice_sample_generate` for a
   line in the character's voice. Model choices follow `models_preferred`
@@ -131,6 +141,12 @@ Props pages. The two write tools name the departments differently:
 - `department_read_generate(department, scenes, producer_analysis,
   director_analysis)` regenerates a department read for chosen scenes;
   `department` is `locations`, `looks` or `props`.
+
+Looks: a Stylist look can carry its own face sheet (its hair and makeup) and
+outfit sheet, which replace the Casting ones in the look's scenes. They are
+takes on the look's Prep variant with `generationOptions.sheetKind`
+(`face_sheet`, `outfit_sheet`). The person approves them in Looks; that fills
+the variant's `approvedSheets` and leaves the look's approved picture alone.
 
 3D sets: `set_environments_get` lists environments per Production Design
 variant; `set_environment_upsert`, `set_environment_asset_link` and

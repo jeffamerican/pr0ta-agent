@@ -90,6 +90,12 @@ If orchestration returns `prompt_assessment` or a failed task, do not call
 `generation_submit`. Surface its diagnostics and revise the brief, authorities,
 or references.
 
+The bootstrap designs the likeness and the wardrobe. Once the portrait is
+approved, the character's face sheet and outfit sheet come from the platform's
+sheet presets, not from another bootstrap (`pr0ta-image` → "Character
+Reference Sheets"); an approved wardrobe design becomes the outfit sheet's
+description.
+
 ## REST shape
 
 REST uses `POST /api/agent_chat/orchestrate_prompt` with the equivalent camelCase

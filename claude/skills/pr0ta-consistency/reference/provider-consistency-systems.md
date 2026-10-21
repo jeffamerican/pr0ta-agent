@@ -6,6 +6,7 @@ Read this when creating, registering, using, or troubleshooting provider consist
 
 - Kling Elements
 - Seedance 2.0 Characters
+- Face and outfit sheets on image-reference routes
 - Seedance Omni multi-modal references
 - Multi-prompt and multi-shot generation
 - Camera control
@@ -105,6 +106,8 @@ Seedance 2.0 Omni holds a character's identity through a trained Omni token. Tra
 
 A character sheet gives the model the full appearance in one image: several angles and expressions laid out as a professional reference sheet. Strong sheets render every panel clearly, keep the appearance identical across angles, show distinctive features, use a neutral background, and cover front, back, profile, and at least one expressive pose. Start from the approved Prep sheet (`cast_list_get`); if none exists, build the brief with `casting_character_sheet_prompt_resolve`, generate with `models_preferred(modality: "image_model")`, fan out four to six takes, and have the user approve one.
 
+An approved face sheet (`SKILL.md` → "Face and Outfit Sheets") is a strong identity still for either training route: six angles of one head in one image. Pass the outfit separately as `outfit_description` (or the outfit sheet as another still); never a face sheet from one look with an outfit from another.
+
 Never mix hairstyles, outfits, makeup, or ages in one training set. Providers average ambiguous references and every downstream shot drifts. One identity, one era or look, one wardrobe concept per Character.
 
 ### Training the Token
@@ -162,6 +165,21 @@ A token trained outside PR0TA is registered with `consistency_resources_create(r
 ```
 
 `character_ids[]` accepts the project Character ID or its token. A request carries at most three, and each must appear in the prompt as `@omni-character:<token>`; the bundle's `provider_payloads.seedance.prompt_tokens` gives the exact tokens. Test a take before relying on more than one lock in a shot. Seedance 2.0 Omni is the only route with trained character tokens (`pr0ta-video`); on other routes, pass the approved references as images.
+
+## Face and Outfit Sheets on Image-Reference Routes
+
+Routes with no trained-character field (Seedance 2.5 Omni Reference and the other image-reference video and image-edit routes) carry identity in the images themselves. The Production Queue's reference ledger builds this packet; follow the same order when you choose references yourself. Send each character's split sheets as separate references, in this priority:
+
+| Priority | Reference | Ledger kind | Role it is given |
+|---|---|---|---|
+| 1 | The look's face sheet, else the Casting face sheet | `face_sheet` | Character face, at every shot size |
+| 2 | The approved portrait | `identity` | Canonical likeness, right after the face sheet |
+| 3 | The look's outfit sheet, else the Casting base outfit (with no look carrying media for the scene) | `outfit` | Wardrobe only: front and back of the outfit, not a face |
+| 4 | The full-body character sheet, wide shots only | `turnaround` | Build and proportions |
+
+A look's approved on-person picture (`look`) still rides when the look has no face sheet of its own, since it carries the hair and makeup; with a face sheet it is redundant and dropped. The body sheet ranks below the looks and outfits, so on a route with few image slots it is the first of a character's references to go, then the portrait; the face sheet stays. Without a face sheet the ledger falls back to the character sheet for wide shots and the portrait for close ones, each standing in for the other.
+
+On a route with positional tokens (Seedance 2.0 `@image1`, Hailuo `Image 1`, Gemini `<IMAGE_REF_N>`, Grok `<IMAGE_N>`; `pr0ta-prompting` → "Reference Syntax Is Per Model") bind each token to its job after the final order is set: "@image2 is MARA's face turnaround: take only her face and head from it; @image3 is her outfit sheet: take only the clothes." On Seedance 2.5 the platform writes the plain-language role lines from the ledger; keep the body consistent with them. In both, describe the scene's setting and light in the prompt, and say the sheets' grid, studio light and backgrounds are not part of the shot.
 
 ## Seedance Omni Multi-Modal References
 
@@ -230,7 +248,7 @@ Combine it with multi-prompt for choreographed shots.
 
 For productions that need high consistency, before any shot generation:
 
-1. **Characters**: approved Prep portraits and sheets; generate only missing angles (`image_model` or `image_edit_model`), four to six takes each.
+1. **Characters**: approved Prep portraits, face sheets, outfit sheets and body sheets (`SKILL.md` → "Face and Outfit Sheets"); generate only missing ones and missing angles (`image_model` or `image_edit_model`), four to six takes each.
 2. **Locations and sets**: approved Prep set plates; generate missing establishing and detail views.
 3. **Props**: approved Prep prop references; generate clean multi-angle views where missing.
 4. **Label and build**: tag approved references (`character_reference` and so on), then create every Element and Character before video.

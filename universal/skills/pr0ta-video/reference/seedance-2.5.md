@@ -262,7 +262,7 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 
 ### Identity and Audio Boundaries
 
-- Seedance 2.5 has no provider character-token field on ModelArk or in the current MuAPI schema. Repeat defining identity/wardrobe traits and supply clear, compatible images. Use Seedance 2.0 Omni when a trained character resource is required.
+- Seedance 2.5 has no provider character-token field on ModelArk or in the current MuAPI schema. Repeat defining identity/wardrobe traits and supply clear, compatible images: per character the face sheet, the portrait and the outfit sheet as separate references, plus the body sheet in wide shots (`seedance-2.5-prompt-craft.md` → Reference Roles). Use Seedance 2.0 Omni when a trained character resource is required.
 - Audio references are documented as mood/pacing guidance. They are not a documented verbatim dialogue or lip-sync input on these routes.
 - Every Seedance 2.5 route returns audio-bearing video. T2V, I2V, first/last, Omni, Spicy, and International expose no audio opt-out. Edit and Extend expose `generate_audio`; disabling it requests source-audio preservation, but the delivered result still requires verification.
 - Seedance 2.5 enforces a four-second minimum and can pad shorter requested material at native speed. Trim the completed asset to the intended duration; do not retime the padded output.
@@ -278,7 +278,7 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 | First/last morphs badly | Use compatible frames and describe the observable physical bridge |
 | Omni follows the wrong reference | State each modality's role in prose and remove redundant inputs |
 | Omni reference claims unseen authority | Supply an image where the claimed face/object/state is visible, narrow the declared role, or resolve continuity before orchestration |
-| Identity drifts | Use clearer images, repeat defining traits, or switch to a trained-character workflow on Seedance 2.0 Omni |
+| Identity drifts | Send the character's face sheet (make one from the approved portrait if missing), use clearer images, repeat defining traits, or switch to a trained-character workflow on Seedance 2.0 Omni |
 | Long clip meanders | Reduce beats; preserve one causal arc and explicit end state |
 | Subtitles, background music, or glowing eyes despite the prompt | `seedance-2.5-prompt-craft.md` → When an exclusion does not hold |
 | A line replaced by laughter, or extras wearing the lead's face | `seedance-2.5-prompt-craft.md` → Dialogue; Cast and Identity |

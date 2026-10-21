@@ -45,6 +45,10 @@ Settings, a card in the app).
 
 A stale reference ledger, the provider's character limit, another project's
 data and tools a worker lacks are not gates.
+Neither is a missing face or outfit sheet: those sheets are never required,
+nothing stops on them, and the portrait and character sheet stand in
+(`pr0ta-consistency` → "Face and Outfit Sheets"). Make the missing sheet from
+the approved portrait instead of passing anything.
 
 ## Approving yourself
 

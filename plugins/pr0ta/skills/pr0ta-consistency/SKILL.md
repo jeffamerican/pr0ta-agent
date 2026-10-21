@@ -1,6 +1,6 @@
 ---
 name: pr0ta-consistency
-description: "PR0TA visual consistency for recurring characters, locations, props, and wardrobe across shots: reuse approved Prep references (casting portraits, character sheets, looks, sets, props), generate only the missing ones, build provider consistency resources (Kling Elements, Seedance Characters), read character consistency bundles, and hold continuity through multi-shot and long-sequence generation. Read before generating any subject that appears in more than one shot."
+description: "PR0TA visual consistency for recurring characters, locations, props, and wardrobe across shots: reuse approved Prep references (casting portraits, face and outfit sheets, character sheets, looks, sets, props), split identity into a face sheet and an outfit sheet, generate only the missing ones, build provider consistency resources (Kling Elements, Seedance Characters), read character consistency bundles, and hold continuity through multi-shot and long-sequence generation. Read before generating any subject that appears in more than one shot."
 ---
 
 # Visual Consistency & Continuity
@@ -24,6 +24,26 @@ Before any multi-shot generation with recurring characters:
 
 If approved references or resources are missing, create them and get them approved first.
 
+## Face and Outfit Sheets
+
+A character's identity travels as separate references, each with one job:
+
+| Reference | What it shows | Its job |
+|---|---|---|
+| **Face sheet** (`face_sheet`; Casting → Face Turnaround) | A 360° head turnaround: six head-and-shoulders angles in a 3x2 grid (left profile, three-quarter left, front; three-quarter right, right profile, back of the head), nothing worn, even studio light, dark background | The face authority at every shot size |
+| **Portrait** (`portrait`) | The approved casting likeness | The canonical likeness; travels with the face sheet |
+| **Outfit sheet** (`outfit_sheet`; Casting → Outfit) | The outfit alone, front and back, on an invisible body: no head, face or skin | Wardrobe only |
+| **Character sheet** (`character_sheet`) | The full-body turnaround | Optional body reference: build and proportions in wide shots |
+
+**Why.** A sheet that mixes face, body and outfit spends its pixels on everything but the face, and the model averages what it sees, so the face comes out diluted. Six large views of one head teach the model the face's structure from every side, and that holds the identity even under hard, low-key or coloured light the studio portrait never showed. With the clothes on their own sheet, wardrobe changes per look without touching the face.
+
+- **Never mix the jobs.** No outfit in the face sheet, no face in the outfit sheet: a face on the outfit sheet competes with the face sheet, and clothes on the face sheet leak into every look.
+- **Base and looks.** Casting makes the character's base face sheet and base outfit. Each Stylist look can carry its own face sheet (that look's hair and makeup) and outfit sheet; in scenes using the look they replace the base ones (`pr0ta-prep` → "Casting and voices" and "Locations, sets, looks, props").
+- **One face sheet, every scene.** Reuse the same face sheet across the production (a look's own sheet only where the look changes hair or makeup). Never make a new face for a shot.
+- **Make the missing one; do not go without.** A character with an approved portrait and no face sheet gets one generated from that portrait (`pr0ta-image` → "Character Reference Sheets"); prompt tasks do this themselves from the approved portrait. A missing face or outfit sheet never stops a render: the portrait and character sheet stand in.
+- **The packet.** For each character in frame: the face sheet, then the portrait, then the outfit sheet (the look's, else the base outfit), plus the body sheet in wide shots when the route has room. On a tight reference budget the body sheet drops first, then the portrait; never the face sheet. The Production Queue's reference ledger builds this packet; `references_resolve` shows each role ("character face — MILO (approved 360° head turnaround)", "wardrobe only — MILO (approved outfit sheet; …)").
+- **Bind each job in the prompt.** The face comes from the face sheet, the clothes from the outfit sheet; the scene's setting and light come from the prompt, never from a sheet's grid, studio light or background (`pr0ta-prompting` → "Reference Binding Is a Submission Contract").
+
 ## 1. Start From Approved Prep References
 
 Read what Prep already has before creating anything. Do not keep a private continuity ledger alongside it unless the user asks for an export.
@@ -31,8 +51,8 @@ Read what Prep already has before creating anything. Do not keep a private conti
 | Need | Tool |
 |---|---|
 | Everything for a scene or shot: breakdown, shot, cast with approved portraits and character sheets, stored Seedance IDs, voices, approved set/look/prop references, provider guidance, and missing-reference warnings | `production_context_get(scene_number, shot_number, character_names, include_provider_guidance: true)` |
-| The cast with portraits, character sheets, and voices | `cast_list_get` |
-| One character's portraits, description, wardrobe notes, and look timeline | `get_character_references(character_name)` |
+| The cast with portraits, face, outfit and character sheets, and voices | `cast_list_get` |
+| One character's portrait, face sheet, outfit sheet, character sheet, description, wardrobe notes, and look timeline | `get_character_references(character_name)` |
 | Locations, Looks, and Props department data for a scene range | `department_heads_get(start_scene, end_scene)` |
 | Set references for a scene or location | `get_set_references(scene_number, location)` |
 | 3D set environments, variants, and linked world assets | `set_environments_get(scene_number)` |
@@ -63,7 +83,7 @@ When a recurring subject has no approved reference, or lacks an angle a resource
    - `elements_to_image_model`: a key frame composed from Element or reference bundles.
 
    If `model_id` is null, choose with `models_list(modality: ...)` and tell the user which model you chose and why. Read the model's notes in `pr0ta-image` and `pr0ta-prompting` before writing the prompt.
-2. **Write the brief from Prep.** `casting_character_sheet_prompt_resolve` builds the app's character-sheet brief for a cast member; `casting_descriptive_prompt_generate` turns an approved portrait into a reusable description.
+2. **Write the brief from Prep.** `casting_character_sheet_prompt_resolve` builds the app's sheet brief for a cast member (the full-body character sheet, or `preset: "face_turnaround"` / `"outfit_sheet"` for the face and outfit sheets); `casting_descriptive_prompt_generate` turns an approved portrait into a reusable description.
 3. **Fan out and pick.** Generate four to six takes of each reference; the references set the ceiling for every shot that uses them. Results are candidates until the user approves one.
 4. **Use real references when they exist.** Actor headshots, product photos, and location scouts upload as project assets (`pr0ta-image` → uploads) and are used like generated references.
 5. **Label the approved reference** so bundles and Prep find it (next section), and save it back through the Prep page's save tool (`cast_list_save`, `department_heads_save`, `update_set_references`) when the user approves it.
@@ -83,7 +103,7 @@ Annotate with `assets_annotations_update` (or `assets_annotations_batch_update` 
 }
 ```
 
-Use `category: "portrait"` for the front-facing hero and `category: "character_sheet"` (with `reference_kind: "character_sheet"`) for turnaround sheets. Sets, props, and looks use `set_name`, `prop_name`, and `look_name` the same way. `tags` replaces the asset's tag list. The bundle matches a character's references by `reference_type: "character_reference"` (or a portrait or character-sheet category) plus the character's name in `character_name` or `subject`, and always includes assets listed in a stored resource's `reference_asset_ids`.
+Use `category: "portrait"` for the front-facing hero, `category: "face_sheet"` for the head turnaround, `category: "outfit_sheet"` for the outfit sheet, and `category: "character_sheet"` (with `reference_kind: "character_sheet"`) for full-body turnaround sheets. Sets, props, and looks use `set_name`, `prop_name`, and `look_name` the same way. `tags` replaces the asset's tag list. The bundle matches a character's references by `reference_type: "character_reference"` (or a portrait or character-sheet category) plus the character's name in `character_name` or `subject`, and always includes assets listed in a stored resource's `reference_asset_ids`.
 
 ## 3. Build Provider Consistency Resources
 
@@ -128,7 +148,7 @@ Use `provider_payloads` directly: the `kling` block for Kling shots, the `seedan
 
 Route choice follows `models_preferred` for the shot's modality (`pr0ta-video`). These capability facts decide how consistency is carried once the route is known:
 
-- **Seedance 2.5 Omni Reference** has no trained-character field. Carry identity with approved images of the subject, each given one explicit job in the prompt (identity, wardrobe, set, prop, motion, or audio), and repeat the defining traits in prose.
+- **Seedance 2.5 Omni Reference** has no trained-character field. Carry identity with approved images of the subject, each given one explicit job in the prompt (identity, wardrobe, set, prop, motion, or audio), and repeat the defining traits in prose. The split face and outfit sheets (above) are the strongest packet it takes.
 - **Seedance 2.0 Omni** is the route with trained Seedance Characters (`character_ids[]`) and positional `@image1`/`@video1`/`@audio1` binding across images, videos, and audio.
 - **Kling routes with Elements** carry identity through Element bundles, and add structured `camera_control`, multi-prompt shots, and Motion Brush.
 - **Other routes** take the bundle's approved reference assets as image references.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.14.0",
+  "skills_version": "6.15.0",
   "released_at": "2026-10-20",
-  "source_revision": "v6.14.0",
-  "minimum_platform_version": "1.25.361",
+  "source_revision": "v6.15.0",
+  "minimum_platform_version": "1.25.364",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06107-bec",
-  "bundle_sha256": "96b600e08a0ed63c846870049e268547051c16744765e98c4f2002e0b441f776",
+  "platform_revision": "pr0ta-platform-06124-yop",
+  "bundle_sha256": "5ad81723b9951c86d327f78b62a8b64361c2250451d8e990d50562f79bd8a94e",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "f1cb5d6e1a5913142b6a14d8136121127e33ed44584df8d131ba3718317be30e",
+      "content_sha256": "86fab7d1f471a5937f070faaba8dfd2a2dff5d3e56f6d6b46f2fd498fbaefe9f",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "798bbdbbf05c46dfaf900fdbab66a8af51082099a913fdfabe3fd95206d63fb4"
+          "sha256": "bbcfcdc26ddbc1035551c18028e3ed6ca187963536055b612c243133b13854d7"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -105,7 +105,7 @@
         },
         {
           "path": "reference/projects-models-resources.md",
-          "sha256": "39562664ae345dbf33d82ad81d6feadc0a1a990439754ee2fba686d64bf062b5"
+          "sha256": "b797607d04a2a939f5af36620f008b74ef733ddadb830b1fd2d163dc2b27d380"
         },
         {
           "path": "reference/python-client.py",
@@ -149,7 +149,7 @@
         },
         {
           "path": "reference/workflow-gates.md",
-          "sha256": "abc40449d204395e303398f43de0ce8c91ccc741f807ee5c29dd5f25a9a500b7"
+          "sha256": "e2f820b7de0fe793ac70db40c99b45b92f4637b2c4fb7247bb212402bb8b1c97"
         }
       ]
     },
@@ -178,16 +178,16 @@
     },
     {
       "name": "pr0ta-consistency",
-      "description": "PR0TA visual consistency for recurring characters, locations, props, and wardrobe across shots: reuse approved Prep references (casting portraits, character sheets, looks, sets, props), generate only the missing ones, build provider consistency resources (Kling Elements, Seedance Characters), read character consistency bundles, and hold continuity through multi-shot and long-sequence generation. Read before generating any subject that appears in more than one shot.",
-      "content_sha256": "bafbd7735dd8563a51c13505aec8d7159578f4374a81286b1bf07364fdd82de4",
+      "description": "PR0TA visual consistency for recurring characters, locations, props, and wardrobe across shots: reuse approved Prep references (casting portraits, face and outfit sheets, character sheets, looks, sets, props), split identity into a face sheet and an outfit sheet, generate only the missing ones, build provider consistency resources (Kling Elements, Seedance Characters), read character consistency bundles, and hold continuity through multi-shot and long-sequence generation. Read before generating any subject that appears in more than one shot.",
+      "content_sha256": "e6c64bef5848908a4e98278210e41eba08b482b1a13c44bd25de193dafa0427b",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "99e1a1ec096fcc8850c8ce439c714508e9ba71636269779443104b28c31d4689"
+          "sha256": "f54c99025d9a84959981767b1d484a6bd9a0540de45117af0babf16803b9dd42"
         },
         {
           "path": "reference/provider-consistency-systems.md",
-          "sha256": "310bf08ba05d8762519d11f7a08ea3a45ccfe23c8592cbb47d58d7296323de92"
+          "sha256": "0d808fc775e3e15d5d948ad58b88859bf37a29fdb8f43093a522ff4e79cef1ca"
         }
       ]
     },
@@ -281,12 +281,12 @@
     },
     {
       "name": "pr0ta-image",
-      "description": "PR0TA image generation and editing: key frames, reference stills, character sheets, posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models.",
-      "content_sha256": "449bd9af1b77a6008803762f32544a2d99cd0d15f92421c972f195a8db2e2d05",
+      "description": "PR0TA image generation and editing: key frames, reference stills, character sheets (face turnaround, outfit, full-body), posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models.",
+      "content_sha256": "767b4f9b82c522e5ac31d447ad3bce74d6cdf4923846f6f524afe3f895d86f19",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "5cb5d221ffd1e0f27d41055b6d2beebdb5c4bd52f9fbcb98aaa9d227b090afe6"
+          "sha256": "5f5a67013f640d21dad01c2899f36812b0bb3da665eb8c3a5cfbd925c8facfec"
         },
         {
           "path": "reference/qr-codes.md",
@@ -331,11 +331,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "dd0d85a65cd3b004bd1c829de295c1a326c8326fe833ff5c5bba1d7fdb47af1a",
+      "content_sha256": "cd8249e0b6039534c3f9b79e71f21143739f809ab4fafede80521468749af54c",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "8f37b9ea4c88c40cb1765af53559141aabce8b298ec68cbc4cb78d642c19e5f7"
+          "sha256": "08a5df742bb7751a9a144d96376555df2fc1d923c5db8e03b13eb3f530ce40c0"
         },
         {
           "path": "reference/blocking.md",
@@ -346,11 +346,11 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "36af4a37d7b77a05522f92628ca5b02fe73de6dc4ff577c692aa2b2b86e6dc8e",
+      "content_sha256": "053a367eddaee708aba0e371738ba7d1f51ffa61054d2e05481ca0566364c1cf",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ba61cd37e0ec32f06ea84b6c0ca5647c5ca8777b39ea60e58e1ffde03914eebe"
+          "sha256": "04f6fde75f0eaaf4761172f3626b3e193957b9b42430c620c7cf4dad4eb90c31"
         },
         {
           "path": "reference/anti-patterns.md",
@@ -382,7 +382,7 @@
         },
         {
           "path": "reference/reference-design-bootstrap.md",
-          "sha256": "75e15de6ad15e41966cd19fe8193dda234b404f2ff8276635c90da1a96a53f2a"
+          "sha256": "2b92aedb91ad12ae9860ea11617f99aa73edf3555b4750abe71c37ad55de3265"
         }
       ]
     },
@@ -419,11 +419,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "c69e68380e074ba8f6048fdab180155b2c66cc3fd55c13a7b0a313341437ed66",
+      "content_sha256": "d4de94fdbf8d87f699d5f179b6c63334f6d63a5e4a50bd19bb525f68c5a05807",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "a10fe087da79bd241ca45e4c464db5e5e9c4a0e1e19517785668cbd67e9348d1"
+          "sha256": "ece188e48e0fc8a625a944ee59da7ead6555b451fcaa8bda072d7fb057b826d7"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -471,7 +471,7 @@
         },
         {
           "path": "reference/seedance-2.5-prompt-craft.md",
-          "sha256": "038ea4f1b339b1931a774c06ca4503a41a79d169bea242a9bb947600df7cedc3"
+          "sha256": "1131ca49ffa794080d633121c2f0fd1c2b1674f8620971624d3af429bfa6248f"
         },
         {
           "path": "reference/seedance-2.5-sync-sound.md",
@@ -479,7 +479,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "47aea0b9b928bda3d0758e56746a7334744fbc78632855560a1c6d036b903529"
+          "sha256": "24ba2eac8abe85f5e227065ed72f3aac448177d66e021cc0949f749fe20cf247"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

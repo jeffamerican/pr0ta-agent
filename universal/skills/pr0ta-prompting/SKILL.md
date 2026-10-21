@@ -53,7 +53,7 @@ Build the final reference order before writing any positional or ordinal name. R
 - **Realism (handheld capture; photographed, not rendered):** `reference/realism-camera-behaviors.md`.
 - **World Labs Marble 3D environments:** read `reference/marble-world-generation.md`. Marble is spatial-environment prompting, not shot prompting.
 - **Compact Seedance 2.0 Omni storyboard sequences:** call `agent_chat_orchestrate_prompt` with `prompt_profile: "seedance_storyboard_sequence"` and read `pr0ta-video/reference/seedance-global-storyboard.md`. Every production-prompt orchestration consults Stylist and Propmaster (as the project configures them) before Storyboarder; selecting Director, Storyboarder, or Cinematographer as the entry role does not shorten the configured department chain. Contributed department facts are binding prompt authority within the endpoint's prompt budget; Storyboarder owns reference accounting and shot bindings, and Cinematographer renders the provider-ready prompt. Seedance 2.5 omits this profile and uses the generic model-aware path with natural-language reference roles.
-- **Workflow gates, on your own judgment:** eight orchestration gates are yours to pass with `workflow_bypasses` and a one-sentence `bypass_reason`, only after the gate refused and named itself (the error says the risk). `dialogue_audit`: the Script Supervisor checks the Director's lines against the screenplay (pass for silent previs, or when you checked the lines yourself; never for a final dialogue take). `character_tokens`: Omni `@omni-character` tokens must match bound approved characters, or identities swap or blend (the three-character provider limit is not a gate). `prompt_sections`: a designed-world prompt missing a required section can drop camera, action or continuity facts (pass when the content is there under another structure). `reference_ambiguity`: several selected references for one character can blend a face (the first required one is kept; pass only when they are near-identical, else fix Casting). `reference_preflight`: pixels must support the role claimed for each image (passing it, like `reference_preflight_mode: "shadow"`, keeps warnings). `native_voices`: speakers without an approved Casting voice are voiced by the video model (approved voices still bind); those voices are provisional and will not match later takes (pass for previs or a one-off speaker such as a crowd). `character_visual_references`: binds the character images that exist, skips missing ones and generates no turnaround; the missing characters can drift (pass for previs or a figure seen once). `reference_limits`: over the image slots or the 15-second reference-audio budget, drops the lowest-priority references (keeps required plates, then portraits, then turnarounds, and the voices of the speakers with the most lines). `validation_overrides` is the older spelling of the last three. Each pass is in the result's `workflow_bypass_receipts`; tell the person what you passed and when output is provisional. Identity claims and Director contracts are never passable; see `pr0ta-api` → "Workflow gates".
+- **Workflow gates, on your own judgment:** eight orchestration gates are yours to pass with `workflow_bypasses` and a one-sentence `bypass_reason`, only after the gate refused and named itself and its risk. `dialogue_audit`: the Script Supervisor checks the Director's lines against the screenplay (pass for silent previs or lines you checked; never a final dialogue take). `character_tokens`: Omni `@omni-character` tokens must match bound approved characters, or identities swap or blend (the three-character provider limit is not a gate). `prompt_sections`: a designed-world prompt missing a section can drop camera, action or continuity facts (pass when the content is there under another structure). `reference_ambiguity`: several references for one character can blend a face (the first required one is kept; pass only for near-identical ones, else fix Casting). `reference_preflight`: pixels must support each image's claimed role (passing it, like `reference_preflight_mode: "shadow"`, keeps warnings). `native_voices`: speakers without an approved Casting voice get a provisional video-model voice that will not match later takes (approved voices still bind; pass for previs or a one-off speaker such as a crowd). `character_visual_references`: binds the character images that exist and generates none for the missing, which can drift (pass for previs or a figure seen once). `reference_limits`: over the image slots or the 15-second reference-audio budget, drops the lowest-priority references (keeps required plates, then portraits, then turnarounds, and the voices of the speakers with the most lines). `validation_overrides` is the older spelling of the last three. Each pass is in the result's `workflow_bypass_receipts`; tell the person what you passed and when output is provisional. Identity claims and Director contracts are never passable; see `pr0ta-api` → "Workflow gates".
 - **Speech and dialogue:** `reference/model-modality-guides.md` has each TTS model's prompt order; `pr0ta-audio` owns voices, request fields, and indexing (Gemini TTS: `pr0ta-audio/reference/gemini-tts.md`; ElevenLabs V4/V3 tags: `pr0ta-audio/reference/elevenlabs-v3-audio-tags.md`; Seed Audio: `pr0ta-audio/reference/seed-audio.md`).
 
 
@@ -76,7 +76,8 @@ Never write "preserve the approved portrait" or "match the character sheet" unle
 1. Select the exact approved project asset id; do not infer a file name or substitute a storage URL.
 2. Put the image being transformed in `image_asset_id`; put ordered identity or style references in `reference_image_asset_ids`.
 3. Bind every attachment in the prompt with that model's syntax (table above) and its final order, for example `Image 1, the attached approved BUG portrait, is the identity reference; preserve its facial structure, freckles, hair, and pale hazel-green eyes.`
-4. Put requested geometry in the route's structured fields (`aspect_ratio`, `image_size`, `resolution`) as well as the prose. Never rely on the prompt for dimensions.
+4. Bind split identity sheets by job: face from the face sheet, clothes from the outfit sheet, build from the body sheet; the prompt sets the scene's place and light, never a sheet's grid, studio light or background. Seedance 2.5 takes plain-language roles (PR0TA writes them in its packages); `@image`-token models bind each token to its job (`pr0ta-consistency` → "Face and Outfit Sheets").
+5. Put requested geometry in the route's structured fields (`aspect_ratio`, `image_size`, `resolution`) as well as the prose. Never rely on the prompt for dimensions.
 
 If no approved asset is available, say so and generate without claiming reference preservation. A reference mention without its attached asset id is a failed generation contract.
 
@@ -131,7 +132,7 @@ centered, tight letter-spacing. No other elements, no icons, no
 decorative marks. 9:16 vertical composition.
 ```
 
-In prose form the same copy came back as "CAN'T RUN OUT OF FUNDS" and "CONTEMPORARY ECONOMIC THEORY": an upstream pass rewrote it. The quoted, line-numbered specification survives that pass.
+In prose form an upstream pass rewrote the same copy ("CAN'T RUN OUT OF FUNDS"); the quoted, line-numbered specification survives it.
 
 1. Never describe the copy in prose elsewhere in the prompt.
 2. Include `with no other words on the image` to suppress invented sub-headlines, URLs, and filler.
@@ -152,7 +153,6 @@ Write the action and the state you want in positive terms. Some models render a 
 |---|---|
 | "don't break the glass" | "the glass remains whole and upright throughout" |
 | "the door does not close" | "the door stays open at the same angle throughout" |
-| "no cutting / chipping" | "performs [finishing action] on the already-completed surface" |
 | "not facing the camera" | "back of head toward camera, facing the horizon line" |
 | "doesn't change clothes" | "wearing the same [described garment] throughout the shot" |
 | "no extra fingers" | "exactly one thumb and four fingers per hand" (plus a negative prompt where the route has one) |
@@ -161,7 +161,7 @@ Exclusions are per model. Use a route's `negative_prompt` field where it has one
 
 ### 5. Self-Contained Reference Shots
 
-Every reference shot names its subjects, action, reference roles, and continuity constraints without "same as before." Restate anchors on loose-reference workflows; on first-frame-authority I2V routes, describe motion, camera, atmosphere, and end state without contradicting the frame.
+Every reference shot names its subjects, action, reference roles, and continuity constraints without "same as before" (the Self-Contained Prompt Rule says what to restate per route).
 
 ### 6. Prompt the BEFORE Moment for Image-to-Video Key Frames
 
@@ -171,7 +171,7 @@ A key frame that will be animated should show the state before the action, not i
 - Good key frame: "A full glass of milk on the edge of a wooden kitchen table, morning light, slightly precarious." Then the video prompt: "The glass gets bumped and falls off the table, shattering on the tile floor, milk splashing outward."
 - Bad: "A candle sputtering, smoke wisps." Good: "A tall beeswax candle burning brightly, steady warm flame," and let the video take it to dark.
 
-Shots that express an arc A→B→C need the key frame at A.
+An arc A→B→C needs the key frame at A.
 
 ### 7. Custom I2V Prompt Per Card
 
@@ -185,7 +185,7 @@ Animated cards, diagrams, posters, quote panels, and transcript-timed social edi
 
 ## Prompt Structure
 
-Write like scene directions to a cinematographer:
+Write like directions to a cinematographer:
 
 **`[Scene/Environment] + [Subject & Appearance] + [Action/Motion] + [Camera Movement] + [Lighting & Atmosphere] + [Technical Style]`**
 
