@@ -56,7 +56,7 @@ Answer only with the user's decision or with what the screenplay itself states.
 ## 3. Read the breakdown
 
 - `get_scene_breakdown(scene_number, scene_range_end?)`: the Supervisor's
-  scenes: characters, locations, props, wardrobe, continuity.
+  scenes: characters, locations, props, wardrobe, continuity, `era_id`.
 - `production_context_get(scene_number?, shot_number?, character_names?)`:
   breakdown, casting, sets, props, looks and approved references for a scene or
   shot, in one call. Use it before any generation.
@@ -127,6 +127,8 @@ portrait, references and approved voice and loses nothing.
   design, `voices_clone` from a sample, `casting_voice_sample_generate` for a
   line in the character's voice. Model choices follow `models_preferred`
   (`voice_design_model`, `dialogue_model`). See `pr0ta-audio`.
+- Film eras: age-stage members (`ANGELA · 2000 · 55`) are in
+  `reference/film-eras.md`.
 - Recurring characters need provider consistency resources before shot
   generation; `pr0ta-consistency` owns that.
 

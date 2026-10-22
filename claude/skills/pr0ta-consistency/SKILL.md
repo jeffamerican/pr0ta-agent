@@ -44,6 +44,10 @@ A character's identity travels as separate references, each with one job:
 - **The packet.** For each character in frame: the face sheet, then the portrait, then the outfit sheet (the look's, else the base outfit), plus the body sheet in wide shots when the route has room. On a tight reference budget the body sheet drops first, then the portrait; never the face sheet. The Production Queue's reference ledger builds this packet; `references_resolve` shows each role ("character face — MILO (approved 360° head turnaround)", "wardrobe only — MILO (approved outfit sheet; …)").
 - **Bind each job in the prompt.** The face comes from the face sheet, the clothes from the outfit sheet; the scene's setting and light come from the prompt, never from a sheet's grid, studio light or background (`pr0ta-prompting` → "Reference Binding Is a Submission Contract").
 
+## Ages Across Eras
+
+In a film with eras, one screenplay cue can be several people: the character's main cast member and linked age-stage members such as `ANGELA · 2000 · 55` (`same_person_as` the main member, playing only their own scenes; `pr0ta-prep` → `reference/film-eras.md`). Keep the cue in shot lists: the reference resolver and storyboard frames pick the cue's stage member for each scene's era for the face, sheets and voice, and use the cue's Prep look in that scene; give speech requests their scene number (`metadata.scene_number`) so the voice lock does the same. A stage member without its own approved voice speaks with the main member's approved voice until one is approved. Never attach another era's portrait by hand. A stage member with no approved portrait is a gap to fill in Casting, not a reason to use the main member's face. Each stage member gets its own provider consistency resources.
+
 ## 1. Start From Approved Prep References
 
 Read what Prep already has before creating anything. Do not keep a private continuity ledger alongside it unless the user asks for an export.

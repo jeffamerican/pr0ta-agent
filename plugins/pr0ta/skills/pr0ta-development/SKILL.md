@@ -203,14 +203,47 @@ direction waiting for approval:
 
 1. Read the reads: `project_metadata_get` returns `producerRead` (logline,
    genre, tone, audience, scope) and `directorRead` (stylistic approach, visual
-   genre, palette, style worlds, main cast).
+   genre, palette, style worlds, main cast, eras and character stages).
 2. Present them to the user as a brief. Discuss changes; the Producer and
    Director can be asked through `agent_chat_send(role: "producer" | "director")`.
+   Review the eras with the rest: they are the Director's stylistic call and
+   shape the film. Each era has an id, name, period, `kind` (main, frame,
+   flashback, montage, insert), an optional `parentEra` (a short flashback
+   that belongs to another era's design), `scenes` as ranges ("1-5, 107-149") and a
+   one-line palette, texture, lens and wardrobe identity. A scene listed by two
+   eras belongs to the one listing fewer scenes; an unlisted scene belongs to
+   the first main era. One era means a single-period film and changes nothing.
+   `characterStages` lists each character seen at clearly different ages under
+   one cue: per stage its eras (or scenes), age, evidence, `distinctActor`,
+   reason and `ageNote` (how the age shows when the same actor plays it).
+   Exactly one stage per character is `main`: the character's existing cast
+   member, with every approval, plays it. Check the ages against the script and
+   the main stage against the user's casting.
 3. On the user's approval, or when you judge both reads right for the film,
    `direction_approve(producer_read?, director_read?, approval_reason?)`
    records it (yours shows as approved by agent). Pass edited reads to approve them as edited; the departments
    read the approved versions. Approval lets the Script Supervisor and the
-   departments run.
+   departments run. Eras and stages are edited the same way (or on the
+   Creative Direction page). Approving an edit that touches only the era plan
+   reruns little: era names and reasons rerun nothing; scene ranges, kinds and
+   `parentEra` re-tag the scenes without a model; a changed period or visual
+   identity (or scenes moved to an era that looks different) reruns Sets, Looks
+   and Props for those scenes only (every scene when it is the main era, which
+   unlisted scenes belong to); a change to a character's stages (eras,
+   scenes, ages, `distinctActor`, `main`, `castAt`, `castMember`) reruns
+   Casting. While the Script Supervisor is still reading (or waits for the
+   approval) and Casting, Sets, Looks and Props have not started, these era
+   edits rerun nothing: the Supervisor's handoff starts them with the
+   direction approved at that moment, and its era tags follow the approved
+   plan. Any other Director read edit, or an era edit while the Director is
+   still reading or a department has started, reruns the
+   Script Supervisor and every department. The Creative Direction page says
+   which before you approve. Batch
+   era edits into one approval. A cast member approved before the era plan
+   keeps every scene until someone marks `castAt: true` on the stage its
+   approvals were made at (its `age_stage.conflict` asks; ask the user unless
+   the script settles it). A `castAt` or `castMember` answer that changes
+   nothing comes back in the approval's `eraNotes`, with the reason.
 
 `direction_approve` fails with a conflict when the screenplay changed after the
 reads (they are being read again) or when the Director read is not ready.
