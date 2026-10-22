@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.17.0",
-  "released_at": "2026-10-21",
-  "source_revision": "v6.17.0",
-  "minimum_platform_version": "1.25.372",
+  "skills_version": "6.17.1",
+  "released_at": "2026-10-22",
+  "source_revision": "v6.17.1",
+  "minimum_platform_version": "1.25.379",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06184-buk",
-  "bundle_sha256": "ef18ffef9aad05f2dfb9ebfda20ab4a552a31abd90175410316580ad8278d915",
+  "platform_revision": "pr0ta-platform-06214-sid",
+  "bundle_sha256": "76cdbd797c7c1644a8ea54230d213ceab5621c158efbebdea76a770d4055b34f",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "ab7315e8a28e6da8f9d6307df9780c319eda7f8a18de1408e28306e9ac58bdf0",
+      "content_sha256": "b3c851d49275163c11852f0b28bdd5e5caccf9cb3ef4d6b951986ac1ae90c1bf",
       "documents": [
         {
           "path": "SKILL.md",
@@ -117,7 +117,7 @@
         },
         {
           "path": "reference/review-room-api.md",
-          "sha256": "06171891ed2041ee2e407d3304f49f1739fd3d3658f01e366107973bb38ab6fe"
+          "sha256": "96e145df876dfd3fdab08ecfb271f5ebf6d40b0328c5eedd4981032558c04231"
         },
         {
           "path": "reference/source-shortfalls-and-fit-to-fill.md",

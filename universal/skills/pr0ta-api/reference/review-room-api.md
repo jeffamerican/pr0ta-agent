@@ -104,7 +104,6 @@ Local stdio MCP clients may provide `access_token` per call or via `PR0TA_MCP_AC
   "title": "Client review - opening sequence",
   "description": "Review the cutdown options.",
   "review_notes": "Please focus on pacing, color, and final frame.",
-  "allow_download": false,
   "webhook_url": "https://example.com/pr0ta/review-complete",
   "webhook_secret": "optional-shared-secret",
   "folder": "Scene 1/Takes",
@@ -116,7 +115,7 @@ Field notes:
 
 - `asset_ids` — required, at least one project asset ID.
 - `title`, `description`, `review_notes` — optional reviewer-facing context.
-- `allow_download` — defaults to `false`.
+- `allow_download` — leave it out. A delivery keeps the room's sharing as the studio set it (access, invitees, downloads, comments, expiry). Pass it only when the person asks to turn downloads on or off; a brand-new room starts with downloads off.
 - `webhook_url` — optional, must be a public HTTPS URL. PR0TA rejects localhost, private-network, link-local, reserved, multicast, unspecified, and `.internal` hosts.
 - `webhook_secret` — optional. Sent in the `X-PR0TA-Webhook-Secret` header on outbound webhook delivery.
 - `folder` — optional folder path in the room, nested with `/` (`"Scene 1/Takes"`). Missing folders are created; existing ones (matched case-insensitively) are reused. Revisions stay in their tile's folder.
