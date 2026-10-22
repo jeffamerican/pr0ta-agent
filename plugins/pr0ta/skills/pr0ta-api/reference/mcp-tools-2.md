@@ -44,7 +44,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## review
 
-- `review_submit_assets`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, recipient_emails): Publish assets to a PR0TA public client review room.
+- `review_submit_assets`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish assets to a PR0TA public client review room.
 
 ## save
 
@@ -117,7 +117,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## submit
 
-- `submit_assets_for_review`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, recipient_emails): Publish one or more project assets into a public client review room and return a share link.
+- `submit_assets_for_review`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish one or more project assets into a public client review room and return a share link.
 
 ## supervisor
 

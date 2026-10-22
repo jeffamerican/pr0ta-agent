@@ -65,6 +65,8 @@ The public review room supports video-first review:
 - **Decisions:** `approved`, `approved_with_notes`, `changes_requested`
 - Comment and annotation persistence across reloads
 - Feedback representable as timeline review markers in the PR0TA UI
+- **Folders:** the room opens on a grid of folders and asset tiles, like Frame.io. File a delivery under a folder with `folder`.
+- **Version stacks:** each tile holds every delivery of the same piece (v1, v2, v3). Send a revision with `versions` so it lands on the tile it revises instead of becoming a new tile. Reviewers compare versions in one tap; decisions apply to the newest version, and earlier versions stay open for comments.
 
 Coordinates are normalized to the displayed media frame. Time values use seconds from the beginning of the reviewed asset. Video annotations also expose frame-native fields for agent repair loops:
 
@@ -104,7 +106,9 @@ Local stdio MCP clients may provide `access_token` per call or via `PR0TA_MCP_AC
   "review_notes": "Please focus on pacing, color, and final frame.",
   "allow_download": false,
   "webhook_url": "https://example.com/pr0ta/review-complete",
-  "webhook_secret": "optional-shared-secret"
+  "webhook_secret": "optional-shared-secret",
+  "folder": "Scene 1/Takes",
+  "versions": [{ "asset_id": "asset-456", "replaces_asset_id": "asset-123-earlier" }]
 }
 ```
 
@@ -115,6 +119,10 @@ Field notes:
 - `allow_download` — defaults to `false`.
 - `webhook_url` — optional, must be a public HTTPS URL. PR0TA rejects localhost, private-network, link-local, reserved, multicast, unspecified, and `.internal` hosts.
 - `webhook_secret` — optional. Sent in the `X-PR0TA-Webhook-Secret` header on outbound webhook delivery.
+- `folder` — optional folder path in the room, nested with `/` (`"Scene 1/Takes"`). Missing folders are created; existing ones (matched case-insensitively) are reused. Revisions stay in their tile's folder.
+- `versions` — optional. For each revised asset, `asset_id` is the new asset in this delivery and `replaces_asset_id` is the earlier asset already sent for review. The new asset becomes the next version on that tile. Pairs that cannot be matched come back in `versions_not_stacked`.
+
+Group a client's deliveries into one room by sending them with this tool: every delivery made this way joins the same room, and the newest share link opens the whole room.
 
 ### Response
 
@@ -148,7 +156,9 @@ Field notes:
   "webhook": {
     "enabled": true,
     "event": "review_round_completed"
-  }
+  },
+  "folder": "Scene 1/Takes",
+  "versions_stacked": [{ "asset_id": "asset-456", "replaces_asset_id": "asset-123-earlier" }]
 }
 ```
 
