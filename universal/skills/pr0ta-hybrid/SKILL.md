@@ -27,6 +27,7 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 - **Hybrid Studio shots:** `hybrid_generation_capabilities` (operations, models, reference roles), `hybrid_shots_create`, `hybrid_shots_list`, `hybrid_shots_get`, `hybrid_shots_update`, `hybrid_shot_generate`. Read `reference/hybrid-shot-studio.md`.
 - **Edited sequences in Post:** `hybrid_sequences_list`, `hybrid_sequences_get`, `hybrid_sequences_create`, `hybrid_sequences_update`, `hybrid_sequences_job`, `hybrid_sequences_apply_setup`, `hybrid_sequences_approve`, `hybrid_sequences_generate`. Read `reference/hybrid-sequences.md`.
 - **Worlds and sets:** `world_generation_submit` (Marble worlds), `set_environments_get`, `set_environment_collider_materialize`, `set_environment_asset_link`, `blender_job_submit`.
+- **Existing 3D models and scans:** a real object that already has a model (a museum statue scan, a product CAD export) comes in with `assets_import_url` or an upload, not image-to-3D. STL, OBJ, PLY and glTF are converted to a GLB that `blender_job_submit` opens as a source or a `scene_plan.objects` prop. Read `pr0ta-api` → `reference/asset-management.md` ("Bring In an Existing 3D Model or Scan") for formats, units and scale.
 
 ## Mandatory Steps
 

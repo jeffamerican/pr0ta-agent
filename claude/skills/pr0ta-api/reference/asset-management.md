@@ -145,10 +145,24 @@ attempt never blocks a retry.
 
 ### Import a File from the Web
 
-`assets_import_url` downloads a public image, video or audio file server-side and registers it as a ready asset (category `imported`, labels `source: web_import` and `source_url`). No signed URL, PUT or finalize step. Pass the file's direct address; a page address imports the page's `og:image`. Private and internal addresses are refused, every redirect is re-checked, and images are capped at 50 MB (video and audio at 500 MB). A `fetch_failed` error means the site refused the download: try another copy of the file, or ask the user to upload it.
+`assets_import_url` downloads a public image, video, audio or 3D model file server-side and registers it as a ready asset (category `imported`, labels `source: web_import` and `source_url`). No signed URL, PUT or finalize step. Pass the file's direct address; a page address imports the page's `og:image`. Private and internal addresses are refused, every redirect is re-checked, and images are capped at 50 MB (3D models at 100 MB, video and audio at 500 MB). A `fetch_failed` error means the site refused the download: try another copy of the file, or ask the user to upload it.
 
 ```json
 {"tool": "assets_import_url", "project_id": "project-id", "url": "https://upload.wikimedia.org/.../portrait.jpg", "subject": "Dario"}
+```
+
+### Bring In an Existing 3D Model or Scan
+
+`assets_import_url` and uploads also take 3D files: GLB, glTF, FBX, OBJ, STL, PLY and USDZ, recognized by extension (a web import also reads a model MIME type such as `application/sla`, `model/stl`, `model/gltf-binary` or `model/obj` when the address has no extension). They register as kind `other`, like generated models.
+
+The Blender workflow opens GLB, FBX and `.blend` only, so PR0TA converts STL, OBJ, PLY and glTF (up to 100 MB) to a self-contained GLB on the server, free, in a background task started by the import or the upload's finalize. Until it finishes, `metadata.model_3d.status` (and `model_3d` in the import result) is `converting`, with the conversion's `task_id`, and the import result says `blender_ready: false`: poll `tasks_get(task_id)` or `assets_list(asset_ids=[...])`. It then reads `converted`, `failed` with `error`, or `kept_as_imported` for a PLY point cloud or splat. The asset keeps its id and now points at the GLB; the original file stays in storage. `model_3d` also gives the `source_format` and `dimensions`: width, depth and height in Blender's axes, in the file's own units. STL is Z-up and is stood upright for Blender. USDZ is stored as imported and does not open in Blender.
+
+Only the model file itself is imported. A GLB or glTF whose buffers or textures point at other files is refused (`external_references` on a web import, an error on a direct upload, `model_3d.status: failed` on a signed upload, and again by `blender_job_submit`); use one with its data embedded. An OBJ arrives as geometry without its materials, and texture paths named inside a file are dropped. `blender_job_submit` answers 409 with the conversion's `task_id` while an asset is still `converting`, and starts a conversion again that has been stuck for more than 20 minutes.
+
+Mesh files carry no units, and scans are often in millimetres. Place the model as a prop with `scene_plan.objects[].asset_id` and real-world `dimensions` (its longest side is scaled to the longest dimension), or use it as `request.source_asset_id` with `scene_plan.world_alignment.uniform_scale` (0.001 for millimetres).
+
+```json
+{"tool": "assets_import_url", "project_id": "project-id", "url": "https://example.org/scans/statue.stl", "subject": "David statue"}
 ```
 
 ### Organize a Project

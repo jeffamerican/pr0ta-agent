@@ -161,6 +161,8 @@ candidates become history (`historyCount`, read with `include_superseded`).
 Scene-changing builds are limited to the initial build plus the Build quality
 refinements (`budget.used` of `budget.limit`); when `blender_job_submit` refuses
 one, stop and ask the person. Renders through existing cameras are not limited.
+Pick the tier (`quality_tier` `blockout`, free, or `premium`, priced: ask
+first) from `reference/set-builds.md`; premium: `reference/set-materials.md`.
 See `pr0ta-hybrid` for
 world-anchored references; its Recipe F inspects a set's objects and moves
 existing ones by exact name with `blender_job_submit`

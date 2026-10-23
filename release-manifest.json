@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.17.1",
+  "skills_version": "6.18.0",
   "released_at": "2026-10-22",
-  "source_revision": "v6.17.1",
-  "minimum_platform_version": "1.25.379",
+  "source_revision": "v6.18.0",
+  "minimum_platform_version": "1.25.386",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06214-sid",
-  "bundle_sha256": "76cdbd797c7c1644a8ea54230d213ceab5621c158efbebdea76a770d4055b34f",
+  "platform_revision": "pr0ta-platform-06256-mup",
+  "bundle_sha256": "20c0b457afad12f7fbb649558d75d7ade633290f8ce7a52f917d9335f24b2a2a",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "b3c851d49275163c11852f0b28bdd5e5caccf9cb3ef4d6b951986ac1ae90c1bf",
+      "content_sha256": "451e421e2f0a6807a26a3cdc04c0234c0158757e09a0a95ee5eb905449f2793c",
       "documents": [
         {
           "path": "SKILL.md",
@@ -37,7 +37,7 @@
         },
         {
           "path": "reference/asset-management.md",
-          "sha256": "85679a39a22ae2782cace3f8751e7f4088a464ac7f01fbb9a736b6f78283affb"
+          "sha256": "f520383dd40f937a86685b912942afac46c43922445fe24e668155a1a5f871ed"
         },
         {
           "path": "reference/asset-tags-and-analysis.md",
@@ -73,11 +73,11 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "aed3681d40939975592b638ccfdabc1fd5104456d5bf479e8fdb07b0d81a5fe8"
+          "sha256": "6a4396f77ff1d94afe1e12886d8897e1b2f6a752f8bdfba8974ebba9aa6d1d85"
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "bbcfcdc26ddbc1035551c18028e3ed6ca187963536055b612c243133b13854d7"
+          "sha256": "6f317b9e0b23738b52bcdf95a2ecce3ce82e74cc7492a3a20b81048efff0904c"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -194,11 +194,11 @@
     {
       "name": "pr0ta-development",
       "description": "PR0TA development from idea to approved direction: logline, treatment, beat sheet, writers' room, writing or importing a screenplay, drafting scenes from beats, revisions, publishing a locked draft, and the Producer/Director Creative Direction approval. Read when a production has a story, a script, or a script to write.",
-      "content_sha256": "e2f6cdd197a07ad661d78fca5000a064ed07d2326c626ddbabdecadc4218b2cc",
+      "content_sha256": "e83fae206a7882c7194a5482750536c804ceb3eee53c603bc071e49b6cf5c61a",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "70c6bc321ba5db7e25d2a3493e1009dd49b4347d565d436206927da9f28782df"
+          "sha256": "f643c94a07a99f805d2487633676e9265981dcfd133ba9c9fea03bb6d425a6bb"
         }
       ]
     },
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "c6e3573d59323135a1628b3f5ae109149c88c5b091281a4ffe5df9ab6c69752d",
+      "content_sha256": "980ba181606c6944b92180841ec81efda217858e1480226731faa08afbbbcf22",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "40184ce66a3fc7a88ab754559530295c8d726a6e3a827015bbab5c3b979e16aa"
+          "sha256": "abeaeec2ce77a6a6faa08700c3ccf4813f57d6e5d98ee42ef2e43f34effd831b"
         },
         {
           "path": "reference/hybrid-sequences.md",
@@ -331,11 +331,11 @@
     {
       "name": "pr0ta-prep",
       "description": "PR0TA pre-production from an approved direction to a generation-ready queue: script breakdown, Script Supervisor questions, element review, project memory, style worlds, casting and voices, locations and set design, looks, props, shot lists, storyboards, and the Production Queue. Read after Creative Direction is approved, or when a project already has a breakdown.",
-      "content_sha256": "4671e6add8b6c2640bf84eecc008f18bb0433aea73b24d5e224419cf05066296",
+      "content_sha256": "9a503129c2f095c9aeb9850f3ce50f63fd999dd89b8887ace6d24e33b89d8be4",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "245f15fc6a578d7342d76e365ef7f9057e5a9cf1663b6884de03aa23cdc74886"
+          "sha256": "9fcc6fed5d83f580ca9e0850afe75d9b818ddec6c91a2528f51efaff121372d4"
         },
         {
           "path": "reference/blocking.md",
@@ -343,14 +343,22 @@
         },
         {
           "path": "reference/film-eras.md",
-          "sha256": "c7c306550f5cf4947b2f4833ae7ad009b32e6d87de9145c05db5230e4b284bef"
+          "sha256": "0782a85da8f97cf0b9498c432a227880263bb1943ddbf9254fd7440d3a2e0fd5"
+        },
+        {
+          "path": "reference/set-builds.md",
+          "sha256": "46ca7412c6193b4e9268eef8a3d333809ca8ea3de5ac83badc4db57cde9727e2"
+        },
+        {
+          "path": "reference/set-materials.md",
+          "sha256": "af567e1689c5c226a9e924de905b067f1d368f8df34bc8ddaef101f4b2bf9511"
         }
       ]
     },
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "053a367eddaee708aba0e371738ba7d1f51ffa61054d2e05481ca0566364c1cf",
+      "content_sha256": "51d2ca617431fd785905f349a5f06f09b3b97edfb6fdcc32ada80bce2a7592b3",
       "documents": [
         {
           "path": "SKILL.md",
@@ -370,7 +378,7 @@
         },
         {
           "path": "reference/marble-world-generation.md",
-          "sha256": "da366a20b90157ca868ffb6020c1d8fcd1ffd69b377196e552210af66afbc2f9"
+          "sha256": "1be87d0d2e73769f6e0328a39dcbf2ff8ddb2d0d4efff27a25b318921ad68e4c"
         },
         {
           "path": "reference/model-modality-guides.md",

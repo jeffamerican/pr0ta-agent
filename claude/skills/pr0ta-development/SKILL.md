@@ -214,7 +214,8 @@ direction waiting for approval:
    eras belongs to the one listing fewer scenes; an unlisted scene belongs to
    the first main era. One era means a single-period film and changes nothing.
    `characterStages` lists each character seen at clearly different ages under
-   one cue: per stage its eras (or scenes), age, evidence, `distinctActor`,
+   one cue: per stage its eras (or scenes), age, `year` (the year the stage is
+   first seen; it names the stage's cast member), evidence, `distinctActor`,
    reason and `ageNote` (how the age shows when the same actor plays it).
    Exactly one stage per character is `main`: the character's existing cast
    member, with every approval, plays it. Check the ages against the script and

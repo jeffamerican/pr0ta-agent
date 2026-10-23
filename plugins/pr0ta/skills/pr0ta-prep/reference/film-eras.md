@@ -35,7 +35,11 @@ the mark); an age recorded from an approval cannot be moved this way.
 
 Casting gives every other stage marked `distinctActor` (and the main stage
 when the existing member stays at another age) its own cast member, named
-`CUE · year · age` (for example `ANGELA · 2000 · 55`). Its record holds:
+`CUE · year · age` (for example `ANGELA · 2000 · 55`). The year is the one the
+stage is first seen, not its era's first year: the stage's `year` in the
+Director read, else a year its evidence names, else its first scene's dated
+heading or card, else the character's birth year plus the age (`GIANNI · 1968 · 4`
+for a boy born in 1964, in an era that starts in 1966). Its record holds:
 
 - `same_person_as`: the base member it is linked to
 - `stage_id`, `era_id`, `era_ids`
@@ -98,7 +102,11 @@ Rules:
   `true` means the member playing it now, at its age now), or recast. The person's age corrections move the
   anchor too. These stage fields are the server's: saves never change them.
 - Never rename a stage member or merge it into its base: shot lists, the table
-  read and references find it by name and stage.
+  read and references find it by name and stage. The platform itself renames
+  a member still named with its era's first year to its stage's year when
+  casting runs, once (a name the person sets afterwards stays); the old name
+  stays in its `name_aliases`, and cast lookups, routing and voices still find
+  it by that name.
 - A stage the approved plan drops keeps its member if it carries approved
   media or a hand-edited prompt. It is marked `stage_retired` and plays no
   scene (references never list it). One from before Casting recorded its own

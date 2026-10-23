@@ -225,7 +225,10 @@ full configured chain through the Cinematographer.
 - **Worlds.** `world_generation_submit` takes `mode` `text_to_world`,
   `image_to_world`, or `video_to_world`, and `world_model` from the Marble
   models the tool lists. Image mode accepts one image, an explicit panorama
-  (`is_pano: true`), or 2–8 `multi_image_inputs`; a depth-guided set adds
+  (`is_pano: true`), or `multi_image_inputs` rows (`asset_id`, public `uri`, or
+  World Labs `media_asset_id`): 2–4 with `azimuth`/`direction`, or 2–8 with
+  `reconstruct_images: true`. A World Labs refusal returns `provider_detail`
+  naming the field; a depth-guided set adds
   `depth_pano_url` or `depth_pano_media_asset_id` (EXR metric, or PNG with
   `depth_z_min`/`depth_z_max`). Set Designer requests pass `set_environment_id`
   so the world attaches to its set. Fetch SPZ, collider, or panorama files with

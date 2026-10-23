@@ -53,7 +53,7 @@ Check the current [World Labs model guide](https://docs.worldlabs.ai/marble/mode
 
 Use `world_generation_submit` with the endpoint operation (`text_to_world`, `image_to_world`, or `video_to_world`) and the selected `world_model`. For set work, always include the active `set_environment_id`; the backend validates the environment, derives canonical entity/variant/scene lineage, and attaches the completed asset with role `world`.
 
-Local image/video inputs must be uploaded to World Labs first and referenced by `image_media_asset_id`, `video_media_asset_id`, or `multi_image_inputs[].media_asset_id`. A submission returns a task receipt, not a finished world. Poll with `tasks_get` until `succeeded`, `failed`, or canceled.
+Pass project images and videos by their PR0TA asset id (`image_asset_id`, `video_asset_id`, or `multi_image_inputs[].asset_id`); PR0TA hands World Labs a signed link. A `uri` must be a public URL World Labs can fetch without cookies, and `*_media_asset_id` fields are World Labs upload ids, not PR0TA ids. Multi-image takes 2-4 rows with `azimuth` (or `direction`: front, right, back, left), or 2-8 rows with `reconstruct_images=true`. `world_model` takes the API slug or the Marble label (`Marble 1.1`). Keep `display_name` within 64 characters (longer names are shortened) and `tags` to 10 of up to 32 characters. When World Labs refuses a request, the tool error carries its `provider_detail` (field and reason): fix that field rather than switching sources or models. A submission returns a task receipt, not a finished world. Poll with `tasks_get` until `succeeded`, `failed`, or canceled.
 
 On success, distinguish the artifacts:
 
