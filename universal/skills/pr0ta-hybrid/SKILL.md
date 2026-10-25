@@ -35,6 +35,9 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 review cuts/coverage/continuity states, and materialize individual shots before
 using the continuous-shot steps below. Provider-length chunks are not editorial
 shots. Never chain a generated last frame across a cut into a different angle.
+On a generative route, the chunks of one continuous shot depend on each other:
+render each after the one before it and carry its motion forward as `pr0ta-video`
+→ "Continuity Workflows" describes; an ending still carries appearance, not motion.
 
 1. **Read project memory first.** Call `memory_context_pack` for the scene, location, and shot. Approved location plates, set environments, and world decisions are the source of truth for what may change and what must stay.
 2. **Probe the plate before you plan.** Inspect the source asset's duration, frame rate, pixel dimensions, and codec. SwitchX accepts at most 240 frames and 2,770,000 pixels in one generation and needs a constant frame rate. PR0TA chunks a longer plate automatically: one Beeble job per chunk, each billed on its own, stitched back into one render and one alpha. The plan lives in `metadata.switchx_chunks`; PR0TA feeds the final rendered frame of each chunk to the next as its look reference and records that lineage under `reference_chain`. Keep `chain_chunk_references` on unless you are running a controlled comparison; a long evolving background can still benefit from a motivated edit.
@@ -60,7 +63,7 @@ Choose the narrowest tool that preserves what must stay. Read `reference/route-s
 
 Rules:
 
-- SwitchX preserves the kept pixels, so the real performance survives; the generative edit routes reinterpret the whole frame, performance included. Match the route to which of the two the shot needs.
+- SwitchX preserves the kept pixels, so the real performance survives; the generative edit routes reinterpret the whole frame, performance included. Match the route to which of the two the shot needs. On a generative edit with reference stills, say what each input controls: the source video owns performance, camera path, timing and framing; setting or lighting stills guide appearance without imposing their own composition.
 - SwitchX infers camera motion only from the pixels it keeps. A lateral pan or tracking shot with little parallax in the kept region can drift; keep some foreground unmasked, add a reference video to a Seedance edit instead, or generate the background as its own plate and composite.
 - Query `models_get_defaults` or `GET /api/crew/model_defaults?model_id={model_id}` before production calls; alpha fields and resolution caps are model-specific.
 
@@ -148,7 +151,7 @@ Before an output enters the timeline:
 
 - Faces, hands, and hair edges match the source across the whole clip, not just the first frame.
 - Contact shadows and reflections agree with the new light direction in the reference.
-- Camera motion in the regenerated region agrees with the kept region; look for sliding backgrounds on pans.
+- Camera motion in the regenerated region agrees with the kept region; look for sliding backgrounds on pans. On a generative edit, compare the whole returned camera move with the source before calling it preserved.
 - The output duration, frame rate, and dimensions match the prepared source; do not retime.
 - Speech-bearing results have a current audio index before editorial use; check it and index only if none exists (`pr0ta-audio`).
 

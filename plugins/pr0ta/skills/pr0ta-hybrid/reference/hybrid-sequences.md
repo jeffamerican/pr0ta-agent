@@ -43,8 +43,9 @@ shots; never send the whole cut sequence into SwitchX's continuous reference cha
 
 Open a representative shot using its existing Hybrid Studio deep link and author
 its angle-matched photographic background. Use the canonical environment for
-geometry, approved plates for appearance, and world-space lighting direction for
-reverse angles. Prepare any required per-shot matte or structure capture.
+geometry and approved plates for appearance. Every angle, reverses included,
+must agree on light direction in world space, eyelines and prop placement.
+Prepare any required per-shot matte or structure capture.
 
 `hybrid_sequences_apply_setup` takes `expected_revision`, `coverage_id`,
 `representative_revision`, explicit `occurrence_ids`, and `shot_revisions` keyed

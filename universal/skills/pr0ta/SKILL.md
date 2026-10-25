@@ -123,7 +123,9 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
 11. **Report what the platform should learn.** A lesson that will recur on
    other productions (a model's consistent behavior, a prompting rule, a
    missing tool) goes to `learning_record` with a `general_principle` that
-   names no shot, scene, asset or project. A fix for one shot or project
+   names no shot, scene, asset or project. A technique the skills already
+   describe, or one the user says has worked before, is established, not a new
+   lesson, even when this task did not test it. A fix for one shot or project
    belongs in that project's asset notes or memory; broken things go to
    `bug_report_create`.
 

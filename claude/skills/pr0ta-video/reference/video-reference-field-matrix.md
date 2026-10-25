@@ -73,7 +73,7 @@ These generic multimodal arrays are limited to the exact reference-capable model
 | `byteplus/seedance-2.5` | T2V / reference / edit / extend | Required | Mode-dependent | Up to 30 image, 10 video, 10 audio refs | `omni_reference_task_type`; 480p/720p/1080p; `mp4`/`mov`. Read `seedance-2.5.md` |
 | `byteplus/seedance-2.5-image-to-video` | I2V | Required | First frame image | Optional last frame | Input image locked as first frame; draft mode |
 | `byteplus/seedance-2.5-first-last-frame` | FFLF | Required | Exactly 2 ordered images | First then last | Draft mode |
-| `byteplus/seedance-2.5-video-edit` | `video_to_video` | Required | Source video | Up to 30 image, 10 audio refs | Keeps source length and ratio (duration -1, adaptive) |
+| `byteplus/seedance-2.5-video-edit` | `video_to_video` | Required | Source video | Up to 30 image, 10 video, 10 audio refs | Keeps source length and ratio (duration -1, adaptive) |
 | `byteplus/seedance-2.5-video-extend` | `extend_video` | Required | Source video | Up to 30 image, 10 audio refs | Say forward or backward in the prompt |
 | `fal-ai/kling-video/v3/standard/motion-control` | `video_to_video` motion transfer | Optional | Character image + driving video | `image_url`, `video_url`, `character_orientation`; one optional Element | Read `motion-transfer.md` |
 | `muapi/seedance-2-character` | Character-construction path | Not enforced | ≥1 image ref (up to 3) | Image fields only | **Character-sheet training.** Requires `character_name` + `outfit_description`. Async; returns Omni token in `result_refs.character_id` for later omni-reference calls. |

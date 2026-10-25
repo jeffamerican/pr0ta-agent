@@ -162,7 +162,7 @@ Seedance 2.0 has two valid continuation paths with different contracts.
 
 ### Omni Reference continuation (available in PR0TA)
 
-Submit the previous clip as the first video reference so it becomes `@video1`. This is useful for continuing action, environment, camera direction, performance, and audiovisual texture from the preceding clip. It is reference-guided continuation, not a guarantee of a frame-exact seam.
+Submit the previous clip, or better a short tail of it within the route's reference-video limits (check `models_get_defaults`), cut with `assets_trim`, as the first video reference so it becomes `@video1`. This is useful for continuing action, environment, camera direction, performance, and audiovisual texture from the preceding clip. It is reference-guided continuation, not a guarantee of a frame-exact seam.
 
 ```json
 {
@@ -182,7 +182,7 @@ Rules:
 - State that `@video1` supplies preceding action, environment, camera direction, and continuity.
 - Describe only the next causal beat and desired end state.
 - Reinforce identity with approved stills if drift appears.
-- Verify the join frame, visual continuity, audio continuity, and true duration before assembly.
+- Verify both sides of each join, motion included, plus visual continuity, audio continuity, and true duration before assembly.
 - Trim duplicate join frames on the PR0TA timeline when necessary.
 
 Do not claim automatic last-frame locking or soundtrack carry-over. Validate the actual result.
