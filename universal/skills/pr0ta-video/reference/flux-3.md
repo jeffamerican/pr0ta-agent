@@ -40,6 +40,21 @@ Use this reference for every `blackforestlabs/flux-3/` video route in PR0TA. FLU
 
 Use Draft to validate staging, pacing, dialogue, and reference interpretation. Promote only the approved Draft cache through `draft-enhance`; do not regenerate a supposedly approved take on a standard route.
 
+### FLUX 3 Max routes
+
+| Need | Exact model ID |
+|---|---|
+| Prompt-only video | `blackforestlabs/flux-3-max/text-to-video` |
+| Animate an opening image, optionally landing on an ending image | `blackforestlabs/flux-3-max/image-to-video` |
+| Place 1–10 visual targets at exact frame positions | `blackforestlabs/flux-3-max/keyframes-to-video` |
+
+FLUX 3 Max is Fal's tuned FLUX 3 video model (October 2026). On 2026-10-24 every Max take failed on Fal's side (`downstream_service_error`, not charged), so it is not curated yet: use the standard FLUX 3 routes unless the person asks for Max, and fall back to them if a Max take fails. It has no Draft, Enhance, first/last, Extend, or Edit routes: for an exact opening and ending image use Max image-to-video with `image_url` plus the optional `end_image_url`. Differences from the standard routes:
+
+- `duration` is a whole number from 5 through 20 (default 5); `"auto"` is rejected.
+- `reasoning_level` is `low` or `high` (default `high`, which expands the prompt before generation; `low` is faster and follows the prompt more literally). Send it in `parameters`.
+- No `safety_tolerance`. `resolution`, `aspect_ratio`, and `generate_audio` match the standard routes; keyframes use the same `keyframes[]` objects and `mode: "transition"`.
+- Launch pricing runs through 2026-11-06 at a quarter of the standard FLUX 3 rate, then matches it; the estimate shows the current rate.
+
 ## Shared Generation Contract
 
 - `prompt` is required on every generation route.

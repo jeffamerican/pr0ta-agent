@@ -7,6 +7,10 @@ Use this reference when the resolved model is one of:
 | `xai/grok-imagine-video/v1.5/text-to-video` | `txt_to_vid` | none; any image input is rejected |
 | `xai/grok-imagine-video/v1.5/image-to-video` | `ref_to_vid` | exactly one opening image |
 | `xai/grok-imagine-video/v1.5/reference-to-video` | `ref_to_vid` | 1–7 reference images |
+| `xai/grok-imagine-video/v1.5/lite/text-to-video` | `txt_to_vid` | none; any image input is rejected |
+| `xai/grok-imagine-video/v1.5/lite/image-to-video` | `ref_to_vid` | exactly one opening image |
+
+The Lite routes are the low-cost 1.5 tier (about a quarter of the full price at 480p and 720p) with the same contract as their full-tier counterparts; there is no Lite reference-to-video. Use Lite for drafts, previz, and many cheap takes, then render the chosen shot on the full tier or another final-quality model.
 
 The image-to-video route does not accept `img_to_vid`; send `ref_to_vid`. Older `xai/grok-imagine-video/*` routes without `v1.5` are separate contracts; do not copy these limits to them.
 

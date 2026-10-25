@@ -54,6 +54,8 @@ Every step runs on PR0TA's own tools, free of credits (`pr0ta-timeline` → The 
 
 The tiles of a contact sheet are small. To read a face, a hand or a title card, call `post_frames_get` with `detail: "full"`, and pass `region` to zoom into that part of the frame.
 
+`post_frames_get` returns the pictures themselves, beside its JSON. To judge a revision against a visual note (angle, framing, scale, placement, "same as before"), get the new still, its source and the take it replaces, and describe what changed in the pixels, not what the prompt asked for. When a picture did not reach you (the result says it was not shown, or nothing is attached), say plainly that you could not see it, never call the take checked or fixed, and show the images to the user so they can judge.
+
 
 ### Doing the Steps Locally
 

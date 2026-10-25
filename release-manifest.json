@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.18.0",
-  "released_at": "2026-10-22",
-  "source_revision": "v6.18.0",
-  "minimum_platform_version": "1.25.386",
+  "skills_version": "6.19.0",
+  "released_at": "2026-10-24",
+  "source_revision": "v6.19.0",
+  "minimum_platform_version": "1.25.394",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06256-mup",
-  "bundle_sha256": "20c0b457afad12f7fbb649558d75d7ade633290f8ce7a52f917d9335f24b2a2a",
+  "platform_revision": "pr0ta-platform-06322-huz",
+  "bundle_sha256": "7a7d8197faced79595f5693c2378a6460f0e510c215d4c9ceba54a9a4ac4afc0",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "451e421e2f0a6807a26a3cdc04c0234c0158757e09a0a95ee5eb905449f2793c",
+      "content_sha256": "f942d675460b39aaab5f536fa274b2bedfe08f64feab8726eb2af51cba4a767b",
       "documents": [
         {
           "path": "SKILL.md",
@@ -85,7 +85,7 @@
         },
         {
           "path": "reference/mcp-tools-3.md",
-          "sha256": "bab89a80b0bf631c1806e11d359e159de175a441a4541c7dcc11958db8ee078f"
+          "sha256": "bad6a4ee5ba911a7beaba1f632685653ae5163cc9c69441c2da29b32a2ee3a46"
         },
         {
           "path": "reference/mcp-tools.md",
@@ -137,7 +137,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "ced09b4bfc4dccf0ccb9a0e5dfa4fbbd1638530a07e9e3998634b44d20e2d1be"
+          "sha256": "6afc0460664dcca55c66fe2c502102d6581730d5491cb4573a9222bbdfee89cb"
         },
         {
           "path": "reference/voice-and-transcription.md",
@@ -216,7 +216,7 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "7b3e9aaf55b91a290783173b4a4b544cf5b8f17401fce62de563c26188d052f0",
+      "content_sha256": "4dc0ecae450c552cdaf26b087905e64489b2190fb556e80cecdb589f038eb4b6",
       "documents": [
         {
           "path": "SKILL.md",
@@ -228,7 +228,7 @@
         },
         {
           "path": "reference/verification-protocol.md",
-          "sha256": "79e176456bc2e5d7a9cd68ba3ed530a8792ef749118f107de4c1168ad1946feb"
+          "sha256": "2639bf399cf160daf4d17e888eb7f547fa9ecce786b9bb10d18601bccbb9e18f"
         },
         {
           "path": "reference/vertical-and-cutdowns.md",
@@ -431,11 +431,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "d4de94fdbf8d87f699d5f179b6c63334f6d63a5e4a50bd19bb525f68c5a05807",
+      "content_sha256": "a47bb4821080bf7b5d461019217a5fcaa307dd3e7ea5f11e22c9e337990ef94c",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ece188e48e0fc8a625a944ee59da7ead6555b451fcaa8bda072d7fb057b826d7"
+          "sha256": "198ed80bc4d478c338a88538df014666f2aed239f4af1aec5c9ea7a13066b745"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -443,7 +443,7 @@
         },
         {
           "path": "reference/flux-3.md",
-          "sha256": "0bf574a773ac4e3186de9222c125f0c3d14449ee37aa337aa08ce27e6a567a9d"
+          "sha256": "0282a5253904f3c5d5a367857e0484b9d367a0d982ea1406947fce92f7e12c54"
         },
         {
           "path": "reference/gemini-omni-flash-1.1.md",
@@ -455,7 +455,7 @@
         },
         {
           "path": "reference/grok-imagine-video-1.5.md",
-          "sha256": "06cb2a86e5bdff6a75d9f9fb2ddb32c30ae8c343ebbec41eca0b769adc77e095"
+          "sha256": "e2aaed81a9a3e446947ac6c62f7c0000d0f157ca880e2476bedc0d3b95ff18b9"
         },
         {
           "path": "reference/hailuo-h3.md",

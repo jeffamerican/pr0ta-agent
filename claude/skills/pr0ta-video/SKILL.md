@@ -64,7 +64,7 @@ Route by the resolved `model_id`:
 | `muapi/wan3.0-*`, `alibaba/wan-3.0-prime/*` | `reference/wan-3.0.md` |
 | `google/gemini-omni-flash/v1.1/*` | `reference/gemini-omni-flash-1.1.md` |
 | `fal-ai/minimax/hailuo-03/*`, `minimax/h3-max*` | `reference/hailuo-h3.md` |
-| `blackforestlabs/flux-3/*` | `reference/flux-3.md` |
+| `blackforestlabs/flux-3/*`, `blackforestlabs/flux-3-max/*` | `reference/flux-3.md` |
 | `lightricks/ltx-2.5/*` | `reference/ltx-2.5.md` |
 | `kling/*`, `fal-ai/kling-video/*` | `reference/kling-prompting.md` |
 | `xai/grok-imagine-video/v1.5/*` | `reference/grok-imagine-video-1.5.md` |

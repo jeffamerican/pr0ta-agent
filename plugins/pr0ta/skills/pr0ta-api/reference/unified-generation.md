@@ -39,6 +39,7 @@ Behavior:
 | `video` | `video_to_video` | Transform a source video with an edit-capable model (Beeble SwitchX, Seedance 2.5 Edit, Gemini Omni Flash 1.1 edit), or derive a matte with `fal-ai/birefnet/v2/video` or `bria/video/background-removal` (no prompt; provider controls go in `parameters`); SwitchX also accepts `alpha_asset_id` mattes |
 | `3d` | `image_to_3d` | Image-to-3D asset/body generation (SAM 3D, Meshy, Rodin, etc.) |
 | `3d` | `animate_3d` | Rig a humanoid GLB and generate multiple Meshy animation clips |
+| `3d` | `retexture_3d` | Repaint an existing 3D model with `meshy/v7/retexture`: exactly one of `model_asset_id` (a GLB asset) or `model_url`, plus a texture `prompt` (up to 600 characters) or a style image (`image_asset_id` / `image_url`); `parameters.texture_resolution` is 2k, 4k or 8k. The result is a new 3D asset; the source is kept |
 | `lipsync` | `lipsync` / `video_audio_to_video` | Video/audio-driven Lipsync |
 | `audio` | `txt_to_speech` | Text-to-speech |
 | `audio` | `text_to_sound` | Text-to-sound effects |
@@ -63,6 +64,19 @@ The public compatibility aliases `text_to_image` and `image_edit` normalize to `
 The model must be classified under `generator=3d` by `GET /api/v2/models`. The route resolves project image assets, submits asynchronously, registers the returned 3D asset, and returns a task ID for normal polling. Use `parameters` for fields from `models_get_defaults` that are not common unified request fields.
 
 Meshy v6 and v7 image-to-3D also accept the top-level fields `{"enable_rigging": true, "rigging_height_meters": 1.8, "enable_animation": true, "animation_action_id": 12}` (one action id, 0-696). When rigging or animation is explicitly requested, the task fails if the provider returns only the unrigged base model. A rigged Meshy v7/v7.1 character is generated in an A-pose (`pose_mode: "a-pose"`) unless the request sets `pose_mode` to `"t-pose"` (an empty `pose_mode` counts as unset); a character bound in its reference image's pose (arms raised, a shrug) poses badly in Blender, so keep the default for any character that will be posed. The Meshy v7 multi-image route accepts one to four views of the same object through `parameters.image_urls`; project assets in `reference_image_asset_ids` are resolved into that array automatically.
+
+Multi-view image-to-3D takes several views of one subject in a single request: `meshy/v7/multi-image-to-3d` and `meshy/v7.1/multi-image-to-3d` take one to four views in any order; `tripo3d/h3.1/multiview-to-3d` takes two to four views read by position, front, left, back, right (front and left required, back before right). Send the views as asset ids in that order: `image_asset_id` is the front and `reference_image_asset_ids` lists the remaining views (`["<left>", "<back>", "<right>"]`), or put every view in `reference_image_asset_ids` starting with the front. `parameters.image_urls` with the views in the same order also works and wins over the asset fields. A Tripo request with fewer than two or more than four views is rejected with 400 before submission; leave no gaps (a back view sent without a left view is read as the left). Pricing is the model's usual per-request price (textures, detailed geometry, quad), not per view.
+
+```json
+{
+  "generator": "3d",
+  "mode": "image_to_3d",
+  "model": "tripo3d/h3.1/multiview-to-3d",
+  "image_asset_id": "front-view-asset-id",
+  "reference_image_asset_ids": ["left-view-asset-id", "back-view-asset-id"],
+  "parameters": {"texture": false, "pbr": false}
+}
+```
 
 Canonical Meshy v7 IDs are `meshy/v7/image-to-3d` and `meshy/v7/multi-image-to-3d`; do not add a `fal-ai/` prefix.
 
