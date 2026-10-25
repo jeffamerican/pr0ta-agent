@@ -137,7 +137,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## transcription
 
-- `transcription_get`(**asset_id**): Get stored transcript text, segments, and flattened word-level timing for a project asset.
+- `transcription_get`(**asset_id**): Stored transcript (videos are auto-transcribed): text, segments, word timing; in_flight with task_id while running; words [] for no speech (transcrip…
 - `transcription_start`(**asset_id**, model_id, language, diarization, timestamp_granularity, force): Start Scribe V2 transcription for a project audio or video asset.
 
 ## update

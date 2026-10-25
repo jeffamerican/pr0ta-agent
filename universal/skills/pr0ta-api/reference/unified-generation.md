@@ -250,6 +250,8 @@ Use video extension when the user wants a generated continuation of an existing 
 
 Required fields: `generator`, `mode`, `model`, `prompt`, and one of `video_asset_id`, `video_url`, or `source_url`.
 
+A route may need a minimum source length, stated as `capabilities.min_input_video_frames` (or `min_input_video_seconds`) in `models_get_defaults`. `fal-ai/ltx-2.3/extend-video` needs at least 73 source frames (about 3.04 s at 24 fps); `context` is the seconds of input used as context and does not lower it. A shorter source is refused with 400 `source_video_too_short` (minimum, actual, suggested length) before any quote, task, or charge.
+
 Supported extension-capable models include `muapi/seedance-2.5-video-extend`, `blackforestlabs/flux-3/extend-video`, `fal-ai/pixverse/extend`, `fal-ai/pixverse/v6/extend`, `fal-ai/magi/extend-video`, `fal-ai/veo3.1/extend-video`, `fal-ai/vidu/q2/video-extension/pro`, and `kling/v3/video-extend`. Check `GET /api/v2/models?generator=video` for the current catalog and `models_get_defaults` for each schema. Seedance 2.5 also has `-480p`, `-1080p`, and `-4k` variants selected directly by model ID; FLUX 3 also exposes a `/draft` extension route.
 
 Provider-specific options can be passed when supported by the model schema, including `resolution`, `style`, `fps`, `num_frames`, `generate_audio_switch`, and `extension_mode`/`extend_direction` (`start` or `end` for models that expose start/end extension).

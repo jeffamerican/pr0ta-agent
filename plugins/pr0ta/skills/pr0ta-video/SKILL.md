@@ -100,7 +100,7 @@ Use REST only when MCP is unavailable, for high-volume scripts, or for an unexpo
 - `txt_to_vid`: text only. Send no reference fields; any reference on a text request can route it to a reference-capable model.
 - `ref_to_vid`: any image, video, or audio conditioning, including single-image I2V, first/last frame, and Omni/R2V routes. FLUX 3 keyframe routes document `transition`; see `reference/flux-3.md`.
 - `video_to_video`: transform a source clip (edit, restyle, relight, motion transfer).
-- `extend_video`: continue a source clip.
+- `extend_video`: continue a source clip. Some routes need a minimum source length (`models_get_defaults(model_id).capabilities.min_input_video_frames`): `fal-ai/ltx-2.3/extend-video` needs at least 73 source frames (3.04 s at 24 fps; send 3.1 s or more), whatever `context` says.
 - `video_audio_to_video` / generator `lipsync`: audio-driven video and lip-sync routes.
 
 Always confirm against `supported_modes`; a family can use different modes per route. No current catalog video route lists `img_to_vid`.
@@ -159,7 +159,7 @@ Audio controls are endpoint-specific. Send an audio field (`sound`, `audio`, `ge
 
 A character's voice in a video comes from their approved Casting voice: generate the line with `generation_submit` naming the speaker (`character_name`; `pr0ta-audio` → "One voice per speaker") and pass that take as the shot's audio, or pass the approved voice as the reference. The Operator's video request (and its Production Queue render of a shot's line) is refused when the audio is a take whose voice was copied from a clip nobody approved, or a cut of one. A wrong voice in a kept single-speaker video take is fixed with Voice Change when the speaker's approved voice is an ElevenLabs voice; a take with several speakers, or an approved voice that is only a clip, needs a new take.
 
-Speech-bearing results need a transcript before timeline use. PR0TA indexes generated audio in the background with the project's Audio→Text setting; check the asset's index first and start `transcription_start` only when none exists or word-level timing from a specific model is required. `pr0ta-audio` owns this rule. Verify exact wording, speaker identity, sync, and unwanted speech.
+Speech-bearing results need a transcript before timeline use. PR0TA indexes generated audio (with the project's Audio→Text setting) and videos in the background; check the asset's index first and start `transcription_start` only when none exists or word-level timing from a specific model is required. `pr0ta-audio` owns this rule. Verify exact wording, speaker identity, sync, and unwanted speech.
 
 ## Automatic QC of Every Take
 

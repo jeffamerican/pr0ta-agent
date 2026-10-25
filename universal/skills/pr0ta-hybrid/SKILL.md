@@ -153,7 +153,7 @@ Before an output enters the timeline:
 - Contact shadows and reflections agree with the new light direction in the reference.
 - Camera motion in the regenerated region agrees with the kept region; look for sliding backgrounds on pans. On a generative edit, compare the whole returned camera move with the source before calling it preserved.
 - The output duration, frame rate, and dimensions match the prepared source; do not retime.
-- Speech-bearing results have a current audio index before editorial use; check it and index only if none exists (`pr0ta-audio`).
+- Before joining clips or generating a source-guided continuation, establish where they correspond: word-timed transcripts (clips are indexed automatically, a joined render with `transcription_start`; `pr0ta-audio`), `audio_align` over several speech windows for offset and drift, repeated or missing words at the join, then action and camera in pictures. Transcript timing is approximate; regenerated audio leaves `audio_align` inconclusive, which is an answer, not a pass.
 
 If any check fails, change the matte or the reference before changing the prompt, and rerun.
 

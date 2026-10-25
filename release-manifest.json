@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.19.1",
+  "skills_version": "6.19.4",
   "released_at": "2026-10-25",
-  "source_revision": "v6.19.1",
-  "minimum_platform_version": "1.25.394",
+  "source_revision": "v6.19.4",
+  "minimum_platform_version": "1.25.404",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06346-yey",
-  "bundle_sha256": "3361078f673fb168d1fae8087ad249ba874b597a266b23d93ad27c3a6a3c4460",
+  "platform_revision": "pr0ta-platform-06364-mak",
+  "bundle_sha256": "5bf28d78603bb2008018950a123d7d9196a533731e546c0fd913ecd8c8723730",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "f942d675460b39aaab5f536fa274b2bedfe08f64feab8726eb2af51cba4a767b",
+      "content_sha256": "5654b47c719d291ca8bff280a7b08fbfcf0394142f8486c4fa2c18c868f6673b",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "6f317b9e0b23738b52bcdf95a2ecce3ce82e74cc7492a3a20b81048efff0904c"
+          "sha256": "b1ec538f2f34b860010b3150458a793218034c525bfba274532cae3191abf610"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "bdae4848bfb73cb89f149e1379a4e1ae02e91014255c8f06a309cd4c36bc2d3a"
+          "sha256": "ec881840b9ce1e4ffad6a49cce56fb536bfe25afbaecea00e4b1e2af7ca816fa"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "3cbf31b6925f913eef3f7fa5aa4b2a46174a87a65dba9dfe60c8ca1ba3f9ddca"
+          "sha256": "2971c808d17b6dd1f6d26851186412557fe9fce97ee7faf8e11f642a338146ae"
         },
         {
           "path": "reference/music-analysis.md",
@@ -137,7 +137,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "6afc0460664dcca55c66fe2c502102d6581730d5491cb4573a9222bbdfee89cb"
+          "sha256": "2aeeef2e302cf9ca7abcd5744931222c0a66952d9a3227308a6ecdfd4f4cfbaf"
         },
         {
           "path": "reference/voice-and-transcription.md",
@@ -156,11 +156,11 @@
     {
       "name": "pr0ta-audio",
       "description": "PR0TA speech and voice: narration, voiceover, dialogue and scene dialogue takes (text-to-speech), voice clone, voice design, voice changer (speech-to-speech), lip sync audio, transcription, word timing, subtitles, and the time-indexing rule every edit relies on. Read before generating, transcribing or cutting any speech.",
-      "content_sha256": "5d6bcd9ce27674a81b5d1d2d6f52da6b1b04710cf5d6177a7e3070c35c8f8b15",
+      "content_sha256": "f8274681a861188986bc9504ba037ddd9a5dca6969f154056d0c5c959d162386",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "eed9b851b237b0443da2c030e7f6208507d2aa52907f7846b94ff52649ce41b9"
+          "sha256": "04fae2c2da5a49cf87cab0e1fb44295be7f900a4884ec0b542e2b6a2da261090"
         },
         {
           "path": "reference/elevenlabs-v3-audio-tags.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "74d87f25e255351ec1c7745dd2161433a94bceacc6fbe7902fe809be5237cd9f",
+      "content_sha256": "79afc80beab4e6957ee2ed589300c351e8279b12996e45e2025cf389c057b40d",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "c247aa0b1cf6d47f6560f3f348b03c164bba7128b7b0acffc0f391924c06ca03"
+          "sha256": "80d4838175c787879275c4696a48740ef7ff5b7f176674b5627a5c2b8882bef3"
         },
         {
           "path": "reference/hybrid-sequences.md",
@@ -431,11 +431,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "2c78abc8a2c4e2ec7a6b3ead17208c1a80fd9e6cc8d3f20bd400e536371a69e8",
+      "content_sha256": "5943cd7305203c91a726e125c5a3174e1bfd7543c4ad1417a3166527388d4ac1",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "9db616051e57c84023490ba3265259760d96419af616986262800b0eb43df5be"
+          "sha256": "3bafb94ff15fedc0b29ac1b0d7308dd5d74535eeae14e460ddb5dea6c71c2b73"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -499,7 +499,7 @@
         },
         {
           "path": "reference/seedance-omni.md",
-          "sha256": "98971410c2670a52fef8ce02803f607a0243da2825794d57b8cd80bfe1081603"
+          "sha256": "36ea294900640cb80378e76663e59631a5269ae735df3b4d7034039d343cc907"
         },
         {
           "path": "reference/video-reference-field-matrix.md",
@@ -531,6 +531,7 @@
     "assets_upload_batch_start",
     "assets_upload_finalize",
     "assets_upload_start",
+    "audio_align",
     "audio_analyze",
     "audio_meter",
     "audio_stem_separate",
@@ -740,5 +741,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "58c89bd3609b3e5b0c718d724a65434b00833ca2ac83dd45e5723bf425432be7"
+  "mcp_connector_tools_sha256": "3b997c31ad4d242a9ee6ed11cb136abd0b0bf833e1aae4b43ad24c1ddfdd3bac"
 }

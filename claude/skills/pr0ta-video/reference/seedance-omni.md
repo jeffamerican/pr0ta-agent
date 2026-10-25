@@ -179,10 +179,10 @@ Submit the previous clip, or better a short tail of it within the route's refere
 Rules:
 
 - Clarify whether the target means additional continuation time or total sequence time, then split the remaining duration into 4–15 second segments.
-- State that `@video1` supplies preceding action, environment, camera direction, and continuity.
+- State that `@video1` supplies preceding action, environment, and continuity. Look at what the source camera actually does (`post_frames_get`) and say it literally: for a static source, "locked-off camera; no push-in, zoom, pan or reframing", never generic moving-camera boilerplate.
 - Describe only the next causal beat and desired end state.
 - Reinforce identity with approved stills if drift appears.
-- Verify both sides of each join, motion included, plus visual continuity, audio continuity, and true duration before assembly.
+- Verify both sides of each join, motion included, plus visual continuity, audio continuity (`audio_align`: offset, repeated or missing words), and true duration before assembly.
 - Trim duplicate join frames on the PR0TA timeline when necessary.
 
 Do not claim automatic last-frame locking or soundtrack carry-over. Validate the actual result.

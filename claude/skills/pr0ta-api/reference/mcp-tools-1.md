@@ -31,6 +31,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## audio
 
+- `audio_align`(**asset_a_id**, **asset_b_id**, a_range, b_range, fps, windows, join_time, use_transcripts): Free: line up two videos/audio by waveform.
 - `audio_analyze`(sequence_id, from_time, to_time, windows, track, tracks): Predict timeline audio levels for one range or multiple windows.
 - `audio_meter`(asset_id, sequence_id, from_time, to_time, windows, track, tracks, allow_long, timeout_seconds): Run actual LUFS/true-peak metering for one short range or multiple short windows of a sequence.
 - `audio_stem_separate`(**asset_id**, model_id, prompt, options): Separate a project audio or video asset into stems (paid: Fal's price for its length): Demucs splits music into vocals, drums, bass and other, so you…

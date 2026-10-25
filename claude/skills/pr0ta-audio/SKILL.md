@@ -265,9 +265,13 @@ and transient anchors for music. PR0TA builds most of it for you.
 - A transcribed speech asset (dialogue, narration, voiceover, TTS) also fills
   the narration timeline's transcript layer; music and SFX do not.
 - Some music generations are beat-analyzed as well.
-- Video assets, and copies cut with `assets_trim`, are not indexed
-  automatically. For a trimmed copy, shift the source's timing by the in point
-  or index the copy.
+- Every uploaded or generated video with speech is transcribed too, at word
+  granularity (free); timeline renders are not. One with no audio track or
+  only silence is stored with no words and `transcription_summary.skipped`;
+  one judged speechless gets none, so `transcription_start` still runs. A copy
+  cut with `assets_trim` gets its source's words shifted by the in point
+  (`transcription_summary.derivation: "trim"`; add `trim_in_point` back for
+  source time), else its own transcript.
 
 **Before you cut on an asset's timing, check its index**
 
@@ -279,14 +283,16 @@ and transient anchors for music. PR0TA builds most of it for you.
   (the model that produced it).
 - Music and SFX: `music_analyze(asset_id)` with default options returns the
   stored analysis when one exists and starts analysis only when none does.
+- Two clips against each other: `audio_align(asset_a_id, asset_b_id)` gives
+  their offset and drift from the waveforms, plus repeated or missing words.
 
 **Start indexing only when needed**
 
 Call `transcription_start(asset_id, model_id?, language?, diarization?,
 timestamp_granularity?)` only when:
 
-- the asset has no transcript, or it is a video asset (its audio is extracted;
-  the task's `metadata.extracted_audio_asset_id` names the new audio asset);
+- the asset has no transcript (for a video, its audio is extracted; the
+  task's `metadata.extracted_audio_asset_id` names the new audio asset);
 - the stored transcript is segment-level and you need words; or
 - you need a specific model's timing. ElevenLabs Scribe V2 returns a speaker
   id per word (diarization on unless disabled) and marks non-speech audio
