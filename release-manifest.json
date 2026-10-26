@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.20.0",
-  "released_at": "2026-10-25",
-  "source_revision": "v6.20.0",
-  "minimum_platform_version": "1.25.405",
+  "skills_version": "6.21.0",
+  "released_at": "2026-10-26",
+  "source_revision": "v6.21.0",
+  "minimum_platform_version": "1.25.408",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06370-xab",
-  "bundle_sha256": "c238d3654e55c62f8e1c7f3586a270d564261513b84d780d976068b0713dcfd6",
+  "platform_revision": "pr0ta-platform-06394-tiw",
+  "bundle_sha256": "b327084144ec57be3b949603521417ccb5a16e41a70649f89df782fa618f58b7",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "b2111e4f8858da720f2323748ca4bd776a877fb6e5bdc202dc0f8114ad2287a5",
+      "content_sha256": "4757b09bb61970aeffc4deeb9bcf1a69d221e08c6c289e8bdc0d91e78171fe6a",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "d87d82de5bd0e8debd914b414a23ed3ec1a47088435efa4bb306078c84425e22"
+          "sha256": "78289c78d6613781802531a3ae3e557f9fc68be351db28e693e0a4f372942d08"
         },
         {
           "path": "reference/asset-management.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "b1ec538f2f34b860010b3150458a793218034c525bfba274532cae3191abf610"
+          "sha256": "06e4bf137e479c8c8ab5c73825ba86544f466764d37a2ee6e8e3a7f264ec109d"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -117,7 +117,7 @@
         },
         {
           "path": "reference/review-room-api.md",
-          "sha256": "96e145df876dfd3fdab08ecfb271f5ebf6d40b0328c5eedd4981032558c04231"
+          "sha256": "9b01d33bd349e390dc7e0d1a241101bfd413dca7e66a4544cba0888c9ff25c93"
         },
         {
           "path": "reference/source-shortfalls-and-fit-to-fill.md",
@@ -320,11 +320,11 @@
     {
       "name": "pr0ta-operator",
       "description": "Hand work to PR0TA's own Operator as a durable mission: long or many-step production goals (draft a screenplay from beats, prep a set of scenes, storyboard an act, generate and review a batch) that run inside the app with its permissions, credit budget, and approval stops. Read when delegating, running work unattended, or waiting on a mission.",
-      "content_sha256": "41be38de18f640908955147114399296ef5095ccf0fde647e5bebe6fc41b13ca",
+      "content_sha256": "d86bba96e6d07fcaa08e06a50ba15ff44ab4654314fe15ae32a3550f8ad50863",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "84f9064c7cdcb9d5f50c1fe21dc7acd05e398efa30b6dcab8a5065d62ef23a83"
+          "sha256": "afc66a234a3351a65900fa3c23f4bb63d991b83e666ecdcf7094958c45b5e4db"
         }
       ]
     },

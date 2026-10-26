@@ -71,13 +71,15 @@ The public review room supports video-first review:
 Coordinates are normalized to the displayed media frame. Time values use seconds from the beginning of the reviewed asset. Video annotations also expose frame-native fields for agent repair loops:
 
 - `media_current_time_seconds` — exact HTML/media playback time at note creation.
-- `frame_rate` — review-room frame rate assumption, normally `30`.
-- `frame_index` / `displayed_frame_index` — floor-based decoded/displayed frame index.
+- `frame_rate` — the asset's own frame rate (its `source_timecode` rate, else its probed rate; `30` only when neither is known).
+- `frame_index` / `displayed_frame_index` — the frame the note marks, counted from the file's first frame. A note made since timecode notes shipped stores this frame (`metadata.timecode.frame`); an older note that kept only seconds gets the frame its seconds fall on (floor) at the asset's real rate.
 - `rounded_frame_index` and `ceil_frame_index` — alternate derivations for debugging browser/decoder off-by-one cases.
 - `frame_index_policy` — currently `floor`.
-- `timecode` — derived from `frame_index`, e.g. `00:00:21:17`.
+- `timecode` — always the **asset's own timecode** of that frame, recomputed on every read from the frame and the asset's current timecode: camera TC for camera footage and its trims/hybrids (e.g. `14:23:11:04`), the generated root TC for generated continuations and assembled takes, or file time from `00:00:00:00` when the asset has no block. Drop-frame rates use `;` (`00:01:00;02`). The stored frame is the truth; a stored timecode string is never returned stale.
+- `timecode_reference` — `{frame, timecode, rate, drop_frame, source, label, estimated?, end_frame?, end_timecode?}`: `source` is `camera`, `generated` or `file`, `label` the reel (camera) or root name, `rate` the exact fraction (`24000/1001`), `estimated` a guessed placement.
+- `timecode_text` — the same in words: `14:23:11:04 (frame 23, 23.976 fps, reel A003)`.
 
-Use `displayed_frame_index` / `frame_index` as the repair target. `round(currentTime * fps)` can be one frame later than the actual displayed decoded frame.
+Use `displayed_frame_index` / `frame_index` as the repair target, and `timecode` to name the frame to people and to editors (an EDL, an NLE). `round(currentTime * fps)` can be one frame later than the actual displayed decoded frame. Review events (timestamped comments) from `get_review_annotations` carry the same `timecode_reference` and `timecode_text`.
 
 ---
 

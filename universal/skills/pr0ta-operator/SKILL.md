@@ -88,7 +88,9 @@ rejects one, and only on the user's explicit decision. Draft artifacts marked
 relay their answer with `operator_mission_review(mission_id, artifact_id,
 decision, note?)`. A card with `options` (2 to 4 labelled choices, such as
 "Fix it" / "Leave as is") takes `decision: "choose"` and `choice` set to one
-label; others take `approve` or `request_changes`. You may approve a card
+label; others take `approve` or `request_changes`. An action held because the
+user approved only a quote on its subject (`quote_only_scope`) is approved by
+the user in the app, never with a token. You may approve a card
 that approves first frames or Casting voices on your own judgment with a
 `note` saying why; it shows as answered by agent. Cards that finish drafts
 (they spend credits) and actions in `attention` are resolved in the app. A cut presented as final that still plays draft

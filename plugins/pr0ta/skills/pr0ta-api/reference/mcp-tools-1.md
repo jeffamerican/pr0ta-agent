@@ -131,8 +131,8 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## generation
 
-- `generation_batch_submit`(**requests**): Submit up to ten PR0TA generation requests, including speech, sound effects, music, 3D, and Lipsync jobs, and return queued tasks.
-- `generation_submit`(**request**): Submit one PR0TA generation request, including image, video, motion, 3D, lipsync, speech, sound effects, or music, and return the queued task.
+- `generation_batch_submit`(**requests**, quote_only): Submit up to ten PR0TA generation requests, including speech, sound effects, music, 3D, and Lipsync jobs, and return queued tasks.
+- `generation_submit`(**request**, quote_only): Submit one PR0TA generation request, including image, video, motion, 3D, lipsync, speech, sound effects, or music, and return the queued task.
 
 ## get
 

@@ -49,8 +49,8 @@ A standalone Python REST client: `reference/python-client.py`.
 ## Projects
 
 Every project-scoped tool and route takes `project_id` (UUID or slug). Pass it
-explicitly on every call; there is no active-project step, and generation never
-depends on one. Read project state with `project_metadata_get`.
+on every call; there is no active-project step. Read project state with
+`project_metadata_get`.
 
 Find or make the project with `list_projects` or `create_project` (REST `GET`
 and `POST /api/v2/projects`); these and `get_project_metadata` and
@@ -78,7 +78,6 @@ owner's and cannot change them). Resolve before every generation:
          "model_id": "<resolved id or null>",
          "source": "user_default | admin_pin",
          "pinned": ["<admin pins along this modality's fallback chain>"],
-         "fallback_modalities": [],
          "display_name": "...", "generator": "image",
          "supported_modes": ["txt_to_img"], "generation_submit_supported": true
        }
@@ -118,7 +117,9 @@ dedicated workflow. Pricing: `GET /api/crew/model_pricing?model_id={model_id}`.
 
 MCP `generation_submit` takes `{project_id, request}`; REST
 `POST /api/v2/projects/{project_id}/generate` takes the request as its body.
-Both return a task, never finished media.
+Both return a task, never finished media. With `quote_only: true` (tool
+argument or REST body) they validate and price the request (`credits_quote`)
+and run nothing: never submit for a price.
 
 ```json
 {
@@ -214,8 +215,7 @@ surface later on the task.
   (`matte_asset_id`, `plate_asset_id`). The skill for each workflow names the
   field it reads.
 - **Cancel:** `tasks_cancel` (REST
-  `POST /api/v2/projects/{project_id}/tasks/{task_id}/cancel`; the unscoped
-  `POST /api/tasks/{task_id}/cancel` also exists). PR0TA picks up results
+  `POST /api/v2/projects/{project_id}/tasks/{task_id}/cancel`). PR0TA picks up results
   whose provider webhooks were late, but it never cancels or resubmits a stalled
   job: a video whose `progress` has not moved for more than 3 minutes is
   stalled; cancel it and decide whether to resubmit.
@@ -309,7 +309,7 @@ Confirmation details: `reference/mcp-server.md` → "Compatibility rules".
 ## Development tools
 
 Development and Creative Direction run through these tools; `pr0ta-development`
-and `pr0ta-prep` own the workflow. Each calls the web app's own route as the
+and `pr0ta-prep` own the workflow. Each calls the app's own route as the
 user, so access, credits, and side effects match the app.
 
 | Tool | Route it calls |
