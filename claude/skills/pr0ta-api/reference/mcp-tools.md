@@ -66,7 +66,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **tasks** (`mcp-tools-2.md`): tasks_acknowledge, tasks_batch_get, tasks_cancel, tasks_completion_events, tasks_get, tasks_subscribe, tasks_unsubscribe, tasks_watch
 - **transcription** (`mcp-tools-2.md`): transcription_get, transcription_start
 - **update** (`mcp-tools-2.md`): update_set_references
-- **video** (`mcp-tools-2.md`): video_cadence_check, video_quality_control_analyze, video_stutter_repair
+- **video** (`mcp-tools-2.md`): video_cadence_check, video_chunks_assemble, video_quality_control_analyze, video_stutter_repair
 - **voices** (`mcp-tools-2.md`): voices_clone, voices_design, voices_design_commit, voices_list, voices_speech_to_speech
 - **world** (`mcp-tools-2.md`): world_generation_submit
 

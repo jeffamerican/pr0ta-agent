@@ -245,7 +245,11 @@ full configured chain through the Cinematographer.
   with `background: true`) returns `{async: true, task_id, status,
   idempotency_key}`: poll `tasks_get` until it succeeds and read
   `result_refs.asset_id`. Retrying the same trim, or passing the same
-  `idempotency_key`, joins that task instead of trimming twice. `music_analyze` returns an analysis
+  `idempotency_key`, joins that task instead of trimming twice.
+  `video_chunks_assemble` (`asset_ids` in play order, optional `joins`
+  overrides) is free and always a task: `result_refs.asset_id` is the joined
+  clip and `result_refs.joins` the overlap, method, confidence and flags of each
+  join. `music_analyze` returns an analysis
   task. `bug_report_create` returns `bug_report.id`.
 - **Screenplay reads.** `get_screenplay_text` pages with `scene_number`,
   `offset`, `limit`, and `next_offset`. By default it returns the latest

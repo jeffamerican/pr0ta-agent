@@ -183,7 +183,7 @@ Rules:
 - Describe only the next causal beat and desired end state.
 - Reinforce identity with approved stills if drift appears.
 - Verify both sides of each join, motion included, plus visual continuity, audio continuity (`audio_align`: offset, repeated or missing words), and true duration before assembly.
-- Trim duplicate join frames on the PR0TA timeline when necessary.
+- Join the chunks with `video_chunks_assemble`: it places each join by timecode, checks it against the waveform, removes the repeated opening and reports each cut.
 
 Do not claim automatic last-frame locking or soundtrack carry-over. Validate the actual result.
 

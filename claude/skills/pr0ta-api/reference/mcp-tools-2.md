@@ -147,6 +147,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## video
 
 - `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts and single-subj…
+- `video_chunks_assemble`(**asset_ids**, joins, subject, folder_path, force): Free: join (stitch, assemble) the chunks of a long take, a continuation or an extend into one clip.
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
 - `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, sa…
 

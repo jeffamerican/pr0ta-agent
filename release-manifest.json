@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.19.4",
+  "skills_version": "6.20.0",
   "released_at": "2026-10-25",
-  "source_revision": "v6.19.4",
-  "minimum_platform_version": "1.25.404",
+  "source_revision": "v6.20.0",
+  "minimum_platform_version": "1.25.405",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06364-mak",
-  "bundle_sha256": "5bf28d78603bb2008018950a123d7d9196a533731e546c0fd913ecd8c8723730",
+  "platform_revision": "pr0ta-platform-06370-xab",
+  "bundle_sha256": "c238d3654e55c62f8e1c7f3586a270d564261513b84d780d976068b0713dcfd6",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "5654b47c719d291ca8bff280a7b08fbfcf0394142f8486c4fa2c18c868f6673b",
+      "content_sha256": "b2111e4f8858da720f2323748ca4bd776a877fb6e5bdc202dc0f8114ad2287a5",
       "documents": [
         {
           "path": "SKILL.md",
@@ -73,7 +73,7 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "6a4396f77ff1d94afe1e12886d8897e1b2f6a752f8bdfba8974ebba9aa6d1d85"
+          "sha256": "bd489a05f9d11df2b3297bfb1b1de020d79c8ca1af6c8d829f3b72d21811ba9c"
         },
         {
           "path": "reference/mcp-tools-1.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "ec881840b9ce1e4ffad6a49cce56fb536bfe25afbaecea00e4b1e2af7ca816fa"
+          "sha256": "4de19c8c213d9e2363bb660862c277fbab2e8cfa7b436fd790721f152ef22dd4"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "2971c808d17b6dd1f6d26851186412557fe9fce97ee7faf8e11f642a338146ae"
+          "sha256": "0fae44e054b9d0127df0530df08e656f853e1825668e02434be3b957bbebdbb5"
         },
         {
           "path": "reference/music-analysis.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "79afc80beab4e6957ee2ed589300c351e8279b12996e45e2025cf389c057b40d",
+      "content_sha256": "e50ff100a553c9f4b0b735a63e50e3c49776524e31391472ba65cc89bda0d179",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "80d4838175c787879275c4696a48740ef7ff5b7f176674b5627a5c2b8882bef3"
+          "sha256": "47cdb3638b338a2390c96e1ecd5d2ddee237cc84db9f65cbc913f44df06066f6"
         },
         {
           "path": "reference/hybrid-sequences.md",
@@ -431,11 +431,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "5943cd7305203c91a726e125c5a3174e1bfd7543c4ad1417a3166527388d4ac1",
+      "content_sha256": "b8cb006346864d5df754f941132079f7ea4e0604b7625c3edc7b91b283d7d0e1",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3bafb94ff15fedc0b29ac1b0d7308dd5d74535eeae14e460ddb5dea6c71c2b73"
+          "sha256": "8a2742cc18a20970f689a00a6a2a42a6ee7d0ee484a6027cf92ee186f8c4a38c"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -499,7 +499,7 @@
         },
         {
           "path": "reference/seedance-omni.md",
-          "sha256": "36ea294900640cb80378e76663e59631a5269ae735df3b4d7034039d343cc907"
+          "sha256": "b7ac6a1924b5d9240f6835a27aed93856be13de3fada7bfe0c86ea025531bc23"
         },
         {
           "path": "reference/video-reference-field-matrix.md",
@@ -732,6 +732,7 @@
     "transcription_start",
     "update_set_references",
     "video_cadence_check",
+    "video_chunks_assemble",
     "video_quality_control_analyze",
     "video_stutter_repair",
     "voices_clone",
@@ -741,5 +742,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "3b997c31ad4d242a9ee6ed11cb136abd0b0bf833e1aae4b43ad24c1ddfdd3bac"
+  "mcp_connector_tools_sha256": "18bfa3b8311be5d40b97569a5f946b98eb927577e23be0f4f00de00c50e2d5d7"
 }
