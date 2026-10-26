@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.21.0",
+  "skills_version": "6.21.1",
   "released_at": "2026-10-26",
-  "source_revision": "v6.21.0",
-  "minimum_platform_version": "1.25.408",
+  "source_revision": "v6.21.1",
+  "minimum_platform_version": "1.25.410",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06394-tiw",
-  "bundle_sha256": "b327084144ec57be3b949603521417ccb5a16e41a70649f89df782fa618f58b7",
+  "platform_revision": "pr0ta-platform-06412-zix",
+  "bundle_sha256": "6d73de5987afa9db3fc98296f51be0731ee7b0ce544a6dcee4aebc6b45db3908",
   "skills": [
     {
       "name": "pr0ta",
@@ -431,7 +431,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "b8cb006346864d5df754f941132079f7ea4e0604b7625c3edc7b91b283d7d0e1",
+      "content_sha256": "866e7264daa677b3c6b808a95a656c27522d4dc62474d382e90cd0dca8b38747",
       "documents": [
         {
           "path": "SKILL.md",
@@ -491,7 +491,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "24ba2eac8abe85f5e227065ed72f3aac448177d66e021cc0949f749fe20cf247"
+          "sha256": "2d5c73b16313b854708da1e10e3ad6fe12793578b78b4f7ac9de3e05e50964ec"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

@@ -198,6 +198,8 @@ Set `generate_audio=false` when the original source-video audio should be preser
 
 Extend requires a source video and continues from its last frame. An optional `last_image_url` steers the continuation toward a target final image; the provider adapter maps it to MuAPI's `last_image` field.
 
+On MuAPI, `duration` (whole seconds, 4–30) sets the price but not always the length: a 480p extend sent `duration: 4` returned 8 s of new footage (2026-10-26). MuAPI bills the requested duration plus the source clip rounded up to whole seconds (a 5.04 s source counts as 6 s), and PR0TA quotes and charges the same. Trim the delivered clip to the length you need rather than re-running for a shorter one.
+
 ```text
 Continue naturally from the source clip's last frame. [Next causal action]. Preserve [screen direction, subject identity, camera trajectory, lens logic, lighting, and audio character]. [Camera and sound evolution]. If a target image is supplied, arrive plausibly at its composition by the end.
 ```
