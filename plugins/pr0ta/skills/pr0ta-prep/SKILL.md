@@ -135,11 +135,11 @@ portrait, references and approved voice and loses nothing.
 ## 6. Locations, sets, looks, props
 
 `department_heads_get(start_scene?, end_scene?)` loads the Locations, Looks and
-Props pages. The two write tools name the departments differently:
+Props pages. The write tools name the departments differently:
 
-- `department_heads_save(department, scenes, ...)` persists page edits through
-  the same storage the pages use; `department` is `designer` (Locations),
-  `stylist` (Looks) or `propmaster` (Props).
+- `department_heads_save(department, scenes, ...)` saves whole scenes, keeping
+  approved looks; `department` is `designer` (Locations), `stylist` (Looks) or
+  `propmaster` (Props). `department_look_upsert` adds one Locations look, keeping the rest.
 - `department_read_generate(department, scenes, producer_analysis,
   director_analysis)` regenerates a department read for chosen scenes;
   `department` is `locations`, `looks` or `props`.

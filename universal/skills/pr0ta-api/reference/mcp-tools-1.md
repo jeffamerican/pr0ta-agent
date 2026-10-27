@@ -4,7 +4,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## agent
 
-- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_bypasses, bypass_reason, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow that converts a creative brief and ordered references into a terminal Cinematographer provider-ready pro…
+- `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_bypasses, bypass_reason, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow turning a creative brief and ordered references into a provider-ready prompt package (or typed prompt as…
 - `agent_chat_resume`(**retry_token**): Resume a retryable failed prompt-orchestration task from its preserved department checkpoint.
 - `agent_chat_send`(**role**, **topic**, **message**, attachments, generation_mode, request_id): Send a project-scoped message to a PR0TA department agent using the same chat, project context, credits, persistence, and tool runtime as the app.
 
@@ -43,7 +43,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## billing
 
-- `billing_usage_get`(since, limit): Read your own itemized credit usage, newest first: each credit ledger entry with its time, credits and USD (negative = spent), reason (generation_cha…
+- `billing_usage_get`(since, limit, mission_id, include_family, role): Read your own itemized credit usage, newest first: each credit ledger entry with its time, credits and USD (negative = spent), reason (generation_cha…
 
 ## blender
 
@@ -52,7 +52,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## blocking
 
 - `blocking_animatic_render`(**scene_number**, **chunk_id**, workflow_bypasses, bypass_reason): Render a sequence chunk's animatic in Blender: the scene's approved set with the chunk's figures and props, cut between composed setups for the chunk…
-- `blocking_check`(**scene_number**, **chunk_id**, chunk, include_expanded): Check a chunk's motion without rendering (well under a second for most chunks; ranged actions take longer): its figures solved frame by frame after i…
+- `blocking_check`(**scene_number**, **chunk_id**, chunk, include_expanded): Check a chunk's motion without rendering (usually under a second): its figures solved frame by frame after its actions expand, against the approved s…
 - `blocking_get`(**scene_number**): Read a scene's blocking: the set it is staged on (and whether its build is approved), the cast as Blender figures (body, height, rigged model) plus c…
 - `blocking_save`(**scene_number**, **plan**, base_revision): Save a scene's whole blocking plan (send back what blocking_get returned in plan, edited, with its revision as base_revision; a stale revision is ref…
 
@@ -101,6 +101,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `department_heads_get`(start_scene, end_scene, include_bootstrap): Load production-design, character-look, and prop Prep data using the same partitioned storage as the Locations, Looks, and Props pages.
 - `department_heads_save`(**department**, **scenes**, breakdown, library, authoritative_scene_numbers): Persist Locations, Looks, or Props page data through the authoritative department-head partitioned-storage workflow.
+- `department_look_upsert`(**scene_number**, **look**, location): Add one Production Design look to a scene (appended, unapproved), or revise one unapproved look matched by id or label; fields left out are kept.
 - `department_read_generate`(**department**, **scenes**, **producer_analysis**, **director_analysis**, item_id): Generate and persist Locations, Looks, or Props department reads for one or more scenes.
 
 ## development
@@ -219,7 +220,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `post_drafts_finish`(sequence_id, confirm_credits, draft_asset_ids, lock_token): Finish the drafts a cut plays at full quality (1080p) and swap each final into the cut in place: same clip, timing, in/out points and links, and an a…
 - `post_drafts_list`(sequence_id): List the draft renders (cheap 480p Seedance drafts) a cut plays, before presenting it as final.
 - `post_export_start`(export_request, sequence_id): Start an async final master export of a saved sequence (free, no credits).
-- `post_frames_get`(asset_id, sequence_id, times, count, detail, region): Look at frames (free, no credits): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
+- `post_frames_get`(asset_id, sequence_id, times, count, detail, region): Look at frames (free): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
 - `post_render_start`(render_request, sequence_id): Start an async preview render of a saved sequence.
 - `post_sequence_analyze`(sequence_id): Analyze a saved sequence before rendering or calling it done (free).
 - `post_sequence_debug_report`(sequence_id): Render-risk report for a saved sequence (free): retimed clips, source shortfalls, media gaps, audio track summary, and one warnings[] list (code, sev…

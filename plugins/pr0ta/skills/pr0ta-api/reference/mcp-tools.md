@@ -25,7 +25,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **character** (`mcp-tools-1.md`): character_consistency_get
 - **consistency** (`mcp-tools-1.md`): consistency_resources_create, consistency_resources_delete, consistency_resources_get, consistency_resources_list, consistency_resources_update
 - **cut** (`mcp-tools-1.md`): cut_quality_review
-- **department** (`mcp-tools-1.md`): department_heads_get, department_heads_save, department_read_generate
+- **department** (`mcp-tools-1.md`): department_heads_get, department_heads_save, department_look_upsert, department_read_generate
 - **development** (`mcp-tools-1.md`): development_logline_set
 - **direction** (`mcp-tools-1.md`): direction_approve
 - **director** (`mcp-tools-1.md`): director_read_generate

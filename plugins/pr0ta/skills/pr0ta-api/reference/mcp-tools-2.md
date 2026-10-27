@@ -8,7 +8,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `production_queue_analyze`(**asset_uids**, asset_contexts): Queue Cinematographer or Composer analysis and return a task id.
 - `production_queue_asset_create`(**asset**): Create a manual Production Queue item using the same schema as the Queue UI.
 - `production_queue_asset_delete`(**asset_uid**): Delete or exclude one Production Queue item.
-- `production_queue_asset_update`(**asset_uid**, **updates**): Update a Production Queue item's description, prompts, modality, model, analysis, labels, or saved render settings.
+- `production_queue_asset_update`(**asset_uid**, **updates**): Update a Production Queue item's description, prompts, modality, model, analysis, labels, or saved render settings (duration, aspect_ratio, resolutio…
 - `production_queue_character_elements_get`(**asset_uid**): Resolve cast and reference elements for one Queue shot before character-consistent generation.
 - `production_queue_component_selection_set`(**asset_uid**, image_take_id, audio_take_id): Set the selected image and audio component takes for a composite Queue item.
 - `production_queue_list`(include_hidden, offset, limit): List one bounded page of the synthesized Production Queue, including prompts, generated takes, selections, and status.
@@ -48,7 +48,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## save
 
-- `save_scene_shotlist`(**scene_number**, stylistic_approach, shots, replace, revision, refresh_scene_context): Save or update the director shotlist for a specific scene.
+- `save_scene_shotlist`(**scene_number**, stylistic_approach, shots, replace, revision, refresh_scene_context): Save or update a scene's director shotlist (after a shotlist the user accepts).
 
 ## score
 
@@ -81,7 +81,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## shot
 
 - `shot_performances_list`(shot_uid, scene_number, shot_number, kinds, limit): List the performances filed on a shot, newest first: human takes recorded in Human Performances, dialogue takes, and camera takes.
-- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio).
+- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio), reviewed automatically and free: Gemini watches it with sound against the shot's intent (s…
 
 ## shotlist
 
@@ -149,7 +149,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts and single-subj…
 - `video_chunks_assemble`(**asset_ids**, joins, subject, folder_path, force): Free: join (stitch, assemble) the chunks of a long take, a continuation or an extend into one clip.
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
-- `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, sa…
+- `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, as…
 
 ## voices
 

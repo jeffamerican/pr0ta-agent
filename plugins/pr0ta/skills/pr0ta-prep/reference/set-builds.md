@@ -57,6 +57,29 @@ Upgrading a blockout to premium reuses the blockout's layout and dimensions:
 refine it rather than rebuilding from scratch, so cameras and blocking already
 approved on it still hold.
 
+## Refining in steps
+
+A refinement on a saved set that adds objects in several steps can skip the
+runtime GLBs on the intermediate ones: `source_asset_id`, `export_glb: false`,
+`save_blend: true`. Each step is still a build against the set's budget. Export
+on the last step, which the person reviews. Until then the set's
+`runtimeDelivery.newerSourceWithoutRuntime` names the newest `.blend`, viewers
+show the older build, and approving without a revision is refused: export first.
+
+With `save_blend: true` the runtime GLBs never cost the build. A desktop or Quest
+GLB that fails, stays over its size cap after its textures are shrunk, or would
+not finish inside the worker's time is skipped, and the `.blend` is still
+delivered. `result_refs.delivery_notes` (`runtime_export_missing`,
+`realtime_asset_missing`, `interrupted`, `renders_missing`) and the task message
+say what was not delivered and why; `scene_inventory.runtime_export.skipped`
+lists each skipped profile. A job stopped after its save keeps what it finished
+(the `.blend`, GLBs, renders already made). Stopped by the worker's limit, it is
+charged only the build; `interrupted.error` means Blender failed: nothing is
+charged, and a rerun meets the same error, so fix its cause before rendering
+again. Export the missing GLBs with
+a job of their own on that `.blend`: no objects, `export_glb: true`,
+`render.passes []`.
+
 ## Other routes, combined with either tier
 
 - **A world from photos of the real place**: when the person wants the actual

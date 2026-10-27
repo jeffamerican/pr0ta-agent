@@ -191,7 +191,12 @@ blockout fields `color`, `roughness` and `metallic` apply.
   texel density stays real. `texture_scale_m` sets the width of one repeat
   (the default is the texture's measured size, below). `texture_rotation_deg`
   turns the grain. Sweeps, lathes and coffers default to `projection: uv`,
-  which keeps their metric UVs.
+  which keeps their metric UVs. A wood `cube` that is a member (one side at
+  least 1.5 times the next and at most 1 m across: a post, beam, rafter, rail,
+  leg or table top) gets metric UVs with the grain along its length, so its
+  planks never cross it; the job's quality receipt marks it `grain`. Floors,
+  walls, planes and round shapes keep the box. `projection: box` or a non-zero
+  `texture_rotation_deg` keeps the box on a member too.
 - **`weathering`** (0–1; library default 0.3, else 0) adds grime where
   surfaces meet and uneven roughness. Set 0 for showroom-new surfaces, and
   0.6–1 for old courtyards.
@@ -243,6 +248,10 @@ clearcoat; `plastic`* smooth plastic; `rubber`* matte rubber;
   `sky` takes `sun_elevation_deg`, `sun_azimuth_deg` (counter-clockwise from
   +x seen from above, so 90 is +y), `sun_size_deg` (larger means softer
   shadows), `air_density` and `dust_density` (haze). `strength` scales it.
+  The sky is real daylight, stops brighter than exposure 0 expects: expose it with
+  `render.exposure_ev` about -5 at `strength` 1 (about -5 - log2(strength):
+  -3.75 at 0.42, -4 at 0.5). At -1 an 18% grey card renders almost white and
+  dark timber turns pale and grey, so judge colour only at a sky exposure.
   `rotation_deg` turns an HDRI. `background_visible: false` lights the set
   with the sky but shows `world_color` to the camera.
 - **Portals.** For an interior lit through windows, add one AREA light per
