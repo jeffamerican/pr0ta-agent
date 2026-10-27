@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.23.2",
+  "skills_version": "6.23.3",
   "released_at": "2026-10-27",
-  "source_revision": "v6.23.2",
-  "minimum_platform_version": "1.25.419",
+  "source_revision": "v6.23.3",
+  "minimum_platform_version": "1.25.420",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06456-lor",
-  "bundle_sha256": "bbc2f80315559b42b634169823310aeac2ab70122eb32dfc64fc6ddb8b679a84",
+  "platform_revision": "pr0ta-platform-03639-bw6",
+  "bundle_sha256": "1d18a08c11bf92da2ededec0b3baba6ba18578c8135ec520ac0831afe0d0cdf6",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "e0a658677caa09380b7f7115304f2c2ac7bd02ac0bc0b20daedffd08c8fd1f23",
+      "content_sha256": "3879b96b318d32236606e176edc394d09f8987f9b55d56f8f15f1b5c5b08f303",
       "documents": [
         {
           "path": "SKILL.md",
@@ -73,7 +73,7 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "bd489a05f9d11df2b3297bfb1b1de020d79c8ca1af6c8d829f3b72d21811ba9c"
+          "sha256": "129d73a22ba5b7f4baf21ef7adf5ba8206ff9e41f1f2d2444bd0364b720872f7"
         },
         {
           "path": "reference/mcp-tools-1.md",
@@ -435,11 +435,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "d13a90edbac5ebff71e510e929f0f993de35b3e1e0a2e265ed10d7527dbbaeee",
+      "content_sha256": "b8a79183a4d9a898a5b6258ac52e6e95f71c9668958dbd5de2f95179968f390f",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "2736cc12a3be0619706fd91304edf0187d23afb2e89704d4d61ed55c216eac1d"
+          "sha256": "b3342c35212d5539b90d8d0c7ad7a6b13adb977b080c4e7ce7caf4a0de54bd35"
         },
         {
           "path": "reference/draft-to-final.md",

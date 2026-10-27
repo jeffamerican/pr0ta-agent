@@ -249,7 +249,15 @@ full configured chain through the Cinematographer.
   `video_chunks_assemble` (`asset_ids` in play order, optional `joins`
   overrides) is free and always a task: `result_refs.asset_id` is the joined
   clip and `result_refs.joins` the overlap, method, confidence and flags of each
-  join. `music_analyze` returns an analysis
+  join. A join flagged `overlap_inconclusive` (low confidence) found no overlap
+  without proving there is none: when you know what the later chunk repeats
+  (for example the tail a guide carried), assemble again with `joins`
+  `[{join, overlap_seconds}]`, or `hard_cut: true` when they abut. Method
+  `provenance` (`overlap_from_provenance`, unverified) is the length of a guide's
+  opening taken from the earlier chunk's tail, used only when the later chunk is
+  an edit of a timeline render that recorded its clips (renders from this release
+  on) and sound and picture cannot measure the overlap; either join carries an
+  `overlap_note`. `music_analyze` returns an analysis
   task. `bug_report_create` returns `bug_report.id`.
 - **Screenplay reads.** `get_screenplay_text` pages with `scene_number`,
   `offset`, `limit`, and `next_offset`. By default it returns the latest
