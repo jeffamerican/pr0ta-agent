@@ -29,8 +29,10 @@ real-time asset; render a moving premium shot in 2 s pieces, or use a blockout
 for motion until the GPU worker exists.
 
 When the tier is unclear, ask, or offer a blockout first with premium as the
-next step. Premium costs more: the person sees its cost through the normal
-quote before it runs, never after.
+next step.
+
+
+Premium spends credits: confirm the spend with the person before you submit it.
 
 ## Build premium properly
 

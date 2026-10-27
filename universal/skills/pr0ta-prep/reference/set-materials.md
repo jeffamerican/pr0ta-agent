@@ -14,9 +14,14 @@ request's `quality_tier`.
   when a render itself is the deliverable.
 
 A blockout request that uses a premium field is refused, and the error names
-each field. Ask the person before you switch a build to premium, because it
-spends credits. The Operator quotes it before it runs, and `tasks_get` shows
-the quote in `metadata.cost_estimate`. A delivered build is charged the worker
+each field.
+
+
+A premium build spends credits: confirm the premium spend with the person
+before you submit one.
+
+`tasks_get` shows the job's quote in `metadata.cost_estimate`. A delivered
+build is charged the worker
 time it used, never more than the quote. A failed job is never charged. A
 premium job reserves its worker time: the build, plus a path-tracing budget shared
 across its beauty frames (the beauty pass and each `shot_cameras` still). Each
