@@ -4,10 +4,36 @@ Choose the route by what must survive untouched. Read the selected model's refer
 
 ## Contents
 
+- Keep the plate or re-render it
 - Decision table
 - Notes per route
 - Matte sources
 - Escalation ladder
+
+## Keep the Plate or Re-render It
+
+Decide this before choosing a model. The routes do different jobs.
+
+**Plate-preserving: SwitchX** (`switchx.md`). The kept region's pixels pass through, so faces, hands, lip sync, wardrobe and timing are the recorded ones. The matte's black region is regenerated from one look image and the prompt, and the kept people are relit to match that image. Choose it when:
+
+- the recorded performance is the point (dialogue, faces, an actor's work) and the shot is headed for the cut;
+- the change is the world around the people: background, set extension, sky, time of day, weather, or a wardrobe or prop region (`select` or `custom` matte);
+- the take must come back at the source's exact length, frame rate and ratio (hybrid sequence assembly checks them).
+
+Plan for its limits: 720p or 1080p output through PR0TA; 240 frames per Beeble job (PR0TA chunks longer plates); one look image; camera motion read only from the kept pixels, so a low-parallax pan can slide; `auto` needs the subject visible from the first frame. It does not change what the people do. Its prompt is a short, specific description of place, light, weather and materials (up to 2,000 characters); the look image decides the light direction, so fix light in the image, not the prompt.
+
+The other pixel-preserving option is a matte plus a separately generated background, composited on the timeline (ladder rung 5): the actors stay recorded pixels, but nothing relights them, so match the background's light to the plate.
+
+**Full re-render: Seedance Video Edit and the other generative edits.** Every pixel is redrawn, the actors included, and faces and hands soften most at 480p. Choose it when:
+
+- it is a look draft: testing a world, light or grade before a SwitchX final;
+- the whole frame changes style (animation, painterly, period stylization) or the action itself changes;
+- the plate defeats SwitchX after the ladder's SwitchX rungs (a pan that keeps sliding, a subject no matte holds);
+- the person has said re-rendered actors are acceptable.
+
+Then write the prompt with `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action" (or the resolved model's reference), grade it with `pr0ta-prompting/reference/prompt-rubric.md`, and compare faces, hands and lip sync with the source before calling anything kept.
+
+When the shot keeps a real performance, tell the person which you chose and why: "SwitchX keeps your actors' pixels; a Seedance edit would redraw them."
 
 ## Decision Table
 
@@ -31,6 +57,7 @@ Choose the route by what must survive untouched. Read the selected model's refer
 ## Notes per Route
 
 - SwitchX is the only route that treats the plate as pixel authority. Every other route reinterprets the plate and will move faces, hands, and edges.
+- SwitchX cost grows with the plate: 30-frame blocks per Beeble job (per chunk of a long plate), and 1080p costs three times 720p (a plate that renders at 720 or less is always sent, and priced, at 720). Explore looks at 720 or on a SwitchX still, then run the 1080 final; quote with the real plate, since the price comes from its frames and size.
 - SwitchX infers camera motion only from the kept region. When the kept region is a static subject on a lateral pan, expect background drift; either keep more of the real set unmasked or move to a Seedance edit with the plate as a video reference.
 - Seedance edits default to BytePlus ModelArk up to 1080p (cheaper per second than MuAPI). ModelArk refuses a source clip or reference that may show a real person, which live-action plates often do; Hybrid Studio then renders the same edit on MuAPI's route of the same resolution automatically (the refused attempt is hidden; do not resubmit). Choose a MuAPI route directly only for 4K or the Spicy/International variants.
 - Seedance 2.5 Video Edit exposes `generate_audio`; set it false to request source-audio preservation and verify the delivered soundtrack.
@@ -47,7 +74,7 @@ BiRefNet v2 video with `output_mask` is the native grayscale matte source; SAM 3
 1. SwitchX `auto` with a strong reference plate.
 2. SwitchX `custom` with a BiRefNet or previous-take matte.
 3. SwitchX still pass to fix the reference, then rerun the video.
-4. Seedance 2.5 Video Edit (`byteplus/seedance-2.5-video-edit`) with the plate as source and location stills as references.
+4. Seedance 2.5 Video Edit (`byteplus/seedance-2.5-video-edit`) with the plate as source and location stills as references. This redraws the actors; say so before using it for a final.
 5. Generate the background as its own plate from the world and composite on the timeline.
 
 Move down the ladder only when the previous rung fails QC for a reason the next rung addresses.

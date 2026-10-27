@@ -241,10 +241,10 @@ Reference roles:
 
 ### Focused source-video edits
 
-Use R2V when `Video 1` should remain the source authority and the request changes one focused property. State both the transformation and the invariants:
+Use R2V when `Video 1` is the source and the request changes one focused property. State the change and name, in things a camera sees, what stays:
 
 ```text
-Video 1 is the source authority for identity, performance, camera path, timing, composition, and existing audio. Change only [one focused transformation]. Preserve [specific unaffected traits and beats]. The edited result [new visible state and landing].
+Video 1 is the source: keep [the people, their faces, gestures and wardrobe, the props, the framing and the camera move] as recorded, with its sound. Change only [one focused transformation, from A to B]. The edited result [new visible state and landing].
 ```
 
 For example, change wardrobe color, weather, a prop, or one environmental condition while retaining source blocking and camera motion. Do not ask for a full scene rewrite and call it a source-preserving edit. Inspect the output against the original clip frame by frame; reference prompting guides the edit but does not guarantee pixel-exact preservation.
@@ -255,7 +255,7 @@ For example, change wardrobe color, weather, a prop, or one environmental condit
   "mode": "ref_to_vid",
   "model": "fal-ai/minimax/hailuo-03/reference-to-video",
   "reference_video_urls": ["https://.../source.mp4"],
-  "prompt": "Video 1 is the source authority... Change only the clear weather into steady rainfall... Preserve identity, performance, camera path, timing, composition, and unaffected audio.",
+  "prompt": "Video 1 is the source: keep the courier, her face, gestures and yellow raincoat, the bicycle, the framing and the camera move as recorded, with its sound. Change only the weather, from clear sky to steady rainfall: wet asphalt, rain streaks in the streetlight...",
   "duration": 10,
   "aspect_ratio": "adaptive"
 }

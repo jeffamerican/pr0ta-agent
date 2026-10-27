@@ -189,8 +189,10 @@ ByteDance's 2.5 launch examples demonstrate these creative intents, but the live
 Edit requires a source video and accepts up to 30 optional image references and 10 optional audio references. In PR0TA, supply assets through `video_url`, `reference_image_urls`, and `reference_audio_urls`; the provider adapter maps them to `video_url`, `images_list[]`, and `audios_list[]` on native 1080p endpoints (the existing other tiers retain `video`, `reference_images`, and `reference_audios`).
 
 ```text
-Use the source clip as the authority for identity, composition, motion, and timing. [One focused transformation]. Use the supplied image references for [identity/style/detail role] and the supplied audio references for [sound role]. Preserve [actions, framing, timing, and sounds that must remain]. The result ends with [observable state].
+Video edit of Video 1: [one-sentence shot]. Video 1 is the source: keep [the visible people, actions, props, framing and camera move]. Image 1 is [one job, and what it must not supply]. [0-Xs: leave unchanged.] [X-Ys: change A to B.] [Relight; continuity.] [Sound.]
 ```
+
+Full recipe: `seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action". MuAPI edit routes default to 16:9 and 5 s: send `aspect_ratio: "adaptive"` and `duration: -1` to keep the source's frame and length (PR0TA renders whole seconds and trims back).
 
 Set `generate_audio=false` when the original source-video audio should be preserved. PR0TA forwards that flag exactly, but provider runs have preserved the original audio inconsistently; inspect or correlate the delivered soundtrack before accepting it. Request one coherent edit rather than a full scene rewrite.
 
@@ -229,7 +231,7 @@ Four task-specific model IDs run the same ModelArk model with the task fixed, so
 | --- | --- | --- |
 | `byteplus/seedance-2.5-image-to-video` | Image-to-video with the input image locked as the first frame | Optional last frame; 4–30 s or -1; **draft mode** |
 | `byteplus/seedance-2.5-first-last-frame` | Generate between a start frame and an end frame | Exactly two ordered stills; 4–30 s or -1; **draft mode** |
-| `byteplus/seedance-2.5-video-edit` | Restyle, relight, or replace elements of a source clip | Duration is forced to -1 and ratio to adaptive: the output keeps the source clip's length and ratio; up to 30 images + 10 audio references; no draft |
+| `byteplus/seedance-2.5-video-edit` | Restyle, relight, or replace elements of a source clip | Duration is forced to -1 and ratio to adaptive: the output keeps the source clip's ratio and length (up to ~0.3 s short unless the source has 8n+1 frames, e.g. 161); up to 30 images + 10 audio references; no draft |
 | `byteplus/seedance-2.5-video-extend` | New footage before or after a source clip | Say in the prompt whether to extend forward (after the last frame) or backward (before the first frame); 4–30 s or -1; no draft |
 
 The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p, review, then finish the approved draft at 1080p (`reference/draft-to-final.md`). Edit and extend cannot draft; review them at 480p or 720p before a 1080p run.

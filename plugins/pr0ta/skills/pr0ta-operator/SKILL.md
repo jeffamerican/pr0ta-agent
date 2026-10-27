@@ -51,7 +51,7 @@ Every command that sets the mission working (start, send, resume, review)
 returns a `receipt_task_id`. The receipt is an ordinary task that settles when
 the mission next stops: done, idle (finished this turn, waiting for a follow-up),
 review (an action or draft awaits approval), attention (an action's outcome is
-uncertain), paused, failed, or cancelled. Wait on it like any task: poll
+uncertain, or a blocker such as "Budget reached"), paused, failed, or cancelled. Wait on it like any task: poll
 `tasks_get(receipt_task_id)` with backoff, or pass a `completion_subscription_id`
 (from `tasks_subscribe`) when starting or sending, and your webhook fires when
 it settles. The settled receipt's `result_refs` carry `mission_id`,
@@ -93,7 +93,7 @@ user approved only a quote on its subject (`quote_only_scope`) is approved by
 the user in the app, never with a token. You may approve a card
 that approves first frames or Casting voices on your own judgment with a
 `note` saying why; it shows as answered by agent. Cards that finish drafts
-(they spend credits) and actions in `attention` are resolved in the app. A cut presented as final that still plays draft
+(they spend credits), actions in `attention` and a "Budget reached" blocker are resolved in the app. A cut presented as final that still plays draft
 renders comes with a card "Finish N drafts at 1080p — X credits" (unless the
 project or mission keeps drafts): approving it in the app finishes those drafts
 and swaps the finals into the cut in place (`pr0ta-video`, draft to final).
@@ -124,6 +124,16 @@ pass is receipted on the mission (`pr0ta-api` → "Workflow gates").
 ## Costs and limits
 
 The mission spends credits under the project's Operator policy and its own
-allowance. Its `usage` in `operator_mission_get` reports what it spent. The
-user changes permissions and allowances in the app.
+allowance. The allowance counts everything the mission and its workers are
+charged, their own model calls included, plus quotes held for paid jobs still
+running. `budget` in `operator_mission_get` is that count:
+`budget.remaining_credits` is the one remaining figure (null with no budget),
+and `used_credits` splits into `charged_credits` and `reserved_credits`. Plan
+and report from it; never rebuild a total from `billing_usage_get` ledger
+windows or add estimates or "historical provisions" to it. Paid work that does
+not fit is refused. Once the charges reach the allowance the whole mission
+stops: it shows `attention` with a "Budget reached: $X of $Y used" blocker,
+its working workers pause, and all of them carry on by themselves when the
+user raises the budget in the app (or stops the mission). The user changes
+permissions and allowances in the app.
 

@@ -26,8 +26,9 @@ Use this reference for `beeble/switchx` (video) and `beeble/switchx-image` (stil
 | Prompt | Up to 2,000 characters; required unless a reference image is supplied |
 | Reference image | One image; strongly recommended for any background change |
 | Alpha | Optional matte; required for `custom` and `select` |
-| `max_resolution` | `720` or `1080`; aspect ratio and frame rate follow the source |
+| `max_resolution` | `720` or `1080`; a cap on the shortest side that never upscales, so a source at 720p or smaller renders at its own size; aspect ratio and frame rate follow the source. When the prepared source is 720 or less on its shortest side (an ultra-wide plate the pixel budget shrinks included), PR0TA sends `720`: the render is the same and the 720p price applies |
 | Outputs | `render`, preprocessed `source`, and `alpha`, each as a signed URL valid for 72 hours |
+| Billing | 30-frame blocks per Beeble job, `ceil(frames / 30)`, at the `max_resolution` PR0TA sends: 1080p costs three times 720p. Each chunk of a long plate is its own job and rounds up on its own. A still is one block. A quote read from the plate's length and frame rate adds one block per job as a margin; the worker counts the frames and raises the quote (rechecking the balance) before any job if the count needs more. The charge is the blocks each job actually ran, never above the quote |
 
 Beeble publishes create and status routes but no cancellation route. Cancelling the PR0TA task stops polling and registration only; the provider job runs to completion.
 
@@ -66,7 +67,7 @@ After completion:
 - The render is registered as the task's primary asset.
 - Beeble's alpha is registered with `labels.role = "switchx_alpha"` and returned as `result_refs.alpha_asset_id`.
 - The preprocessed source is registered with `labels.role = "switchx_source"` and returned as `result_refs.source_asset_id`.
-- For a chunked plate the chunk renders are stitched frame-exact with the source audio remuxed on, the chunk alphas are stitched into one matte, and each chunk is billed as its own usage event. The `switchx_source` output is not registered for chunked jobs; use the normalized source asset instead.
+- For a chunked plate the chunk renders are stitched frame-exact with the source audio remuxed on, the chunk alphas are stitched into one matte, and each chunk is billed as its own usage event (its blocks and price). The task is charged once it succeeds; a failed task is not charged. The `switchx_source` output is not registered for chunked jobs; use the normalized source asset instead.
 - Provider errors are preserved on the task; read `error` and `error_detail` before retrying.
 
 ## Payloads by Alpha Mode
@@ -157,4 +158,5 @@ A complete `generation_submit` call, video background swap with a project matte:
 
 - [Beeble SwitchX documentation](https://docs.beeble.ai/beeble/switchx)
 - [Beeble Developer API](https://developer.beeble.ai/docs)
+- [Beeble API pricing](https://developer.beeble.ai/pricing) and [credit policy](https://docs.beeble.ai/help/credit-policy)
 - [SwitchX research page](https://beeble.ai/research/switchx)

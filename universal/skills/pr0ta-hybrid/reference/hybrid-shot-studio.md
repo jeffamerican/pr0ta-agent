@@ -66,7 +66,9 @@ cannot overwrite newer edits.
 SwitchX consumes the foreground and one photographic look plate. It does not
 apply raw staging transforms or render the environment: author the photographic
 framing first. Seedance edit consumes supported independent appearance, geometry,
-and staging references with explicit roles. Neither guarantees exact placement
+and staging references with explicit roles, and redraws the actors (route
+choice: `route-selection.md`; prompt: `pr0ta-video/reference/seedance-2.5-prompt-craft.md`
+→ "Replace the World Around Live Action"). Neither guarantees exact placement
 just because the direction preview does.
 
 Use shared plate/environment IDs and the sequence field to relate shots. A shot

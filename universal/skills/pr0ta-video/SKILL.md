@@ -5,7 +5,7 @@ description: "PR0TA video generation and repair: text-to-video, image-to-video, 
 
 # Video Generation
 
-For recurring characters, locations, or props, read `pr0ta-consistency` first. Before writing any generation prompt, read `pr0ta-prompting` and the model reference that the resolved model routes to below.
+For recurring characters, locations, or props, read `pr0ta-consistency` first. Before writing any generation prompt, read `pr0ta-prompting` and the model reference that the resolved model routes to below; before submitting it, grade it with `pr0ta-prompting/reference/prompt-rubric.md` and send only an A.
 
 For an existing project, call `memory_context_pack` with `task_intent: "video_generation"` or `"storyboard_prompt"` and the relevant scope. Carry approved references, continuity decisions, and unresolved conflicts into the shot plan. Record a selected take or a change of approach with `memory_record_decision` or `memory_record_note`.
 
@@ -85,7 +85,7 @@ Submit with `generation_submit` (or `generation_batch_submit` for up to ten item
     "generator": "video",
     "mode": "<a mode from models_get_defaults(model_id).supported_modes>",
     "model": "<model_id from models_preferred>",
-    "prompt": "Use the supplied image as identity, wardrobe, and set authority. The camera slowly pulls back while those traits hold.",
+    "prompt": "Image 1 is the approved still: keep Mara's face, her red wool coat and the bookshop shelves as shown. She turns a page; the camera slowly pulls back to a medium shot.",
     "reference_image_asset_ids": ["approved-image-asset-id"],
     "duration": 5,
     "aspect_ratio": "16:9"
@@ -148,7 +148,7 @@ Choose the narrowest operation that fixes the defect:
 - Change one region, object, or style while keeping the clip: an edit route (`video_to_video_model`); request one focused change and name what must stay.
 - Correct framing: `video_reframe_model`.
 - Remove or replace a background: `video_bg_removal_model`.
-- Replace or relight the world behind a live-action subject while keeping the plate: Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid`.
+- Replace or relight the world behind a live-action subject while keeping the plate: Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid`: a generative edit redraws the actors too, and its route selection says when that is acceptable.
 - Resolution, noise, blur, or cadence without creative change: `video_upscale_model`. Topaz Precision, Denoise, Deblur, and Interpolate are fidelity utilities; Generative and Creative reconstruct detail and need the user's approval of that tradeoff. Query live defaults per route; controls do not transfer between Topaz families.
 
 When a narration beat exceeds generation limits: split at a natural clause, extend a successful source, cut to companion coverage, then use a still or Ken Burns treatment. Regenerate the whole piece only when the defect is a global creative decision, not a local shot failure.

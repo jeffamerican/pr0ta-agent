@@ -1,6 +1,6 @@
 # Seedance 2.5 Prompt Craft
 
-How to write a Seedance 2.5 prompt that the model follows. `seedance-2.5.md` owns routes, request fields, durations, and reference limits; this file owns the writing. The authority is ByteDance's Dreamina Seedance 2.5 prompt guide on BytePlus (updated 2026-10-16), plus production experience. Where the two differ, the provider guide wins.
+How to write a Seedance 2.5 prompt that the model follows. `seedance-2.5.md` owns routes, request fields, durations, and reference limits; this file owns the writing. The authority is ByteDance's Dreamina Seedance 2.5 prompt guide on BytePlus (updated 2026-10-16), plus production experience. Where the two differ, the provider guide wins. Grade every prompt with `pr0ta-prompting/reference/prompt-rubric.md` before you submit it.
 
 ## Shape of a Prompt
 
@@ -79,7 +79,42 @@ Pair each negative with the positive it protects, and list only problems you hav
 
 ## Editing and Extension
 
-State the scope and the change from A to B, and keep the rest: "From 4-6s in Video 1, change the man's action from drinking coffee to mopping the floor; leave the rest unchanged." To change the aspect ratio of an existing clip, a Reference task with a detailed shot-by-shot timeline holds the content better than an Edit, which invents imagery to fill the new canvas.
+State the scope and the change from A to B, and keep the rest: "From 4-6s in Video 1, change the man's action from drinking coffee to mopping the floor; leave the rest unchanged." Open with an edit word (edit, replace, add, remove, change to) so the model treats the clip as source, not as a loose reference. To change the aspect ratio of an existing clip, a Reference task with a detailed shot-by-shot timeline holds the content better than an Edit, which invents imagery to fill the new canvas.
+
+The provider guide's edit advice: sources of 20 seconds or less are more stable; one to five reference images work best; one change per pass. A job that needs a new element and a new motion path at once goes better as two passes (a Reference task makes the element, then an Edit puts it in the clip).
+
+### Replace the World Around Live Action
+
+A Seedance edit redraws every pixel, the actors included, and faces and hands soften most at 480p. To keep a recorded performance and change only its world, choose the route first: `pr0ta-hybrid/reference/route-selection.md` → "Keep the Plate or Re-render It". Use this recipe when a Seedance edit is the right call: a look draft, a stylized world, or a person who accepts re-rendered actors.
+
+1. **Open with the edit and the shot.** One sentence: "Video edit of Video 1:", who, where, and the camera.
+2. **Number every input and give it one job.** "Video 1 is the source." "Image 1 is the approved setting: environment and light only, never the people."
+3. **Keep-list in things a camera sees.** Name the people, faces, gestures, eyelines, wardrobe, props, positions, framing and camera move. Concrete nouns hold; abstractions ("sole authority for recorded identities, lens perspective and camera trajectory") give the model nothing to look at.
+4. **Scope by time.** Whole-second ranges that cover the clip with no gaps, each with its job: "0-2s: leave unchanged." "2-15s: replace everything behind and around the people with …".
+5. **Relight the people for the new world.** Studio-lit people in a sunlit world look pasted on. Give:
+   - the key light's direction, quality and warmth, matched to the setting (or to the part of the clip that already shows it);
+   - bounce from the ground, walls or greenery;
+   - contact shadows under bodies, hands, blankets and props;
+   - light wrap and edge light on hair and shoulders against a bright background.
+6. **Say the continuity, not the defect.** "The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing." Never describe a flaw in the source ("a small hand-position mismatch at the boundary"): the model redraws what you point at.
+7. **Audio by the flag.** Send `generate_audio: false` to keep the recorded sound; prose alone sets nothing. `keep_source_audio: true` does the same, but only on the dedicated edit routes (`byteplus/seedance-2.5-video-edit` and the MuAPI video-edit routes); on `byteplus/seedance-2.5` it does nothing. Say it once in the prompt as well. Providers keep the source audio inconsistently even with the flag: PR0TA flags a checked take whose soundtrack changed, and otherwise compare the take with the source yourself (`audio_align`, `pr0ta-audio`). Lay the original track back under the picture in Post when it drifted.
+8. **Frame and length from the source.** Write no ratio in the prompt. ModelArk edit routes force `aspect_ratio: adaptive` and `duration: -1` themselves. MuAPI edit routes default to 16:9 and 5 s, so send `aspect_ratio: "adaptive"` and `duration: -1` (PR0TA renders the whole seconds that hold the source and trims the take back to it).
+
+Worked example, 15 s, two people filmed in a studio and moved to a lakeside picnic, the first 2 s already showing the new setting:
+
+```text
+Video edit of Video 1: two people picnic on a blanket on a sunlit lakeside terrace, one continuous take, the camera exactly as recorded.
+Video 1 is the source: keep both people exactly as recorded (faces, performance, gestures, eyelines, wardrobe, blanket, props, positions, framing and camera movement) at its original pace and length.
+Image 1 is the approved setting: use it for the environment and light only, never for the people.
+0-2s: leave unchanged; it already shows the finished setting.
+2-15s: replace everything behind and around the people with the setting from Image 1: its terrace, the lake and the same shoreline seen in 0-2s. Relight both people to match 0-2s: dappled warm sunlight from the same direction, soft bounce from the ground and greenery, contact shadows under the blanket, hands and props, warm edge light on hair and shoulders.
+The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing.
+Keep the recorded dialogue and sound unchanged; add no music.
+```
+
+Fields: `generate_audio: false`; on MuAPI also `aspect_ratio: "adaptive"` and `duration: -1`. Then check faces, hands and lip sync against Video 1, and the soundtrack as in step 7.
+
+Avoid the anti-patterns this recipe replaces: `pr0ta-prompting/reference/anti-patterns.md` #12 and #13, then grade with `pr0ta-prompting/reference/prompt-rubric.md`.
 
 Seedance 2.5 and 2.0 render the same prompt and reference in visibly different styles. Do not mix their takes in one sequence without checking. To keep a 2.0 look in 2.5 work, extend the 2.0 clip on 2.5 with MOV output.
 

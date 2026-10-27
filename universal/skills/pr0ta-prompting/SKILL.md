@@ -241,5 +241,4 @@ The three that break consistency most: **(1) assumed context or ambiguous pronou
 
 1. Write the prompt bible; copy its anchors into each shot.
 2. Resolve the model and operation, read its reference, and write in its structure and syntax.
-3. Check self-containment, chronology, reference roles and bindings, consistent descriptors, and positive end states.
-4. Remove ambiguity, redundant references, unsupported fields, conflicting camera or action instructions, and filler.
+3. Video and image: grade with `reference/prompt-rubric.md`; fix and regrade, submit only an A. Other modalities: check self-containment, chronology, reference roles, unsupported fields and filler against the model's reference.

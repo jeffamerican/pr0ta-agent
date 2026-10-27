@@ -49,13 +49,13 @@ render each after the one before it and carry its motion forward as `pr0ta-video
 
 ## Route Selection
 
-Choose the narrowest tool that preserves what must stay. Read `reference/route-selection.md` for the full comparison.
+Choose the narrowest tool that preserves what must stay. First decide whether the plate's pixels must survive (SwitchX) or a full re-render is acceptable (a generative edit redraws the actors: look drafts, stylization, or when the person accepts it): `reference/route-selection.md` → "Keep the Plate or Re-render It", then the full comparison.
 
 | Need | Route | Why |
 |---|---|---|
 | Keep the performance pixels, change background, lighting, props, or wardrobe | `beeble/switchx` (`video_to_video`) | Source pixels drive the output; the masked region is regenerated and the kept subject is relit to the reference |
 | Angle-matched reference plate from one frame | `beeble/switchx-image` (`edit_img`) | Same engine on a still; fast iteration before a video pass |
-| Reinterpret the whole frame while keeping motion and timing | Seedance 2.5 Video Edit, or Omni with `omni_reference_task_type: "edit"` | Global restyle with image and audio references; camera can be reinterpreted |
+| Reinterpret the whole frame while keeping motion and timing | Seedance 2.5 Video Edit, or Omni with `omni_reference_task_type: "edit"` | Global restyle with image and audio references; camera can be reinterpreted; actors are redrawn |
 | Natural-language change with no reference image | A prompt-only edit route from `video_to_video_model` (Gemini Omni Flash 1.1 Edit is one) | Prompt-only source edit; inspect the result near the five-second mark |
 | Replace the subject as well as the background | Kling O3 Pro V2V edit, Pixverse swap | Element and reference driven replacement; not pixel-preserving |
 | Relight only, no background change | LightX relight, Topaz video relight, or SwitchX `fill` | Illumination change without a new plate |
@@ -143,7 +143,7 @@ Free; the result is a new asset and the source is untouched. Limits: 60 s, 4096�
 
 ## Pricing
 
-Prices change independently of this skill. For price-sensitive choices, query `models_list`, then `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate and requested output configuration. Do not infer live cost from this document. SwitchX is billed by Beeble credits through PR0TA; a rejected upload or a failed job still consumes preparation time, so probe plates before submitting.
+Prices change independently of this skill. For price-sensitive choices, query `models_list`, then `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate and requested output configuration. Do not infer live cost from this document. SwitchX bills each Beeble job in 30-frame blocks, rounded up per job (a chunked plate rounds up per chunk), at the resolution PR0TA sends (720 whenever the plate renders at 720 or less anyway); 720p costs a third of 1080p, and a still is one block. The quote reads the plate's length, frame rate and size (with a one-block-per-job margin until the worker counts the frames), so quote with the real `video_asset_id`, and explore at 720 before a 1080 final. A failed job is not charged, but a rejected upload still consumes preparation time, so probe plates before submitting.
 
 ## QC Gate
 
@@ -160,7 +160,8 @@ If any check fails, change the matte or the reference before changing the prompt
 ## Cross-Skill Pointers
 
 - **Generating the look reference?** Resolve the edit model with `models_preferred(modality: "image_edit_model")`; read `pr0ta-image` for edit modes and `pr0ta-prompting` for the designed-world contract.
-- **Choosing a generative edit route instead?** Read `pr0ta-video` → `reference/seedance-2.5.md`, `reference/gemini-omni-flash-1.1.md`, `reference/hailuo-h3.md`, and `reference/kling-prompting.md`.
+- **Choosing a generative edit route instead?** Read `pr0ta-video` → `reference/seedance-2.5.md`, `reference/gemini-omni-flash-1.1.md`, `reference/hailuo-h3.md`, and `reference/kling-prompting.md`. For a world swap around live action, write it with `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action".
+- **Writing any prompt here?** Grade it with `pr0ta-prompting/reference/prompt-rubric.md` before submitting; send only an A.
 - **Building the Marble world?** Read `pr0ta-prompting` → `reference/marble-world-generation.md`.
 - **Recurring locations across shots?** Read `pr0ta-consistency` for the continuity rules; this skill owns the mechanics.
 - **Placing the result?** Read `pr0ta-timeline`; plate-based clips must keep their native frame rate on the sequence.

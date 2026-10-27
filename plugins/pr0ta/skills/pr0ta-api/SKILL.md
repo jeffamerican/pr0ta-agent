@@ -357,7 +357,7 @@ same either way; `pr0ta-operator` owns when and how to delegate.
 | --- | --- |
 | `operator_mission_start` | `objective` (required), `title`, `scene_numbers`, `character`, `shot_number`, `client_id` (idempotency), `completion_subscription_id` → `mission_id`, `receipt_task_id` |
 | `operator_missions_list` | Missions in the project; `archived` |
-| `operator_mission_get` | Status, summary, checkpoint, actions pending review, usage, events after `after` (pass the previous `cursor`) |
+| `operator_mission_get` | Status, summary, checkpoint, actions pending review, usage, `budget`, events after `after` (previous `cursor`) |
 | `operator_mission_send` | `text`, `mode` `steer` (change current work) or `follow_up` (queue next) → new `receipt_task_id` |
 | `operator_mission_control` | `action`: `pause`, `resume`, `cancel`, `archive`, `unarchive`; resume returns a `receipt_task_id` |
 | `operator_mission_review` | `effect_id` + `decision` `approve`/`reject`, or a card's `artifact_id` + `approve`/`request_changes`/`choose` (`choice`: an option's label), `note`; effects on the user's word (cards: "Workflow gates") |

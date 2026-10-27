@@ -21,7 +21,7 @@ External MCP clients have these tools; they take `project_id` where a project ap
 ## operator
 
 - `operator_mission_control`(**mission_id**, **action**, client_id, completion_subscription_id): Pause, resume, cancel, archive, or unarchive a mission.
-- `operator_mission_get`(**mission_id**, after, include_retired_drafts): Read a mission: status, summary, checkpoint (plan, draft artifacts), pending actions awaiting approval, usage, and events after the cursor.
+- `operator_mission_get`(**mission_id**, after, include_retired_drafts): Read a mission: status, summary, checkpoint (plan, draft artifacts), pending actions awaiting approval, usage, budget, and events after the cursor.
 - `operator_mission_review`(**mission_id**, effect_id, artifact_id, **decision**, choice, note, workflow_bypasses, bypass_reason, client_id, completion_subscription_id): Approve or reject one action a mission is holding for review (effect_id: effects with status pending in operator_mission_get), or answer one of its r…
 - `operator_mission_send`(**mission_id**, **text**, mode, client_id, completion_subscription_id): Send direction to a mission: mode steer changes the current work, follow_up queues a next request after it.
 - `operator_mission_start`(**objective**, title, continues_mission_id, scene_numbers, character, shot_number, client_id, completion_subscription_id): Hand a goal to the PR0TA Operator as a durable mission that runs inside PR0TA with its own tools, project permissions, and credit budget.

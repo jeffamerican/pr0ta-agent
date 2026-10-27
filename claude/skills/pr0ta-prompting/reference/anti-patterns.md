@@ -45,3 +45,11 @@ The following anti-patterns break visual consistency and cause generation failur
 ### 11. Negated Actions
 **Bad:** "The craftsman polishes the statue. Don't break it. No cutting."
 **Good:** Rewrite as a positive assertion of the preserved state -- see Technique 4. A negated action can still render the forbidden action. Exclusions are different: use the route's `negative_prompt` field where it has one; on Seedance 2.5, which has none, write short paired exclusions ("No subtitles.", "No BGM; generate only environmental sounds and action sounds.").
+
+### 12. Abstract Authority Lists
+**Bad:** "The source video is the sole authority for recorded identities, facial performance, eyelines, lens perspective and camera trajectory."
+**Good:** "Keep both people exactly as recorded: faces, gestures, eyelines, wardrobe, blanket, props, positions, framing and camera movement." Models follow things they can see.
+
+### 13. Naming the Unwanted State
+**Bad:** "Carry the light into the studio-filmed footage. The guide has a small hand-position mismatch at 2 s."
+**Good:** "Relight both people to match 0-2s. The action continues straight through the 2-second mark in one take." Whatever you describe as present in the source, the model tends to draw. Recipe: `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action"; self-check: `prompt-rubric.md`.
