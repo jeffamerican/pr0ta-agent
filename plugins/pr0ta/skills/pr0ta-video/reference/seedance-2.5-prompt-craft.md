@@ -1,6 +1,6 @@
 # Seedance 2.5 Prompt Craft
 
-How to write a Seedance 2.5 prompt that the model follows. `seedance-2.5.md` owns routes, request fields, durations, and reference limits; this file owns the writing. The authority is ByteDance's Dreamina Seedance 2.5 prompt guide on BytePlus (updated 2026-10-16), plus production experience. Where the two differ, the provider guide wins. Grade every prompt with `pr0ta-prompting/reference/prompt-rubric.md` before you submit it.
+How to write a Seedance 2.5 prompt that the model follows. `seedance-2.5.md` owns routes, request fields, durations, and reference limits; this file owns the writing. The authority is ByteDance's Dreamina Seedance 2.5 prompt guide on BytePlus (https://docs.byteplus.com/en/docs/modelark/seedance-2-5-prompt-guide, updated 2026-10-16; rendered by JavaScript, so read it in a browser), plus production experience. Where the two differ, the provider guide wins. Grade every prompt with `pr0ta-prompting/reference/prompt-rubric.md` before you submit it.
 
 ## Shape of a Prompt
 
@@ -30,7 +30,7 @@ For a fast compilation or montage, give the cast a short continuity block (each 
 - Number assets by upload order (Image 1, Video 1, Audio 1) and bind every asset in the prompt. Never rely on a name written on the image ("JOHN" lettered on a portrait): it causes confusion and duplicated characters.
 - When PR0TA builds the prompt package (`agent_chat_orchestrate_prompt`, the Production Queue), it compiles the numbered role declarations from the reference plan; use the same numbering and names in the body. When you submit a prompt directly, write the declarations yourself, one line per asset in upload order ("Image 1 is MARA's approved portrait: face and hair only.").
 - With several subjects, list the mapping one by one ("Images 1-2 are Mara and correspond to Audio 1; Image 3 is Theo").
-- Say which part of an asset to use: "use Video 1 only for the orbiting camera move", "use Image 4 for lighting and grade".
+- Say which part of an asset to use: "use Video 1 only for the orbiting camera move", "use Image 4 for lighting and grade". A role line does not reliably keep a reference video's action and dialogue out of the take, so attach a video only when its motion belongs in the result.
 - When a reference is accurate, tell the model to follow it instead of re-describing it ("follow the actions and camera movement of Video 1 in order").
 - Seedance 2.5 accepts multi-view sheets as subject references (2.0 did not). A character's packet is split by job (`pr0ta-consistency` → "Face and Outfit Sheets"): the **face sheet** (a six-angle head turnaround) for the face, the **portrait** for the canonical likeness, the **outfit sheet** (front and back, no face) for the clothes only, and in wide shots, when the slots allow, the full-body **character sheet** for build and proportions. Tight on slots: drop the body sheet first, then the portrait, never the face sheet.
 - Give each sheet its one job in its role line, and say that every view shows the same person and that the sheet's grid, studio light and background are not copied ("Image 1 is MARA's face turnaround: all six views are her; take only her face and head. Image 3 is her outfit sheet: take only the clothes, not a face or a mannequin."). PR0TA writes these role lines when it builds the package. Then describe the scene's own setting and light in the body: the face sheet's even studio light is there to show the face, not to light the shot; the face holds under hard or low-key light because the sheet shows it from every side.
@@ -85,36 +85,76 @@ The provider guide's edit advice: sources of 20 seconds or less are more stable;
 
 ### Replace the World Around Live Action
 
-A Seedance edit redraws every pixel, the actors included, and faces and hands soften most at 480p. To keep a recorded performance and change only its world, choose the route first: `pr0ta-hybrid/reference/route-selection.md` → "Keep the Plate or Re-render It". Use this recipe when a Seedance edit is the right call: a look draft, a stylized world, or a person who accepts re-rendered actors.
+A Seedance 2.5 edit can keep a recorded performance while it changes the world, the light, the wardrobe or the style. That means the actors' faces and likeness, gestures, lip movements, timing, framing, camera and cuts. It does so when the request and the prompt are built for it. It redraws every pixel, so the prompt and the inputs earn the preservation, and a check of the take against the source proves it. The route itself never rules it out. SwitchX is the other route, for a plate whose pixels must come through exactly (`pr0ta-hybrid/reference/route-selection.md`).
 
-1. **Open with the edit and the shot.** One sentence: "Video edit of Video 1:", who, where, and the camera.
+#### Set up the request
+
+- **Edit, not reference.** Use `byteplus/seedance-2.5-video-edit`, or the MuAPI video-edit routes for 4K (a real-person refusal on ModelArk falls back to MuAPI by itself; do not resubmit). Omni (`byteplus/seedance-2.5`, `muapi/seedance-2.5-omni-reference`) with `omni_reference_task_type: "edit"` and the plate as Video 1 also edits. A reference task ("refer to Video 1", "generate a video based on Video 1", task type `reference`) regenerates the performance from the clip instead of editing it.
+- **The source is the only video.** With several videos, the guide says, "the model determines which video to edit based on the prompt"; the others act as references. A previous take sent as Video 2 "for continuity only" replayed its action and lines in a hybrid chunk (bug d7aee401). Carry an earlier take as a still of its last frame. A submit or quote result's `request_advisories` flags a second video. This is for edits of a recorded plate; in generation and reference tasks keep passing the previous shot's take as the continuity reference video (`pr0ta-video` → "Continuity Workflows").
+- **Resolution that holds a face.** Render a take whose likeness matters at 720p or 1080p. At 480p faces and hands soften most. The 480p picnic edit (C010, 2026-10-27) redrew both faces and turned the grass under the blanket to gravel. Edits cannot draft, so to save cost try the prompt on a trimmed slice that holds the hardest face moment (`assets_trim`) before the whole plate.
+- **Length and format.** Per the guide, a source of 20 s or less is more stable. Edit a longer plate in chunks, each its own single-source edit. A source with 8n+1 frames (161) comes back at exactly its length, and the guide recommends `output_format: "mov"` for edits.
+- **References.** One to five images work best (guide), each with one job: setting, light, a wardrobe change. Resize generated stills to no larger than the output resolution, or dense grass and foliage can pick up fingerprint-like patterns (guide). Two things are untested in PR0TA: a clean frontal still of each actor cut from the plate itself, as an identity reference, is the next thing to try when a face drifts, and a portrait from other footage can pull the face away from the recording.
+
+#### Write the prompt
+
+1. **Open with the edit and the lock.** Start with an edit trigger ("Video edit of Video 1:"), then one sentence that preserves the recording. The guide's own edit example opens "Preserve the composition, camera position, lighting, and performance rhythm of @Video 1", then says "Only modify" and names the change. Drop "lighting" when the light changes.
 2. **Number every input and give it one job.** "Video 1 is the source." "Image 1 is the approved setting: environment and light only, never the people."
-3. **Keep-list in things a camera sees.** Name the people, faces, gestures, eyelines, wardrobe, props, positions, framing and camera move. Concrete nouns hold; abstractions ("sole authority for recorded identities, lens perspective and camera trajectory") give the model nothing to look at.
-4. **Scope by time.** Whole-second ranges that cover the clip with no gaps, each with its job: "0-2s: leave unchanged." "2-15s: replace everything behind and around the people with …".
-5. **Relight the people for the new world.** Studio-lit people in a sunlit world look pasted on. Give:
-   - the key light's direction, quality and warmth, matched to the setting (or to the part of the clip that already shows it);
+3. **Lock list in things a camera sees.** Identify each person by position and wardrobe from frames you have looked at (`post_frames_get` on the source), not from a summary. Then lock their faces and identity, expressions, lip movements, gestures, eyelines, hair, wardrobe, props and positions. Lock the ground or surface they sit or stand on, the framing, the camera move and the timing too. Whatever you neither lock nor name as kept is open to change, and "everything around the people" includes the ground under them. Concrete nouns hold; abstractions ("sole authority for recorded identities") give the model nothing to look at.
+4. **Describe only the change, from A to B.** Make one change per pass; the guide splits complex jobs into passes. Describe the new world in detail. Describe the people only enough to identify and lock them, and give them no style words ("cinematic", "beautiful", a film stock): community editing guides report that describing what should stay invites the model to alter it (unverified here).
+5. **Scope by time.** Use whole-second ranges that cover the clip with no gaps, each with its job: "0-2s: leave unchanged." "2-15s: replace everything behind the people with …".
+6. **Keep the people's light, or relight them on purpose.** Keeping their recorded light and choosing a setting whose key direction and warmth match it carries the least identity risk. To relight, give:
+   - the key light's direction, quality and warmth;
    - bounce from the ground, walls or greenery;
-   - contact shadows under bodies, hands, blankets and props;
-   - light wrap and edge light on hair and shoulders against a bright background.
-6. **Say the continuity, not the defect.** "The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing." Never describe a flaw in the source ("a small hand-position mismatch at the boundary"): the model redraws what you point at.
-7. **Audio by the flag.** Send `generate_audio: false` to keep the recorded sound; prose alone sets nothing. `keep_source_audio: true` does the same, but only on the dedicated edit routes (`byteplus/seedance-2.5-video-edit` and the MuAPI video-edit routes); on `byteplus/seedance-2.5` it does nothing. Say it once in the prompt as well. Providers keep the source audio inconsistently even with the flag: PR0TA flags a checked take whose soundtrack changed, and otherwise compare the take with the source yourself (`audio_align`, `pr0ta-audio`). Lay the original track back under the picture in Post when it drifted.
-8. **Frame and length from the source.** Write no ratio in the prompt. ModelArk edit routes force `aspect_ratio: adaptive` and `duration: -1` themselves. MuAPI edit routes default to 16:9 and 5 s, so send `aspect_ratio: "adaptive"` and `duration: -1` (PR0TA renders the whole seconds that hold the source and trims the take back to it).
+   - contact shadows under bodies, hands and props;
+   - edge light on hair and shoulders against a bright background.
 
-Worked example, 15 s, two people filmed in a studio and moved to a lakeside picnic, the first 2 s already showing the new setting:
+   Studio-lit people in a sunlit world look pasted on. Community tests report that warm directional daylight holds faces better than night or neon (unverified here).
+7. **Close by restating the fragile locks.** End with "Face and identity unchanged; lips match the recorded dialogue exactly." The guide's edit example ends on identity ("without drifting or changing identity"), and community footage prompts repeat the face lock at the end (no A/B in PR0TA yet). Short negatives work on 2.5: "Do not re-frame, re-time or re-cut; add no new shots." "Natural skin texture, no smoothing."
+8. **Say the continuity, not the defect.** "The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing." Never describe a flaw in the source ("a small hand-position mismatch at the boundary"): the model redraws what you point at.
+9. **Audio by the flag.** Send `generate_audio: false` to keep the recorded sound; prose alone sets nothing. `keep_source_audio: true` does the same, but only on the dedicated edit routes (`byteplus/seedance-2.5-video-edit` and the MuAPI video-edit routes); on `byteplus/seedance-2.5` it does nothing. The MuAPI Omni routes have no `generate_audio` at all: an Omni edit always generates its soundtrack, so when recorded speech must survive, plan to lay the source's soundtrack back under the take in Post, or use the video-edit route. Say it once in the prompt as well. For a finishing re-edit that keeps recorded sound (an accepted take re-rendered at 1080p or 4K, sound restored in Post), choose the video-edit route of that resolution with `generate_audio: false` from the start. An Omni edit's generated soundtrack recreates the source's recorded dialogue, and the provider can refuse the whole take for it: `InputVideoSensitiveContentDetected.PrivacyInformation`, "the output audio may be related to copyright restrictions" (bug e9a6e90c, a 29 s 1080p Omni re-edit). Despite the code, that is not a real-person refusal, and the picture is not the problem. PR0TA re-runs such a refused MuAPI Omni edit once, on the same task and quietly, on the video-edit route of its resolution with `generate_audio: false`, when it sends one video, no audio and no request for generated sound. Do not resubmit. If that is refused too, the source's own soundtrack was flagged: edit a copy of the source without its audio track and lay the recording back in Post. Providers keep source audio inconsistently even with the flag. PR0TA flags a checked take whose soundtrack changed; otherwise compare the take with the source yourself (`audio_align`, `pr0ta-audio`). When the take drifted, lay the original track back under the picture in Post. A shot that keeps no recorded speech keeps generated sound by default.
+10. **Frame and length from the source.** Write no ratio in the prompt. ModelArk edit routes force `aspect_ratio: adaptive` and `duration: -1` themselves. MuAPI edit routes default to 16:9 and 5 s, so send `aspect_ratio: "adaptive"` and `duration: -1` (PR0TA renders the whole seconds that hold the source and trims the take back to it).
+
+Worked example, 15 s, two people filmed in a studio and moved to a lakeside picnic, the first 2 s already showing the new setting (bracketed parts come from the frames you looked at):
 
 ```text
-Video edit of Video 1: two people picnic on a blanket on a sunlit lakeside terrace, one continuous take, the camera exactly as recorded.
-Video 1 is the source: keep both people exactly as recorded (faces, performance, gestures, eyelines, wardrobe, blanket, props, positions, framing and camera movement) at its original pace and length.
+Video edit of Video 1: two people picnic on a blanket on a sunlit lakeside meadow, one continuous take, the camera exactly as recorded.
+Preserve the people, performance rhythm, composition and camera movement of Video 1; only change the world around them and its light.
+Video 1 is the source: the woman on the left in [her wardrobe] and the man on the right in [his wardrobe] keep their faces and identity, expressions, lip movements, gestures, eyelines, hair, wardrobe, the blanket, the props and their positions exactly as recorded, at the original pace and length.
 Image 1 is the approved setting: use it for the environment and light only, never for the people.
 0-2s: leave unchanged; it already shows the finished setting.
-2-15s: replace everything behind and around the people with the setting from Image 1: its terrace, the lake and the same shoreline seen in 0-2s. Relight both people to match 0-2s: dappled warm sunlight from the same direction, soft bounce from the ground and greenery, contact shadows under the blanket, hands and props, warm edge light on hair and shoulders.
+2-15s: replace everything behind the people with the setting from Image 1: short green grass under and around the blanket, the lake and the same shoreline seen in 0-2s. Relight both people to match 0-2s: dappled warm sunlight from the same direction, soft bounce from the grass, contact shadows under the blanket, hands and props, warm edge light on hair and shoulders.
 The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing.
 Keep the recorded dialogue and sound unchanged; add no music.
+Face and identity unchanged; lips match the recorded dialogue exactly; natural skin texture, no smoothing.
 ```
 
-Fields: `generate_audio: false`; on MuAPI also `aspect_ratio: "adaptive"` and `duration: -1`. Then check faces, hands and lip sync against Video 1, and the soundtrack as in step 7.
+Fields: `generate_audio: false`, `resolution: "1080p"` (or `"720p"`) and `output_format: "mov"` on ModelArk. On MuAPI, pick the `-1080p` route and also send `aspect_ratio: "adaptive"` and `duration: -1`.
+
+#### Check the take before calling anything kept
+
+- Pull the same moments from the source and the take: `post_frames_get` with the same `times` (or `frames`) on each, at the hardest face moments (a turn toward camera, mid-line, a close moment). Use `detail: "full"` and a `region` to read a face. Compare faces, hands, wardrobe, the ground and the framing.
+- Read the automatic QC review of the take. Compare the soundtrack and lip sync with the source (`audio_align`).
+- When a face drifted, change one thing per rerun:
+  1. raise the resolution;
+  2. add what drifted to the lock list;
+  3. shorten the source;
+  4. try an identity still from the plate (untested).
+
+  After two failed reruns, offer SwitchX (`pr0ta-hybrid`) alongside the remaining steps. Tell the person what you compared. A prompt that says "keep the faces" proves nothing until the frames agree.
 
 Avoid the anti-patterns this recipe replaces: `pr0ta-prompting/reference/anti-patterns.md` #12 and #13, then grade with `pr0ta-prompting/reference/prompt-rubric.md`.
+
+#### Sources for this recipe
+
+- Official: ByteDance's Seedance 2.5 prompt guide (https://docs.byteplus.com/en/docs/modelark/seedance-2-5-prompt-guide, read 2026-10-28). It covers locked edit tasks, the choice among several videos, edit triggers, the "Preserve … Only modify …" edit example, the 20 s and one-to-five-image recommendations, splitting complex jobs, 8n+1 frames, MOV output and fingerprint textures.
+- Official API guides from hosts: Runware's Seedance 2.5 editing guide (https://runware.ai/docs/models/bytedance-seedance-2-5/guides/editing). It covers edit triggers, naming what stays, A-to-B changes, a single source clip, face and wardrobe as reference images, "Keep the audio unchanged", and a clean, evenly lit backdrop separating best.
+- Community, with shown examples, untested by PR0TA:
+  - Higgsfield's Seedance 2.0 4K footage VFX posts (https://higgsfield.ai/blog/vfx_4k, 2026-06-29). They open with a full lock list, add "Face and identity unchanged", "exact lip-sync" and "Do not re-frame, re-time, re-angle or re-cut", and claim (no side-by-side) that faces hold better at 4K than at 1080p.
+  - The open `seedance-footage-vfx` skill (https://raw.githubusercontent.com/ShahriarArabpour/Algoticlab-Skills/main/skills/claude/seedance-footage-vfx/SKILL.md). It says to lock, then change one thing; describe the source from extracted frames; repeat the face lock at the end; keep the subject's light for the lowest identity risk; and that warm directional daylight is safer than night or neon.
+- PR0TA's own results:
+  - Picnic C010 (480p edit: faces redrawn, grass to gravel; SwitchX kept the actors).
+  - Bug d7aee401 (two videos: the earlier take's action replayed).
+  - A rerun of C010 with this recipe has not been done yet.
 
 Seedance 2.5 and 2.0 render the same prompt and reference in visibly different styles. Do not mix their takes in one sequence without checking. To keep a 2.0 look in 2.5 work, extend the 2.0 clip on 2.5 with MOV output.
 

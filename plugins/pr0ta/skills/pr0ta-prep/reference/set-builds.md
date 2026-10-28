@@ -96,7 +96,11 @@ a job of their own on that `.blend`: no objects, `export_glb: true`,
   as shot structure: `pr0ta-hybrid` → world-anchored references.
 - **An existing model or scan**: for an existing object or space (a statue, a
   landmark, a vehicle), import an existing model or scan with
-  `assets_import_url` and place it in the build.
+  `assets_import_url` and place it in the build. A placed model's
+  `transform.location` is its base (bottom centre, on the ground), as is a
+  kit's (skateboard, bicycle), while a basic primitive's (cube, cylinder,
+  sphere…) is its centre: put a model on a floor at the floor's top z, not at
+  half its height.
 - **Image-to-3D for props**: unified generation's image-to-3D mode
   (`pr0ta-api` → unified generation).
 

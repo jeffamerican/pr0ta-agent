@@ -234,7 +234,7 @@ Four task-specific model IDs run the same ModelArk model with the task fixed, so
 | `byteplus/seedance-2.5-video-edit` | Restyle, relight, or replace elements of a source clip | Duration is forced to -1 and ratio to adaptive: the output keeps the source clip's ratio and length (up to ~0.3 s short unless the source has 8n+1 frames, e.g. 161); up to 30 images + 10 audio references; no draft |
 | `byteplus/seedance-2.5-video-extend` | New footage before or after a source clip | Say in the prompt whether to extend forward (after the last frame) or backward (before the first frame); 4–30 s or -1; no draft |
 
-The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p, review, then finish the approved draft at 1080p (`reference/draft-to-final.md`). Edit and extend cannot draft; review them at 480p or 720p before a 1080p run.
+The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p, review, then finish the approved draft at 1080p (`reference/draft-to-final.md`). Edit and extend cannot draft; review them at 480p or 720p (720p when faces must hold) before a 1080p run.
 
 #### Real-person fallback
 
@@ -249,6 +249,8 @@ ModelArk refuses input images or a driving video that may show a real person (`I
 | `byteplus/seedance-2.5-video-extend` | `muapi/seedance-2.5-video-extend` |
 
 The fallback keeps the requested resolution: a `1080p` request renders on the route's `-1080p` variant, `480p` on `-480p`, and 720p (or no resolution) on the unsuffixed route. A draft keeps the unsuffixed route, the one that drafts at 480p and finishes at 1080p. The refused attempt is hidden, the submission result carries `model_fallback`, and the Queue notes it on the take. Do not resubmit it yourself; mention the switch in one line.
+
+"Output audio ... copyright" under that code refuses the soundtrack, not a person (`seedance-2.5-prompt-craft.md`).
 
 ## Other Seedance 2.5 Routes
 

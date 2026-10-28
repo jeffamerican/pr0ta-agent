@@ -1,6 +1,6 @@
 ---
 name: pr0ta-hybrid
-description: "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world."
+description: "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world."
 ---
 
 # PR0TA Hybrid Production
@@ -38,6 +38,10 @@ shots. Never chain a generated last frame across a cut into a different angle.
 On a generative route, the chunks of one continuous shot depend on each other:
 render each after the one before it and carry its motion forward as `pr0ta-video`
 → "Continuity Workflows" describes; an ending still carries appearance, not motion.
+When the chunks are edits of recorded footage, the source carries the motion and
+sound: each chunk's source is its only video, the previous take rides as a still
+of its last frame, and recorded speech stays recorded
+(`reference/route-selection.md` → "Seedance Edits of Recorded Footage: Input Rules").
 
 1. **Read project memory first.** Call `memory_context_pack` for the scene, location, and shot. Approved location plates, set environments, and world decisions are the source of truth for what may change and what must stay.
 2. **Probe the plate before you plan.** Inspect the source asset's duration, frame rate, pixel dimensions, and codec. SwitchX accepts at most 240 frames and 2,770,000 pixels in one generation and needs a constant frame rate. PR0TA chunks a longer plate automatically: one Beeble job per chunk, each billed on its own, stitched back into one render and one alpha. The plan lives in `metadata.switchx_chunks`; PR0TA feeds the final rendered frame of each chunk to the next as its look reference and records that lineage under `reference_chain`. Keep `chain_chunk_references` on unless you are running a controlled comparison; a long evolving background can still benefit from a motivated edit.
@@ -49,13 +53,13 @@ render each after the one before it and carry its motion forward as `pr0ta-video
 
 ## Route Selection
 
-Choose the narrowest tool that preserves what must stay. First decide whether the plate's pixels must survive (SwitchX) or a full re-render is acceptable (a generative edit redraws the actors: look drafts, stylization, or when the person accepts it): `reference/route-selection.md` → "Keep the Plate or Re-render It", then the full comparison.
+Choose the narrowest tool that preserves what must stay. To keep a recorded performance, a Seedance 2.5 edit prompted to lock the faces, performance and timing is a first-class route; SwitchX is the choice when the plate's pixels must come through exactly or Seedance attempts failed. Read `reference/route-selection.md` → "Keep a Performance: Seedance Edit or SwitchX", then the full comparison.
 
 | Need | Route | Why |
 |---|---|---|
-| Keep the performance pixels, change background, lighting, props, or wardrobe | `beeble/switchx` (`video_to_video`) | Source pixels drive the output; the masked region is regenerated and the kept subject is relit to the reference |
+| Keep the performance pixels exactly, change background, lighting, props, or wardrobe | `beeble/switchx` (`video_to_video`), `custom` matte for actors | Source pixels drive the output; the masked region is regenerated and the kept subject is relit to the reference |
 | Angle-matched reference plate from one frame | `beeble/switchx-image` (`edit_img`) | Same engine on a still; fast iteration before a video pass |
-| Reinterpret the whole frame while keeping motion and timing | Seedance 2.5 Video Edit, or Omni with `omni_reference_task_type: "edit"` | Global restyle with image and audio references; camera can be reinterpreted; actors are redrawn |
+| Keep the performance and likeness, change the world, light, wardrobe or style | Seedance 2.5 Video Edit, or Omni with `omni_reference_task_type: "edit"`, the plate as the only video | Every pixel redrawn; faces, performance and timing hold when the prompt locks them (check against the source). Only the Video Edit route keeps the source's sound (`generate_audio: false`); MuAPI Omni always generates it |
 | Natural-language change with no reference image | A prompt-only edit route from `video_to_video_model` (Gemini Omni Flash 1.1 Edit is one) | Prompt-only source edit; inspect the result near the five-second mark |
 | Replace the subject as well as the background | Kling O3 Pro V2V edit, Pixverse swap | Element and reference driven replacement; not pixel-preserving |
 | Relight only, no background change | LightX relight, Topaz video relight, or SwitchX `fill` | Illumination change without a new plate |
@@ -63,8 +67,8 @@ Choose the narrowest tool that preserves what must stay. First decide whether th
 
 Rules:
 
-- SwitchX preserves the kept pixels, so the real performance survives; the generative edit routes reinterpret the whole frame, performance included. Match the route to which of the two the shot needs. On a generative edit with reference stills, say what each input controls: the source video owns performance, camera path, timing and framing; setting or lighting stills guide appearance without imposing their own composition.
-- SwitchX infers camera motion only from the pixels it keeps. A lateral pan or tracking shot with little parallax in the kept region can drift; keep some foreground unmasked, add a reference video to a Seedance edit instead, or generate the background as its own plate and composite.
+- SwitchX passes the kept pixels through; a Seedance edit redraws the whole frame and keeps the performance when the prompt locks it. On a generative edit with reference stills, say what each input controls: the source video owns performance, camera path, timing and framing; setting or lighting stills guide appearance without imposing their own composition.
+- SwitchX infers camera motion only from the pixels it keeps. A lateral pan or tracking shot with little parallax in the kept region can drift; keep some foreground unmasked, move to a Seedance edit of the plate, or generate the background as its own plate and composite.
 - Query `models_get_defaults` or `GET /api/crew/model_defaults?model_id={model_id}` before production calls; alpha fields and resolution caps are model-specific.
 
 ## SwitchX Contract
@@ -160,7 +164,7 @@ If any check fails, change the matte or the reference before changing the prompt
 ## Cross-Skill Pointers
 
 - **Generating the look reference?** Resolve the edit model with `models_preferred(modality: "image_edit_model")`; read `pr0ta-image` for edit modes and `pr0ta-prompting` for the designed-world contract.
-- **Choosing a generative edit route instead?** Read `pr0ta-video` → `reference/seedance-2.5.md`, `reference/gemini-omni-flash-1.1.md`, `reference/hailuo-h3.md`, and `reference/kling-prompting.md`. For a world swap around live action, write it with `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action".
+- **Choosing a Seedance or other generative edit route?** Read `pr0ta-video` → `reference/seedance-2.5.md`, `reference/gemini-omni-flash-1.1.md`, `reference/hailuo-h3.md`, and `reference/kling-prompting.md`. For a world swap around live action, write it with `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action".
 - **Writing any prompt here?** Grade it with `pr0ta-prompting/reference/prompt-rubric.md` before submitting; send only an A.
 - **Building the Marble world?** Read `pr0ta-prompting` → `reference/marble-world-generation.md`.
 - **Recurring locations across shots?** Read `pr0ta-consistency` for the continuity rules; this skill owns the mechanics.

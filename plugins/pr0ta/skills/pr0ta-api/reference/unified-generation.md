@@ -431,6 +431,7 @@ You can also pass URLs directly (`start_image_url`, `end_image_url`, `reference_
 - `credits_cost` -- optional and nullable; do not assume it is always populated
 - `applied_style_look` -- image and video: `{applied: true, look_line, position, world_id, world_name}` with the exact project look text the server added to the prompt, or `{applied: false, reason}`. The task records it as `metadata.style_look_applied`.
 - `look_warnings` -- advisory `[{term, why}]`: words in the applied look that make pictures read as generated (glow, sparkles, "flawless", "8K"). Nothing was blocked; fix the style world's look (`style_world_update`) or opt out per request.
+- `request_advisories` -- advisory `[{code, message}]` on a video edit or extend, also on quotes and batch items: `multiple_videos_in_edit` (two or more videos; the model blends their action and sound, so keep the source as the only video and carry an earlier take as a last-frame still) and `omni_edit_generates_audio` (a MuAPI Seedance 2.5 Omni edit has no `generate_audio`, so its soundtrack is generated). Nothing was blocked; resubmit or cancel if the take must keep the source.
 
 Request field `apply_style_look` (image and video): `false` keeps the project look out of this one request, `true` adds it even to an edit; omit it for the usual rule. Recorded on the task as `metadata.apply_style_look`.
 
