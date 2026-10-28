@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.23.10",
-  "released_at": "2026-10-27",
-  "source_revision": "v6.23.10",
-  "minimum_platform_version": "1.25.429",
+  "skills_version": "6.23.11",
+  "released_at": "2026-10-28",
+  "source_revision": "v6.23.11",
+  "minimum_platform_version": "1.26.0",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06518-vin",
-  "bundle_sha256": "a86f497ef6bc071cfc160486e06697efcb811330b53ea1cf44ce853a2013fd7d",
+  "platform_revision": "pr0ta-platform-06548-yik",
+  "bundle_sha256": "a229cb51a51f48965bc7bfdd420590b129c0ded46f4cc7fef2f26fde4d36c345",
   "skills": [
     {
       "name": "pr0ta",
@@ -239,11 +239,15 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "2bf5153fc0625f7824a3bb76901d6014ddb8d8df18b72f45f76fe734395be56c",
+      "content_sha256": "76179446ed0ae7177ee8125064f2256abf99628e948e7ae09ea7f8d04e182aa6",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "e0ae745b44de039621edd2aeed4bc1f14e32665f4be822e6b0968dcababc4f74"
+          "sha256": "03debac894387758f20e1da87b2897a16fe45b3c8e40e71528c53a326a950c08"
+        },
+        {
+          "path": "reference/camera-solving.md",
+          "sha256": "27b17a61803277460ce682a4187c7ef550fe28296334b94759a04909ff659239"
         },
         {
           "path": "reference/hybrid-sequences.md",
@@ -435,7 +439,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "60388868c369645f629e0eb19fe9be9bdbdafbec1c1e478f9043c37f104aed93",
+      "content_sha256": "42f7ba85533fab7245b170286fcbc0c765dc8436f17e092619727e15980c78f6",
       "documents": [
         {
           "path": "SKILL.md",
@@ -443,7 +447,7 @@
         },
         {
           "path": "reference/draft-to-final.md",
-          "sha256": "b2c4308c9f4263e259b7ec38ab9189160d6fd8b4609acf4a101f8cf99787f452"
+          "sha256": "c6adb6f4a992fea6776d86176e96b8e7633117d864419f451de23cc18c9ea449"
         },
         {
           "path": "reference/flux-3.md",
@@ -495,7 +499,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "cd4c8e5fdc924fbb0e1ed3161b81f6ff7eef8a68bc512182156bc36e86afcbe0"
+          "sha256": "a0d89504d61704ce42ab776c454b4b061a50979f4fc55476d4e7a5e87214112e"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
@@ -551,6 +555,9 @@
     "breakdown_rerun",
     "breakdown_status",
     "bug_report_create",
+    "camera_solve_get",
+    "camera_solve_place",
+    "camera_solve_submit",
     "cast_list_get",
     "cast_list_save",
     "casting_avatar_demo_generate",
@@ -747,5 +754,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "2782c9a1369c6715794b9059ef28aa5e1fbfae43766a563a2017c395b026968b"
+  "mcp_connector_tools_sha256": "2c2cf9cde9b583d3a3a98bf8bbcb2f5e412c16394b0c4e689f00c0df3f964575"
 }

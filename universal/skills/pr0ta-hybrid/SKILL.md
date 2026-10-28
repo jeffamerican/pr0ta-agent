@@ -28,6 +28,7 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 - **Edited sequences in Post:** `hybrid_sequences_list`, `hybrid_sequences_get`, `hybrid_sequences_create`, `hybrid_sequences_update`, `hybrid_sequences_job`, `hybrid_sequences_apply_setup`, `hybrid_sequences_approve`, `hybrid_sequences_generate`. Read `reference/hybrid-sequences.md`.
 - **Worlds and sets:** `world_generation_submit` (Marble worlds), `set_environments_get`, `set_environment_collider_materialize`, `set_environment_asset_link`, `blender_job_submit`.
 - **Existing 3D models and scans:** a real object that already has a model (a museum statue scan, a product CAD export) comes in with `assets_import_url` or an upload, not image-to-3D. STL, OBJ, PLY and glTF are converted to a GLB that `blender_job_submit` opens as a source or a `scene_plan.objects` prop. Read `pr0ta-api` → `reference/asset-management.md` ("Bring In an Existing 3D Model or Scan") for formats, units and scale.
+- **Recover a source camera:** `camera_solve_submit`, `camera_solve_get`, `camera_solve_place`. Native Blender tracking, original-file lens metadata first, then focal hypotheses. Read `reference/camera-solving.md`; relative motion needs explicit virtual-set alignment and review.
 
 ## Mandatory Steps
 

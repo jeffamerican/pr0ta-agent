@@ -19,6 +19,22 @@ Resolve the model the usual way (`models_preferred` for the shot's modality), th
 
 No `draft_mode` block means no drafts: generate normally. Never send `draft: true` to a model without the block; the request is rejected with a 400.
 
+### Standalone previews are separate generations
+
+A `-480p` model or `resolution: "480p"` alone does not make a native draft.
+Call it a **480p preview**, not a draft you can finish. `models_get_defaults`
+returns `preview_mode` for PR0TA's fixed 480p Seedance routes, including whether
+there is a native draft alternative. For reference generation intended for
+finishing, select that alternative and explicitly send `draft: true`; edits and
+extends cannot use it. Keep an explicitly selected preview route unless the
+person chooses to change workflows.
+
+Check `tasks_get` → `metadata.provider_request`: `model_id` and `endpoint`
+identify PR0TA's submitted route even if the provider's receipt says `unknown`;
+`render_workflow.kind` distinguishes `native_draft`, `standalone_preview`,
+`draft_finalize`, and `direct`. Only `native_draft` is finishable. Confirm the
+completed asset's draft labels and provider task id before promising a finish.
+
 ## When to draft
 
 Drafting is the default way to explore. On a model that offers drafts, draft first whenever any of these hold (the Video editor's Draft toggle likewise starts on for every draft-capable model, and the Production Queue drafts first on them):

@@ -196,6 +196,13 @@ Full recipe: `seedance-2.5-prompt-craft.md` → "Replace the World Around Live A
 
 Set `generate_audio=false` when the original source-video audio should be preserved. PR0TA forwards that flag exactly, but provider runs have preserved the original audio inconsistently; inspect or correlate the delivered soundtrack before accepting it. Request one coherent edit rather than a full scene rewrite.
 
+That flag does **not** remove the source soundtrack. A provider audio/copyright
+refusal can concern source music even when new audio generation is disabled;
+the error alone does not establish its cause. For a picture-only edit, prepare
+a separate copy without the soundtrack, verify it has no audio stream, retain
+the original, and restore authorized source audio in Post. Do not retry the
+unchanged clip or assume changing prompt wording removes embedded music.
+
 ## Video Extend
 
 Extend requires a source video and continues from its last frame. An optional `last_image_url` steers the continuation toward a target final image; the provider adapter maps it to MuAPI's `last_image` field.
@@ -278,6 +285,8 @@ Inspect every frame at delivery resolution. Generate alternatives or use a focus
 
 | Failure | Repair |
 |---|---|
+| `INPUT_MEDIA_DOWNLOAD_FAILED`, or a privacy label whose detailed message says media download failed with HTTP 502 | Treat this as input delivery, not evidence of a privacy refusal. Resolve fresh links from the same project assets. For a transient failure retry at most once with the same model, operation, reference order, resolution and audio settings; stop and investigate if it repeats. Do not switch providers merely because of the misleading label |
+| Generated-audio platform/copyright refusal, including with `generate_audio=false` | Check the source soundtrack. For picture-only work, use a separate verified silent source copy and retain authorized original sound for Post. The provider message does not prove which track caused the refusal; do not retry unchanged inputs |
 | Unsupported field on T2V, I2V, first/last, or Omni | Remove caller-supplied `resolution`, `negative_prompt`, `sound`, `generate_audio`, camera-fixed, character, CFG, and FPS fields; choose 480p/720p/1080p/4K by model ID |
 | Unsupported field on Edit or Extend | Remove caller-supplied `resolution`, `negative_prompt`, `sound`, camera-fixed, character, CFG, and FPS fields; retain `generate_audio` only when the endpoint schema exposes it |
 | I2V ignores desired motion | Replace "bring to life" with explicit subject, environment, camera, and end-state motion |
