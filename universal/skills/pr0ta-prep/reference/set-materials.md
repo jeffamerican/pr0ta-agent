@@ -81,10 +81,16 @@ ProtaFilm|maker Space app (RealityKit on iPhone) or any real-time viewer:
   `.blend` (`source_asset_id`, no `objects`, `realtime_asset: {enabled: true}`,
   `render.passes []`). `realtime_asset: {enabled: false}` skips the bake on a
   render-only job. A blockout never bakes.
-- **One at a time.** One premium job runs at a time across the platform while
-  premium runs on the CPU worker. A second one is refused with a retryable
-  message that says how many minutes to wait; nothing is charged. Blockouts
-  are not limited by it.
+- **One at a time, in turn.** One premium job runs at a time across the
+  platform while premium runs on the CPU worker. A premium job submitted while
+  another runs is accepted and waits its turn: the result is its task, status
+  `queued`, with `waiting_for_slot` and a message giving its place in line and
+  about how many minutes. It starts on its own when the slot frees and is
+  charged like any premium job, only once it runs. Wait on that task
+  (`tasks_watch`, completion events) like any running job: never resubmit,
+  retry, or ask the person about it. Cancelling it before it starts costs
+  nothing. Blockouts are not limited by the premium slot; a job that finds its
+  project's or account's few Blender slots busy waits its turn the same way.
 
 After the job, `scene_inventory.quality` reports the engine, the samples
 ceiling, each frame's time limit and the seconds each still took. It also lists

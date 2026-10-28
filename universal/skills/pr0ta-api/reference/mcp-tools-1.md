@@ -220,7 +220,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `post_drafts_finish`(sequence_id, confirm_credits, draft_asset_ids, lock_token): Finish the drafts a cut plays at full quality (1080p) and swap each final into the cut in place: same clip, timing, in/out points and links, and an a…
 - `post_drafts_list`(sequence_id): List the draft renders (cheap 480p Seedance drafts) a cut plays, before presenting it as final.
 - `post_export_start`(export_request, sequence_id): Start an async final master export of a saved sequence (free, no credits).
-- `post_frames_get`(asset_id, sequence_id, times, count, detail, region): Look at frames (free): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
+- `post_frames_get`(asset_id, sequence_id, times, frames, count, detail, region): Look at frames (free): a contact sheet of up to 12 frames, filed as an image asset and shown to you.
 - `post_render_start`(render_request, sequence_id): Start an async preview render of a saved sequence.
 - `post_sequence_analyze`(sequence_id): Analyze a saved sequence before rendering or calling it done (free).
 - `post_sequence_debug_report`(sequence_id): Render-risk report for a saved sequence (free): retimed clips, source shortfalls, media gaps, audio track summary, and one warnings[] list (code, sev…

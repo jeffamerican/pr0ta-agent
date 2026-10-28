@@ -68,6 +68,11 @@ on the last step, which the person reviews. Until then the set's
 `runtimeDelivery.newerSourceWithoutRuntime` names the newest `.blend`, viewers
 show the older build, and approving without a revision is refused: export first.
 
+One job takes at most 200 `scene_plan.objects` (and 200 `object_updates`, 200
+`object_removals`, 24 `figures`, 16 `lights`, 12 `shot_cameras`). A bigger set is
+built in stages: up to 200 objects with `save_blend: true`, then the rest in a
+second job on that saved `.blend` as `source_asset_id`.
+
 With `save_blend: true` the runtime GLBs never cost the build. A desktop or Quest
 GLB that fails, stays over its size cap after its textures are shrunk, or would
 not finish inside the worker's time is skipped, and the `.blend` is still
