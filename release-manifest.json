@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06619-kal",
-  "bundle_sha256": "a65ec541f7d8ab04d0fdc2264aa8040b62ee49b7700fb2248501b07b1f254b99",
+  "platform_revision": "pr0ta-platform-06627-deb",
+  "bundle_sha256": "f64e7dea61165a5577ba8d57f2a4d818268cdbccba1ee78d4863ecd181a8bc2d",
   "skills": [
     {
       "name": "pr0ta",
@@ -439,7 +439,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "c6507ea80eb6759e47648ae18ef1a4ea075de22dfd8b723d5600204b6fcca682",
+      "content_sha256": "7dd0b8901596fb3734eb8f4e8adfe9362e2bcd58f0860c7e8dfdce750346ca98",
       "documents": [
         {
           "path": "SKILL.md",
@@ -471,7 +471,7 @@
         },
         {
           "path": "reference/kling-prompting.md",
-          "sha256": "870522f1f316cfbbf31210fc15f26157679d76435f005099f9af14523dfd2a6c"
+          "sha256": "b745240df5d9e3d8d5e0c5be13ae77c96d65eee3bf2c296958a5808570df20a0"
         },
         {
           "path": "reference/ltx-2.5.md",
@@ -494,12 +494,20 @@
           "sha256": "2e10b02d2fc0011ba8d2a03132fb1fb5a397bb8fd46a0d8ec528167f3c22e4df"
         },
         {
+          "path": "reference/seedance-2.5-provider-fallback.md",
+          "sha256": "abfab2871d57015fde16ac40f3dff6e593f2254e216cdf0130e21fcbfde88c3d"
+        },
+        {
+          "path": "reference/seedance-2.5-reference-patterns.md",
+          "sha256": "e1cf1ef7e27c300a7b207a17c8bbfc2cb91eb80e6e51a5add6a84435bc69e375"
+        },
+        {
           "path": "reference/seedance-2.5-sync-sound.md",
           "sha256": "f28cbb63d73fa74682d0f848afd7fbb04f8532ec2c03caedcb3c55214cd94353"
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "a0d89504d61704ce42ab776c454b4b061a50979f4fc55476d4e7a5e87214112e"
+          "sha256": "d84c324730620acd070cf2cad3f49142fbf40fb7746b12602806ff367d18a253"
         },
         {
           "path": "reference/seedance-global-storyboard.md",

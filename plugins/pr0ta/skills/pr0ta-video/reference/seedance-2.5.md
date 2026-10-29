@@ -80,7 +80,7 @@ The standard sixteen T2V, I2V, first/last, and Omni routes plus the four curated
 
 The standard routes do not expose a user-facing `resolution` picker, `negative_prompt`, `sound`, `generate_audio`, `camera_fixed`, `character_id`, `character_ids`, CFG/strength, FPS, or output-format controls. Choose resolution by model ID.
 
-The current Omni route also accepts `omni_reference_task_type` with `auto`, `reference`, `edit`, or `extend`. Use `reference` for PR0TA's normal reference-led generation path, `edit` only when the attached video is source material to transform, and `extend` only when continuing it. Use `auto` when intent is genuinely ambiguous. This is a routing hint, not prompt prose or a substitute for the dedicated Video Edit or Extend route contracts. The provider still re-derives task type from the prompt, so a mismatch can fail asynchronously.
+The current Omni route also accepts `omni_reference_task_type` with `auto`, `reference`, `edit`, or `extend`. Use `reference` for PR0TA's normal reference-led generation path, `edit` only when the attached video is source material to transform, and `extend` only when continuing it. Use `auto` when intent is genuinely ambiguous. For an explicitly selected Omni prompt-only request, omit this hint (or use `auto`); PR0TA omits it from the provider payload when there is no media. Explicit `reference` requires media. The 4–30 whole-second duration contract still applies without the hint. This is a routing hint, not prompt prose or a substitute for the dedicated Video Edit or Extend route contracts. The provider still re-derives task type from the prompt, so a mismatch can fail asynchronously.
 
 Omni edits preserve the requested integer duration of 4–30 seconds. Do not send `duration=-1`: the [live MuAPI OpenAPI schema](https://api.muapi.ai/openapi.json), verified 2026-09-07, rejects that older sentinel. PR0TA sets `aspect_ratio=adaptive` for Omni edit/extend intent.
 
@@ -176,13 +176,7 @@ The Omni reference gates (an approved voice for every speaker, a selected portra
 
 ### Advanced 2.5 reference patterns
 
-- **Blocking animatic (3D previs video):** A sequence chunk's approved Blender animatic (the Blocking page; `blocking_animatic_render`) rides as a reference video ahead of the continuity take; its ledger role is `blocking`. The animatic is a flat grey clay render (no textures or colours, a white-model reference): say the video controls camera positions, camera moves, cuts and their timing, and screen direction; that its grey surfaces say nothing about materials, colour or light (the references and the prompt do); and that its grey figures are placeholders: take their staging, never their look or their stiff, game-like motion. Repeat the shot timings in the prompt so the cuts land where the animatic cuts. Approved identity, set and style images control final appearance. Without the placeholder line Seedance copies the mannequins' motion too closely.
-- **Clay-render or previs still:** Attach a single clay render as an image reference and say it controls spatial blocking, subject paths, camera height, and lens trajectory while approved identity/style images control final appearance.
-- **Timestamp-targeted change:** Name the source video as timing authority, identify the precise time range to change, request one transformation in that range, and positively preserve the rest of the clip. Treat timing as prompt intent unless the active route exposes a dedicated edit-range field.
-- **Green-screen or perspective transformation:** State the source/background role, desired camera perspective or compositing result, edge/light behavior, and preserved subject performance. Do not invent mask, green-screen, or camera-path fields absent from the schema.
-- **Long-form beats:** For 15–30 seconds, use compact time ranges with setup, development, turn, and resolution. Re-establish identity, screen direction, and sound continuity after any named cut.
-
-ByteDance's 2.5 launch examples demonstrate these creative intents, but the live MuAPI schema controls which media fields PR0TA can actually send. Complex multi-subject contact and implausible physics remain risk areas; simplify simultaneous interactions when physical continuity matters.
+Read [advanced reference patterns](seedance-2.5-reference-patterns.md) for blocking animatics, clay renders, timestamped edits, compositing transformations and long-form beats.
 
 ## Video Edit
 
@@ -245,19 +239,7 @@ The frame-anchored routes are the draft-first choice on BytePlus: draft at 480p,
 
 #### Real-person fallback
 
-ModelArk refuses input images or a driving video that may show a real person (`InputImageSensitiveContentDetected.PrivacyInformation`, "may contain real person"), which includes realistic character references from Prep and live-action plates. PR0TA resubmits such a refusal as the same task on MuAPI on every path (generation, Production Queue, Hybrid Studio):
-
-| Refused route | MuAPI route |
-|---|---|
-| `byteplus/seedance-2.5` | `muapi/seedance-2.5-omni-reference` |
-| `byteplus/seedance-2.5-image-to-video` | `muapi/seedance-2.5-image-to-video` |
-| `byteplus/seedance-2.5-first-last-frame` | `muapi/seedance-2.5-first-last-frame` |
-| `byteplus/seedance-2.5-video-edit` | `muapi/seedance-2.5-video-edit` |
-| `byteplus/seedance-2.5-video-extend` | `muapi/seedance-2.5-video-extend` |
-
-The fallback keeps the requested resolution: a `1080p` request renders on the route's `-1080p` variant, `480p` on `-480p`, and 720p (or no resolution) on the unsuffixed route. A draft keeps the unsuffixed route, the one that drafts at 480p and finishes at 1080p. The refused attempt is hidden, the submission result carries `model_fallback`, and the Queue notes it on the take. Do not resubmit it yourself; mention the switch in one line.
-
-"Output audio ... copyright" under that code refuses the soundtrack, not a person (`seedance-2.5-prompt-craft.md`).
+Read [the provider fallback contract](seedance-2.5-provider-fallback.md) for ModelArk real-person input refusals, corresponding MuAPI routes, resolution and draft preservation, and soundtrack refusals.
 
 ## Other Seedance 2.5 Routes
 

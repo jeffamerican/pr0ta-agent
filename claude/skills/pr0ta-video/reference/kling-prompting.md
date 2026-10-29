@@ -22,30 +22,26 @@ When you upload references, you can refer to some of them in the prompt text usi
 
 | Token | What it references |
 |-------|-------------------|
-| `@Image1` | The **Start Image** -- the only image slot that gets a promptable token |
+| `@Image1`, `@Image2`, … | Ordered `image_urls` style/appearance references on the O3 reference route |
 | `@Element1` | First added Element (character, prop, or location) |
 | `@Element2` | Second added Element |
 | `@Video1` | A reference video (if applicable) |
 
 **Always reference your uploaded images/elements by token in the prompt.** Without this, the model may ignore them or treat them as loose context rather than binding them to specific subjects.
 
-### CRITICAL: How Start Image and End Image Actually Work in PR0TA
+### First frames and reference images
 
-Through testing, the following constraints have been confirmed in PR0TA's Kling O3 Pro implementation:
+On FAL's O3 `reference-to-video` routes, ordered `reference_image_asset_ids` or
+`reference_image_urls` become provider `image_urls`: appearance, material, lighting
+or environment guides. They do not become a first frame. Bind them in the prompt
+as `@Image1`, `@Image2`, and so on. `elements` keep their separate structured role.
 
-- **`@Image1` = Start Image only.** This is the only image slot that gets a promptable `@Image` token.
-- **End Image is NOT promptable** -- there is no `@Image2` token. Using `@Image2` in the prompt causes the error: *"Invalid reference index 2 for image. Only 1 images provided."* The End Image acts as an **implicit structural target** that the model interpolates toward. You do NOT reference it in the prompt -- just describe the journey and the model handles the transition.
-- **End Image requires Start Image** -- you cannot provide an End Image without a Start Image. Doing so causes the error: *"Tail image without first image is not supported."*
-- **Start Image alone works fine** -- you can generate with just a Start Image and no End Image.
-
-**Summary of what's promptable vs. structural:**
-
-| Slot | Promptable? | Token | Notes |
-|------|-------------|-------|-------|
-| Start Image | Yes | `@Image1` | Required if End Image is used |
-| End Image | No | *none* | Implicit target -- the model transitions toward it |
-| Element 1 | Yes | `@Element1` | Character/prop/location bundle |
-| Element 2 | Yes | `@Element2` | Additional subject bundle |
+Set `start_image_asset_id` or `start_image_url` explicitly when that image must be
+the opening frame. A separately supplied first frame stays distinct from the
+reference list. If an endpoint requires a first frame for an end-frame target,
+supply it explicitly; do not substitute an environment guide. Check that exact
+endpoint's schema rather than applying a first/last-frame rule to references.
+See [FAL's O3 reference contract](https://fal.ai/models/fal-ai/kling-video/o3/pro/reference-to-video/api).
 
 ### What is an Element?
 
@@ -127,7 +123,7 @@ For consistent characters across multiple generations:
 
 **Shot limits and duration:**
 
-- **Kling V3 Pro:** up to **5 shots** per generation.
+- **Kling V3 Pro:** up to **5 shots** per generation. Each `multi_prompt[].prompt` is limited to **512 characters**, independently of the main prompt limit. Shorten an overlong shot before quoting or submitting; PR0TA refuses it rather than truncating it.
 - **Kling O3 Pro:** up to **6 camera cuts** per generation.
 - **Total duration across all shots: up to 15 seconds.** Sum of per-shot durations cannot exceed 15s.
 - Individual shot durations are explicitly set per shot. A two-shot generation might be 5s + 5s or 3s + 7s — you choose.
