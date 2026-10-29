@@ -38,6 +38,9 @@ Behavior:
 | `video` | `extend_video` / `video_extend` | Extend a source video with a cataloged extension model |
 | `video` | `video_to_video` | Transform a source video with an edit-capable model (Beeble SwitchX, Seedance 2.5 Edit, Gemini Omni Flash 1.1 edit), or derive a matte with `fal-ai/birefnet/v2/video` or `bria/video/background-removal` (no prompt; provider controls go in `parameters`); SwitchX also accepts `alpha_asset_id` mattes |
 | `3d` | `image_to_3d` | Image-to-3D asset/body generation (SAM 3D, Meshy, Rodin, etc.) |
+| `3d` | `text_to_3d` | Prompt-to-3D asset generation (Tripo H3.1 and Hunyuan 3D v3.1) |
+| `3d` | `mesh_cleanup_3d` | Clean up an existing GLB/OBJ with Hunyuan 3D Smart Topology |
+| `3d` | `split_3d` | Split an existing FBX into separate parts with Hunyuan 3D Part Splitter |
 | `3d` | `animate_3d` | Rig a humanoid GLB and generate multiple Meshy animation clips |
 | `3d` | `retexture_3d` | Repaint an existing 3D model with `meshy/v7/retexture`: exactly one of `model_asset_id` (a GLB asset) or `model_url`, plus a texture `prompt` (up to 600 characters) or a style image (`image_asset_id` / `image_url`); `parameters.texture_resolution` is 2k, 4k or 8k. The result is a new 3D asset; the source is kept |
 | `lipsync` | `lipsync` / `video_audio_to_video` | Video/audio-driven Lipsync |
@@ -79,6 +82,12 @@ Multi-view image-to-3D takes several views of one subject in a single request: `
 ```
 
 Canonical Meshy v7 IDs are `meshy/v7/image-to-3d` and `meshy/v7/multi-image-to-3d`; do not add a `fal-ai/` prefix.
+
+### Hunyuan 3D v3.1 Mesh Operations
+
+Hunyuan Pro and Rapid image/text endpoints use the same `image_to_3d` and `text_to_3d` modes. Pro image-to-3D accepts `parameters.input_image_url` plus optional named back, left, right, top, bottom, and 45-degree views; Rapid accepts one `input_image_url`. Pro prompts are limited to 1,024 UTF-8 characters and Rapid prompts to 200. Both support `generate_type`, `enable_pbr`, and the Pro `face_count` control.
+
+For post-processing, use exactly one of `model_asset_id` or `model_url`. `mesh_cleanup_3d` accepts GLB or OBJ and forwards `input_file_type`, `polygon_type`, and `face_level`; `split_3d` accepts FBX only and returns every split part as a separate registered 3D asset.
 
 ### Rig and Multi-Animation Request
 
