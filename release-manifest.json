@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06548-yik",
-  "bundle_sha256": "a229cb51a51f48965bc7bfdd420590b129c0ded46f4cc7fef2f26fde4d36c345",
+  "platform_revision": "pr0ta-platform-06619-kal",
+  "bundle_sha256": "a65ec541f7d8ab04d0fdc2264aa8040b62ee49b7700fb2248501b07b1f254b99",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "05984c1d1c2535e472ee874ec034e8bf7078f95704879a9381d6b508b5df2a94",
+      "content_sha256": "58618073404d203c2550be878444a7551f100f2cdbb1225dd4e0c1cc2ed88835",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "67d794f28610e4e3e09dea84516a4e6f7c17e65877c2c4ebb198c390ad18bd4b"
+          "sha256": "8c55493ed462ac3c72d543de5442ec9ade22536918d70cdc5885c35c8372887b"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "ebcd0f04528f6583797e4043a0ca138a3f0e25c6e123d64661ebc9ddfa2a71bf"
+          "sha256": "72907f7f1e5891d08c4b7a635badffe4f984def409f60d972078fe3b46919e28"
         },
         {
           "path": "reference/music-analysis.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "76179446ed0ae7177ee8125064f2256abf99628e948e7ae09ea7f8d04e182aa6",
+      "content_sha256": "6856898650293fbed4654d017239731fdf46c0fcce9b65178d88da7391e84552",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "03debac894387758f20e1da87b2897a16fe45b3c8e40e71528c53a326a950c08"
+          "sha256": "18dfed67ddfb5c8a12d9006550763109245489bc9c9313b0b7ae9e350d3ee7f3"
         },
         {
           "path": "reference/camera-solving.md",
@@ -267,7 +267,7 @@
         },
         {
           "path": "reference/route-selection.md",
-          "sha256": "4c6aee4e85b923238b1b53339a2ef24ba377e2abc5733fbff15508352edad5ec"
+          "sha256": "67446f97aaf41179a9441523bfff262c05962f86af6e93196a759f5f243b8fe8"
         },
         {
           "path": "reference/switchx-2.md",
@@ -324,11 +324,11 @@
     {
       "name": "pr0ta-operator",
       "description": "Hand work to PR0TA's own Operator as a durable mission: long or many-step production goals (draft a screenplay from beats, prep a set of scenes, storyboard an act, generate and review a batch) that run inside the app with its permissions, credit budget, and approval stops. Read when delegating, running work unattended, or waiting on a mission.",
-      "content_sha256": "693ee402f55a0c31e68acb6b281db1c49afb8879dd211c5c962bee520d2d8562",
+      "content_sha256": "fbf3e809c7f680695c897756e87b270ffe6de9a3c681ad1fbfeb07c13c29bb77",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "d0a7786b014e1e2112207cc77b1484f0e5a8ed641cf8cb982730d2a39ce4d320"
+          "sha256": "460ef4cc3371f774f7ec4a6925325dcceafb2d0efd5f310aa4dbd4f03bffb4e7"
         }
       ]
     },
@@ -420,7 +420,7 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut.",
-      "content_sha256": "6a67d393ce6f077ce0d455ec143a0f237bac75040b0920d2cccdf0d2a2726fdc",
+      "content_sha256": "8b5f7ee9a27e16d07a0d7fea5de449a5ae0f262c7478d1196f5049a4a7e9a200",
       "documents": [
         {
           "path": "SKILL.md",
@@ -432,14 +432,14 @@
         },
         {
           "path": "reference/verification-loop.md",
-          "sha256": "6db256d2bd29d813fa5272d7223cb28b87bce1e1248409c3710ba84793fb2676"
+          "sha256": "97cad95a86d4f203088858e3f07d1bdfc7aa86a25c6ed825faf233956ca9bbc8"
         }
       ]
     },
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "42f7ba85533fab7245b170286fcbc0c765dc8436f17e092619727e15980c78f6",
+      "content_sha256": "c6507ea80eb6759e47648ae18ef1a4ea075de22dfd8b723d5600204b6fcca682",
       "documents": [
         {
           "path": "SKILL.md",
@@ -491,7 +491,7 @@
         },
         {
           "path": "reference/seedance-2.5-prompt-craft.md",
-          "sha256": "24c66cb446948bf18e742362054243fb6a3aa6a1e99213bf48e377d7e17b09e1"
+          "sha256": "2e10b02d2fc0011ba8d2a03132fb1fb5a397bb8fd46a0d8ec528167f3c22e4df"
         },
         {
           "path": "reference/seedance-2.5-sync-sound.md",

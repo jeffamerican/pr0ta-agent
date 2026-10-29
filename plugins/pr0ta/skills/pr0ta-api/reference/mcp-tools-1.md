@@ -66,6 +66,12 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `bug_report_create`(**title**, **description**, severity, steps_to_reproduce, expected_behavior, actual_behavior, error_messages, screenshot_url, additional_context): Create an internal bug report for the PR0TA developer team.
 
+## camera
+
+- `camera_solve_get`(**solve_asset_id**, include_track): Read a camera solve's lens, error, source-frame timestamps, sample poses and sparse points.
+- `camera_solve_place`(**request**): Save a NEW placement of a relative camera solve into this project's virtual set: supply explicit uniform scale, XYZ Euler rotation in degrees, and tr…
+- `camera_solve_submit`(**request**): Infer camera movement from one continuous source shot using Blender's native background marker tracking and camera reconstruction, on PR0TA's isolate…
+
 ## cast
 
 - `cast_list_get`(): Load the Casting-page cast list with enriched portrait, sheet, and voice fields: face sheet (faceSheetAssetId; the face at every shot size), outfit s…

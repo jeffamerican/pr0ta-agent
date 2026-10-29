@@ -20,6 +20,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **blocking** (`mcp-tools-1.md`): blocking_animatic_render, blocking_check, blocking_get, blocking_save
 - **breakdown** (`mcp-tools-1.md`): breakdown_element_review_decide, breakdown_rerun, breakdown_status
 - **bug** (`mcp-tools-1.md`): bug_report_create
+- **camera** (`mcp-tools-1.md`): camera_solve_get, camera_solve_place, camera_solve_submit
 - **cast** (`mcp-tools-1.md`): cast_list_get, cast_list_save
 - **casting** (`mcp-tools-1.md`): casting_avatar_demo_generate, casting_character_sheet_prompt_resolve, casting_descriptive_prompt_generate, casting_portrait_prompt_write, casting_read_generate, casting_voice_design, casting_voice_sample_generate
 - **character** (`mcp-tools-1.md`): character_consistency_get

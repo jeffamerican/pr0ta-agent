@@ -88,7 +88,11 @@ rejects one, and only on the user's explicit decision. Draft artifacts marked
 relay their answer with `operator_mission_review(mission_id, artifact_id,
 decision, note?)`. A card with `options` (2 to 4 labelled choices, such as
 "Fix it" / "Leave as is") takes `decision: "choose"` and `choice` set to one
-label; others take `approve` or `request_changes`. An action held because the
+label; others take `approve` or `request_changes`. Any card also accepts
+`decision: "respond"` with a non-empty `note`: it selects no option and grants
+no approval, and sends the note and the card's saved asset notes as the response.
+In the app, Enter or Send note submits it. Choice labels name the actual media
+and action (for example, "Keep this clip" or "Revise this image"). An action held because the
 user approved only a quote on its subject (`quote_only_scope`) is approved by
 the user in the app, never with a token. You may approve a card
 that approves first frames or Casting voices on your own judgment with a

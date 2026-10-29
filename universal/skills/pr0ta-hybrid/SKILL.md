@@ -32,10 +32,18 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 
 ## Mandatory Steps
 
-**Edited sequence with cuts:** read `reference/hybrid-sequences.md` first. Import,
+**Honor the user's chosen route first.** A named model, sequence-source workflow,
+or native-draft/finish plan takes precedence over the default route ladder.
+For an explicitly requested Seedance 2.5 Omni Reference sequence-source workflow,
+read `reference/route-selection.md` → "User-Chosen Sequence-Source Omni Reference".
+Do not replace it with per-shot SwitchX, mattes or dedicated video-edit work.
+
+**Edited sequence with cuts:** read `reference/hybrid-sequences.md` first. By default, import,
 review cuts/coverage/continuity states, and materialize individual shots before
 using the continuous-shot steps below. Provider-length chunks are not editorial
-shots. Never chain a generated last frame across a cut into a different angle.
+shots. The user's sequence-source Omni route instead keeps the supplied edit
+inside contiguous chunks, bounded by the verified model limit; it does not
+require separately regenerating each shot. Never chain a generated last frame across a cut into a different angle.
 On a generative route, the chunks of one continuous shot depend on each other:
 render each after the one before it and carry its motion forward as `pr0ta-video`
 → "Continuity Workflows" describes; an ending still carries appearance, not motion.
@@ -46,7 +54,7 @@ of its last frame, and recorded speech stays recorded
 
 1. **Read project memory first.** Call `memory_context_pack` for the scene, location, and shot. Approved location plates, set environments, and world decisions are the source of truth for what may change and what must stay.
 2. **Probe the plate before you plan.** Inspect the source asset's duration, frame rate, pixel dimensions, and codec. SwitchX accepts at most 240 frames and 2,770,000 pixels in one generation and needs a constant frame rate. PR0TA chunks a longer plate automatically: one Beeble job per chunk, each billed on its own, stitched back into one render and one alpha. The plan lives in `metadata.switchx_chunks`; PR0TA feeds the final rendered frame of each chunk to the next as its look reference and records that lineage under `reference_chain`. Keep `chain_chunk_references` on unless you are running a controlled comparison; a long evolving background can still benefit from a motivated edit.
-3. **Decide the matte before the look.** Choose `auto`, `fill`, `select`, or `custom` from `reference/matte-and-alpha.md`. A wrong matte cannot be fixed by a better prompt. `auto` locks onto the subject in the first frames, so a plate that opens on an empty frame, a prop, or an occluded actor, and any plate PR0TA will chunk, needs a `custom` matte from BiRefNet. On a chunked plate `auto` can replace the subjects: it has regenerated the couple as different people in a first chunk that a BiRefNet matte kept intact.
+3. **For a matte-based route, decide the matte before the look.** Choose `auto`, `fill`, `select`, or `custom` from `reference/matte-and-alpha.md`. A wrong matte cannot be fixed by a better prompt. `auto` locks onto the subject in the first frames, so a plate that opens on an empty frame, a prop, or an occluded actor, and any plate PR0TA will chunk, needs a `custom` matte from BiRefNet. On a chunked plate `auto` can replace the subjects: it has regenerated the couple as different people in a first chunk that a BiRefNet matte kept intact. An Omni Reference request does not need matte preparation.
 4. **Author the look as a plate, not a sentence.** For any background swap, build or approve a reference image that matches the plate's lens, horizon, camera height, and subject scale, then let the prompt describe lighting and mood. When a 3D world is available, select it in Previs, keep the shot camera fixed, use World registration plus the frame-zero plate blend to reposition the world, and choose Render first-frame BG. Use that image as `reference_image_asset_ids[0]`. Read `reference/reference-plate-authoring.md`.
 5. **Keep structure and appearance authorities separate.** A splat, collider, depth pass, or clay render controls geometry and camera only. Approved location plates control palette, material, light, and atmosphere. Never let a grayscale or neutral pass carry appearance authority. Read `reference/world-anchored-references.md`.
 6. **Review every output against the source.** Compare faces, hands, hair edges, contact shadows, and camera motion frame by frame. SwitchX identity preservation can vary across identical runs, so review before editorial approval and rerun rather than accept drift.

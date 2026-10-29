@@ -2,6 +2,26 @@
 
 Choose the route by what must survive untouched. Read the selected model's reference in `pr0ta-video` before writing its prompt; grammars and reference fields are not portable.
 
+The user's explicit route and workflow take precedence over this guide's default
+recommendations. Explain a hard input or provider limitation when one prevents
+that route; do not switch models or ask the same route question again after a
+clear choice.
+
+## User-Chosen Sequence-Source Omni Reference
+
+When the user chooses Seedance 2.5 Omni Reference with the edited sequence as
+source, keep that workflow. Use the source edit as the sole video, split only
+as needed for the live model's verified duration/input limits, and retain its
+cuts within each contiguous chunk. Provider chunks are not newly invented shots.
+Treat source text slugs as placeholders for new footage, as the user directs.
+Use the requested native drafts first, review them, then finish accepted drafts
+to the requested resolution. Reassemble against the original continuous recorded
+audio; generated sound does not replace it. Reference generation can reinterpret
+faces, gestures and timing, so compare the actual output against the source
+before calling it preserved. That quality check does not authorize changing the
+chosen route to SwitchX, adding matte work, or substituting a dedicated video-edit
+modality. The edit-specific defaults below apply when an edit route was chosen.
+
 ## Contents
 
 - Keep a performance: Seedance edit or SwitchX
