@@ -164,7 +164,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `hybrid_sequences_create`(**request**): Import an edited project video and start non-generative cut/coverage analysis.
 - `hybrid_sequences_generate`(**sequence_id**, **request**): Spend credits on remaining shots in an approved representative's continuity state.
 - `hybrid_sequences_get`(**sequence_id**): Read the sequence revision, exact frame cuts, coverage setups, approvals and batch plans.
-- `hybrid_sequences_job`(**sequence_id**, **request**): Prepare reviewed cuts as individual shot assets, or assemble approved outputs in original order with source audio.
+- `hybrid_sequences_job`(**sequence_id**, **request**): Reanalyze unmaterialized cuts with action analyze and threshold (0.05-0.9; lower finds more cuts), prepare reviewed cuts as shot assets, or assemble…
 - `hybrid_sequences_list`(): List project Hybrid Production sequences in Post.
 - `hybrid_sequences_update`(**sequence_id**, **request**): Save reviewed cuts, coverage membership, representatives and continuity states.
 - `hybrid_shot_generate`(**shot_id**, **request**): Submit a saved immutable Hybrid shot revision through unified generation.

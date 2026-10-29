@@ -9,6 +9,16 @@ Hybrid production keeps something real and regenerates the rest. The plate's per
 
 Read `pr0ta` first for the production hub, then this skill for any shot that starts from footage or a world. Fully generative shots stay in `pr0ta-video`; this skill covers the plate-based exceptions.
 
+**Seedance 2.5 Omni Reference is a first-class hybridization route.** Properly
+prompted, it is fully capable of maintaining actor identities and performances,
+including gestures, camera movement, timing and cuts, and excels across edited
+sequences. Use the source edit as the performance authority and bind appearance
+references to their intended roles. Its native draft workflow is especially useful:
+review the inexpensive draft, then finish the accepted native draft at delivery
+resolution. Do not dismiss reference mode as incapable of preserving performances,
+or replace a successful chosen workflow with another route. Read
+`reference/route-selection.md` → "Sequence-Source Omni Reference".
+
 ## When to Use This Skill
 
 - A live-action or previously generated clip must keep its performance while the background, sky, set extension, props, wardrobe, or time of day changes.
@@ -34,14 +44,14 @@ If none of these apply, stay in `pr0ta-video` or `pr0ta-image`.
 
 **Honor the user's chosen route first.** A named model, sequence-source workflow,
 or native-draft/finish plan takes precedence over the default route ladder.
-For an explicitly requested Seedance 2.5 Omni Reference sequence-source workflow,
-read `reference/route-selection.md` → "User-Chosen Sequence-Source Omni Reference".
+For a Seedance 2.5 Omni Reference sequence-source workflow,
+read `reference/route-selection.md` → "Sequence-Source Omni Reference".
 Do not replace it with per-shot SwitchX, mattes or dedicated video-edit work.
 
 **Edited sequence with cuts:** read `reference/hybrid-sequences.md` first. By default, import,
 review cuts/coverage/continuity states, and materialize individual shots before
 using the continuous-shot steps below. Provider-length chunks are not editorial
-shots. The user's sequence-source Omni route instead keeps the supplied edit
+shots. An Omni Reference sequence-source route instead keeps the supplied edit
 inside contiguous chunks, bounded by the verified model limit; it does not
 require separately regenerating each shot. Never chain a generated last frame across a cut into a different angle.
 On a generative route, the chunks of one continuous shot depend on each other:
@@ -57,15 +67,20 @@ of its last frame, and recorded speech stays recorded
 3. **For a matte-based route, decide the matte before the look.** Choose `auto`, `fill`, `select`, or `custom` from `reference/matte-and-alpha.md`. A wrong matte cannot be fixed by a better prompt. `auto` locks onto the subject in the first frames, so a plate that opens on an empty frame, a prop, or an occluded actor, and any plate PR0TA will chunk, needs a `custom` matte from BiRefNet. On a chunked plate `auto` can replace the subjects: it has regenerated the couple as different people in a first chunk that a BiRefNet matte kept intact. An Omni Reference request does not need matte preparation.
 4. **Author the look as a plate, not a sentence.** For any background swap, build or approve a reference image that matches the plate's lens, horizon, camera height, and subject scale, then let the prompt describe lighting and mood. When a 3D world is available, select it in Previs, keep the shot camera fixed, use World registration plus the frame-zero plate blend to reposition the world, and choose Render first-frame BG. Use that image as `reference_image_asset_ids[0]`. Read `reference/reference-plate-authoring.md`.
 5. **Keep structure and appearance authorities separate.** A splat, collider, depth pass, or clay render controls geometry and camera only. Approved location plates control palette, material, light, and atmosphere. Never let a grayscale or neutral pass carry appearance authority. Read `reference/world-anchored-references.md`.
-6. **Review every output against the source.** Compare faces, hands, hair edges, contact shadows, and camera motion frame by frame. SwitchX identity preservation can vary across identical runs, so review before editorial approval and rerun rather than accept drift.
+6. **Review every output against the source.** Compare faces, hands, hair edges, contact shadows, and camera motion. First check whether a suspected departure was already present in the source or explicitly written into the submitted prompt. Disclose findings for the user's decision. A QC flag alone does not authorize a repair, regeneration or route change; retain an accepted take and its findings. For a flagged still, pause dependent work for review; using a flagged take as a new generation reference requires explicit approval.
 7. **Record the decision.** After a take is approved, call `memory_record_decision` with the plate, matte, and reference asset IDs so later shots reuse the same authorities.
 
 ## Route Selection
 
 Choose the narrowest tool that preserves what must stay. To keep a recorded performance, a Seedance 2.5 edit prompted to lock the faces, performance and timing is a first-class route; SwitchX is the choice when the plate's pixels must come through exactly or Seedance attempts failed. Read `reference/route-selection.md` → "Keep a Performance: Seedance Edit or SwitchX", then the full comparison.
 
+For edited-sequence reconstruction, Omni Reference with a clear source-performance
+contract and native drafts is also a first-class choice; it does not require
+per-shot mattes or a dedicated edit operation.
+
 | Need | Route | Why |
 |---|---|---|
+| Preserve actor identities and performances across an edited sequence while transforming its world | Seedance 2.5 Omni Reference, `omni_reference_task_type: "reference"`, source sequence plus role-bound appearance references | Retains the supplied edit inside provider-length chunks; native drafts support useful review before finishing the accepted draft |
 | Keep the performance pixels exactly, change background, lighting, props, or wardrobe | `beeble/switchx` (`video_to_video`), `custom` matte for actors | Source pixels drive the output; the masked region is regenerated and the kept subject is relit to the reference |
 | Angle-matched reference plate from one frame | `beeble/switchx-image` (`edit_img`) | Same engine on a still; fast iteration before a video pass |
 | Keep the performance and likeness, change the world, light, wardrobe or style | Seedance 2.5 Video Edit, or Omni with `omni_reference_task_type: "edit"`, the plate as the only video | Every pixel redrawn; faces, performance and timing hold when the prompt locks them (check against the source). Only the Video Edit route keeps the source's sound (`generate_audio: false`); MuAPI Omni always generates it |
@@ -167,8 +182,13 @@ Before an output enters the timeline:
 - Camera motion in the regenerated region agrees with the kept region; look for sliding backgrounds on pans. On a generative edit, compare the whole returned camera move with the source before calling it preserved.
 - The output duration, frame rate, and dimensions match the prepared source; do not retime.
 - Before joining clips or generating a source-guided continuation, establish where they correspond: word-timed transcripts (clips are indexed automatically, a joined render with `transcription_start`; `pr0ta-audio`), `audio_align` over several speech windows for offset and drift, repeated or missing words at the join, then action and camera in pictures (`video_chunks_assemble` measures and joins a chunked take this way). Transcript timing is approximate; regenerated audio leaves `audio_align` inconclusive, which is an answer, not a pass.
+- Restoring the original soundtrack and matching it back to itself verifies audio placement only. Check visible mouth closures, gesture landmarks and internal cuts against source pictures at mapped times; report audio alignment and picture/sound synchronization separately. Leave mouth sync unverified when evidence is insufficient.
+- Inspect actor lighting separately from the environment. Bright hair, warm colour or leaf shadows on a wall do not establish hard sunlight on faces or clothing. State persistent lighting requirements in relevant beats and verify them at the opening, transitions, close views and ending; repetition is useful direction, not proof of adherence.
 
-If any check fails, change the matte or the reference before changing the prompt, and rerun.
+On a failed check, compare with the source and disclose the finding before proposing
+the next action. Keep flagged video and its findings for the user's decision; do
+not automatically regenerate, repair, re-edit or change routes. If the user requests
+a correction, adjust the input or prompt that controls the observed problem.
 
 ## Cross-Skill Pointers
 

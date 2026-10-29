@@ -22,7 +22,7 @@ The visual house principle: **every prompt is completely self-contained.** No as
 | MiniMax Hailuo H3, H3 Max, H3 Max Multi-Angle | `pr0ta-video/reference/hailuo-h3.md` |
 | FLUX 3 video | `pr0ta-video/reference/flux-3.md` |
 | LTX 2.5 | `pr0ta-video/reference/ltx-2.5.md` |
-| Kling V3 / O3 video | `pr0ta-video/reference/kling-prompting.md` |
+| Kling 4 / V3 / O3 video | `pr0ta-video/reference/kling-prompting.md` |
 | Gemini Omni Flash 1.1 | `pr0ta-video/reference/gemini-omni-flash-1.1.md` |
 | Grok Imagine Video 1.5 | `pr0ta-video/reference/grok-imagine-video-1.5.md` |
 | Motion-control / performance transfer | `pr0ta-video/reference/motion-transfer.md` |

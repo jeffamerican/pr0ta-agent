@@ -5,13 +5,13 @@ description: "PR0TA video generation and repair: text-to-video, image-to-video, 
 
 # Video Generation
 
-For recurring characters, locations, or props, read `pr0ta-consistency` first. Before writing any generation prompt, read `pr0ta-prompting` and the model reference that the resolved model routes to below; before submitting it, grade it with `pr0ta-prompting/reference/prompt-rubric.md` and send only an A.
+For recurring subjects, read `pr0ta-consistency` first. Before prompting, read `pr0ta-prompting` and the resolved model reference below; grade with `pr0ta-prompting/reference/prompt-rubric.md` and submit only an A.
 
-For an existing project, call `memory_context_pack` with `task_intent: "video_generation"` or `"storyboard_prompt"` and the relevant scope. Carry approved references, continuity decisions, and unresolved conflicts into the shot plan. Record a selected take or a change of approach with `memory_record_decision` or `memory_record_note`.
+For existing projects, call `memory_context_pack` with `task_intent: "video_generation"` or `"storyboard_prompt"` and the relevant scope. Carry approved references, continuity decisions and unresolved conflicts into the plan. Record selected takes or approach changes with `memory_record_decision` or `memory_record_note`.
 
 ## Resolve the Model
 
-The platform chooses models, not this skill. The admin pins models per modality and each user may override them in Settings → Tools.
+Use the platform's modality defaults or the user's explicit model. Kling 4 supersedes Kling 3 for new supported operations; see `reference/kling-prompting.md`.
 
 1. Name the operation, then its modality key:
 
@@ -31,7 +31,7 @@ The platform chooses models, not this skill. The admin pins models per modality 
 
 2. If the user named a model, use it. Otherwise resolve the key with `models_preferred(modality=...)`; `pr0ta-api` → "Choosing a model" owns the full rule, including a null `model_id`.
 3. Call `models_get_defaults(model_id)`. Send a `mode` from its `supported_modes` unless the model reference documents a route-specific mode, and treat its schema as the field, enum, duration, and resolution authority. Several image-to-video routes (Gemini Omni Flash 1.1, H3 Max, Wan 3.0 Prime, Grok Imagine Video 1.5, and others) accept only `ref_to_vid`.
-4. If the `models_get_defaults` response has a `draft_mode` block, the model can draft: render a cheap low-resolution draft, review it, and finish only the approved draft at full resolution. Drafting is the default way to explore: draft first for new or changed shots and anything likely to need more than one attempt; generate directly only for an already-approved shot or an edit or extend. Before presenting a cut as final, finish the drafts it plays (`post_drafts_list`). Read `reference/draft-to-final.md`.
+4. A `draft_mode` block in `models_get_defaults` means native drafts. Draft new or changed shots and exploratory attempts first; review, then finish accepted drafts at `draft_mode.final_resolution`. Generate directly for an already-approved shot, edit or extend. Before final delivery, finish the drafts the cut plays (`post_drafts_list`). Read `reference/draft-to-final.md`.
 5. Read the model reference for the resolved id (routing table below) before writing its prompt.
 6. For cost-sensitive choices, query `GET /api/crew/model_pricing?model_id={model_id}` for each exact candidate and output configuration. Skills carry no prices.
 
@@ -138,7 +138,7 @@ Input orientation does not guarantee output orientation. Always set `aspect_rati
 - **Long generations over piece by piece:** a scene's run of shots renders as one multi-shot generation (Seedance 2.5 up to 30 s in one generation; the Queue's sequence item) wherever the model allows: continuity across the cuts is better, and short shots do not hit per-shot minimums. A longer scene or continuous shot continues in the next generation, submitted once the previous take returns, with that take as its continuity reference video, not in small fragments; an ending still carries appearance, not motion. Queue sequence items attach the previous take themselves, so add no continuity video of your own; on a direct submission pass a short tail of it, within the route's reference-video limits (check `models_get_defaults`), cut with `assets_trim`. Fix afterwards, not by pre-splitting: trim the long take, replace one weak shot with a patch render (it takes the footage before it as its continuity reference: the Queue attaches the previous shot's take, or trim the sequence take to just before the shot and pass it in `reference_video_asset_ids`), or inpaint/edit a region. Split only when a shot needs a different model. A sequence item's references come from its shots (approved first frames, the shot list's cast); to set its exact packet (e.g. drop an off-screen character's portrait), send `sequence_reference_asset_ids` in order to `production_queue_asset_update`: it replaces the packet, while `reference_image_asset_ids` only adds.
 - **Kling multi-shot:** up to 5 (V3) or 6 (O3) cuts in one generation with shared Elements. Its shot labels and `@Image1` / `@ElementN` tokens are not interchangeable with Seedance. Read `reference/kling-prompting.md`.
 - **Continuing a Seedance 2.0 clip:** Omni Reference with the previous clip as `@video1` is reference-guided continuation. MuAPI's provider-native 2.0 extension routes need the original provider `request_id` and are not in the unified catalog; see `reference/seedance-omni.md`.
-- **Source-preserving change or continuation:** use the family's exact Edit or Extend route (for example Seedance 2.5 Video Edit and Seedance 2.5 Video Extend, FLUX 3 Extend, Kling V3 Video Extend, Gemini Omni Flash 1.1 Edit). Do not substitute a generic reference call: reference-guided generation reinterprets the source. When the source must stay the only timeline (recorded footage), send no second video: attached videos blend their action and sound. Carry an earlier take as a still of its last frame.
+- **Source-preserving change or continuation:** use the family's exact route, such as Seedance 2.5 Video Edit or Seedance 2.5 Video Extend, when that operation was chosen. Seedance 2.5 Omni Reference is a first-class route for hybrid reconstruction across edited sequences: properly prompted, it is fully capable of maintaining actor identities and performances, with useful native drafts. Follow `pr0ta-hybrid/reference/route-selection.md`; do not force this workflow onto an edit route. For a source-guided edit, keep the source as the only video: other attached videos blend action and sound. Carry earlier-take continuity as a still of its last frame.
 
 ## Repairs and Enhancement
 
@@ -148,7 +148,7 @@ Choose the narrowest operation that fixes the defect:
 - Change one region, object, or style while keeping the clip: an edit route (`video_to_video_model`); request one focused change and name what must stay.
 - Correct framing: `video_reframe_model`.
 - Remove or replace a background: `video_bg_removal_model`.
-- Replace or relight the world around a live-action performance: a Seedance 2.5 edit that locks the faces and performance, or, for exact plate pixels, Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid` for the route choice.
+- Replace or relight the world around a live-action performance: source-bound Seedance 2.5 Omni Reference across edited sequences, a Seedance 2.5 edit that locks the faces and performance, or, for exact plate pixels, Beeble SwitchX (`video_to_video`). Read `pr0ta-hybrid` for the route choice.
 - Resolution, noise, blur, or cadence without creative change: `video_upscale_model`. Topaz Precision, Denoise, Deblur, and Interpolate are fidelity utilities; Generative and Creative reconstruct detail and need the user's approval of that tradeoff. Query live defaults per route; controls do not transfer between Topaz families.
 
 When a narration beat exceeds generation limits: split at a natural clause, extend a successful source, cut to companion coverage, then use a still or Ken Burns treatment. Regenerate the whole piece only when the defect is a global creative decision, not a local shot failure.

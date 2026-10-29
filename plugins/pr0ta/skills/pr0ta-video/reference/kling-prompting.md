@@ -1,10 +1,37 @@
-# Kling V3 / O3 Pro Prompting — Reference
+# Kling 4 and Legacy / Specialist Kling Prompting — Reference
 
 Read this file when the resolved model is a Kling route (`kling/*` or `fal-ai/kling-video/*`): writing a Kling prompt, planning multi-shot coverage, or debugging a shot that didn't land. Check `models_get_defaults(model_id).supported_modes` for the mode; Kling image-to-video and reference routes use `ref_to_vid`.
 
 Kling motion-control routes (performance transfer from a driving video) are covered in `motion-transfer.md`. Structured `camera_control` shapes and where PR0TA applies them are in `video-reference-field-matrix.md` (rule 4).
 
 ---
+
+## Kling 4 supersedes Kling 3 for new work
+
+When choosing a Kling route for a new supported operation, prefer Kling 4 over
+Kling 3. Preserve an explicit user selection, existing approved take, native finish,
+or project/model pin; propose a migration rather than silently replacing it.
+Resolve the modality and read `models_get_defaults` for the exact route before
+quoting or submitting.
+
+| Operation | Current catalog route |
+|---|---|
+| Text to video | `kling/v4/text-to-video` |
+| Animate a start frame / optional end frame | `kling/v4/image-to-video` |
+| Reference-led cast and multi-shot sequences | `kling/v4/reference-to-video` |
+| Edit an existing video | `kling/v4/video-to-video/edit` |
+| Intermediate keyframes | `muapi/kling-4.0-keyframe-to-video` |
+
+The `kling/v4/*` routes above are Fal-hosted; do not infer a direct Kling API
+contract from their prefix. Bind only the references and tokens that the resolved
+schema supports. Do not carry V3/O3 request templates, audio switches, camera
+controls, duration limits or element shapes into V4 without checking its schema.
+
+The V3/O3 sections below document existing jobs and specialist capabilities, such
+as their native-4K or motion-control routes. Keep those exact endpoint contracts
+when the operation has no corresponding Kling 4 route; an older multi-shot example
+is not a recommendation to start general new work on Kling 3. Current catalog and
+live defaults own availability, pricing and limits.
 
 ## Kling O3 Pro Prompting Best Practices
 
@@ -110,9 +137,9 @@ For consistent characters across multiple generations:
 4. **Never use pronouns** -- always refer to the character by label (`@Element1`, "the woman", "the soldier") every time. Pronouns cause the model to lose track of which subject is which.
 5. **Reuse the same Element bundles** across multiple generations to maintain continuity throughout a sequence or project
 
-### Multi-Shot Mode (Kling V3 / O3 Pro) — The Continuity Workhorse
+### Legacy / Specialist Multi-Shot Mode (Kling V3 / O3 Pro)
 
-**Kling multi-shot is the cheapest path to character and scene continuity you can buy.** A single Kling multi-shot generation produces up to 5 (V3) or 6 (O3) camera cuts inside **one visual context** — same lighting, same character identity, same environment, same color grade. Three separate 5-second generations will drift between takes; one 15-second multi-shot generation with three shots will not.
+For a selected V3/O3 multi-shot route, several camera cuts share one generated visual context. Bind the same subjects and environment in every shot, then inspect identity, lighting, performance and cut continuity in the result. Shared context helps continuity; it does not guarantee it. Prefer Kling 4 for new supported work.
 
 **When to reach for multi-shot:**
 

@@ -7,20 +7,37 @@ recommendations. Explain a hard input or provider limitation when one prevents
 that route; do not switch models or ask the same route question again after a
 clear choice.
 
-## User-Chosen Sequence-Source Omni Reference
+## Sequence-Source Omni Reference
 
-When the user chooses Seedance 2.5 Omni Reference with the edited sequence as
-source, keep that workflow. Use the source edit as the sole video, split only
+Seedance 2.5 Omni Reference is a first-class route for hybridizing edited sequences.
+Properly prompted, it is fully capable of maintaining actor identities and
+performances and excels at carrying the supplied edit, camera coverage and action
+through a transformed environment. Reference mode is not inherently a loss of
+performance fidelity. Bind the source video to identity, performance, camera,
+timing and cuts; bind each still to its actual appearance or environment role.
+Inspect source pictures for silent gestures and exact cuts before writing timed
+beats. Every beat must describe visible source action or a requested change:
+an invented local gesture can override a global preservation instruction.
+
+For Seedance 2.5 Omni Reference with the edited sequence as source, retain
+that sequence workflow. Use the source edit as the sole video, split only
 as needed for the live model's verified duration/input limits, and retain its
 cuts within each contiguous chunk. Provider chunks are not newly invented shots.
 Treat source text slugs as placeholders for new footage, as the user directs.
 Use the requested native drafts first, review them, then finish accepted drafts
-to the requested resolution. Reassemble against the original continuous recorded
-audio; generated sound does not replace it. Reference generation can reinterpret
-faces, gestures and timing, so compare the actual output against the source
-before calling it preserved. That quality check does not authorize changing the
+at the model's `draft_mode.final_resolution` (not an arbitrary new resolution). Reassemble against the original continuous recorded
+audio; generated sound does not replace it. Compare the actual output against the
+source to establish what the take preserved, as for any hybrid route. That quality
+check does not authorize changing the
 chosen route to SwitchX, adding matte work, or substituting a dedicated video-edit
 modality. The edit-specific defaults below apply when an edit route was chosen.
+
+**Use native drafts deliberately.** They make review and iteration before delivery
+practical. Verify native-draft provenance (provider draft task and asset labels),
+then use `finalize_draft` or the cut's draft-finish approval card to finish the
+accepted draft. This retains the native draft-to-final workflow; a new video-edit
+generation is a different operation. A standalone 480p preview is not proof of a
+native draft. Read `pr0ta-video/reference/draft-to-final.md` for the exact contract.
 
 ## Contents
 
@@ -33,7 +50,7 @@ modality. The edit-specific defaults below apply when an edit route was chosen.
 
 ## Keep a Performance: Seedance Edit or SwitchX
 
-Decide this before choosing a model. Two routes keep a recorded performance (faces and likeness, gestures, lip movements, timing, framing and cuts) while the world around it changes. They keep it in different ways.
+Omni Reference above is a first-class performance-preserving choice. When the chosen workflow instead uses an edit route, compare Seedance edit and SwitchX below: both keep a recorded performance (faces and likeness, gestures, lip movements, timing, framing and cuts) while changing the world, in different ways.
 
 **Seedance 2.5 edit** (`byteplus/seedance-2.5-video-edit`, the MuAPI video-edit routes, or Omni with `omni_reference_task_type: "edit"` and the plate as Video 1). It redraws every pixel and keeps the performance and likeness when the prompt locks them. Write that prompt with `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action". It is a first-class route for keeping performances. Choose it when:
 
@@ -50,7 +67,7 @@ Render it at 720p or 1080p when faces matter, keep the plate as the only video, 
 - Seedance attempts at the shot failed the check after the recipe's reruns;
 - the take must come back at the source's exact length, frame rate and ratio (hybrid sequence assembly checks them).
 
-On the picnic plate (C010, 2026-10-27) SwitchX with a `custom` matte kept both actors pixel-exact and relit them. A 480p Seedance edit of the same plate redrew their faces and turned the grass to gravel. The recipe now targets both failures (a higher resolution, a face lock, the ground named), but no rerun has tested it yet.
+On the picnic plate (C010, 2026-10-27) SwitchX with a `custom` matte kept both actors pixel-exact and relit them. A 480p Seedance edit of the same plate redrew their faces and turned the grass to gravel. The recipe now targets both failures (a higher resolution, a face lock, the ground named), but no rerun of that edit recipe has tested it yet. That individual low-resolution edit is not evidence that Omni Reference cannot preserve identities or performances.
 
 Plan for SwitchX's limits:
 
@@ -73,9 +90,9 @@ When the shot keeps a real performance, tell the person which route you chose an
 
 These hold whatever the prompt says:
 
-- **The source is the only video.** With several videos, the model picks which one to edit from the prompt and uses the others as references. A previous take sent as `Video 2` "for continuity only" replayed its gestures and lines in the new take (a Lago di Como hybrid chunk, 2026-10-28). Carry continuity from the previous chunk as a still of its last frame in the image references; the source already carries the motion. A submit or quote result's `request_advisories` flags a second video. This is for edits of a recorded plate; in generation and reference tasks keep passing the previous shot's take as the continuity reference video (`pr0ta-video` → "Continuity Workflows").
-- **Edit, not reference.** `seedance-2.5-video-edit` (ModelArk or MuAPI) takes the plate as its source and exposes `generate_audio`. Omni with `omni_reference_task_type: "edit"` edits too, when the plate is its only video. A `reference` task regenerates the performance instead.
-- **Recorded speech is the authority.** Generated speech never replaces it. On the video-edit routes, send `generate_audio: false` when the recorded sound or dialogue must survive (usually so in a hybrid with speech); otherwise the route's generated sound stays the default. MuAPI Omni has no `generate_audio` and always generates its soundtrack, so lay the source's soundtrack back under the take in Post. For a finishing re-edit that keeps recorded sound (an accepted take re-rendered at 1080p), use the video-edit route of that resolution with `generate_audio: false`, not Omni: an Omni re-edit's generated soundtrack recreates the recorded dialogue, and the provider refused one for it ("the output audio may be related to copyright restrictions", code `InputVideoSensitiveContentDetected.PrivacyInformation`, which is not a real-person refusal; bug e9a6e90c). PR0TA re-runs such a refused MuAPI Omni edit with one video and no audio once, quietly, on that video-edit route; do not resubmit. A hybrid sequence's assembly uses the original sequence audio. Check lip sync against the recorded track.
+- **The source is the only video.** With several videos, the model picks which one to edit from the prompt and uses the others as references. A previous take sent as `Video 2` "for continuity only" replayed its gestures and lines in the new take (a Lago di Como hybrid chunk, 2026-10-28). Carry continuity from the previous chunk as a still of its last frame in the image references; the source already carries the motion. A submit or quote result's `request_advisories` flags a second video. This also applies to sequence-source Omni Reference reconstruction: the source already carries the performance. A previous take as a continuity video belongs to a deliberately chosen generation/continuation workflow (`pr0ta-video` → "Continuity Workflows"), not an automatic extra input for reconstruction.
+- **Distinguish operations.** `seedance-2.5-video-edit` (ModelArk or MuAPI) takes the plate as its source and exposes `generate_audio`. Omni with `omni_reference_task_type: "edit"` edits too, when the plate is its only video. Omni `reference` is also fully capable of preserving identities and performances with source-bound prompting and is especially useful across edited sequences with native drafts; apart from the sole-source-video rule for reconstruction above, it is not subject to the other edit-specific defaults.
+- **Recorded speech is the authority.** Generated speech never replaces it. On the video-edit routes, send `generate_audio: false` when the recorded sound or dialogue must survive (usually so in a hybrid with speech); otherwise the route's generated sound stays the default. MuAPI Omni has no `generate_audio` and always generates its soundtrack, so lay the source's soundtrack back under the take in Post. First check native-draft provenance: finish an accepted native draft with `finalize_draft` or its draft-finish card (`pr0ta-video/reference/draft-to-final.md`), without making a new edit. The following advice applies only to a separately requested re-edit of a standalone preview or take without native finish support. For that re-edit, use the video-edit route of that resolution with `generate_audio: false`, not Omni: an Omni re-edit's generated soundtrack recreates the recorded dialogue, and the provider refused one for it ("the output audio may be related to copyright restrictions", code `InputVideoSensitiveContentDetected.PrivacyInformation`, which identifies an audio check rather than establishing a real-person violation; bug e9a6e90c). PR0TA re-runs such a refused MuAPI Omni edit with one video and no audio once, quietly, on that video-edit route; do not resubmit. A hybrid sequence's assembly uses the original sequence audio. Check lip sync against the recorded track.
 - **Grade honestly.** Prose such as "Video 1 is the sole action timeline" or "the soundtrack is the editorial authority" earns nothing by itself. The inputs above and a check against the source do (`pr0ta-prompting/reference/prompt-rubric.md`, items 1, 2 and 15).
 
 ## Decision Table
@@ -84,6 +101,7 @@ These hold whatever the prompt says:
 |---|---|---|---|---|
 | `beeble/switchx` | Source pixels in the kept region, timing, frame rate, aspect | Masked region, lighting on the kept subject | One look image, optional matte | Background swap, set extension, sky, day-for-night, wardrobe and prop swaps behind a real performance |
 | `beeble/switchx-image` | Kept pixels of one frame | Masked region, relight | One look image, optional matte image | Angle-matched reference plates |
+| `muapi/seedance-2.5-omni-reference` with source-bound reference prompting | Actor identities, performances, camera and edited coverage when properly prompted and handled; verify the take against its source | Environment, light, wardrobe, style and requested action changes | Edited source video plus clearly bound appearance/environment references | First-class hybridization across edited sequences, with useful native drafts and finishing of accepted takes |
 | `byteplus/seedance-2.5-video-edit` | Performance, likeness, timing, framing and camera when the prompt locks them (pixels are redrawn: check against the source); source length and ratio; source sound with `generate_audio: false` | Environment, light, wardrobe, style, action detail | Up to 30 images, 10 audio | Keeping a recorded performance in a new world, and global restyles, at 480p, 720p, or 1080p (`resolution`; 720p or more when faces matter); the default Seedance edit |
 | `byteplus/seedance-2.5` (Hybrid runs it as an edit task) | As above, through the reference route, with the plate as the only video; re-lay the source sound in Post (keeping it via `generate_audio: false` is verified only on the video-edit route) | As above | Images, videos, audio | Same intent when audio references must ride along, up to 1080p |
 | `muapi/seedance-2.5-video-edit` (`-480p`, `-1080p`, `-4k`) | As the ModelArk video edit | As above | Up to 30 images, 10 audio | 4K delivery (an upscale), or the Spicy/International 4K variants; a ModelArk real-person refusal falls back here by itself (do not resubmit) |
@@ -120,4 +138,4 @@ BiRefNet v2 video with `output_mask` is the native grayscale matte source; SAM 3
 4. SwitchX still pass to fix the reference, then rerun the video.
 5. Generate the background as its own plate from the world and composite on the timeline.
 
-Start at rung 3 when the plate's pixels must come through exactly. Move down the ladder only when the previous rung fails QC for a reason the next rung addresses.
+Start at rung 3 when the plate's pixels must come through exactly. These are options to propose when the user requests a correction. A QC failure does not authorize moving down the ladder: retain the take and findings, follow the user's decision, and change routes only with their direction.

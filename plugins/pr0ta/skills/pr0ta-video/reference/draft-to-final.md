@@ -73,7 +73,8 @@ Send the normal generation request with `draft: true`. Everything else is the sa
 Treat a draft as a proposal, not a deliverable.
 
 - Show it to the user, or check it against the shot's intent: framing, blocking, continuity with adjacent shots, performance, the reference identities.
-- If it is wrong, change the prompt or references and make a **new draft**. Do not finish a draft you would not ship.
+- If a correction is requested, change the prompt or references and make a **new draft** within that authority. QC findings alone do not authorize a new generation or repair.
+- A user can accept a flagged working draft and request its native finish. Finish that exact accepted take, disclose the remaining findings, and retain their acceptance. Finish approval does not by itself approve final delivery.
 - Never finish a draft the user has not accepted when the user asked to review takes.
 - Drafts are low resolution: judge composition, motion and performance, not fine texture or text legibility.
 

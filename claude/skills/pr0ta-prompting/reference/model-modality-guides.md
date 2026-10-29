@@ -108,9 +108,36 @@ Wan generates audio by default. MuAPI routes use `enable_audio: bool` and `think
 
 Official sources: [MuAPI Wan 3.0](https://muapi.ai/wan-3), [Wan 3.0 T2V](https://muapi.ai/playground/wan3.0-text-to-video), [Wan 3.0 I2V](https://muapi.ai/playground/wan3.0-image-to-video), [Wan 3.0 R2V](https://muapi.ai/playground/wan3.0-reference-to-video). Alibaba's [Wan prompt guide](https://www.alibabacloud.com/help/en/model-studio/text-to-video-prompt) supports the family-level entity/scene/motion, I2V motion/camera, and sound-direction techniques, but its multi-shot and reference syntax currently name Wan 2.6/2.7 rather than Wan 3.0.
 
+### Kling 4 Video
+
+Kling 4 supersedes Kling 3 for new supported video operations. Use the resolved
+Kling 4 route and `models_get_defaults` for its actual fields and limits; preserve
+an explicit user model selection, approved take or native finish. Deep reference:
+`pr0ta-video/reference/kling-prompting.md`.
+
+| Operation | Prompt order | Critical rule |
+|---|---|---|
+| Text to video | scene → bound subjects → chronological action → camera → atmosphere/audio → end state | Choose the cataloged `kling/v4/text-to-video` route for a new Kling text shot. |
+| Image to video | approved start-frame role → action → camera → ending | `kling/v4/image-to-video` takes an explicit start frame; an optional end frame owns the landing. |
+| Reference to video | bind `@ImageN`, `@VideoN`, `@ElementN` roles → scene → action → camera → continuity | On `kling/v4/reference-to-video`, keep appearance, motion and source roles distinct. Use only references the schema accepts. |
+| Video edit | source `@Video1` → requested change → bound references → preserved performance/camera/timing | `kling/v4/video-to-video/edit` is an edit, not a new reference generation. |
+| Keyframes | each frame's role → physical progression → camera → final landing | Use `muapi/kling-4.0-keyframe-to-video` and its exact frame fields and supported syntax. |
+| Custom multi-shot | per-shot framing → subject/action → camera/audio → continuity handoff | Put sequence narrative in `multi_prompt`; validate each segment and total against the resolved schema. |
+
+Do not inherit V3/O3 audio switches, camera-control payloads, durations, native-4K
+claims or element shapes. Describe intended sound in the prompt only when the
+resolved route supports it; follow its actual audio controls. Inspect the result
+for identity, performance and continuity before editorial use.
+
 ### Kling O3 and Kling V3 Video
 
 Deep reference: `pr0ta-video/reference/kling-prompting.md`.
+
+Kling 4 supersedes Kling 3 for new supported video operations. Start from the
+matching `kling/v4/*` route and its live defaults when choosing within Kling;
+retain explicit user selections and specialist operations without a V4 equivalent.
+The V3/O3-specific examples below remain contracts for those selected endpoints,
+not templates to copy into V4.
 
 | Operation | Prompt order | Critical rule |
 |---|---|---|

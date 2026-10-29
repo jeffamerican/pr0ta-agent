@@ -33,7 +33,13 @@ project video, or use an independently prepared source and explicit frame cuts.
    transition reconstruction. A moving camera remains one uninterrupted shot;
    do not segment it merely because the framing changes.
 
-## Prepare and establish continuity
+## Assemble sequence-source Omni Reference chunks
+
+For the [sequence-source Omni Reference workflow](route-selection.md#sequence-source-omni-reference), keep each contiguous source chunk's existing cuts. Do not materialize every occurrence as a new generated shot merely to use the per-shot workflow below. Track each chunk's original integer frame range and rational frame rate, and finish its accepted native draft through `pr0ta-video/reference/draft-to-final.md` before final delivery.
+
+Place accepted chunks on the shared timeline using that source-frame mapping and the measured delivered media, retaining the original continuous recorded soundtrack. `video_chunks_assemble` can assemble chunks when its documented provenance/join contract applies (`pr0ta-video/SKILL.md`, "Duration and Shape"); inspect every join report. Independent contiguous source chunks do not imply a repeated opening: do not invent overlap trims, chain performance from a previous reverse, drop frames, or retime a mismatched output to conceal a shortfall. Surface any mismatch for the user's decision. Use the cut's native draft-finish approval path when drafts already occupy that cut, without also submitting individual finishes.
+
+## Prepare and establish per-shot continuity
 
 Call `hybrid_sequences_job(sequence_id, request: {expected_revision,
  action: "prepare"})`. Poll the sequence. Each processable occurrence receives
@@ -111,3 +117,14 @@ and `/batch`, with the same request objects used by the tools. On 409, reread an
 reconcile; never replay a stale whole manifest. Generic updates cannot forge shot,
 result, thumbnail, or approval links. Changing a cut detaches affected prepared
 shots and approvals while preserving earlier assets and shot history.
+
+## Recheck missed cuts
+
+Automatic cut ranges are proposals, not verified shots. Inspect source frames at
+angle changes, including reverses that a low-contrast detector may miss. Before
+shots are prepared, rerun `hybrid_sequences_job` on the same sequence with
+`request: {"expected_revision": <current revision>, "action": "analyze", "threshold": 0.15}`.
+The threshold accepts 0.05–0.9; lowering it proposes more boundaries and may also
+find flashes or camera motion. Reanalysis resets cut review. Once shots are
+prepared, adjust occurrence ranges explicitly so their existing work is retained.
+Review exact source frames around each boundary before marking cuts reviewed.

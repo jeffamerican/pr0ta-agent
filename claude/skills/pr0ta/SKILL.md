@@ -113,11 +113,13 @@ Raw routes, schemas, limits and the full tool catalog: `pr0ta-api`.
    automatically and free, story and continuity first; a speech take is
    also compared with the speaker's approved voice.
    `shot_quality_review` (a take) or `cut_quality_review` (a render) returns
-   the verdict: `pass`, `repair` (usable; its faults are repaired once the user
-   keeps it), `fixable` (QC suggests a new take, with a revised prompt), `fail`
+   the verdict: `pass`, `repair` (usable; describe faults and obtain direction
+   before repairing), `fixable` (QC suggests a new take, with a revised prompt), `fail`
    or `uncertain`, judged against the project's delivery target. QC flags; the
    user decides once the cut is final: never regenerate or fix a take because
-   of a verdict alone.
+   of a verdict alone. Keeping a take does not authorize repair. A request to
+   finish an accepted native draft authorizes its finish, not a new generation;
+   disclose remaining flags and keep final delivery approval separate.
    Never present a take that did not pass as good; say what the review found
    (`pr0ta-video` → "Automatic QC of Every Take").
 11. **Report what the platform should learn.** A lesson that will recur on

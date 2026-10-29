@@ -23,7 +23,14 @@ Treat unchanged `running` progress for more than three minutes as a stall unless
 
 Do not pivot silently when the shot has locked character, matched motion, camera, audio, or keyframe constraints. A different provider can produce a materially different take.
 
-## Common Seedance 2.0 Omni to Kling V3 I2V Pivot
+## Choose Kling 4 for a new Kling pivot
+
+When a Kling pivot is authorized, prefer the matching Kling 4 route over Kling 3
+for a supported operation. Read `kling-prompting.md` and the exact live defaults;
+preserve the user's chosen model and approval boundaries. The following V3 table
+is a legacy translation example for existing selections, not the default pivot.
+
+### Legacy Seedance 2.0 Omni to Kling V3 I2V example
 
 | Intent | Seedance 2.0 Omni | Kling V3 I2V |
 |---|---|---|
