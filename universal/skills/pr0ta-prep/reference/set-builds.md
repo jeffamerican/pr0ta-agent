@@ -63,7 +63,7 @@ approved on it still hold.
 
 A refinement on a saved set that adds objects in several steps can skip the
 runtime GLBs on the intermediate ones: `source_asset_id`, `export_glb: false`,
-`save_blend: true`. Each step is still a build against the set's budget. Export
+`save_blend: true`. Each step is recorded in build history without a refinement cap. Export
 on the last step, which the person reviews. Until then the set's
 `runtimeDelivery.newerSourceWithoutRuntime` names the newest `.blend`, viewers
 show the older build, and approving without a revision is refused: export first.

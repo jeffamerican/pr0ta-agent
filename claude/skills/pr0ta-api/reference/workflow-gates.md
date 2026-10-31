@@ -60,7 +60,7 @@ right (or that the user asked).
 | Approval | Call |
 | --- | --- |
 | A storyboard first frame | `storyboard_first_frame_propose(..., approve: true, approval_reason)` |
-| A set build | `set_environment_upsert(status: "approved", approval_reason, approved_revision?)`; it does not renew the build budget |
+| A set build | `set_environment_upsert(status: "approved", approval_reason, approved_revision?)`; requested refinements have no count limit |
 | A Casting voice | `cast_list_save(approve_voices: [{character, voice_id, sample_asset_id}], approval_reason)` |
 | A first-frame or Casting-voice review card | `operator_mission_review(..., decision: "approve", note)`; the note is your reason |
 | A logline | `development_logline_set(logline, approve: true, approval_reason)` |

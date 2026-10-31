@@ -158,9 +158,9 @@ approves one build, which pins it (`approvedRevision`), and later builds stay
 candidates, so hand a finished build over with status `review`, or approve it
 (`status: "approved"` + `approval_reason`). Builds older than the five newest
 candidates become history (`historyCount`, read with `include_superseded`).
-Scene-changing builds are limited to the initial build plus the Build quality
-refinements (`budget.used` of `budget.limit`); when `blender_job_submit` refuses
-one, stop and ask the person. Renders through existing cameras are not limited.
+Requested refinements are uncapped; `budget.used` is history and `budget.limit` null.
+Ignore old `maxRefinementPasses`. Stop automatic retries without progress; fresh
+user direction resumes work. Paid-work permissions and mission budgets still apply.
 Pick the tier (`quality_tier` `blockout`, free, or `premium`, priced) from
 `reference/set-builds.md`; premium: `reference/set-materials.md`.
 See `pr0ta-hybrid` for
