@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.23.12",
-  "released_at": "2026-10-29",
-  "source_revision": "v6.23.12",
-  "minimum_platform_version": "1.26.10",
+  "skills_version": "6.23.13",
+  "released_at": "2026-10-30",
+  "source_revision": "v6.23.13",
+  "minimum_platform_version": "1.26.16",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06643-xod",
-  "bundle_sha256": "75e91ccabe4976d63a1e6186d3f6c8895062d7a127fa1da4d48bfddeb3d1874a",
+  "platform_revision": "pr0ta-platform-06685-sag",
+  "bundle_sha256": "beaad7d4c4deb4c795fd0637c7d3a3b5c546f61ec1028f534320372afe6dd203",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "8833dc8d39656885811f79969595ccc3fc96d40be6974e8ddde360573a5e55e0",
+      "content_sha256": "5f1bf1d33a92a5f00b0f9f80aacc96da553d931811890f6c786b338a6bf8e010",
       "documents": [
         {
           "path": "SKILL.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "97d18053cd3d972a6936c4acaa90e1078c5d901d8f64dd27667d8a621072dac7"
+          "sha256": "e5cf29fa7299d585267cec20189cf862c09bf7bd2225c18584fcc48433066f46"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -117,7 +117,7 @@
         },
         {
           "path": "reference/review-room-api.md",
-          "sha256": "9b01d33bd349e390dc7e0d1a241101bfd413dca7e66a4544cba0888c9ff25c93"
+          "sha256": "bbc48d28350dc8136331a7199f1216c98823be77df937c2efc3a5f37315d67fe"
         },
         {
           "path": "reference/source-shortfalls-and-fit-to-fill.md",
@@ -137,7 +137,7 @@
         },
         {
           "path": "reference/unified-generation.md",
-          "sha256": "3b04b821cc13565ffe45087143572b95bbefa38c0f43e9e83c77683f1d9f3a53"
+          "sha256": "c912d6920a24e951612fbf8d6c00ffdc3d7cd74ff85a9ce0de4bde10cb45a50d"
         },
         {
           "path": "reference/voice-and-transcription.md",

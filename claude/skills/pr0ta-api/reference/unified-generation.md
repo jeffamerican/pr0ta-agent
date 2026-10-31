@@ -85,7 +85,7 @@ Canonical Meshy v7 IDs are `meshy/v7/image-to-3d` and `meshy/v7/multi-image-to-3
 
 ### Hunyuan 3D v3.1 Mesh Operations
 
-Hunyuan Pro and Rapid image/text endpoints use the same `image_to_3d` and `text_to_3d` modes. Pro image-to-3D accepts `parameters.input_image_url` plus optional named back, left, right, top, bottom, and 45-degree views; Rapid accepts one `input_image_url`. Pro prompts are limited to 1,024 UTF-8 characters and Rapid prompts to 200. Both support `generate_type`, `enable_pbr`, and the Pro `face_count` control.
+Hunyuan Pro and Rapid image/text endpoints use the same `image_to_3d` and `text_to_3d` modes. Pro image-to-3D accepts `parameters.input_image_url` plus optional named back, left, right, top, bottom, and 45-degree views; Rapid accepts one `input_image_url`. Pro prompts are limited to 1,024 UTF-8 characters and Rapid prompts to 200. Both support `generate_type`, `parameters.enable_pbr`, and the Pro `face_count` control.
 
 For post-processing, use exactly one of `model_asset_id` or `model_url`. `mesh_cleanup_3d` accepts GLB or OBJ and forwards `input_file_type`, `polygon_type`, and `face_level`; `split_3d` accepts FBX only and returns every split part as a separate registered 3D asset.
 

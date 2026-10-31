@@ -8,6 +8,10 @@ Skills users can submit one or more project assets to a PR0TA client review room
 
 This workflow is exposed through **PR0TA agent/MCP tools** (`enable_studio_mode`, `review_submit_assets`, `get_review_annotations`). Use `review_submit_assets` for new MCP workflows. `submit_assets_for_review` is a legacy compatibility alias. The review tools are available to `editor`, `director`, `producer`, and `script_supervisor` roles.
 
+For a separate delivery containing only the selected assets, pass `new_room: true` and a stable `request_id` to `review_submit_assets`. Repeating the same request returns the same room; changing its contents under that identifier is rejected. This mode supports title, description, review notes, downloads and folder placement. It returns a share link and explicitly rejects email recipients, completion webhooks and existing version stacks. Omitting `new_room` retains the shared project review-room workflow.
+
+Use at most 100 assets and a request identifier of 1–100 characters. Titles allow 1–255 characters, descriptions and review notes 10,000 each, and folders 1,000. Invalid isolated-delivery input returns `invalid_review_delivery` (400) without publishing anything.
+
 When ingesting review annotations for a timeline edit, generate a shot replacement checklist before making changes. Each open timestamped note should be keyed by:
 
 - `timestamp` / `start_time_seconds`
