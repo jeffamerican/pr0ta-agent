@@ -222,6 +222,12 @@ full configured chain through the Cinematographer.
 - **Production context.** `production_context_get` composes breakdown, casting,
   set, prop, look, and approved reference context for a scene or shot before
   generation.
+- **Atlas spatial beta.** `spatial_contexts_list` reports availability and reusable
+  contexts. `spatial_context_create`/`spatial_context_update` save and review views;
+  `spatial_run_quote`/`spatial_run_submit` price and queue work;
+  `spatial_runs_list`, `spatial_run_adopt`, and `spatial_run_cancel` manage results.
+  Use expected revisions and stable submission keys. Read
+  `pr0ta-hybrid/reference/world-anchored-references.md` → "Atlas Spatial Contexts".
 - **Worlds.** `world_generation_submit` takes `mode` `text_to_world`,
   `image_to_world`, or `video_to_world`, and `world_model` from the Marble
   models the tool lists. Image mode accepts one image, an explicit panorama

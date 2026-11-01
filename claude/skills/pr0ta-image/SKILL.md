@@ -256,4 +256,10 @@ When a still must be delivered at a specific size outside the timeline (a thumbn
 
 ## Reliability
 
+For another viewpoint with an explicit camera, use the Image Generator's
+**New angle** through the shared Atlas spatial beta. Check
+`spatial_contexts_list` for availability and read
+`pr0ta-hybrid/reference/world-anchored-references.md` → "Atlas Spatial Contexts".
+Reuse approved views and quote before rendering. New views need review before reuse.
+
 Use the `pr0ta-api` reliability contract: poll every task to a terminal state, treat task events as acceleration rather than the only completion signal, and fall back to asset discovery when a task read lags. If an allowed prompt is falsely rejected, preserve the provider error, retry once at the highest policy-compliant `safety_tolerance` where the schema offers it, then choose another model for the same mode from `models_list(modality=...)` and say so. Never switch models to evade a real policy restriction.

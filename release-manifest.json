@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.23.15",
+  "skills_version": "6.24.0",
   "released_at": "2026-10-31",
-  "source_revision": "v6.23.15",
-  "minimum_platform_version": "1.26.18",
+  "source_revision": "v6.24.0",
+  "minimum_platform_version": "1.27.0",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06696-bop",
-  "bundle_sha256": "2823b5b07427c90a043c0b196697343d80349aea07ce645fbbe2239623151a04",
+  "platform_revision": "pr0ta-platform-06717-sad",
+  "bundle_sha256": "5ab6fb70b4ded9699172b38c6bab7fc43004559c75f91355652bde279ed880d4",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "e2817779908591dadb9685a7a43d194cf3707e6beb6594aa319020d9f4cf1258",
+      "content_sha256": "7e71d9b30912336a85ad7efda69fdf9898d0acc7723d59dff202e61c571355a1",
       "documents": [
         {
           "path": "SKILL.md",
@@ -73,7 +73,7 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "e116cbabf6f2c576d0b2a390aea93c9dc9610f2d892d7dacbe0b99e574320568"
+          "sha256": "d31056c69680e44f9f7c5b606e512f15116858b83bfcdf393b3ef9c2b8f6ae11"
         },
         {
           "path": "reference/mcp-tools-1.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "e5cf29fa7299d585267cec20189cf862c09bf7bd2225c18584fcc48433066f46"
+          "sha256": "2fc902b6bbe7327891f20ee5245efc8ecb279fa031d87edd99be4d7f013b2f3b"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "11085023f3be6d60399105f5c0e27971f6a35b6f1bfd5f47cf04b5e51abef6f8"
+          "sha256": "84e8f86e5d05a2d03857269b5c98f1208c96434a3127cbba8f01a9f7f67b212f"
         },
         {
           "path": "reference/music-analysis.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "d6c6e649951481ff0bebf11950e59e2e84adcb006cb12314a1f108fd9d18eb30",
+      "content_sha256": "648950113fbd671c9624508ead0dfe914c64cdc8d0eeadfa7b1b6a4a89c73e77",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "eeb88e7dc94819827db615b235e5e2f96977aa06f2da5a7c0c5d6a443925954d"
+          "sha256": "96955f2cc65ab3930d8b861ec29d402705efed163103ed5214f906547dd0eafe"
         },
         {
           "path": "reference/camera-solving.md",
@@ -279,18 +279,18 @@
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "e02808335f068816783d3225f82141a0c8119cee6eb7319dbedf60b230b460df"
+          "sha256": "b9793bc52b0e98ab896bea3eb380fc3c75e87a49b53fc4c711549cb4d4c5a910"
         }
       ]
     },
     {
       "name": "pr0ta-image",
       "description": "PR0TA image generation and editing: key frames, reference stills, character sheets (face turnaround, outfit, full-body), posters, title cards and flash cards, storyboard frames, product and location stills, prompt edits, inpaint and outpaint, background removal, relighting, upscale and restoration, image uploads, fan-out for hard text shots, and real, scannable QR codes with a scan check. Read when generating, editing, uploading, or choosing image models.",
-      "content_sha256": "767b4f9b82c522e5ac31d447ad3bce74d6cdf4923846f6f524afe3f895d86f19",
+      "content_sha256": "324c234890136ee8ded328641edcb539a890733d010617d124aede36bc5e6c32",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "5f5a67013f640d21dad01c2899f36812b0bb3da665eb8c3a5cfbd925c8facfec"
+          "sha256": "995b5878fe3807fd2f4fd482586c33a3af8b4cc01e0c5145a04437498bf29c47"
         },
         {
           "path": "reference/qr-codes.md",
@@ -439,11 +439,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "509aef79b144bc3b8a3a5255b5318dc28d986957586b4437d9f2289928f653a1",
+      "content_sha256": "a23377193230c7cffca50c908cb28fa54bc7fe9b3fa4088c4b57849271b70438",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ff9f1a27a664cc02689d532065457b11c62814bbe04a041b887fc83daef4eb2c"
+          "sha256": "ed5e7a394f07dfa14e1b37590483265f170c428a0088c6fa596b8df79f493079"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -721,6 +721,14 @@
     "shotlist_scene_chat",
     "shotlist_scene_descriptions_generate",
     "shotlist_shots_move",
+    "spatial_context_create",
+    "spatial_context_update",
+    "spatial_contexts_list",
+    "spatial_run_adopt",
+    "spatial_run_cancel",
+    "spatial_run_quote",
+    "spatial_run_submit",
+    "spatial_runs_list",
     "storyboard_chunks_list",
     "storyboard_first_frame_propose",
     "storyboard_generate",
@@ -764,5 +772,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "116726e6b4713c2faffd6f84100ae46ed763d6decd561b210cf2db49c91f90b0"
+  "mcp_connector_tools_sha256": "1ccfc693755b2e6ec9aa9cfa4ab25c58b91b5f9148210c1d117ce44ad5648992"
 }

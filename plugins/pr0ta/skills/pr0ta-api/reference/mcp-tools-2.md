@@ -91,6 +91,17 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `shotlist_scene_descriptions_generate`(**script_supervisor_data**, producer_analysis, director_analysis): Generate concise Director scene descriptions for Shotlisting; returns a task for polling.
 - `shotlist_shots_move`(**from_scene**, **to_scene**, **shot_uids**, dry_run, spanning_sequences): Move shots from one scene's saved shot list to another scene, for coverage filed under the wrong scene (a breakdown re-run that split a scene).
 
+## spatial
+
+- `spatial_context_create`(**request**): Save a location from project image assets, optionally linked to a set environment.
+- `spatial_context_update`(**context_id**, **request**): Save the scene prompt and explicitly reviewed frame approvals with expected_revision.
+- `spatial_contexts_list`(): List reusable spatial contexts, calibrated views, approvals and Atlas beta availability.
+- `spatial_run_adopt`(**context_id**, **run_id**, **request**): Copy a completed run's calibrated views into its context for review, without approving them.
+- `spatial_run_cancel`(**context_id**, **run_id**): Request cancellation of a spatial job.
+- `spatial_run_quote`(**context_id**, **request**): Quote a pose, image, camera movie or refined splat using the verified rate card and current payer plan.
+- `spatial_run_submit`(**context_id**, **request**): Submit a bounded Atlas task using the quoted max_cost_usd and stable idempotency_key.
+- `spatial_runs_list`(**context_id**): Read spatial job receipts and local output asset IDs.
+
 ## storyboard
 
 - `storyboard_chunks_list`(scene_number, scene_range_end, max_duration_seconds): List Seedance-ready storyboard beat chunks assembled from screenplay, shotlist, storyboard prompts, and approved references.

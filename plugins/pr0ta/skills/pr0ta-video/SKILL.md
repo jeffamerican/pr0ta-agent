@@ -5,7 +5,9 @@ description: "PR0TA video generation and repair: text-to-video, image-to-video, 
 
 # Video Generation
 
-For recurring subjects, read `pr0ta-consistency` first. Before prompting, read `pr0ta-prompting` and the resolved model reference below; grade with `pr0ta-prompting/reference/prompt-rubric.md` and submit only an A.
+Atlas: `pr0ta-hybrid/reference/world-anchored-references.md`.
+
+For recurring subjects, read `pr0ta-consistency`. Before prompting, read `pr0ta-prompting` and the model reference below; grade with `pr0ta-prompting/reference/prompt-rubric.md` and submit only an A.
 
 For existing projects, call `memory_context_pack` with `task_intent: "video_generation"` or `"storyboard_prompt"` and the relevant scope. Carry approved references, continuity decisions and unresolved conflicts into the plan. Record selected takes or approach changes with `memory_record_decision` or `memory_record_note`.
 

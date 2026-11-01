@@ -95,6 +95,42 @@ When the production has scout photographs or footage of the real location, build
 
 External MCP clients run every tool as the Operator, so `blender_job_submit`, `world_generation_submit`, and the set-environment tools are available directly. Internal department agents must run as the Set Designer to see them. Blender jobs are admission-controlled per project and per user; a capacity rejection is retryable after the reported delay.
 
-## What Is Pending
+## Atlas Spatial Contexts (Configured Beta)
 
-World Labs announced Atlas on 1 September 2026 as a camera-conditioned world model that outputs video along a supplied camera trajectory together with splats and depth. It is in early access and is not integrated in PR0TA. Do not promise Atlas output, and keep the structure-versus-appearance discipline when it arrives, because generated plates will still need to match hero plates shot on the day.
+Check `spatial_contexts_list` exists and reports `capabilities.available` before
+offering Atlas. Missing tools or unavailable configuration means this workflow
+cannot run on that deployment. Do not infer access from Marble 1 tools.
+Chisel, Frameboy and Relight are not integrated by this workflow.
+
+The Image Generator's **New angle**, the Video Generator's **Camera move**, and Set Design share project spatial contexts. A context may name
+an `environment_id`; a production set is optional for an individual generation.
+
+1. Reuse the location's context from `spatial_contexts_list`. For a missing context,
+   use `spatial_context_create`: `name`, `source_asset_ids`, optional `environment_id`,
+   and the environment `prompt`.
+2. Quote preparation with `spatial_run_quote`: `operation: "pose"` and the context's
+   `expected_revision`. Submit with `spatial_run_submit`, the same request plus a
+   stable `idempotency_key` and the quoted plan-adjusted `max_cost_usd`.
+3. Poll `spatial_runs_list` or `tasks_get`. `spatial_run_adopt` adds successful views
+   for inspection; it never approves them. On the user's review decision, call
+   `spatial_context_update` with `expected_revision`, `approved_frame_ids`, and `prompt`.
+4. Render with `operation: "image"` or `"video"`, an approved `anchor_frame_id`, and
+   `target_camera`. Its `extrinsics` hold `position`, XYZW unit `quaternion`, and
+   `coordinateSystem: "rub" | "rdf"`; `intrinsics` hold `width: 1280`, `height: 720`,
+   `fx`, `fy`, `cx`, `cy`. Never invent calibration or measured metric scale.
+5. Video uses `duration_seconds` 1–10 and `fps: 24`. PR0TA submits one complete path
+   and assembles a silent MP4. `return_depth` is false for videos; an image may
+   request depth when its camera has translation.
+6. Quote and submit `operation: "splat"` to bake approved RGBD views into a refined
+   SPZ. It needs at least two views; aim for 8–16 well-distributed views. A bake
+   usually takes 10–20 minutes. Do not resubmit a running operation because it is slow.
+
+Quote every new paid action; unknown rates block submission. Transport retries
+keep the same key. `spatial_run_cancel` requests best-effort cancellation. New views
+need adoption and explicit review before reuse. Receipts retain output asset IDs
+and source revisions. Check `result.set_environment_attached` before claiming a
+splat was attached; false requires linking the returned asset separately.
+
+For hybrid footage, recorded performance and audio retain authority. Use approved
+stills/movies as backgrounds through existing hybrid routes and inspect alignment
+throughout the shot. Static splats do not reconstruct moving performances.

@@ -202,4 +202,4 @@ a correction, adjust the input or prompt that controls the observed problem.
 
 ## Deep References
 
-Sequences: `reference/hybrid-sequences.md`. Studio shots: `reference/hybrid-shot-studio.md`. SwitchX: `reference/switchx.md`, `reference/switchx-2.md`. Mattes: `reference/matte-and-alpha.md`. Look plates: `reference/reference-plate-authoring.md`. Worlds: `reference/world-anchored-references.md`. Routes: `reference/route-selection.md`.
+Sequences: `reference/hybrid-sequences.md`. Studio shots: `reference/hybrid-shot-studio.md`. SwitchX: `reference/switchx.md`, `reference/switchx-2.md`. Mattes: `reference/matte-and-alpha.md`. Look plates: `reference/reference-plate-authoring.md`. Worlds and Atlas: `reference/world-anchored-references.md`. Routes: `reference/route-selection.md`.
