@@ -46,6 +46,8 @@ A standalone Python REST client: `reference/python-client.py`.
 Platform admins: `bug_reports_list` and `bug_report_get` read reports without a project.
 Filters, paging and permissions: `reference/mcp-server.md` → "Platform report queue".
 
+Atlas: `assets_probe` inspects EXR depth; `post_frames_get` views confidence maps.
+
 ## Projects
 
 Every project-scoped tool and route takes `project_id` (UUID or slug). Pass it
