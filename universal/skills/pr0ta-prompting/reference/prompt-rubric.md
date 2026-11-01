@@ -16,11 +16,12 @@ The grade is for the prompt and request. A take that keeps a recorded performanc
 
 **Route and fields**
 
-1. **The route and inputs can keep what must survive.** A recorded performance that must reach the cut (the actors' faces and likeness, gestures, lip movements and timing, the source's framing and cuts) needs a request that edits the plate:
+1. **The route and inputs can keep what must survive.** A recorded performance that must reach the cut (the actors' faces and likeness, gestures, lip movements and timing, the source's framing and cuts) needs a source-bound route:
    - a Seedance 2.5 edit (a video-edit route, or Omni with `omni_reference_task_type: "edit"`) with the plate as its only video, at 720p or more when faces matter, and a prompt that locks the faces, performance and timing (`pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action");
+   - the user's chosen Seedance 2.5 Omni Reference sequence workflow, with the source edit as the sole video and role-bound appearance references; verify the performance against source pictures and finish accepted native drafts through their native finish path;
    - or SwitchX with a matte, or a matte composite, when the plate's pixels must come through exactly.
 
-   A reference, text- or image-to-video request regenerates the performance and fails this item. Prose cannot turn one into an edit: "Video 1 is the sole action timeline" earns nothing on its own (`pr0ta-hybrid/reference/route-selection.md` → "Keep a Performance: Seedance Edit or SwitchX").
+   Text- or image-to-video without the recorded source fails this item. Prose alone proves no preservation; a source-bound reference workflow must pass the same picture checks. Honor the user's route rather than switching it because a model redraws pixels (`pr0ta-hybrid/reference/route-selection.md` → "Sequence-Source Omni Reference").
 2. **Recorded dialogue stays recorded.** Generated speech never replaces recorded speech in a hybrid. On the video-edit routes send `generate_audio: false` (keeping the source's sound with it is verified only there), and lay the source's soundtrack back under the take if it drifted. On any other route, including an Omni edit (`byteplus/seedance-2.5`, or MuAPI Omni, which always generates sound), plan that re-lay in Post before you submit.
 3. **Settings are fields, not prose.** Audio (`generate_audio: false` keeps a source's sound; `keep_source_audio` works only on the dedicated edit routes), duration, resolution, aspect ratio and negative prompt go in the request fields the route exposes. Prose may repeat a setting once; it never replaces the field. On an edit, extend or first-frame job, write no ratio in prose; set the field to `adaptive` or the source's ratio where the route exposes one.
 
@@ -45,11 +46,12 @@ The grade is for the prompt and request. A take that keeps a recorded performanc
 **Fit**
 
 13. **Nothing contradicts.** One camera path, one ratio, roles that do not overlap, action that fits the duration.
+    Before submission, audit every timed action and cut against source pictures. Transcripts locate speech, not silent gestures. A local gesture must be visible in the source or explicitly requested; a global preservation instruction does not cancel an invented beat. After generation, distinguish prompt-authored departures from model-authored drift.
 14. **Shortest prompt that passes 1-13,** within the model's prompt limit.
 15. **You know how you will check the take.** Say what you will compare, and against what:
     - faces, hands and the ground against the source, with the same `post_frames_get` `times` or `frames` on both;
     - the take's QC review;
-    - the soundtrack and lip sync against the source (`audio_align`);
+    - soundtrack placement against the source (`audio_align`), separately from visible mouth closures, gesture landmarks and internal cuts at mapped source frames; aligning restored original audio with itself does not verify generated picture sync;
     - the length against the plan.
 
 ## Example

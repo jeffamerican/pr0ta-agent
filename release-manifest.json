@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.23.14",
+  "skills_version": "6.23.15",
   "released_at": "2026-10-31",
-  "source_revision": "v6.23.14",
-  "minimum_platform_version": "1.26.17",
+  "source_revision": "v6.23.15",
+  "minimum_platform_version": "1.26.18",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06691-ziq",
-  "bundle_sha256": "377b6a9b01c22ba1b96694378ca27c63de8327a92dca674242308b876efb4f7c",
+  "platform_revision": "pr0ta-platform-06696-bop",
+  "bundle_sha256": "2823b5b07427c90a043c0b196697343d80349aea07ce645fbbe2239623151a04",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,11 +29,11 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "4e237273d83656dd91fe597a3b974b2fce222632226bc994e106791a4a828dc5",
+      "content_sha256": "e2817779908591dadb9685a7a43d194cf3707e6beb6594aa319020d9f4cf1258",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "1f6982919acbf3a9dbadc0ba0367ae84641c78890cbec5550e19627f4cc32537"
+          "sha256": "3fcdfe70b5d16a796c7f24e94a620367143d2bb98925ede52069f08dfcfbd915"
         },
         {
           "path": "reference/asset-management.md",
@@ -73,11 +73,11 @@
         },
         {
           "path": "reference/mcp-server.md",
-          "sha256": "129d73a22ba5b7f4baf21ef7adf5ba8206ff9e41f1f2d2444bd0364b720872f7"
+          "sha256": "e116cbabf6f2c576d0b2a390aea93c9dc9610f2d892d7dacbe0b99e574320568"
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "943b1bd54071be14ec4062124dec03a4430791c3880f42c630dfb3186758039e"
+          "sha256": "f3dabd063f39a23e6d85179d32bf0ee55f89577654ed3e003629746212cb6929"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "72907f7f1e5891d08c4b7a635badffe4f984def409f60d972078fe3b46919e28"
+          "sha256": "11085023f3be6d60399105f5c0e27971f6a35b6f1bfd5f47cf04b5e51abef6f8"
         },
         {
           "path": "reference/music-analysis.md",
@@ -362,7 +362,7 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "b30bb28859e2249db4c4c5efbafa1fd6cdf5f9f43f2b8c5861989cb131630352",
+      "content_sha256": "dce47657004f6ec4eb003cc6fb41e9b2764bf0a7a2b9f0413d59495d7652367b",
       "documents": [
         {
           "path": "SKILL.md",
@@ -394,7 +394,7 @@
         },
         {
           "path": "reference/prompt-rubric.md",
-          "sha256": "71dd5691263af00588a1fedd251e5b77f0fdc2965684f042203bd1b47a6f3a41"
+          "sha256": "42300078c2b71ed9a3a9930968be770c8480a6e18e79228589185f2faac1b1fa"
         },
         {
           "path": "reference/realism-camera-behaviors.md",
@@ -439,7 +439,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "2a36a8cb16a851f2afa67672e05959982393d2583dad37af166e663aaf6d69ce",
+      "content_sha256": "509aef79b144bc3b8a3a5255b5318dc28d986957586b4437d9f2289928f653a1",
       "documents": [
         {
           "path": "SKILL.md",
@@ -491,7 +491,7 @@
         },
         {
           "path": "reference/seedance-2.5-prompt-craft.md",
-          "sha256": "aae528eb9103f70a252f8238d34a6277710b53e5ffb7047d9022834324dea8e7"
+          "sha256": "394b4d7507c861700a2e44d60de9dd8161e80231c64b2b605e1ddf325f58589c"
         },
         {
           "path": "reference/seedance-2.5-provider-fallback.md",
@@ -563,6 +563,8 @@
     "breakdown_rerun",
     "breakdown_status",
     "bug_report_create",
+    "bug_report_get",
+    "bug_reports_list",
     "camera_solve_get",
     "camera_solve_place",
     "camera_solve_submit",
@@ -762,5 +764,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "2c2cf9cde9b583d3a3a98bf8bbcb2f5e412c16394b0c4e689f00c0df3f964575"
+  "mcp_connector_tools_sha256": "116726e6b4713c2faffd6f84100ae46ed763d6decd561b210cf2db49c91f90b0"
 }

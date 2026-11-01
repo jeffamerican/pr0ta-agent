@@ -65,6 +65,8 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## bug
 
 - `bug_report_create`(**title**, **description**, severity, steps_to_reproduce, expected_behavior, actual_behavior, error_messages, screenshot_url, additional_context): Create an internal bug report for the PR0TA developer team.
+- `bug_report_get`(**report_id**): Read one bug report, learning or misuse report with its full evidence and context (platform admins only).
+- `bug_reports_list`(project_id, status, kind, severity, query, limit, offset): List the platform bug-report queue without a browser (platform admins only).
 
 ## camera
 

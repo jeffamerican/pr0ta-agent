@@ -119,6 +119,8 @@ Omni Reference workflow to edit mode.
 
    State persistent light requirements in every relevant beat, then check skin highlights, clothing shadows, hair/rim light and environmental shadows separately at the opening, cuts, close views and ending. Bright surroundings or hair alone do not prove direct sunlight on faces; repetition is direction, not a guarantee. Retain accepted pictures with disclosed findings.
 
+   Without a controlled comparison, do not claim that repetition caused an improvement or that another route cannot relight. An angle-matched, visibly sunlit appearance reference is an option to test, not a proven remedy. User acceptance and complete lighting adherence remain separate findings.
+
    Studio-lit people in a sunlit world look pasted on. Community tests report that warm directional daylight holds faces better than night or neon (unverified here).
 7. **Close by restating the fragile locks.** End with "Face and identity unchanged; lips match the recorded dialogue exactly." The guide's edit example ends on identity ("without drifting or changing identity"), and community footage prompts repeat the face lock at the end (no A/B in PR0TA yet). Short negatives work on 2.5: "Do not re-frame, re-time or re-cut; add no new shots." "Natural skin texture, no smoothing."
 8. **Say the continuity, not the defect.** "The action continues straight through the 2-second mark in one take: no repeated gesture or word, no cut, no zoom or reframing." Never describe a flaw in the source ("a small hand-position mismatch at the boundary"): the model redraws what you point at.
@@ -144,7 +146,7 @@ Fields: `generate_audio: false`, `resolution: "1080p"` (or `"720p"`) and `output
 #### Check the take before calling anything kept
 
 - Pull the same moments from the source and the take: `post_frames_get` with the same `times` (or `frames`) on each, at the hardest face moments (a turn toward camera, mid-line, a close moment). Use `detail: "full"` and a `region` to read a face. Compare faces, hands, wardrobe, the ground and the framing.
-- Read the automatic QC review of the take. Compare the soundtrack and lip sync with the source (`audio_align`).
+- Read the automatic QC review. Use `audio_align` for soundtrack placement; check visible mouth closures, gestures and cuts against source pictures separately. Matching restored original audio to itself does not verify the regenerated picture's synchronization.
 - First compare the submitted beat instructions with source pictures: remove invented gestures or cuts before attributing departures to the model. A global preservation instruction does not cancel conflicting local action.
 - If the user requests a correction after reviewing a drifted face, propose one change per authorized rerun:
   1. raise the resolution;

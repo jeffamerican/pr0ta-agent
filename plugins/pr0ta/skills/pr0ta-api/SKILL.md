@@ -36,15 +36,15 @@ export PR0TA_PAT="pat_..."
 curl -H "Authorization: Bearer $PR0TA_PAT" https://app.pr0ta.com/api/v2/projects
 ```
 
-PATs are automation credentials. They cannot reach account, admin, or billing
-routes; the exceptions are `GET /api/auth/me`,
-`GET /api/billing/credits/balance`, and `GET /api/billing/credits/ledger`
-(your itemized usage, newest first; `since`, `limit` up to 200). Create, list, and revoke PATs
-(`/api/auth/personal-access-tokens`) from a signed-in browser session. Project asset downloads accept the bearer token or the scoped
-`asset_token` URL PR0TA hands out. `GET /api/v2/models` needs no auth.
+PAT scope and its identity, billing-read and admin report-triage exceptions:
+`reference/mcp-server.md`. Manage tokens in a signed-in browser. Asset downloads
+accept the bearer token or scoped `asset_token`; `GET /api/v2/models` is public.
 
 A standalone Python REST client: `reference/python-client.py`.
 
+
+Platform admins: `bug_reports_list` and `bug_report_get` read reports without a project.
+Filters, paging and permissions: `reference/mcp-server.md` → "Platform report queue".
 
 ## Projects
 
