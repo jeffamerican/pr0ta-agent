@@ -30,7 +30,7 @@ When a client review round is active, pull annotations with `get_review_annotati
 
 Before editing, build a shot replacement checklist. For each note record: timestamp, frame index or timecode, nearby transcript phrase, timeline `clip_id`, `asset_id`, source name, the reviewer's note, and the proposed action. To find the clip, list the sequence's clips (`GET /timeline/clips?sequence_id={sequence_id}` or `post_sequence_get`) and select those whose `start <= time < end`, preferring a `video` or `title` entry with `trackMuted: false`. If none overlaps, record the nearest clip explicitly.
 
-Mark annotations addressed after fixing them. Do not ship with open annotations unless the user has explicitly waived them.
+Track each note with `review_note_status`: `in_progress` while fixing it, then `awaiting_approval` with a link to the revised asset. Only the user’s recorded approval of the changes permits `complete`. Read `pr0ta-api` → `reference/review-room-api.md` for linking a pending fix-review card before approval so the user need not approve twice. Reopening work clears the prior approval. Do not ship with notes the user has neither approved nor explicitly waived.
 
 ## Review Revision Protocol
 
@@ -43,7 +43,7 @@ For review-driven revisions, prefer boring reliability over clever patching.
 5. **Replace narration cleanly.** Remove prior narration clips and patch tracks, add one regenerated narration asset, make sure it is time-indexed, and reflow the cuts. Never overlay replacement narration unless the user asks for a layered treatment.
 6. **Render for the audience.** Low quality is for internal checks only. Client review links get a full-quality render or export. Keep internal words such as "review cut" off client-facing title and credit cards.
 7. **Verify before handoff.** Dimensions, duration, audio levels, render diagnostics, the review URL resolving, and the review asset ID matching the export you intended to show. For narration fixes, verify the narration in the exported file itself, not only the source narration asset.
-8. **Close the loop.** When the replacement review exists, mark the old annotations addressed where possible and link the replacement review round in a note or metadata.
+8. **Close the loop.** When the replacement review exists, link it on the original notes and set `awaiting_approval`. Complete only after the user approves those changes; a replacement render alone is not approval.
 
 ## Correcting a Faulty Passage
 

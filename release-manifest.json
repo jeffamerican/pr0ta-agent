@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.1",
-  "released_at": "2026-11-01",
-  "source_revision": "v6.24.1",
-  "minimum_platform_version": "1.27.1",
+  "skills_version": "6.24.2",
+  "released_at": "2026-11-02",
+  "source_revision": "v6.24.2",
+  "minimum_platform_version": "1.27.3",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06723-fuv",
-  "bundle_sha256": "bc4d43c5ad01670a1aedde6cba71b56a996295a71826f2467126c84cb13d06c6",
+  "platform_revision": "pr0ta-platform-06734-pic",
+  "bundle_sha256": "e6deddc6261991913b09219a8ef056b3d58201e900e596a029216e6d74ca12af",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "73a7dbec0a1c51212b5c1f61a3d3f171c4936a30703507550857f1040ab27eee",
+      "content_sha256": "f8f81b1918c43ba9f17908e974b65c590e2b2beedf9ec02097d99ea479e21187",
       "documents": [
         {
           "path": "SKILL.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "2fc902b6bbe7327891f20ee5245efc8ecb279fa031d87edd99be4d7f013b2f3b"
+          "sha256": "7ebc2d773c8b1f7eed88c1d1fb066c0e89574b539bd8ef56eaa2a382cfb6b505"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "84e8f86e5d05a2d03857269b5c98f1208c96434a3127cbba8f01a9f7f67b212f"
+          "sha256": "8b9129e0e36a2e33ae084f42e601eb9a3added7a89e3ce19cb3c421d3636c80e"
         },
         {
           "path": "reference/music-analysis.md",
@@ -117,7 +117,7 @@
         },
         {
           "path": "reference/review-room-api.md",
-          "sha256": "dc3ffe55ef8f336ffdd67559cc0e44a6054d07c6de3deff2fb975bcdaf382355"
+          "sha256": "e527b967cc8aee42f357976f36f2a1c1568fd41b58f6a0b98285414532a68d50"
         },
         {
           "path": "reference/source-shortfalls-and-fit-to-fill.md",
@@ -216,15 +216,15 @@
     {
       "name": "pr0ta-editorial",
       "description": "PR0TA editorial discipline: story spine, the five-pass rewrite loop, beat-keyed cutting, kill-your-darlings, self-critique, the seven-criteria ship gate, vertical and social cuts (9:16 reframing, the hook, captions for sound-off, safe zones, 15-60 s ad pacing, cutdowns with their own spine), client review fixes, render verification, and asset curation. Read before an edit pass, a recut, a review fix, a final export, or calling a cut done.",
-      "content_sha256": "4dc0ecae450c552cdaf26b087905e64489b2190fb556e80cecdb589f038eb4b6",
+      "content_sha256": "78f637c09882cb1894248059b5e8e00234074482a6d62f7412a60f1b2ca838b1",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3b97a6764b780f9394f66e3d315a23774b52ea9b31141768ae8a0a51a1c3825e"
+          "sha256": "f0b0756f437bff2dd3dcdf7e38d408036152447e93ba0e8b4eeaa446bf53869c"
         },
         {
           "path": "reference/review-and-gates.md",
-          "sha256": "16a1e983fac2f1cca848f8e16cf65760e8f63afbf3fb8b194b753bf66d4e807a"
+          "sha256": "44a80cdf6bc10082249ec6c8415bbbe2d4fd51214f810b7bc7bd12c994b37a4a"
         },
         {
           "path": "reference/verification-protocol.md",
@@ -699,6 +699,7 @@
     "read_web_page",
     "references_resolve",
     "references_settle_in_frame",
+    "review_note_status",
     "review_submit_assets",
     "save_scene_shotlist",
     "score_bible_get",
@@ -772,5 +773,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "1ccfc693755b2e6ec9aa9cfa4ab25c58b91b5f9148210c1d117ce44ad5648992"
+  "mcp_connector_tools_sha256": "e262fe2ab030efbb7cb2365022a45649c62c9abc69cec1eb4566bfaa38892b63"
 }

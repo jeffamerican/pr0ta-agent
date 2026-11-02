@@ -51,7 +51,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **qr** (`mcp-tools-2.md`): qr_code_generate, qr_code_verify
 - **read** (`mcp-tools-2.md`): read_pr0ta_skill, read_web_page
 - **references** (`mcp-tools-2.md`): references_resolve, references_settle_in_frame
-- **review** (`mcp-tools-2.md`): review_submit_assets
+- **review** (`mcp-tools-2.md`): review_note_status, review_submit_assets
 - **save** (`mcp-tools-2.md`): save_scene_shotlist
 - **score** (`mcp-tools-2.md`): score_bible_get, score_bible_save
 - **screenplay** (`mcp-tools-2.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save

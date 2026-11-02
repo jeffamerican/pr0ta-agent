@@ -22,7 +22,7 @@ When ingesting review annotations for a timeline edit, generate a shot replaceme
 - reviewer note and annotation geometry
 - proposed replacement action
 
-This checklist prevents vague review notes from turning into broad rebuilds. Resolve items with targeted edits, marks, trims, or replacement assets, then mark the annotation addressed.
+This checklist prevents vague review notes from turning into broad rebuilds. Fix items with targeted edits, marks, trims, or replacement assets. Set `review_note_status` to `in_progress`, then `awaiting_approval`; only user-approved changes may be `complete`.
 
 ## Studio Mode Setup
 
@@ -184,6 +184,30 @@ Expected reviewer actions:
 
 For multi-asset review rooms, PR0TA considers the whole review round complete when every submitted asset has a reviewer decision.
 
+## Tool: `review_note_status`
+
+Track work on the original annotation (`kind: "annotation"`) or comment (`kind: "event"`), using its ID from `get_review_annotations`:
+
+```json
+{
+  "project_id": "project-id-or-slug",
+  "kind": "annotation",
+  "record_id": "note-uuid",
+  "status": "in_progress",
+  "request_id": "timing-fix-start"
+}
+```
+
+Use `in_progress` when beginning the fix and `awaiting_approval` when the changes are ready for the user to review. Optional `note` adds an explanation to that same thread. Use `open` when reopening work. Reuse `request_id` only for an exact retry; use a new ID for each change. Project visibility, assignment, and write permission are checked; approval/decision events cannot be edited as notes.
+
+**Only the user can approve a fix and make its note complete.** In the room, the check widget explicitly says **Approve changes and complete**. An agent's inspection, promise, reply saying “approved,” or inbox response reporting work done is not approval. An agent's `complete` call requires a recorded user approval covering that fix. Reopening work clears the approval; new changes require new approval. Token clients cannot record user approval through the feedback-action endpoint.
+
+To use a mission review card without asking twice: first call `review_note_status` with `in_progress` and keep the returned `review_note_url`. Create a pending fix-review card whose content visibly links that URL and shows the completed changes. Then set `awaiting_approval` with both `review_mission_id` and `review_artifact_id`, **before** the user approves. After the user approves that exact card, call `complete` with a new request ID and no card arguments. The server checks its frozen text/evidence, current revision, and a later human approval command. Agent answers, rejections, older approvals, planning/spending cards, and changed cards cannot qualify. Alternatively, the user can approve the note directly in the room. Private card-binding details are not exposed in public feedback payloads.
+
+Read the shared status and attribution from `metadata.discussion.work_status`, `work_status_at`, and `work_status_by`. Completion also updates the existing comment completion/annotation resolution fields. Personal read and dismissed notification flags remain independent. Reporting work done from the inbox means **ready for approval**, not complete. These note flags never change the reviewer's original words or the asset's approval decision.
+
+The authenticated REST action is `POST /api/review-collaboration/projects/{project_id}/feedback/{kind}/{record_id}/actions`, with `action: "status"`, `status`, and `request_id`. Interactive user approval is recorded by the app; agents should use the shared tool above.
+
 ---
 
 ## Tool: `get_review_annotations`
@@ -246,7 +270,7 @@ DELETE /api/workspace/{project_id}/studio/review-annotations/{annotation_id}
 
 For authenticated agent work, prefer `get_review_annotations`; it returns annotations plus review events in one payload. Each event carries its resolved `asset_id`, and `review_submissions` preserves the historical submission-to-asset mapping. Do not invent other workspace annotation routes.
 
-After creating a replacement review link, verify the review/submission asset ID matches the export asset intended for review. If replacing an old review round, mark old annotations `addressed` when possible and include metadata or a note pointing to the replacement review URL/round.
+After creating a replacement review link, verify the review/submission asset ID matches the export asset intended for review. If replacing an old review round, link the replacement review URL/round in a note and set the original notes `awaiting_approval`. Only complete them after the user approves the changes.
 
 ### Response
 

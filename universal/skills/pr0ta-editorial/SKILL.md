@@ -191,7 +191,7 @@ Restarting is discipline, not failure. The generated assets remain; you are thro
 ## Review, Gates, and Verification
 
 - **Preview between passes**: the segments that changed or matter most, at low quality. Fix with targeted clip edits, then re-preview.
-- **Client review rounds**: pull annotations with `get_review_annotations`, make every `open` annotation a checklist item keyed to its time and clip, fix it, and mark it addressed. Do not ship with open annotations the user has not waived.
+- **Client review**: use `get_review_annotations` and a timed checklist. Set `review_note_status` to `in_progress`, then `awaiting_approval`. Only the user's approval permits `complete`; agents cannot self-approve. Reopen for new work.
 - **Narration timeline productions** pass a drift gate between Pass 3 and Pass 4.
 
 Read `reference/review-and-gates.md` for the preview gate, the review revision protocol, fixing a passage (replace every clip carrying it), mark-driven editing, and the narration-timeline gate, and `reference/verification-protocol.md` for render QC.
