@@ -20,6 +20,11 @@ catalogs, packaging code, and installation instructions are maintained here.
 Its scheduled workflow publishes changed skills after the compatible platform
 version is live.
 
+The Codex connector and its helper's tool profile are generated from the live
+manifest's checksum-verified tool list. Tool-only changes refresh the connector
+build even when the skill documents are unchanged; do not maintain a separate
+tool allowlist here. Existing OAuth settings and explicit tool blocks are preserved.
+
 Canonical skill text is deliberately host-neutral. Codex and Claude keep their
 own connector manifest and setup helper outside the generated `skills/` tree,
 so each host retains the correct installation and OAuth flow.

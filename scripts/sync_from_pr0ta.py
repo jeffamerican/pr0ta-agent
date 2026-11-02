@@ -115,29 +115,33 @@ def update_json(path: Path, mutate: Callable[[dict[str, Any]], None]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def update_metadata(manifest: dict[str, Any]) -> None:
+def update_metadata(manifest: dict[str, Any]) -> bool:
     version = manifest["skills_version"]
     revision = manifest.get("source_revision", "unknown")[:12]
+    paths = [ROOT / "plugins/pr0ta/.codex-plugin/plugin.json", ROOT / "claude/.claude-plugin/plugin.json"]
+    before = [path.read_bytes() for path in paths]
     update_json(
-        ROOT / "plugins/pr0ta/.codex-plugin/plugin.json",
-        lambda payload: update_codex_metadata(payload, version, revision),
+        paths[0],
+        lambda payload: update_codex_metadata(payload, version, revision, manifest["mcp_connector_tools_sha256"][:12]),
     )
     update_json(
-        ROOT / "claude/.claude-plugin/plugin.json",
+        paths[1],
         lambda payload: payload.update({"version": version}),
     )
+    return before != [path.read_bytes() for path in paths]
 
 
 def update_codex_metadata(
     payload: dict[str, Any],
     version: str,
     revision: str,
+    connector_revision: str = "",
 ) -> None:
     homepage = "https://www.protafilmmaker.com/downloads/skills/"
     repository = "https://github.com/jeffamerican/pr0ta-agent"
     payload.update(
         {
-            "version": f"{version}+codex.{revision}",
+            "version": f"{version}+codex.{revision}" + (f".tools.{connector_revision}" if connector_revision else ""),
             "homepage": homepage,
             "repository": repository,
         }
@@ -185,6 +189,7 @@ def sync() -> bool:
         build_archives()
         return False
     current = read_current_manifest()
+    profile = CodexConnectorConfig.from_manifest(manifest)
     fields = ("skills_version", "bundle_sha256")
     changed = any(current.get(field) != manifest.get(field) for field in fields)
     if changed:
@@ -192,7 +197,12 @@ def sync() -> bool:
             staged = Path(temporary) / "skills"
             stage_skills(manifest, staged)
             replace_skill_trees(staged)
-        update_metadata(manifest)
+    connector_changed = CodexConnectorConfig(ROOT / "plugins/pr0ta").synchronize(profile)
+    metadata_changed = update_metadata(manifest)
+    changed = changed or connector_changed or metadata_changed or (
+        current.get("mcp_connector_tools_sha256") != manifest["mcp_connector_tools_sha256"]
+    )
+    if changed:
         (ROOT / "release-manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n",
             encoding="utf-8",

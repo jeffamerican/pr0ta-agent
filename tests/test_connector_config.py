@@ -1,5 +1,6 @@
 """Regressions for complete, reproducible Codex connector admission."""
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -76,3 +77,61 @@ class ConnectorConfigTests(unittest.TestCase):
         first = (self.plugin / ".mcp.json").read_bytes()
         connector.synchronize()
         self.assertEqual(first, (self.plugin / ".mcp.json").read_bytes())
+
+    @staticmethod
+    def manifest(profile):
+        return {"skills_version": "6.24.2", "source_revision": "v6.24.2", "bundle_sha256": "a" * 64,
+                "skills": [], "mcp_connector_tools": profile,
+                "mcp_connector_tools_sha256": hashlib.sha256(json.dumps(profile).encode()).hexdigest()}
+
+    def test_live_profile_admits_new_tools_and_preserves_oauth(self):
+        profile = sorted(self.profile + ["review_note_status", "future_production_tool"])
+        live = CodexConnectorConfig.from_manifest(self.manifest(profile))
+        CodexConnectorConfig(self.plugin).synchronize(live)
+        actual = json.loads((self.plugin / ".mcp.json").read_text())["mcpServers"]["pr0ta"]
+        self.assertEqual(actual["enabled_tools"], profile)
+        self.assertEqual(json.loads((self.plugin / "scripts/prep-production-tools.json").read_text()), profile)
+        for field in ("type", "url", "scopes", "oauth_resource"):
+            self.assertEqual(actual[field], self.config["mcpServers"]["pr0ta"][field])
+
+    def test_missing_or_tampered_manifest_cannot_fall_back_to_stale_profile(self):
+        original = (self.plugin / ".mcp.json").read_bytes()
+        manifest = self.manifest(self.profile)
+        invalid = [{}, {**manifest, "mcp_connector_tools": self.profile + ["review_note_status"]},
+                   {**manifest, "mcp_connector_tools_sha256": "0" * 64}]
+        for source in invalid:
+            with self.subTest(source=source):
+                with self.assertRaises(ValueError):
+                    CodexConnectorConfig.from_manifest(source)
+        self.assertEqual((self.plugin / ".mcp.json").read_bytes(), original)
+
+    def test_new_live_tools_cannot_override_explicit_blocks(self):
+        original = (self.plugin / "scripts/prep-production-tools.json").read_bytes()
+        self.config["mcpServers"]["pr0ta"]["disabled_tools"] = ["review_note_status"]
+        self.write_config()
+        live = CodexConnectorConfig.from_manifest(self.manifest(self.profile + ["review_note_status"]))
+        with self.assertRaisesRegex(ValueError, "blocks tools"):
+            CodexConnectorConfig(self.plugin).synchronize(live)
+        self.assertEqual((self.plugin / "scripts/prep-production-tools.json").read_bytes(), original)
+
+    def test_unchanged_skill_release_repairs_and_versions_the_connector_once(self):
+        manifest = self.manifest(sorted(self.profile + ["review_note_status"]))
+        for path in (self.plugin / ".codex-plugin/plugin.json", self.root / "claude/.claude-plugin/plugin.json"):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps({"version": "6.24.2", "interface": {}}))
+        (self.root / "release-manifest.json").write_text(json.dumps(manifest))
+        with patch.object(sync_from_pr0ta, "ROOT", self.root), \
+             patch.object(sync_from_pr0ta, "fetch_json", return_value=manifest), \
+             patch.object(sync_from_pr0ta, "platform_is_compatible", return_value=True), \
+             patch.object(sync_from_pr0ta, "stage_skills") as stage:
+            self.assertTrue(sync_from_pr0ta.sync())
+            first = json.loads((self.plugin / ".codex-plugin/plugin.json").read_text())["version"]
+            self.assertNotEqual(first, "6.24.2")
+            with zipfile.ZipFile(self.root / "dist/pr0ta-codex-plugin.zip") as archive:
+                connector = json.loads(archive.read("pr0ta/.mcp.json"))["mcpServers"]["pr0ta"]
+                self.assertEqual(connector["enabled_tools"], manifest["mcp_connector_tools"])
+            self.assertFalse(sync_from_pr0ta.sync())
+            manifest.update(self.manifest(sorted(manifest["mcp_connector_tools"] + ["another_future_tool"])))
+            self.assertTrue(sync_from_pr0ta.sync())
+            self.assertNotEqual(json.loads((self.plugin / ".codex-plugin/plugin.json").read_text())["version"], first)
+            stage.assert_not_called()
