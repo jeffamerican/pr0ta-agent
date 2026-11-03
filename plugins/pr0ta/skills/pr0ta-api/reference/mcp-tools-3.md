@@ -16,7 +16,7 @@ External MCP clients have these tools; they take `project_id` where a project ap
 ## list
 
 - `list_project_assets`(asset_type, category, limit): List project assets with optional modality/category filters.
-- `list_projects`(): List PR0TA projects accessible to the authenticated user.
+- `list_projects`(include_all_users, owner_id): List PR0TA projects.
 
 ## operator
 

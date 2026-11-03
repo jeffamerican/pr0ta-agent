@@ -10,6 +10,7 @@ below, then read the part named beside it (another reference file of this skill)
 
 ## Tools by group
 
+- **admin** (`mcp-tools-1.md`): admin_project_inspect
 - **agent** (`mcp-tools-1.md`): agent_chat_orchestrate_prompt, agent_chat_resume, agent_chat_send
 - **asset** (`mcp-tools-1.md`): asset_move, asset_rename
 - **assets** (`mcp-tools-1.md`): assets_annotations_batch_update, assets_annotations_update, assets_download, assets_favorite_set, assets_get_download_link, assets_get_download_links, assets_import_url, assets_list, assets_probe, assets_trim, assets_upload_batch_start, assets_upload_finalize, assets_upload_start

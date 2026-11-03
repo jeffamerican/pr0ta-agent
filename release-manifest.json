@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.2",
-  "released_at": "2026-11-02",
-  "source_revision": "v6.24.2",
-  "minimum_platform_version": "1.27.3",
+  "skills_version": "6.24.3",
+  "released_at": "2026-11-03",
+  "source_revision": "v6.24.3",
+  "minimum_platform_version": "1.27.12",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06734-pic",
-  "bundle_sha256": "e6deddc6261991913b09219a8ef056b3d58201e900e596a029216e6d74ca12af",
+  "platform_revision": "pr0ta-platform-06782-fum",
+  "bundle_sha256": "be37a2c54d8ddb54313f08d4502e1a6dfe5b8a0524b587f8d4031d720ae78784",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "f8f81b1918c43ba9f17908e974b65c590e2b2beedf9ec02097d99ea479e21187",
+      "content_sha256": "4e2dac69b30a2bcb9a59d75734d441aedf1920a8d11e74379d4c7a39063fe0f6",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,7 +77,7 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "f3dabd063f39a23e6d85179d32bf0ee55f89577654ed3e003629746212cb6929"
+          "sha256": "809347aa4a5749a23658bd82955f45f479fd5420df6e95505c5f7f507db1f1a4"
         },
         {
           "path": "reference/mcp-tools-2.md",
@@ -85,11 +85,11 @@
         },
         {
           "path": "reference/mcp-tools-3.md",
-          "sha256": "1c236d376c29dd53a4a860c2fd260ac42a934efa56ee1af5c17cba4504a344da"
+          "sha256": "0327de5a933a9c6e5fb26a8f5bc581c9b726f56b0e07c1a1d82d74f9293f0c2b"
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "8b9129e0e36a2e33ae084f42e601eb9a3added7a89e3ce19cb3c421d3636c80e"
+          "sha256": "8ec04b72383135773e6a0b0f401c0016343c0fdaf86afed113386998b841ea8e"
         },
         {
           "path": "reference/music-analysis.md",
@@ -529,6 +529,7 @@
     }
   ],
   "mcp_connector_tools": [
+    "admin_project_inspect",
     "agent_chat_orchestrate_prompt",
     "agent_chat_resume",
     "agent_chat_send",
@@ -773,5 +774,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "e262fe2ab030efbb7cb2365022a45649c62c9abc69cec1eb4566bfaa38892b63"
+  "mcp_connector_tools_sha256": "2afc9efc1821be3b01982df7989e24e2ef2a63db0ecc83732779fad43df823ca"
 }

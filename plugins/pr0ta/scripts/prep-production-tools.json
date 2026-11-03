@@ -1,4 +1,5 @@
 [
+  "admin_project_inspect",
   "agent_chat_orchestrate_prompt",
   "agent_chat_resume",
   "agent_chat_send",

@@ -2,6 +2,10 @@
 
 Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
+## admin
+
+- `admin_project_inspect`(kind, identifier, offset, limit): Read-only platform admin inspection of a user's project, missions, execution receipts, tasks, assets or saved timeline.
+
 ## agent
 
 - `agent_chat_orchestrate_prompt`(**creative_brief**, topic, references, guidance_package, role_chain, optional_roles, target, prompt_profile, context_scope, memory_scope, authority_plan, subject_presence, reference_preflight_mode, validation_overrides, workflow_bypasses, bypass_reason, workflow_key, timeout_seconds, request_id): Queue one isolated multi-department workflow turning a creative brief and ordered references into a provider-ready prompt package (or typed prompt as…
