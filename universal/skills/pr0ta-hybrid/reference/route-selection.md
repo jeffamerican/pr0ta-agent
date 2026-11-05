@@ -20,9 +20,14 @@ beats. Every beat must describe visible source action or a requested change:
 an invented local gesture can override a global preservation instruction.
 
 For Seedance 2.5 Omni Reference with the edited sequence as source, retain
-that sequence workflow. Use the source edit as the sole video, split only
+that sequence workflow. Use the incoming source edit as the performance authority, split only
 as needed for the live model's verified duration/input limits, and retain its
 cuts within each contiguous chunk. Provider chunks are not newly invented shots.
+Keep the previous accepted video chunk as a separately bound continuity reference
+alongside the approved anchor and latest usable frame for every returning angle
+(`hybrid-sequences.md` → "Angle reference memory"). Fit the complete packet to the
+live model's input limits. The previous video carries recent visual continuity,
+not action or dialogue to replay; compare the output against the incoming source.
 Treat source text slugs as placeholders for new footage, as the user directs.
 Use the requested native drafts first, review them, then finish accepted drafts
 at the model's `draft_mode.final_resolution` (not an arbitrary new resolution). Reassemble against the original continuous recorded
@@ -41,12 +46,52 @@ native draft. Read `pr0ta-video/reference/draft-to-final.md` for the exact contr
 
 ## Contents
 
+- Explicit source-to-target changes
 - Keep a performance: Seedance edit or SwitchX
 - Seedance edits of recorded footage: input rules
 - Decision table
 - Notes per route
 - Matte sources
 - Escalation ladder
+
+## Explicit source-to-target changes
+
+When hybridization changes lighting, wind, rain, a prop or another source element,
+name what the source lacks or shows inadequately **as well as** the requested
+visible result. The source is a strong visual reference: "leaf-dappled sunlight"
+alone does not clearly instruct the model to override the source's existing light.
+This is workflow guidance; inspect the output rather than assuming the wording
+guarantees the effect.
+
+Inspect the relevant source beats first. For every requested change, state the
+observed source condition, explicitly identify the missing/insufficient effect
+or element to replace, and describe the target, its affected surfaces and timing.
+If the effect is present but too weak, say that rather than claiming it is absent.
+Use the model's actual attachment names; these examples assume Video 1 is source:
+
+- **Relighting:** "Video 1 lacks the leaf-dappled sunlight required in the final
+  render. Add warm, moving leaf-shaped sun patches across both actors' faces,
+  clothing and the ground, with matching foliage shadows and ground bounce."
+- **Wind:** "Video 1 lacks the required wind: hair, loose fabric and foliage are
+  still. Add a steady breeze from camera-left, visibly moving those elements
+  throughout this shot while preserving the actors' gestures and dialogue timing."
+- **Rain:** "Video 1 lacks the required rain and wet surfaces. Add visible falling
+  rain, wet pavement reflections and droplets on exposed clothing in this range."
+- **Prop replacement:** "Video 1 has a disposable cup and lacks the required blue
+  ceramic mug. Replace that cup with the blue mug, preserving its position, the
+  hand contact and the recorded lifting action."
+
+Keep only claims supported by the source and changes requested by the user. The
+source-deficiency statement identifies what must change; it is not a request to
+retain or reproduce that deficiency. Pair it immediately with the target. Scope
+preservation locks around these exceptions: do not lock original light during
+relighting, a prop during its replacement, or every hair/fabric movement when
+adding wind. Preserve identity, performance and editorial timing as requested.
+Apply the same source-to-target brief when authoring angle plates. Earlier angle
+anchors/latest frames and the previous video must not veto an intended change;
+use the matching approved continuity state, or establish the new state's anchor.
+Check the requested effect itself on the people, props and environment at the
+opening, internal cuts and ending, alongside performance and continuity checks.
 
 ## Keep a Performance: Seedance Edit or SwitchX
 
@@ -88,10 +133,11 @@ When the shot keeps a real performance, tell the person which route you chose an
 
 ## Seedance Edits of Recorded Footage: Input Rules
 
-These hold whatever the prompt says:
+These apply to dedicated video-edit and Omni `edit` operations; the sequence-source
+Omni Reference packet above has its own role-bound continuity workflow.
 
-- **The source is the only video.** With several videos, the model picks which one to edit from the prompt and uses the others as references. A previous take sent as `Video 2` "for continuity only" replayed its gestures and lines in the new take (a Lago di Como hybrid chunk, 2026-10-28). Carry continuity from the previous chunk as a still of its last frame in the image references; the source already carries the motion. A submit or quote result's `request_advisories` flags a second video. This also applies to sequence-source Omni Reference reconstruction: the source already carries the performance. A previous take as a continuity video belongs to a deliberately chosen generation/continuation workflow (`pr0ta-video` → "Continuity Workflows"), not an automatic extra input for reconstruction.
-- **Distinguish operations.** `seedance-2.5-video-edit` (ModelArk or MuAPI) takes the plate as its source and exposes `generate_audio`. Omni with `omni_reference_task_type: "edit"` edits too, when the plate is its only video. Omni `reference` is also fully capable of preserving identities and performances with source-bound prompting and is especially useful across edited sequences with native drafts; apart from the sole-source-video rule for reconstruction above, it is not subject to the other edit-specific defaults.
+- **The source is the only video on an edit operation.** With several videos, the model picks which one to edit from the prompt and uses the others as references. A previous take sent as `Video 2` "for continuity only" replayed its gestures and lines in the new take (a Lago di Como hybrid chunk, 2026-10-28). Carry continuity on these edit operations as angle stills; the source already carries the motion. A submit or quote result's `request_advisories` flags a second video. The chosen sequence-source Omni Reference workflow above retains a separate previous-chunk continuity video; inspect for the same replay failure instead of assuming that role-binding proves preservation.
+- **Distinguish operations.** `seedance-2.5-video-edit` (ModelArk or MuAPI) takes the plate as its source and exposes `generate_audio`. Omni with `omni_reference_task_type: "edit"` edits too, when the plate is its only video. Omni `reference` is also fully capable of preserving identities and performances with source-bound prompting and is especially useful across edited sequences with native drafts; it follows the sequence-source reference packet above, not these edit-specific defaults.
 - **Recorded speech is the authority.** Generated speech never replaces it. On the video-edit routes, send `generate_audio: false` when the recorded sound or dialogue must survive (usually so in a hybrid with speech); otherwise the route's generated sound stays the default. MuAPI Omni has no `generate_audio` and always generates its soundtrack, so lay the source's soundtrack back under the take in Post. First check native-draft provenance: finish an accepted native draft with `finalize_draft` or its draft-finish card (`pr0ta-video/reference/draft-to-final.md`), without making a new edit. The following advice applies only to a separately requested re-edit of a standalone preview or take without native finish support. For that re-edit, use the video-edit route of that resolution with `generate_audio: false`, not Omni: an Omni re-edit's generated soundtrack recreates the recorded dialogue, and the provider refused one for it ("the output audio may be related to copyright restrictions", code `InputVideoSensitiveContentDetected.PrivacyInformation`, which identifies an audio check rather than establishing a real-person violation; bug e9a6e90c). PR0TA re-runs such a refused MuAPI Omni edit with one video and no audio once, quietly, on that video-edit route; do not resubmit. A hybrid sequence's assembly uses the original sequence audio. Check lip sync against the recorded track.
 - **Grade honestly.** Prose such as "Video 1 is the sole action timeline" or "the soundtrack is the editorial authority" earns nothing by itself. The inputs above and a check against the source do (`pr0ta-prompting/reference/prompt-rubric.md`, items 1, 2 and 15).
 

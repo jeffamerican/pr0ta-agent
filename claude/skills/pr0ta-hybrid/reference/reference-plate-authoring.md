@@ -34,7 +34,11 @@ SwitchX restyles the kept subject to match the reference's lighting. Decide the 
 - Color temperature and contrast in the reference become the subject's new grade.
 - Practical lights in the reference create the new contact shadows and reflections; include them where the plate needs them.
 
-Describe the same lighting in the prompt so the text and the image agree.
+Describe the same lighting in the prompt so the text and the image agree. For
+relighting or other requested changes, explicitly identify what the source frame
+lacks and what the new plate must add; see `route-selection.md` → "Explicit
+source-to-target changes". Preserve camera geometry without locking the original
+light or any prop/environment element the user wants replaced.
 
 ## Using a SwitchX Still Pass
 

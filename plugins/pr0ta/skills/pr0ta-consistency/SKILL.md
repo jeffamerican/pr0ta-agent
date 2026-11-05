@@ -161,6 +161,12 @@ When the user needs a capability only one route has (trained tokens, Elements, s
 
 ## Continuity Workflow
 
+For long hybridized sequences with returning coverage, use
+`pr0ta-hybrid/reference/hybrid-sequences.md` → "Angle reference memory". Keep the
+approved angle anchor and latest usable frame separately for each setup/state,
+alongside the previous accepted video chunk. The temporary frame collection
+supports the shared approved references; it never replaces Prep's authorities.
+
 1. **Resolve context**: `production_context_get` for the scene and shot.
 2. **Fill gaps**: generate only missing references with the resolved model; the user approves; label them.
 3. **Build resources**: Elements and Characters from the approved references.

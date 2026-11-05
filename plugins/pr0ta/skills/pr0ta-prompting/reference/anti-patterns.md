@@ -48,8 +48,8 @@ The following anti-patterns break visual consistency and cause generation failur
 
 ### 12. Abstract Authority Lists
 **Bad:** "The source video is the sole authority for recorded identities, facial performance, eyelines, lens perspective and camera trajectory."
-**Good:** "Keep both people exactly as recorded: faces, gestures, eyelines, wardrobe, blanket, props, positions, framing and camera movement." Models follow things they can see.
+**Good:** "Keep both people exactly as recorded: faces, gestures, eyelines, wardrobe, blanket, props, positions, framing and camera movement." Models follow things they can see. Exclude anything the user requests changing from the lock list; a prop replacement cannot also lock the original prop.
 
 ### 13. Naming the Unwanted State
 **Bad:** "Carry the light into the studio-filmed footage. The guide has a small hand-position mismatch at 2 s."
-**Good:** "Relight both people to match 0-2s. The action continues straight through the 2-second mark in one take." Whatever you describe as present in the source, the model tends to draw. Recipe: `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action"; self-check: `prompt-rubric.md`.
+**Good:** "The action continues straight through the 2-second mark in one take." Avoid reinforcing incidental defects when preserving continuity. A deliberate hybrid transformation is different: explicitly identify what the source lacks and what to add, for example "Video 1 lacks the required leaf-dappled sunlight; add moving sun patches across faces, clothing and ground." Do not let this anti-pattern suppress the source-to-target change instruction (`pr0ta-hybrid/reference/route-selection.md` → "Explicit source-to-target changes"). Recipe: `pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action"; self-check: `prompt-rubric.md`.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.3",
-  "released_at": "2026-11-03",
-  "source_revision": "v6.24.3",
-  "minimum_platform_version": "1.27.12",
+  "skills_version": "6.24.4",
+  "released_at": "2026-11-04",
+  "source_revision": "v6.24.4",
+  "minimum_platform_version": "1.27.15",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06782-fum",
-  "bundle_sha256": "be37a2c54d8ddb54313f08d4502e1a6dfe5b8a0524b587f8d4031d720ae78784",
+  "platform_revision": "pr0ta-platform-06821-fuz",
+  "bundle_sha256": "4cd5110f42a7ce54614360664ceab8062d513f325c5133396465c75521240ba2",
   "skills": [
     {
       "name": "pr0ta",
@@ -179,11 +179,11 @@
     {
       "name": "pr0ta-consistency",
       "description": "PR0TA visual consistency for recurring characters, locations, props, and wardrobe across shots: reuse approved Prep references (casting portraits, face and outfit sheets, character sheets, looks, sets, props), split identity into a face sheet and an outfit sheet, generate only the missing ones, build provider consistency resources (Kling Elements, Seedance Characters), read character consistency bundles, and hold continuity through multi-shot and long-sequence generation. Read before generating any subject that appears in more than one shot.",
-      "content_sha256": "5b34ab75c13fdc9f936de7787250c9f2dc403e3ba7ef021c4b277b3bcb2db524",
+      "content_sha256": "7b2323f57df76eed444dc45f1502a727fd7d5121f996fd7a79cb83d84e933e21",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "115445431c437b9c1ad802b2dc9c982cd5061c54c0773b31aa4129556fa48045"
+          "sha256": "40ca10cf6d77b9bdc4e83750256482b5e0c1f5f6257ace8513a23e0a3c49ff4c"
         },
         {
           "path": "reference/provider-consistency-systems.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "648950113fbd671c9624508ead0dfe914c64cdc8d0eeadfa7b1b6a4a89c73e77",
+      "content_sha256": "60aa7c2ba9d1ec4fdcbce5b09331e7075a6a04e94cfacbb55ee10a2a124afc06",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "96955f2cc65ab3930d8b861ec29d402705efed163103ed5214f906547dd0eafe"
+          "sha256": "46d8170caf6a8fd8b4728c7705854644af05aee97908dd55fc312efa9e77d8d7"
         },
         {
           "path": "reference/camera-solving.md",
@@ -251,7 +251,7 @@
         },
         {
           "path": "reference/hybrid-sequences.md",
-          "sha256": "c9a162564965d636fe820d6e84005e7b8628423f1224e02ff7ecafba6c0c1150"
+          "sha256": "dc1b3478f5ced2168cec9d4206b5f360f37802ad8fbbd1d928beaa66240d1ebb"
         },
         {
           "path": "reference/hybrid-shot-studio.md",
@@ -263,11 +263,11 @@
         },
         {
           "path": "reference/reference-plate-authoring.md",
-          "sha256": "7223f219fced7c72babdbdd7a13077a17bfbd3804f22238a4adfd9c4cde39373"
+          "sha256": "01e88dfb3e6c44028d7fc46d719ee97ad77a355f73b87f06bcee2e3f01d6999b"
         },
         {
           "path": "reference/route-selection.md",
-          "sha256": "c18cdadd836b70da42720a5dc352cfe18115aef85c297d8adcaa27a99615eb1d"
+          "sha256": "5050905dc48614bf265346d23052fe99ddc748cc51061d0803c60831342d85d9"
         },
         {
           "path": "reference/switchx-2.md",
@@ -362,15 +362,15 @@
     {
       "name": "pr0ta-prompting",
       "description": "PR0TA prompt writing for image, video, speech, music, 3D world, and humanoid motion generation: self-contained prompts, prompt bibles, reference binding and token syntax per model, camera and lighting language, on-screen text and title cards, key frames for image-to-video, video edit/extend prompts, storyboard prompts, negative-phrasing fixes, anti-patterns, and multi-shot consistency. Read before writing any generation prompt.",
-      "content_sha256": "dce47657004f6ec4eb003cc6fb41e9b2764bf0a7a2b9f0413d59495d7652367b",
+      "content_sha256": "dad70d403012bbdbba4f260a5da4c3fd6c659978cf7325854640803f6bf62ef8",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "52ee26ff9eaf96b0d80181a464a547560823aa36cfe375aa2b0bb1e4d4f0b20a"
+          "sha256": "8d8bacccc8f71e423c746f0692f1337b316be2b2ac8de3c6b6fcb212e7e230ad"
         },
         {
           "path": "reference/anti-patterns.md",
-          "sha256": "91bf21ed0c7a3dbf9cc31d65ec62b45a4c89f3b37dda5aa6dd1d8e4c7a1c4972"
+          "sha256": "a82f6205b1151a0bfafc81968862798a984a0e5276cae5ee46cbe66c14f78469"
         },
         {
           "path": "reference/designed-world-reference-image.md",
@@ -394,7 +394,7 @@
         },
         {
           "path": "reference/prompt-rubric.md",
-          "sha256": "42300078c2b71ed9a3a9930968be770c8480a6e18e79228589185f2faac1b1fa"
+          "sha256": "e34a7b7d2b09c57554d7fa3f55979f9a55e2efba14265fdad7eaa71a6620a8ad"
         },
         {
           "path": "reference/realism-camera-behaviors.md",
@@ -439,11 +439,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "a23377193230c7cffca50c908cb28fa54bc7fe9b3fa4088c4b57849271b70438",
+      "content_sha256": "070fe33f9fef48cde13ad35363c18a4b865632c2212936c218fa6768e0748464",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "ed5e7a394f07dfa14e1b37590483265f170c428a0088c6fa596b8df79f493079"
+          "sha256": "108953037c6ef4d26843382c2218c642475cd01e73bb8cd7e767ffe516f4df56"
         },
         {
           "path": "reference/draft-to-final.md",
@@ -491,7 +491,7 @@
         },
         {
           "path": "reference/seedance-2.5-prompt-craft.md",
-          "sha256": "394b4d7507c861700a2e44d60de9dd8161e80231c64b2b605e1ddf325f58589c"
+          "sha256": "8dd911fa4ef61a427e4bf3e7d9bbd08187a82d2da5768887cebd387a798c4fec"
         },
         {
           "path": "reference/seedance-2.5-provider-fallback.md",

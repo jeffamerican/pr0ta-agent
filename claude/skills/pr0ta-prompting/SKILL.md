@@ -71,7 +71,7 @@ For a real project, call `memory_context_pack` with the `task_intent` and the sc
 
 ## Reference Binding Is a Submission Contract
 
-Never write "preserve the approved portrait" or "match the character sheet" unless that exact project asset is attached to the request. Prose does not attach an asset, and the provider cannot resolve a project-internal name.
+Attach every claimed reference as an exact project asset; prose cannot attach it or resolve a project-internal name.
 
 1. Select the exact approved project asset id; do not infer a file name or substitute a storage URL.
 2. Put the image being transformed in `image_asset_id`; put ordered identity or style references in `reference_image_asset_ids`.
@@ -79,7 +79,9 @@ Never write "preserve the approved portrait" or "match the character sheet" unle
 4. Bind split identity sheets by job: face from the face sheet, clothes from the outfit sheet, build from the body sheet; the prompt sets the scene's place and light, never a sheet's grid, studio light or background. Seedance 2.5 takes plain-language roles (PR0TA writes them in its packages); `@image`-token models bind each token to its job (`pr0ta-consistency` → "Face and Outfit Sheets").
 5. Put requested geometry in the route's structured fields (`aspect_ratio`, `image_size`, `resolution`) as well as the prose. Never rely on the prompt for dimensions.
 
-If no approved asset is available, say so and generate without claiming reference preservation. A reference mention without its attached asset id is a failed generation contract.
+Disclose missing approved assets; never claim unattached reference preservation.
+For hybrid angle anchors, latest frames and previous video chunks, follow
+`pr0ta-hybrid/reference/hybrid-sequences.md` → "Angle reference memory".
 
 ## The Self-Contained Prompt Rule
 

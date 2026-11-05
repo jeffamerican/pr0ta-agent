@@ -48,18 +48,20 @@ For a Seedance 2.5 Omni Reference sequence-source workflow,
 read `reference/route-selection.md` → "Sequence-Source Omni Reference".
 Do not replace it with per-shot SwitchX, mattes or dedicated video-edit work.
 
-**Edited sequence with cuts:** read `reference/hybrid-sequences.md` first. By default, import,
-review cuts/coverage/continuity states, and materialize individual shots before
-using the continuous-shot steps below. Provider-length chunks are not editorial
-shots. An Omni Reference sequence-source route instead keeps the supplied edit
-inside contiguous chunks, bounded by the verified model limit; it does not
-require separately regenerating each shot. Never chain a generated last frame across a cut into a different angle.
-On a generative route, the chunks of one continuous shot depend on each other:
-render each after the one before it and carry its motion forward as `pr0ta-video`
-→ "Continuity Workflows" describes; an ending still carries appearance, not motion.
-When the chunks are edits of recorded footage, the source carries the motion and
-sound: each chunk's source is its only video, the previous take rides as a still
-of its last frame, and recorded speech stays recorded
+For relighting, weather or element changes, read `reference/route-selection.md`
+→ "Explicit source-to-target changes": name what the source lacks and what to add.
+
+**Edited sequence with cuts:** read `reference/hybrid-sequences.md`. Import, review
+cuts/coverage/states, then materialize shots for the per-shot route. Omni Reference
+sequence-source work instead keeps the edit inside contiguous model-sized chunks;
+chunks are not editorial shots. Use "Angle reference memory" in that reference:
+keep an approved anchor and latest usable frame per angle/state alongside the
+previous accepted video chunk; retrieve matching references before submission.
+Never chain a last frame across a cut into a different angle. Generative chunks
+of one continuous shot run sequentially, carrying motion as `pr0ta-video` →
+"Continuity Workflows" describes; a still carries appearance, not motion.
+Dedicated video-edit and Omni `edit` operations keep each source as their only
+video, earlier-take continuity as a still, and recorded speech as recorded
 (`reference/route-selection.md` → "Seedance Edits of Recorded Footage: Input Rules").
 
 1. **Read project memory first.** Call `memory_context_pack` for the scene, location, and shot. Approved location plates, set environments, and world decisions are the source of truth for what may change and what must stay.

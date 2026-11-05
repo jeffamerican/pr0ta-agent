@@ -18,7 +18,7 @@ The grade is for the prompt and request. A take that keeps a recorded performanc
 
 1. **The route and inputs can keep what must survive.** A recorded performance that must reach the cut (the actors' faces and likeness, gestures, lip movements and timing, the source's framing and cuts) needs a source-bound route:
    - a Seedance 2.5 edit (a video-edit route, or Omni with `omni_reference_task_type: "edit"`) with the plate as its only video, at 720p or more when faces matter, and a prompt that locks the faces, performance and timing (`pr0ta-video/reference/seedance-2.5-prompt-craft.md` → "Replace the World Around Live Action");
-   - the user's chosen Seedance 2.5 Omni Reference sequence workflow, with the source edit as the sole video and role-bound appearance references; verify the performance against source pictures and finish accepted native drafts through their native finish path;
+   - the user's chosen Seedance 2.5 Omni Reference sequence workflow, with the incoming source edit as performance authority, the previous accepted chunk as continuity video, and role-bound approved angle anchors/latest usable frames (`pr0ta-hybrid/reference/hybrid-sequences.md` → "Angle reference memory"); verify the performance against source pictures and finish accepted native drafts through their native finish path;
    - or SwitchX with a matte, or a matte composite, when the plate's pixels must come through exactly.
 
    Text- or image-to-video without the recorded source fails this item. Prose alone proves no preservation; a source-bound reference workflow must pass the same picture checks. Honor the user's route rather than switching it because a model redraws pixels (`pr0ta-hybrid/reference/route-selection.md` → "Sequence-Source Omni Reference").
@@ -29,19 +29,23 @@ The grade is for the prompt and request. A take that keeps a recorded performanc
 
 4. **Every input is attached and named in the model's syntax,** in final upload order: `Video 1` / `Image 1`, `@image1`, `<IMAGE_0>` (`pr0ta-prompting` → "Reference Syntax Is Per Model"). Never "the attached image" or "the approved portrait".
 5. **Each input has one job and a limit.** "Image 1 is the approved setting: environment and light only, never the people." On an edit, the source is the only video: the model blends the action and sound of every attached video, so an earlier take rides as a still (its last frame) for continuity, never as a second video. A submit or quote result's `request_advisories` flags this.
+   On a sequence-source Omni Reference workflow, the previous chunk is a separate
+   continuity video; angle anchors and latest frames govern only their matching
+   coverage/state. Check the combined input budget and inspect for replayed action
+   or dialogue. Role labels alone are not evidence that the source was preserved.
 
 **Picture**
 
 6. **Self-contained.** A stranger could picture the shot from the prompt alone. No "same as before", no pronouns that point at other shots; descriptors copied word for word from the prompt bible.
 7. **Visible, not abstract.** Things a camera sees: faces, hands, the blanket, "dappled warm sunlight from camera left". Not "authority for identity and lens perspective", "cinematic", "dramatic lighting".
 8. **Time is explicit.** For more than one beat, use whole-second ranges with no gaps or `Shot N` blocks; a single-beat clip needs only the action and a visible end state. On an edit, say which seconds change and which stay.
-9. **Light comes from sources.** Direction, quality and warmth. When people move into a new world: bounce, contact shadows, edge light.
+9. **Light comes from sources.** Direction, quality and warmth. When people move into a new world: bounce, contact shadows, edge light. For hybrid lighting, weather or element changes, explicitly name what the source lacks/shows inadequately and the visible target (`pr0ta-hybrid/reference/route-selection.md` → "Explicit source-to-target changes").
 10. **One camera behavior per beat,** described physically ("slow push-in", "handheld, drifting left"), or "exactly as recorded" on an edit.
 
 **Exclusions**
 
 11. **Wanted states are written positively.** Exclusions are short, each paired with what it protects, and only for problems seen or invited (`pr0ta-prompting` → Technique 4).
-12. **The unwanted state is never named as a fact.** "Studio-filmed footage" anchors the studio look; "a small hand mismatch" invites a redraw of the hands. Say the result: "the action continues straight through the 2-second mark in one take".
+12. **Do not reinforce an incidental unwanted state.** "Studio-filmed footage" can anchor the studio look; "a small hand mismatch" invites a redraw of the hands. For continuity, say "the action continues straight through the 2-second mark in one take". For a deliberate hybrid change, explicitly naming the source's missing effect is required: pair "Video 1 lacks the required leaf-dappled sunlight" with what to add and where. Do not treat that source diagnosis as a target to preserve.
 
 **Fit**
 
@@ -51,6 +55,7 @@ The grade is for the prompt and request. A take that keeps a recorded performanc
 15. **You know how you will check the take.** Say what you will compare, and against what:
     - faces, hands and the ground against the source, with the same `post_frames_get` `times` or `frames` on both;
     - the take's QC review;
+    - each requested lighting/weather/element change against its stated target, including its visible effect on people and surroundings, not just background mood;
     - soundtrack placement against the source (`audio_align`), separately from visible mouth closures, gesture landmarks and internal cuts at mapped source frames; aligning restored original audio with itself does not verify generated picture sync;
     - the length against the plan.
 
