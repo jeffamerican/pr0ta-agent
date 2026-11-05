@@ -145,6 +145,10 @@ Fields: `generate_audio: false`, `resolution: "1080p"` (or `"720p"`) and `output
 
 #### Check the take before calling anything kept
 
+For preserved framing, check scale, placement, camera angle and left/right order
+individually. For continuity packets, matte utilities and partial QC evidence,
+read `pr0ta-hybrid/reference/hybrid-reference-checks.md`.
+
 - Pull the same moments from the source and the take: `post_frames_get` with the same `times` (or `frames`) on each, at the hardest face moments (a turn toward camera, mid-line, a close moment). Use `detail: "full"` and a `region` to read a face. Compare faces, hands, wardrobe, the ground and the framing.
 - Read the automatic QC review. Use `audio_align` for soundtrack placement; check visible mouth closures, gestures and cuts against source pictures separately. Matching restored original audio to itself does not verify the regenerated picture's synchronization.
 - First compare the submitted beat instructions with source pictures: remove invented gestures or cuts before attributing departures to the model. A global preservation instruction does not cancel conflicting local action.

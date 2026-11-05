@@ -28,7 +28,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `assets_import_url`(**url**, subject, category, labels, folder_path): Import a public image, video, audio or 3D model file from a web address into the project as a ready asset (free): PR0TA downloads it server-side, so…
 - `assets_list`(offset, limit, kind, category, browser_category, reference_type, subject, source, task_id, q, favorite_only, asset_ids, folder_path, recursive, include_virtual_references, include_download, compact): List PR0TA project assets with simple filters.
 - `assets_probe`(**asset_ids**, refresh): Measure video, image and audio assets (free): width, height, aspect_ratio, orientation, fps, duration_seconds, has_audio and codecs, read from each f…
-- `assets_trim`(**asset_id**, **asset_type**, **in_point**, **out_point**, category, subject, idempotency_key, background): Trim a project audio or video asset into a new registered derivative.
+- `assets_trim`(**asset_id**, **asset_type**, **in_point**, **out_point**, remove_audio, category, subject, idempotency_key, background): Create a frame-accurate audio/video trim; points are seconds.
 - `assets_upload_batch_start`(**files**, folder_path): Create signed upload handoffs for multiple assets in one MCP call.
 - `assets_upload_finalize`(**asset_id**, byte_size, checksum_sha256, duration_ms, metadata, category, subject, labels, status, folder_path): Finalize a signed upload after its PUT succeeds: verifies the stored object and marks the asset ready.
 - `assets_upload_start`(**filename**, content_type, kind, folder_path, idempotency_key, checksum_sha256): Create an asset placeholder and signed upload handoff.

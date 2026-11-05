@@ -84,6 +84,10 @@ the view it actually shows.
    packet does not fit, shorten the continuity tail or use smaller contiguous
    source chunks without changing the edit. Surface unresolved limits rather
    than silently dropping an anchor or claiming an unattached reference.
+   Preserve the requested multi-angle continuity coverage when budgeting a tail;
+   allocate it before splitting incoming source, and strip only that derivative's
+   audio. Read [reference packet checks](hybrid-reference-checks.md) for measured
+   budgets, audio-stream verification and explicit coverage criteria.
 3. Bind every attachment using the model's syntax and final attachment order.
    The incoming source owns current performance, blocking, camera, framing,
    timing and cuts. Name the angle and incoming shot/time range each still

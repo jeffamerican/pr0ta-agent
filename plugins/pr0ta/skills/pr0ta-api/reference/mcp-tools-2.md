@@ -142,7 +142,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `tasks_batch_get`(**task_ids**, detail): Get multiple PR0TA tasks in one MCP call for efficient generation polling.
 - `tasks_cancel`(**task_id**): Cancel one queued or running PR0TA task.
 - `tasks_completion_events`(**subscription_id**, cursor): Read completion receipts for recovery.
-- `tasks_get`(**task_id**, detail): Get one PR0TA task by id and return its canonical status/result.
+- `tasks_get`(**task_id**, detail): Read a task's canonical status/result.
 - `tasks_subscribe`(**request**): Register a durable HTTPS completion receiver bound to one client/workflow/thread.
 - `tasks_unsubscribe`(**subscription_id**): Disable completion delivery and pending email escalation for this subscription.
 - `tasks_watch`(**subscription_id**, **task_ids**): Add task IDs to a completion subscription.

@@ -51,6 +51,8 @@ Do not replace it with per-shot SwitchX, mattes or dedicated video-edit work.
 For relighting, weather or element changes, read `reference/route-selection.md`
 → "Explicit source-to-target changes": name what the source lacks and what to add.
 
+For reference packets and output verification, read `reference/hybrid-reference-checks.md`.
+
 **Edited sequence with cuts:** read `reference/hybrid-sequences.md`. Import, review
 cuts/coverage/states, then materialize shots for the per-shot route. Omni Reference
 sequence-source work instead keeps the edit inside contiguous model-sized chunks;
@@ -74,7 +76,7 @@ video, earlier-take continuity as a still, and recorded speech as recorded
 
 ## Route Selection
 
-Choose the narrowest tool that preserves what must stay. To keep a recorded performance, a Seedance 2.5 edit prompted to lock the faces, performance and timing is a first-class route; SwitchX is the choice when the plate's pixels must come through exactly or Seedance attempts failed. Read `reference/route-selection.md` → "Keep a Performance: Seedance Edit or SwitchX", then the full comparison.
+Seedance 2.5 edits are a first-class choice for keeping faces, performance and timing when the prompt locks them. Choose SwitchX when plate pixels must pass through exactly or Seedance attempts failed. Compare `reference/route-selection.md` → "Keep a Performance: Seedance Edit or SwitchX".
 
 For edited-sequence reconstruction, Omni Reference with a clear source-performance
 contract and native drafts is also a first-class choice; it does not require
