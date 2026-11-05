@@ -89,7 +89,9 @@ Use `displayed_frame_index` / `frame_index` as the repair target, and `timecode`
 
 ## Tool: `review_submit_assets`
 
-Creates or reuses studio submissions for the supplied assets, publishes them to a public client review room, creates a share link, and returns the share URL.
+Creates or reuses studio submissions and appends supplied assets to the shared project room, retaining its URL, previous items, decisions, and sharing. A first shared delivery creates its room and link without archiving other rooms.
+
+To add work to a specific existing room (including an isolated room), pass its `review_round_id`. The target must be an active room in this project with a usable link. Missing, archived, expired or revoked destinations fail without creating a replacement room. Do not combine this argument with `new_room: true`. Refresh an older client's tool schema if this argument is not yet visible.
 
 `submit_assets_for_review` remains available as a legacy alias, but new agents should use `review_submit_assets`.
 
@@ -120,6 +122,7 @@ Local stdio MCP clients may provide `access_token` per call or via `PR0TA_MCP_AC
 Field notes:
 
 - `asset_ids` — required, at least one project asset ID.
+- `review_round_id` — optional exact destination. Leave out for the default shared project room; include it whenever the person names an existing room/link. Resolve the round from the room's authorized details; never guess a target or substitute a new URL.
 - `title`, `description`, `review_notes` — optional reviewer-facing context.
 - `allow_download` — leave it out. A delivery keeps the room's sharing as the studio set it (access, invitees, downloads, comments, expiry). Pass it only when the person asks to turn downloads on or off; a brand-new room starts with downloads off.
 - `webhook_url` — optional, must be a public HTTPS URL. PR0TA rejects localhost, private-network, link-local, reserved, multicast, unspecified, and `.internal` hosts.
@@ -127,7 +130,7 @@ Field notes:
 - `folder` — optional folder path in the room, nested with `/` (`"Scene 1/Takes"`). Missing folders are created; existing ones (matched case-insensitively) are reused. Revisions stay in their tile's folder.
 - `versions` — optional. For each revised asset, `asset_id` is the new asset in this delivery and `replaces_asset_id` is the earlier asset already sent for review. The new asset becomes the next version on that tile. Pairs that cannot be matched come back in `versions_not_stacked`.
 
-Group a client's deliveries into one room by sending them with this tool: every delivery made this way joins the same room, and the newest share link opens the whole room.
+Group a client's deliveries into one room: default shared deliveries retain the same round and share link. Explicit destinations retain that room's round and link. Existing cuts, section labels, review decisions and sharing stay intact; repeated assets are not duplicated. Republishing is not a review decision and does not assign a reviewer. Separate rooms remain separate unless explicitly selected.
 
 ### Response
 

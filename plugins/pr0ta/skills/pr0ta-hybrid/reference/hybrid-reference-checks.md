@@ -32,6 +32,14 @@ output duration is a separate quantity. Leave margin for measured/container
 rounding. Where the limit remains unconfirmed, retain the measured packet and
 state that uncertainty rather than inventing a bound or repeatedly submitting it.
 
+**MuAPI Seedance 2.5 Omni:** support inspected the C019 failures on 5 November 2026
+and confirmed a **30-second combined input-video limit**. The 29.988-second source
+plus 2.002/3.003-second continuity exceeded it, despite the provider's misleading
+minimum-duration error. PR0TA measures the final video list before task creation
+and refuses packets over 30 seconds or with an unmeasurable video. It never trims
+inputs automatically. This confirmation does not establish another route's limit,
+an audio-duration rule, or the cause of a different packet below 30 seconds.
+
 Allocate the continuity coverage first, then fit smaller contiguous incoming
 source chunks into the remaining budget, preserving every original performance
 frame and its sound in the sequence. If a packet does not fit, explain the split;

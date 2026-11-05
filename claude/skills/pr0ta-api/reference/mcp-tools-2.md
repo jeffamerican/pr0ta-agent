@@ -45,7 +45,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## review
 
 - `review_note_status`(**kind**, **record_id**, **status**, **request_id**, note, review_mission_id, review_artifact_id): Set shared work progress on an original review-room annotation or comment event.
-- `review_submit_assets`(**asset_ids**, new_room, request_id, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish assets to a PR0TA public client review room.
+- `review_submit_assets`(**asset_ids**, new_room, request_id, review_round_id, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish assets to a PR0TA public client review room.
 
 ## save
 
@@ -129,7 +129,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## submit
 
-- `submit_assets_for_review`(**asset_ids**, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish one or more project assets into a public client review room and return a share link.
+- `submit_assets_for_review`(**asset_ids**, review_round_id, title, description, review_notes, allow_download, webhook_url, webhook_secret, folder, versions, recipient_emails): Publish one or more project assets into a public client review room and return a share link.
 
 ## supervisor
 
