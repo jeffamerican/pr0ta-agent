@@ -73,6 +73,18 @@ The world registration is persistent. When it or the world/camera changes, PR0TA
 
 Shooting a reference from a splat, pano, or mesh view in the Image Editor now saves the camera with the image. The freeze-frame asset carries a `world_capture` label containing a JSON object with `mode`, `position`, `yaw`, `pitch` or `quaternion`, `focalLengthMm`, `fovDegrees`, `sensorHeightMm`, `coordinateSystem`, `worldAssetId`, `worldId`, `projectId`, and `capturedAt`, plus flat `world_capture_mode`, `world_focal_length_mm`, `world_asset_id`, and `world_id` labels for filtering. Use the stored pose to build the matching `scene_plan.camera` for Recipe A so the structure passes and the captured view agree. Captures from a library world carry `worldId` only, because there is no project asset yet.
 
+New world-viewer references use a 24.89 × 18.66 mm Super 35 gate, centered-cropped
+to the selected frame ratio. Their `world_capture` also records `sensorFormat`,
+`sensorWidthMm`, `activeGateWidthMm`, `activeGateHeightMm`, and `aspectRatio`.
+Restore the saved `fovDegrees` and image aspect when matching the view; do not
+reinterpret the Super 35 focal length as a full-frame equivalent. Legacy
+captures retain their original sensor convention.
+For a matching Blender structure pass, set `scene_plan.camera.lens` to the saved
+`focalLengthMm`, `sensor_width_mm` / `sensor_height_mm` to `activeGateWidthMm` /
+`activeGateHeightMm`, and `sensor_fit: "HORIZONTAL"`; use the captured image aspect.
+Check the returned optics receipt against the saved vertical FOV before using
+the pass as a reference.
+
 ## Recipe E: Camera-Take Import
 
 A camera-performance take records position, quaternion, and focal length samples in the previs coordinate frame. Import it from the previs stage to replace the shot camera's keyframes; pre-roll samples and samples without tracking are dropped, other targets keep their animation, and the take's focal length maps one to one onto the previs lens. Then render a world-only guide from that camera for Recipe B.
