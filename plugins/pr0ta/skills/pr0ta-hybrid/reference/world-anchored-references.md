@@ -73,9 +73,9 @@ The world registration is persistent. When it or the world/camera changes, PR0TA
 
 Shooting a reference from a splat, pano, or mesh view in the Image Editor now saves the camera with the image. The freeze-frame asset carries a `world_capture` label containing a JSON object with `mode`, `position`, `yaw`, `pitch` or `quaternion`, `focalLengthMm`, `fovDegrees`, `sensorHeightMm`, `coordinateSystem`, `worldAssetId`, `worldId`, `projectId`, and `capturedAt`, plus flat `world_capture_mode`, `world_focal_length_mm`, `world_asset_id`, and `world_id` labels for filtering. Use the stored pose to build the matching `scene_plan.camera` for Recipe A so the structure passes and the captured view agree. Captures from a library world carry `worldId` only, because there is no project asset yet.
 
-New world-viewer references use a 24.89 × 18.66 mm Super 35 gate, centered-cropped
+New world-viewer references use the ALEXA 35's 27.99 × 19.22 mm Open Gate, centered-cropped
 to the selected frame ratio. Their `world_capture` also records `sensorFormat`,
-`sensorWidthMm`, `activeGateWidthMm`, `activeGateHeightMm`, and `aspectRatio`.
+`cameraModel`, `sensorWidthMm`, `activeGateWidthMm`, `activeGateHeightMm`, and `aspectRatio`.
 Restore the saved `fovDegrees` and image aspect when matching the view; do not
 reinterpret the Super 35 focal length as a full-frame equivalent. Legacy
 captures retain their original sensor convention.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.7",
+  "skills_version": "6.24.8",
   "released_at": "2026-11-06",
-  "source_revision": "v6.24.7",
-  "minimum_platform_version": "1.28.0",
+  "source_revision": "v6.24.8",
+  "minimum_platform_version": "1.29.1",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06925-poy",
-  "bundle_sha256": "504a27d9a5b7b9ad84f6a0a751775ee896a531f76c8c9daaf01157de28cbbcf8",
+  "platform_revision": "pr0ta-platform-06943-yuj",
+  "bundle_sha256": "b9e812dea3f3d34623d5a969491f6d72979a52c6030cb067a3279492e63edc79",
   "skills": [
     {
       "name": "pr0ta",
@@ -239,7 +239,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "056029ed7237301dfae227a5622006160ea28c9f8b57d65ebef696c381537cd1",
+      "content_sha256": "b0c6cbb96b4326ce5e0db70efbb88d8e46ff2a8514ee31b261c33921741da243",
       "documents": [
         {
           "path": "SKILL.md",
@@ -283,7 +283,7 @@
         },
         {
           "path": "reference/world-anchored-references.md",
-          "sha256": "a792c70b79dd6826c297e4eca43df95cbc1b8cec1935c6112528e49706e8e22f"
+          "sha256": "fd4a7b4283d4c76261b79820da4ca2b72e92b39088f227c10db9c3a8e72f5325"
         }
       ]
     },
