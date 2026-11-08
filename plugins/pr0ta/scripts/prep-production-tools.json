@@ -18,6 +18,7 @@
   "assets_upload_batch_start",
   "assets_upload_finalize",
   "assets_upload_start",
+  "assets_write_timecode",
   "audio_align",
   "audio_analyze",
   "audio_meter",

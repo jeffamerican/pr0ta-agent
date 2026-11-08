@@ -12,7 +12,7 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06943-yuj",
+  "platform_revision": "pr0ta-platform-06962-yeg",
   "bundle_sha256": "b9e812dea3f3d34623d5a969491f6d72979a52c6030cb067a3279492e63edc79",
   "skills": [
     {
@@ -552,6 +552,7 @@
     "assets_upload_batch_start",
     "assets_upload_finalize",
     "assets_upload_start",
+    "assets_write_timecode",
     "audio_align",
     "audio_analyze",
     "audio_meter",
@@ -778,5 +779,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "2afc9efc1821be3b01982df7989e24e2ef2a63db0ecc83732779fad43df823ca"
+  "mcp_connector_tools_sha256": "f4b84cd517066bf57ee8c22cd2278bf07c9d9e042791bc9f1e150311fb55ca65"
 }
