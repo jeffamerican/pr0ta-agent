@@ -5,6 +5,7 @@ A matte tells the compositor what to keep. For SwitchX it is a grayscale image o
 ## Contents
 
 - Matte sources
+- Tracked holdouts and full-length mattes
 - Keyframe mattes for select mode
 - Timing and geometry rules
 - Edge hygiene
@@ -20,6 +21,23 @@ A matte tells the compositor what to keep. For SwitchX it is a grayscale image o
 | `bria/video/background-removal` | One composited video; `Transparent` with `webm_vp9` or `mov_proresks` keeps an alpha channel | `custom` after alpha extraction | Submit with `generation_submit`, no prompt, and `parameters: {"background_color": "Transparent", "output_container_and_codec": "webm_vp9"}`. RGBA is not a luma matte; extract the alpha channel before submitting |
 | ProRes 4444 plate | Embedded alpha | `custom` | The Resolve plugin extracts it automatically and attaches it as the SwitchX matte |
 | Painted or segmented first frame | One grayscale PNG | `select` | Beeble propagates it across the clip; invert it to regenerate inside a region |
+
+## Tracked Holdouts and Full-Length Mattes
+
+Call `video_mask_track` to prepare a separate holdout for each moving region.
+Supply the prepared source `asset_id`, one or more `keyframes` (zero-based
+`frame` with an exact-size grayscale `mask_asset_id` or normalized `polygon`),
+and `direction: "both"` to track from a later frame in both directions.
+Use inclusive `visible_ranges` for off-screen reveals and full occlusions.
+Each visible range needs a seed. Inspect the overlay and correct lost or
+low-confidence ranges with additional keyframes before using the matte.
+
+Call `video_matte_combine` with the same source and each component
+`asset_id`, including the actor matte. Default `union` keeps the maximum
+coverage per pixel. The tool checks the exact decoded frame count, constant
+rate and upright size. Poll `tasks_get` and use the resulting
+`matte_asset_id` as the single SwitchX custom matte. The separately
+registered overlay is for review.
 
 ## Keyframe Mattes for Select Mode
 

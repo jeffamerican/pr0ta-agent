@@ -1,8 +1,7 @@
 # Post-Production Timeline API — Reference
 
-The **post-production timeline** is the primary editing surface for both AI agents and human collaborators. It stores persistent clip state, Ken Burns presets, audio mix configuration, and supports incremental edits — no more full-rebuild build scripts.
-
-**For workflow guidance** (when to add clips, how to set Ken Burns presets, preview/render loop, snapshot handoff patterns), see `pr0ta-timeline`. This file documents the API shapes the timeline skill relies on.
+The timeline stores clips, Ken Burns presets, and audio mix settings. It supports incremental edits.
+For editing and verification workflows, see `pr0ta-timeline`.
 
 Paths below are relative to the project's post-production prefix (UUID or slug), for example `/timeline` is `GET /api/post-production/{project_id}/timeline`.
 

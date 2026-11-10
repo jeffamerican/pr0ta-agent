@@ -32,6 +32,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `assets_upload_batch_start`(**files**, folder_path): Create signed upload handoffs for multiple assets in one MCP call.
 - `assets_upload_finalize`(**asset_id**, byte_size, checksum_sha256, duration_ms, metadata, category, subject, labels, status, folder_path): Finalize a signed upload after its PUT succeeds: verifies the stored object and marks the asset ready.
 - `assets_upload_start`(**filename**, content_type, kind, folder_path, idempotency_key, checksum_sha256): Create an asset placeholder and signed upload handoff.
+- `assets_write_timecode`(**asset_id**, source_asset_id, start_timecode, conform_to_source_rate, source_offset_frames, conform_audio, idempotency_key): Create a new downloadable MOV/MP4 with a verified embedded start timecode.
 
 ## audio
 
@@ -107,7 +108,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 ## cut
 
-- `cut_quality_review`(asset_id, render_task_id, intent, force): QC verdict for an assembled cut (free).
+- `cut_quality_review`(asset_id, render_task_id, intent, force): QC verdict for an assembled cut (billed by usage).
 
 ## department
 

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.8",
-  "released_at": "2026-11-06",
-  "source_revision": "v6.24.8",
-  "minimum_platform_version": "1.29.1",
+  "skills_version": "6.24.9",
+  "released_at": "2026-11-09",
+  "source_revision": "v6.24.9",
+  "minimum_platform_version": "1.29.8",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-06986-fir",
-  "bundle_sha256": "0c96eae2bd42a418c72308c8efa408a7c2ba988f4beccd834e4103a9a8ee7892",
+  "platform_revision": "pr0ta-platform-07000-feg",
+  "bundle_sha256": "6434538c05005ae75fdecf2d6120941d6911a8fa0c8289cd0b1c89b67e3f2939",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "e20e49a1ea65d19552470b0bbc93ec54ca8fcbb90fda9c81f1eaf0bdb1ea8c4a",
+      "content_sha256": "1a4cffd6a0422fbe1525e883aae202933ecdbb173bbf358e4f9862afea8bdd4e",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "5c04f171deb47b3973aa5168b92be7f54ee89f1daea80ca1d101fadb220c73f8"
+          "sha256": "c31639ee9a6c4d0e22d7c5d8f036a54e761c168d0f1833718ea6dc2ce4d73825"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "1d20bc3ba22ec238089092a42bded82bb2086096a000082a2b2960e202762e3a"
+          "sha256": "188c7ba8b30c87afa4f1989a14e90a2b86501efb811173de28198e2082d13cbe"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "8ec04b72383135773e6a0b0f401c0016343c0fdaf86afed113386998b841ea8e"
+          "sha256": "602ea11525f12da08c07dc92f41750b8042c1d66c1feb91f289170d8b59a943f"
         },
         {
           "path": "reference/music-analysis.md",
@@ -133,7 +133,7 @@
         },
         {
           "path": "reference/timeline-api.md",
-          "sha256": "47c9c76881907495c4939e34fa796ec1917fd5a43a248f230dfaaf2ea493d8fd"
+          "sha256": "b3fdd3f2296f863ebf731507f9c1d275411536ed7505499f4d467c5a4908eea8"
         },
         {
           "path": "reference/unified-generation.md",
@@ -239,7 +239,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "b0c6cbb96b4326ce5e0db70efbb88d8e46ff2a8514ee31b261c33921741da243",
+      "content_sha256": "880fa342ed47d5090dfbf8c517538b2953e5997838f9890edd2642ecfa6b71a1",
       "documents": [
         {
           "path": "SKILL.md",
@@ -263,7 +263,7 @@
         },
         {
           "path": "reference/matte-and-alpha.md",
-          "sha256": "b973c4a24cfa812edfb2f024e72abdfd81ebe48d88369e41dba1976fe3cd01eb"
+          "sha256": "5fe259473ff1be53d6fc04ca36b2375571291748845283c4278a9ea70b5e44aa"
         },
         {
           "path": "reference/reference-plate-authoring.md",
@@ -424,11 +424,11 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut.",
-      "content_sha256": "e0a0aaac9603c02f571310084882f23819cfccc204f2e01de80b52e2cccddf0c",
+      "content_sha256": "62c9c9fb47efc0e1a77ead93d56ed1ea1cb02718993aa364a7be3e775982c614",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "c5d35b87131276688d802ae8b9c1b0ec07ab285fcc60bce59fab5adf5e12ef24"
+          "sha256": "93b7bb3b41eca95f991e8fabb358f5c940ff1a3b4271e0cf6e902044d82eb283"
         },
         {
           "path": "reference/repairs-and-diagnostics.md",
@@ -770,6 +770,8 @@
     "update_set_references",
     "video_cadence_check",
     "video_chunks_assemble",
+    "video_mask_track",
+    "video_matte_combine",
     "video_quality_control_analyze",
     "video_stutter_repair",
     "voices_clone",
@@ -779,5 +781,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "f4b84cd517066bf57ee8c22cd2278bf07c9d9e042791bc9f1e150311fb55ca65"
+  "mcp_connector_tools_sha256": "0e1af091df74e950d499877137e87dd79b3faedd44e541257d6fd08ea8c529a7"
 }

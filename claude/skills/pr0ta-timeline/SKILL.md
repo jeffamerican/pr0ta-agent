@@ -5,9 +5,9 @@ description: "PR0TA post-production timeline: sequences and tracks, probing sour
 
 # Post-Production Timeline
 
-The post-production timeline is PR0TA's editing surface. It is persistent, shared state: agents edit it through tools and the API, and the user opens the same sequence in the browser to scrub, trim, review and approve. Assemble, frame, caption, mix, check and export here. If the timeline lacks something a production needs, report it (`bug_report_create`) rather than building a parallel local pipeline.
+Agents and users edit the same saved sequence through tools or the browser. File missing capabilities with `bug_report_create` before building a parallel local pipeline.
 
-This is **not** the narration timeline (`pr0ta-sync`), a transcript-anchored cut list you materialize into a sequence once it verifies. Field contracts live in `pr0ta-api` → `reference/timeline-api.md`, `reference/editorial-primitives.md` and `reference/source-shortfalls-and-fit-to-fill.md`. Editorial judgment (what to cut, when it ships, vertical and short-form craft) lives in `pr0ta-editorial`.
+Materialize narration cuts from `pr0ta-sync` after verification. API contracts are in `pr0ta-api` under `reference/timeline-api.md`, `reference/editorial-primitives.md` and `reference/source-shortfalls-and-fit-to-fill.md`. See `pr0ta-editorial` for cut and delivery decisions.
 
 Before a major pass, call `memory_context_pack` with a `task_intent` and the sequence `scope`; after a meaningful decision, record it with `memory_record_decision` or `memory_record_note`.
 

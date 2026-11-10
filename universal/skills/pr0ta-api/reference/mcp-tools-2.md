@@ -82,7 +82,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 ## shot
 
 - `shot_performances_list`(shot_uid, scene_number, shot_number, kinds, limit): List the performances filed on a shot, newest first: human takes recorded in Human Performances, dialogue takes, and camera takes.
-- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio), reviewed automatically and free: Gemini watches it with sound against the shot's intent (s…
+- `shot_quality_review`(**asset_id**, force): QC verdict for one generated take (video, still or audio), reviewed automatically and billed by usage: Gemini watches it with sound against the shot'…
 
 ## shotlist
 
@@ -160,6 +160,8 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `video_cadence_check`(**asset_id**): Measure one video's motion cadence (free): duplicate frames, skipped frames and stalls, generation-chunk seams, post-cut settle jolts and single-subj…
 - `video_chunks_assemble`(**asset_ids**, joins, subject, folder_path, force): Free: join (stitch, assemble) the chunks of a long take, a continuation or an extend into one clip.
+- `video_mask_track`(**keyframes**, direction, visible_ranges, preview, **asset_id**): Track one arbitrary keep shape on a project video.
+- `video_matte_combine`(**components**, operation, preview, allow_unresolved, **asset_id**): Combine one or more source-aligned project mask videos into a single full-range, lossless grayscale MP4.
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
 - `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, as…
 

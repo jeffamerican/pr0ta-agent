@@ -236,6 +236,8 @@
   "update_set_references",
   "video_cadence_check",
   "video_chunks_assemble",
+  "video_mask_track",
+  "video_matte_combine",
   "video_quality_control_analyze",
   "video_stutter_repair",
   "voices_clone",

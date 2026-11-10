@@ -13,7 +13,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **admin** (`mcp-tools-1.md`): admin_project_inspect
 - **agent** (`mcp-tools-1.md`): agent_chat_orchestrate_prompt, agent_chat_resume, agent_chat_send
 - **asset** (`mcp-tools-1.md`): asset_move, asset_rename
-- **assets** (`mcp-tools-1.md`): assets_annotations_batch_update, assets_annotations_update, assets_download, assets_favorite_set, assets_get_download_link, assets_get_download_links, assets_import_url, assets_list, assets_probe, assets_trim, assets_upload_batch_start, assets_upload_finalize, assets_upload_start
+- **assets** (`mcp-tools-1.md`): assets_annotations_batch_update, assets_annotations_update, assets_download, assets_favorite_set, assets_get_download_link, assets_get_download_links, assets_import_url, assets_list, assets_probe, assets_trim, assets_upload_batch_start, assets_upload_finalize, assets_upload_start, assets_write_timecode
 - **audio** (`mcp-tools-1.md`): audio_align, audio_analyze, audio_meter, audio_stem_separate
 - **beat** (`mcp-tools-1.md`): beat_sheet_approve, beat_sheet_generate
 - **billing** (`mcp-tools-1.md`): billing_usage_get
@@ -69,7 +69,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **tasks** (`mcp-tools-2.md`): tasks_acknowledge, tasks_batch_get, tasks_cancel, tasks_completion_events, tasks_get, tasks_subscribe, tasks_unsubscribe, tasks_watch
 - **transcription** (`mcp-tools-2.md`): transcription_get, transcription_start
 - **update** (`mcp-tools-2.md`): update_set_references
-- **video** (`mcp-tools-2.md`): video_cadence_check, video_chunks_assemble, video_quality_control_analyze, video_stutter_repair
+- **video** (`mcp-tools-2.md`): video_cadence_check, video_chunks_assemble, video_mask_track, video_matte_combine, video_quality_control_analyze, video_stutter_repair
 - **voices** (`mcp-tools-2.md`): voices_clone, voices_design, voices_design_commit, voices_list, voices_speech_to_speech
 - **world** (`mcp-tools-2.md`): world_generation_submit
 
