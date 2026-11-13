@@ -91,10 +91,14 @@ the view it actually shows.
 3. Bind every attachment using the model's syntax and final attachment order.
    The incoming source owns current performance, blocking, camera, framing,
    timing and cuts. Name the angle and incoming shot/time range each still
-   serves. The anchor owns the established environment; the latest frame adds
-   only compatible recent state. Neither still imposes old actor poses or
-   blocking. The previous video is continuity context, never footage to replay
-   or prepend. Keep recorded dialogue/audio authoritative in Post. Read
+   serves. Use the fixed anchor for geography, set dressing and world-space
+   lighting. When the source or accepted continuity
+   establishes a changed background state (such as people or vehicles in
+   motion), bind that state to the incoming action and the latest compatible
+   accepted reference. Do not reset it to the anchor's earlier moment. Neither
+   still imposes old actor poses or blocking. The previous video is continuity
+   context, never footage to replay or prepend. Keep recorded dialogue/audio
+   authoritative in Post. Read
    `pr0ta-prompting` → "Reference Binding Is a Submission Contract".
    For requested relighting, weather or element changes, explicitly name what
    the source lacks and the visible target (`route-selection.md` → "Explicit
@@ -119,9 +123,15 @@ the view it actually shows.
   updating references. Never use a future occurrence to guide an earlier chunk.
 - Compare returning coverage against both stills and the source, then play the
   join. Check set geography, world-space light, props, faces and performance;
-  explicitly check that the continuity video did not replay earlier gestures
-  or dialogue. Resolve conflicting state against approved context and current
-  source action, not by averaging references. Finish an accepted native draft
+  compare the outgoing and incoming sides for resets or jumps in moving
+  background elements. Check that the continuity video did not replay earlier
+  gestures or dialogue. For a transparent prop, compare the recorded source
+  and candidate at the same raise, tilt, pour or contact beats. Inspect what
+  shows through the prop and how reflections move separately from the outline,
+  liquid and hand contact. Check that transmitted scenery and reflections match
+  the new environment. Record uncertainty when the matching frames or
+  transmitted detail cannot be inspected. Resolve conflicting state against
+  approved context and current source action. Finish an accepted native draft
   through its native finish path without swapping its reference packet.
 
 Keep references as project assets and record their roles/provenance in shared

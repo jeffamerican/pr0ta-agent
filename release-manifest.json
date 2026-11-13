@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.9",
-  "released_at": "2026-11-09",
-  "source_revision": "v6.24.9",
+  "skills_version": "6.24.10",
+  "released_at": "2026-11-13",
+  "source_revision": "v6.24.10",
   "minimum_platform_version": "1.29.8",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-07000-feg",
-  "bundle_sha256": "6434538c05005ae75fdecf2d6120941d6911a8fa0c8289cd0b1c89b67e3f2939",
+  "platform_revision": "pr0ta-platform-07107-sel",
+  "bundle_sha256": "829c1eba5290d0a7d9d4ef7ac3a09f8f1b9fd4efedf27a41aec1941a0651a98b",
   "skills": [
     {
       "name": "pr0ta",
@@ -239,7 +239,7 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "880fa342ed47d5090dfbf8c517538b2953e5997838f9890edd2642ecfa6b71a1",
+      "content_sha256": "4635f9a5c39f71a97d212bff432df91fd4d8d94c74b9a5285f9f4a3035019119",
       "documents": [
         {
           "path": "SKILL.md",
@@ -255,7 +255,7 @@
         },
         {
           "path": "reference/hybrid-sequences.md",
-          "sha256": "ab453055bedf3f05fb6035d55dd89aa0326efd6c4470d664d8b29ca692a79752"
+          "sha256": "f7f63035c5d00906ec05036a03d49a8cb600ab44d843dc784e94f0392044f8af"
         },
         {
           "path": "reference/hybrid-shot-studio.md",
