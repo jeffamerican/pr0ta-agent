@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.10",
+  "skills_version": "6.24.11",
   "released_at": "2026-11-13",
-  "source_revision": "v6.24.10",
-  "minimum_platform_version": "1.29.8",
+  "source_revision": "v6.24.11",
+  "minimum_platform_version": "1.29.22",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-07107-sel",
-  "bundle_sha256": "829c1eba5290d0a7d9d4ef7ac3a09f8f1b9fd4efedf27a41aec1941a0651a98b",
+  "platform_revision": "pr0ta-platform-07131-loz",
+  "bundle_sha256": "4fbd995bacf02bc7eb541ae3266cbb0e85c6f20de23d2e5d58b4dc7cfcf1eeb2",
   "skills": [
     {
       "name": "pr0ta",
@@ -443,7 +443,7 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "d14e61b7b90b0240bec64de91573067da5a395d1824d7fb21d4225fc5d0095e1",
+      "content_sha256": "5171f87229d6c918fff5f3a0a77eb918add2f8bc7394970194a9dd4e009e8519",
       "documents": [
         {
           "path": "SKILL.md",
@@ -471,7 +471,7 @@
         },
         {
           "path": "reference/hailuo-h3.md",
-          "sha256": "a97758b739dedd532b188b1d9b9f22377d7053233258180f35dad3c83b6ace56"
+          "sha256": "7dd8496c16a6f64c11a870255e14086169916b1a3e76c3b5d506a4909dbbf749"
         },
         {
           "path": "reference/kling-prompting.md",

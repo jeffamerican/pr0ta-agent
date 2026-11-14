@@ -23,15 +23,20 @@ Use this reference for the Hailuo H3 and H3 Max PR0TA endpoints. H3 has a model-
 | `minimax/h3-max/image-to-video` | H3 Max should animate a supplied frame | `prompt`, opening image, `prompt_expansion_mode` | Optional `end_image_url`; output ratio follows the first image |
 | `minimax/h3-max/lip-sync/image-to-video` | An approved still must speak a finished soundtrack | `image_url`, `audio_url` | Audio 5–14.8 seconds; duration follows the clipped audio; `480P`, `768P`, `1080P`, or `2K`; no prompt field |
 | `minimax/h3-max/multi-angle/image-to-video` | One image should be filmed along a scripted camera path (orbit, dolly, crane) | `image_url`, `prompt_expansion_mode` (`balanced` or `quality`) | 5–15 seconds; `480P`, `768P`, or `1080P`; optional `camera_trajectory` of 2–12 keyframes; prompt optional |
-| `minimax/h3-max/reference-to-video` | H3 Max should bind mixed continuity or audio references | `prompt`, `prompt_expansion_mode`, at least one image or video | Up to 9 images, 3 videos, 3 audio clips; 12 combined files; video and audio each total at most 15 seconds; `480P`, `768P`, or `1080P` |
+| `minimax/h3-max/reference-to-video` | Bind mixed continuity references and optional frame anchors | `prompt`, `prompt_expansion_mode`, at least one image, video, or frame anchor | 0.92–15 seconds at `480P`, `768P`, or `1080P`. Middle anchors require `480P` or `768P`. |
+| `minimax/h3-max/extend-video` | Continue an existing shot | `prompt`, source video | 0.71–15 seconds of new footage. Up to three optional audio references. |
 
-Modes: the text-to-video routes use `txt_to_vid`; every image-to-video, multi-angle, and reference-to-video route uses `ref_to_vid`; the lip-sync route is generator `lipsync`. Confirm with `models_get_defaults(model_id).supported_modes`.
+Modes: the text-to-video routes use `txt_to_vid`; every image-to-video, multi-angle, and reference-to-video route uses `ref_to_vid`; the lip-sync route is generator `lipsync`. Extend uses `extend_video`. Confirm with `models_get_defaults(model_id).supported_modes`.
 
 H3 Max is a separate Fal contract, not a replacement identifier for H3. T2V/I2V `prompt_expansion_mode` is `disabled`, `balanced`, or `quality`; R2V requires `balanced` or `quality`. All default to `balanced`. PR0TA's I2V modality deliberately requires an image even though Fal can fall back to T2V when the raw endpoint omits it. Query live defaults before carrying fixed-2K H3 assumptions into H3 Max.
 
 H3 Max Turbo adds `minimax/h3-max-turbo/text-to-video` and `minimax/h3-max-turbo/image-to-video`. Both generate 5–15 seconds at 480P/768P/1080P with native audio and `prompt_expansion_mode` balanced/quality. The I2V route accepts optional `end_image_url` for first/last-frame work. No Turbo R2V route exists in the catalog. Query the live estimate before generation.
 
-For H3 Max R2V, finalize ordered `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`, then bind literal `Image 1`, `Video 1`, and `Audio 1` roles in the prompt. Audio cannot be the only reference. Each video/audio clip must be 2–15 seconds, video references together and audio references together each must not exceed 15 seconds, with at most 9 images, 3 videos, 3 audio clips, and 12 files overall. Reference media adds to the billed token pool, so obtain the user's approval of the preflight estimate before submission.
+For H3 Max R2V, use separate `reference_image_urls`, `reference_video_urls`, and `reference_audio_urls`, or send an ordered `reference_conditions` list of `{type, url}` entries. Bind literal `Image 1`, `Video 1`, and `Audio 1` roles in the prompt. The limits are nine images, three videos, three audio clips, and twelve files total. Each video or audio clip must run 2–15 seconds. Each modality has its own 15-second total.
+
+Use `image_url` and `end_image_url` for the opening and closing frames. For a middle anchor, supply both endpoints, `middle_image_url`, and `middle_frame_time` strictly inside the rendered frame range at 24 fps. Set `target_audio_url` for a fixed soundtrack of at least two seconds and omit audio references when using it. Quote the exact request with its references and frame anchors.
+
+For H3 Max Extend, `output=extended` includes the whole source. The `continuation` output begins with 1.625 seconds repeated from the source before the new footage. Measure the repeated frames with the continuation assembly tools and verify the join against the source. Use `reference_audio_urls` for up to three clips, each 2–15 seconds and at most 15 seconds combined.
 
 Aspect ratios for T2V are `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, and `9:16`. Reference-to-video also accepts `adaptive`. I2V has no aspect-ratio field: prepare the first image at the delivery ratio.
 
