@@ -163,7 +163,7 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 - `video_mask_track`(**keyframes**, direction, visible_ranges, preview, **asset_id**): Track one arbitrary keep shape on a project video.
 - `video_matte_combine`(**components**, operation, preview, allow_unresolved, **asset_id**): Combine one or more source-aligned project mask videos into a single full-range, lossless grayscale MP4.
 - `video_quality_control_analyze`(**asset_id**, **query**, fps, reasoning_effort, previous_task_id): Submit one project video asset to BytePlus Dola for asynchronous visual quality-control analysis.
-- `video_stutter_repair`(**asset_id**, user_requested, force, stabilize): Repair a video's motion cadence (free): inserts or drops frames at skips and stalls, smooths generation seams and trims a settle jolt at the head, as…
+- `video_stutter_repair`(**asset_id**, user_requested, force, stabilize, preserve_timing): Repair a video’s motion cadence as a new asset. Set `preserve_timing` for source-bound work. `timing_lock_unsupported` means no repair was queued and the original take stays in use.
 
 ## voices
 

@@ -178,6 +178,8 @@ How strict QC is about technical faults follows the project's delivery target, t
 
 `video_cadence_check` measures stutter, skipped frames, seams and wobble directly; a vision model sampling a few frames per second misses them. `video_stutter_repair` fixes them on a kept take and saves the result as a new asset. A repair that measures no better fails as `not_improved` and leaves the original as the take to use.
 
+For a source-bound take that must preserve every frame position and soundtrack alignment, set `preserve_timing: true` on `video_stutter_repair`. If it returns `timing_lock_unsupported`, keep the original, use `video_cadence_check` to locate the defects, and replace those frames in place. Verify the picture frame count and rate, start timecode, and audio sync against the source before relinking.
+
 ## On-Screen Text
 
 Current premium video models can generate and animate legible text; a verified generated result is valid production media. Read `reference/generative-typography.md` before producing on-screen copy. It owns exact-string prompting, frame-by-frame QC, repair, and the deterministic still-plus-timeline fallback.
