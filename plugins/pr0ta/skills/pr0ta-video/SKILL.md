@@ -174,11 +174,7 @@ Every generated take is reviewed automatically and free, before an Operator miss
 QC flags; the person decides, once the cut is final: a flag may be acceptable, or a creative choice. Never regenerate, repair, trim or re-edit a take or cut because of a verdict alone. A flagged clip keeps its verdict on the take: use it and move on. A flagged still that further work builds on (a first frame, key frame or look) waits for the person (in a mission the harness stops with a `QC:` card), and so does any flagged take before you use it as a reference. When you present the cut, list its flagged clips with their findings and QC's suggested fixes.
 - `uncertain`: the review lacked the shot's intent or references; check the take yourself and say what could not be verified.
 
-How strict QC is about technical faults follows the project's delivery target, the `deliveryTarget` project setting: `social` forgives a brief stutter a phone viewer scrolls past, `web` minds a clear one, `broadcast` and `cinema` reject any. Set it from the brief with `project_metadata_patch` with `updates: {"deliveryTarget": "social"}` when the user names the platform; unset, QC reads it from the cut (vertical or a social platform is social) and otherwise uses `web`.
-
-`video_cadence_check` measures stutter, skipped frames, seams and wobble directly; a vision model sampling a few frames per second misses them. `video_stutter_repair` fixes them on a kept take and saves the result as a new asset. A repair that measures no better fails as `not_improved` and leaves the original as the take to use.
-
-For a source-bound take that must preserve every frame position and soundtrack alignment, set `preserve_timing: true` on `video_stutter_repair`. If it returns `timing_lock_unsupported`, keep the original, use `video_cadence_check` to locate the defects, and replace those frames in place. Verify the picture frame count and rate, start timecode, and audio sync against the source before relinking.
+For authorized hybrid cadence repair, leave `preserve_timing` false and deliver with the repaired clip's embedded soundtrack. See `reference/cadence-repair.md` for source conform, verification, and delivery targets.
 
 ## On-Screen Text
 

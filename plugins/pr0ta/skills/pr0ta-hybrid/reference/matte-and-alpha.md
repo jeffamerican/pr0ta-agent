@@ -31,6 +31,10 @@ and `direction: "both"` to track from a later frame in both directions.
 Use inclusive `visible_ranges` for off-screen reveals and full occlusions.
 Each visible range needs a seed. Inspect the overlay and correct lost or
 low-confidence ranges with additional keyframes before using the matte.
+The full source must fit the 1.25 billion decoded-pixel budget
+(width × height × frame count, including frames outside visible ranges).
+At 1920×1080 this permits up to 602 frames. Trim the source to the shot first
+when it exceeds that limit, then use the same trimmed source throughout.
 
 Call `video_matte_combine` with the same source and each component
 `asset_id`, including the actor matte. Default `union` keeps the maximum

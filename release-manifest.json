@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-07207-qus",
-  "bundle_sha256": "cad4d38f362a2670a3a60e9d62482859ff3205279e30b202b38e4493ee9873ed",
+  "platform_revision": "pr0ta-platform-07245-xit",
+  "bundle_sha256": "7c18cb560bccabdb65d528f20df0e8e69d69ba6e95520c3d488859c0de03e6aa",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "cbf98f299c941cdf44bff22525dc04139e77045c9f099c18e0bb509b12d981cf",
+      "content_sha256": "f3f52298161f3b559785101f8f1d3fba7be893041b064b2fc127014839f9f1da",
       "documents": [
         {
           "path": "SKILL.md",
@@ -81,7 +81,7 @@
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "d5b96551e5272e04e9aefd5e9ca64bf031fd167d17b91a492a76fb88e37a4587"
+          "sha256": "f1b70572ca16ba947fd7da161983e4573cc2423320be422fb98b31dfe6a8d993"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -239,11 +239,11 @@
     {
       "name": "pr0ta-hybrid",
       "description": "PR0TA hybrid production: keep real live-action footage or a 3D world and regenerate the rest. Background replacement, set extension, sky and time-of-day swaps, and relighting of plates with Seedance 2.5 edits that keep the actors' performances or with Beeble SwitchX; green screen and mattes (BiRefNet, alpha); angle-matched reference plates; Marble 3D worlds, scans, and camera takes as structure; Hybrid Studio shots and edited hybrid sequences in Post. Read when a shot starts from a plate, footage, a matte, or a world.",
-      "content_sha256": "4635f9a5c39f71a97d212bff432df91fd4d8d94c74b9a5285f9f4a3035019119",
+      "content_sha256": "856b77babbf3ebbec614c647946a42595e89b34f6ae957041125fb46f4c874fb",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "3942fbc826c8bdadad61214ff874ada67213adafc3d8b4d46f5841062fa1369d"
+          "sha256": "4068238ba79d8ec711b91feb32cda1ad495bf10085b0cb083cae58a743336657"
         },
         {
           "path": "reference/camera-solving.md",
@@ -263,7 +263,7 @@
         },
         {
           "path": "reference/matte-and-alpha.md",
-          "sha256": "5fe259473ff1be53d6fc04ca36b2375571291748845283c4278a9ea70b5e44aa"
+          "sha256": "a414ac41314e2783d0b167dae06742bf319b374b9220163c64432b320b3ef491"
         },
         {
           "path": "reference/reference-plate-authoring.md",
@@ -443,11 +443,15 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "4a89936d9b6fcfbfdebcc552aa0668d0339a914cc40c05828d641b74fda5ecc2",
+      "content_sha256": "ec3242de65398055360862b6861e16c70ad0167e1e5fd36ad70786b7dcbdeaeb",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "667c0fff3966e7dfb045f111797c855a2202f5a5dc2a440363feb2067de522f2"
+          "sha256": "824e752f51add1189a4969ec880d5e0d05b4e47d8833cfb9b1dec1904b51d645"
+        },
+        {
+          "path": "reference/cadence-repair.md",
+          "sha256": "87ea544f7ac66ccd5e52feb2654e39a394a55c8985a776101e85fb7b8ff091ed"
         },
         {
           "path": "reference/draft-to-final.md",
