@@ -10,12 +10,17 @@ Resolve the model the usual way (`models_preferred` for the shot's modality), th
 "draft_mode": {
   "draft_resolution": "480p",
   "final_resolution": "1080p",
-  "expires_after_days": 7,
+  "final_resolutions": ["1080p", "4k"],
+  "expires_after_days": 14,
   "unsupported_tasks": ["edit", "extend"],
   "draft_request": {"draft": true},
   "finalize_request": {"generator": "video", "mode": "finalize_draft", "draft_asset_id": "<draft video asset id>"}
 }
 ```
+
+BytePlus ModelArk Seedance 2.5 and fal Seedance 2.5 (standard and US) support native 1080p or 4K completion. New fal drafts expire after 14 days. ModelArk drafts created on or after 2026-10-28 02:00 UTC have 14 days; older drafts keep their original deadline. MuAPI documents 1080p-only draft completion within seven days, including its 4K aliases. A direct 4K generation is a separate operation. Always use the saved asset's `draft_expires_at`.
+
+For a native 4K finish, submit `{"generator":"video","mode":"finalize_draft","draft_asset_id":"<asset>","resolution":"4k"}`. Keep the original provider/model; PR0TA resolves its saved provider draft state. Fal's opaque `draft_id` is not its queue request ID. Native completion reuses the draft, without an upscale job. 1080p and 4K have separate finish claims and prices; retries of the same resolution join existing work. BytePlus 4K requires confirmed configured account rates; missing rates block the quote, rather than guessing.
 
 No `draft_mode` block means no drafts: generate normally. Never send `draft: true` to a model without the block; the request is rejected with a 400.
 
@@ -66,6 +71,7 @@ Send the normal generation request with `draft: true`. Everything else is the sa
 
 - The platform renders at the model's `draft_resolution` (480p) regardless of any `resolution` you send.
 - The resulting video asset is labelled `draft: true`, tagged `DRAFT`, and carries `draft_expires_at` (ISO time).
+- Asset-list summaries may omit a long opaque provider draft ID. The saved draft markers and asset ID still support finishing: the server loads the original provider state. Do not regenerate just because a summary omits that ID.
 - Get the draft's asset id from the finished task's `result_refs.asset_id` (`tasks_get`).
 
 ## Step 2: review the draft
@@ -91,7 +97,7 @@ Treat a draft as a proposal, not a deliverable.
 - Send nothing else about the shot. The final reuses the draft's model, prompt, references, seed, duration and aspect ratio. Sending `prompt`, `duration`, `aspect_ratio`, `seed`, `resolution` or any reference field is rejected with a 400. To change any of them, make a new draft.
 - `model` is optional; if present it must match the draft's model.
 - `output_format` may be set when the model's schema offers it (for example `mov`).
-- The final renders at the model's `final_resolution` (1080p) and is labelled `finalized_from_draft_asset_id`.
+- The final renders at the requested supported `resolution`, or the asset's saved `final_resolution` and is labelled `finalized_from_draft_asset_id`.
 - A draft is finished once, whichever path asks. A second finish request joins the one under way: its task comes back with `deduplicated: true` and `draft_finish: "rendering"`. If the final already exists, the response is `draft_finish: "finished"` with its `final_asset_id`. Neither is billed again.
 
 ## Finishing the cut
@@ -110,7 +116,7 @@ Drafts are for iterating; what ships is finished. Only the drafts that play in t
 - A draft already finished (by the Production Queue's Finish button, the Video editor or the expiry finish below) is swapped in without paying again.
 - Expired drafts cannot be finished: make a new draft of that shot and replace the clip.
 
-**Before expiry.** With the project setting on, the take selected for a shot in the Production Queue is finished automatically about a day before its draft expires, so its 1080p version is never lost. This follows the project setting only: a mission that keeps its drafts does not stop it. The person who made the draft is billed while still on the project, otherwise the project owner. A finish that cannot start or render (credits, provider) shows once as a failed task and is retried every few hours until the draft expires.
+**Before expiry.** With the project setting on, the take selected for a shot in the Production Queue is finished automatically about a day before its draft expires, so its saved final-resolution version is never lost. This follows the project setting only: a mission that keeps its drafts does not stop it. The person who made the draft is billed while still on the project, otherwise the project owner. A finish that cannot start or render (credits, provider) shows once as a failed task and is retried every few hours until the draft expires.
 
 ## Limits and errors
 
@@ -121,15 +127,15 @@ Drafts are for iterating; what ships is finished. Only the drafts that play in t
 | Finish request resends shot fields | 400 naming the fields |
 | Draft asset in another project or deleted | 404 |
 | Asset is not a draft | 409 |
-| Draft older than 7 days (`draft_expires_at` passed) | 410; make a new draft with the same prompt and references |
+| Draft past its saved `draft_expires_at` | 410; make a new draft with the same prompt and references |
 
 - The final is always the model's `final_resolution`; a draft cannot be finished at a different resolution. For other resolutions, generate directly.
-- A draft can only be finished by the account that made it, within 7 days.
+- A draft can only be finished by the account that made it, before its saved provider deadline.
 - The final matches the draft closely but is a new render: re-check it before delivery, especially faces and fine detail that 480p could not show.
 
 ## Costs
 
-Pricing is per model; check the estimate the platform returns. As an order of magnitude, a draft costs the model's 480p rate and the final its 1080p rate for the same duration, so a 480p draft is roughly a fifth of the final's cost. Iterate at draft cost; spend the final rate once per approved shot.
+Pricing is per model; check the estimate the platform returns. As an order of magnitude, a draft costs the model's 480p rate and the final its selected resolution's rate for the same duration, so a 480p draft is roughly a fifth of the final's cost. Iterate at draft cost; spend the final rate once per approved shot.
 
 ## REST equivalents
 
