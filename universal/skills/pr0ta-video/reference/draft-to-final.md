@@ -20,7 +20,7 @@ Resolve the model the usual way (`models_preferred` for the shot's modality), th
 
 BytePlus ModelArk Seedance 2.5 and fal Seedance 2.5 (standard and US) support native 1080p or 4K completion. New fal drafts expire after 14 days. ModelArk drafts created on or after 2026-10-28 02:00 UTC have 14 days; older drafts keep their original deadline. MuAPI documents 1080p-only draft completion within seven days, including its 4K aliases. A direct 4K generation is a separate operation. Always use the saved asset's `draft_expires_at`.
 
-For a native 4K finish, submit `{"generator":"video","mode":"finalize_draft","draft_asset_id":"<asset>","resolution":"4k"}`. Keep the original provider/model; PR0TA resolves its saved provider draft state. Fal's opaque `draft_id` is not its queue request ID. Native completion reuses the draft, without an upscale job. 1080p and 4K have separate finish claims and prices; retries of the same resolution join existing work. BytePlus 4K requires confirmed configured account rates; missing rates block the quote, rather than guessing.
+For a native 4K finish, submit `{"generator":"video","mode":"finalize_draft","draft_asset_id":"<asset>","resolution":"4k"}`. Keep the original provider/model; PR0TA resolves its saved provider draft state. Fal's opaque `draft_id` is not its queue request ID. Native completion reuses the draft, without an upscale job. 1080p and 4K have separate finish claims and prices; retries of the same resolution join existing work. BytePlus 4K stays available with unknown pricing: the person approves each exact paid request; no zero or guessed price is substituted.
 
 No `draft_mode` block means no drafts: generate normally. Never send `draft: true` to a model without the block; the request is rejected with a 400.
 
@@ -140,3 +140,11 @@ Pricing is per model; check the estimate the platform returns. As an order of ma
 ## REST equivalents
 
 The same requests go to `POST /api/v2/projects/{project_id}/generate`. The draft capability is also listed per model in `GET /api/v2/models` as `draft_mode`.
+
+## Unknown BytePlus 4K pricing
+
+BytePlus 4K stays available without published/account rates. Post the exact prepared request as a review card, disclose that this is paid work with an unknown final charge, and offer **Generate** (`approves_spend: true`) and **Hold** (`false`). Keep the pricing disclosure in the card body. The person must approve the card in PR0TA; Full access and a mission allowance are not consent to unknown pricing. Approval covers that exact request once. Existing exhausted allowances still stop new work. An unknown amount cannot be reserved against the allowance and its final charge may exceed the remaining allowance. Independent work can continue while billing is pending; confirmed charges count toward subsequent allowance checks.
+
+For a direct authenticated API request, send `accept_unknown_pricing: true` only after explicit approval of this one request. It is an application consent field, never a provider parameter or a saved preference. An approved Operator action supplies the consent server-side. Unknown totals remain null, not zero. A 480p draft and a 1080p finish keep their verified prices.
+
+Provider token usage is saved for reconciliation. Historical 4K estimates use only confirmed USD charges for the same provider model, input-video class and draft/direct operation, and are labelled estimates with a sample count. Usage tokens alone are not a dollar charge. Until a confirmed charge is available, settlement stays pending; neither a fallback zero nor an estimated charge is recorded as actual.

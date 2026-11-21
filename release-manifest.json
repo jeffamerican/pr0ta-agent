@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.13",
+  "skills_version": "6.24.14",
   "released_at": "2026-11-20",
-  "source_revision": "v6.24.13",
-  "minimum_platform_version": "1.29.70",
+  "source_revision": "v6.24.14",
+  "minimum_platform_version": "1.29.72",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-07439-vip",
-  "bundle_sha256": "67acd94b16abb32783775d74e20161c40d8cf3e36c339abd451143b8097e080e",
+  "platform_revision": "pr0ta-platform-07451-guj",
+  "bundle_sha256": "d9d75555202492e095a256e9b4b32703630df5b888add3a135d9385726a93cd7",
   "skills": [
     {
       "name": "pr0ta",
@@ -443,11 +443,11 @@
     {
       "name": "pr0ta-video",
       "description": "PR0TA video generation and repair: text-to-video, image-to-video, reference-to-video, first/last frame, keyframes, extend, video edit and video-to-video, lip-sync, motion control and motion transfer, camera moves and multi-angle trajectories, native audio and dialogue, multi-shot continuity, on-screen text, duration limits, upscale, and provider recovery. Read when generating, extending, editing, or troubleshooting video.",
-      "content_sha256": "19b5cf0bfe91cd561af9f7ebb0284c204a86ab2eeb2e826094f3c4f747adc3a0",
+      "content_sha256": "241fbd8176bf06d7992d0185e3ac412d58b2c520e1763a70d04edd6241659672",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "6ab5354d196a7b1e4e69eac7dbd8f7c4b492cce45d552a8d10419f251b09b992"
+          "sha256": "cd61ee7add9988d61b6819bae3a5c8ec20286a768317e939b8130413f4f74ca2"
         },
         {
           "path": "reference/cadence-repair.md",
@@ -455,7 +455,7 @@
         },
         {
           "path": "reference/draft-to-final.md",
-          "sha256": "b1dc98757ab3fe36a8f0a3812b655ab3d4a10307c9510030b55e479c804f9f60"
+          "sha256": "1e5a8f06ef3767bca8684024246e53a1166a7ad0dfb6c2530380a1e7537a0f28"
         },
         {
           "path": "reference/flux-3.md",
@@ -515,7 +515,7 @@
         },
         {
           "path": "reference/seedance-2.5.md",
-          "sha256": "ff66bb9685f3b8e88a329bf662987048bba5ba42deff67107603c74eb195c33d"
+          "sha256": "bd25bcd85413f513cc7e04ca3ecc138fb2a8c8f39c7c04630b0e950264a1816a"
         },
         {
           "path": "reference/seedance-global-storyboard.md",
