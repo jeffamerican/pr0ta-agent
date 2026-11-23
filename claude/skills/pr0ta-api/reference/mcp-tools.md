@@ -34,6 +34,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **document** (`mcp-tools-1.md`): document_add_asset, document_add_text, document_read
 - **documents** (`mcp-tools-1.md`): documents_list
 - **enable** (`mcp-tools-1.md`): enable_studio_mode
+- **frame** (`mcp-tools-1.md`): frame_paint
 - **generation** (`mcp-tools-1.md`): generation_batch_submit, generation_submit
 - **get** (`mcp-tools-1.md`): get_breakdown_element_review, get_character_references, get_review_annotations, get_scene_breakdown, get_scene_shotlist, get_screenplay_text, get_set_references, get_shot_assets
 - **grounded** (`mcp-tools-1.md`): grounded_web_search
@@ -54,6 +55,7 @@ below, then read the part named beside it (another reference file of this skill)
 - **references** (`mcp-tools-2.md`): references_resolve, references_settle_in_frame
 - **review** (`mcp-tools-2.md`): review_note_status, review_submit_assets
 - **save** (`mcp-tools-2.md`): save_scene_shotlist
+- **scene** (`mcp-tools-2.md`): scene_cuts_link_video, scene_cuts_list, scene_cuts_preview, scene_cuts_read_text, scene_cuts_register_asset, scene_cuts_select
 - **score** (`mcp-tools-2.md`): score_bible_get, score_bible_save
 - **screenplay** (`mcp-tools-2.md`): screenplay_draft_beats, screenplay_import, screenplay_publish, screenplay_save
 - **script** (`mcp-tools-2.md`): script_create, script_supervisor_read_generate

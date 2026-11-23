@@ -143,6 +143,10 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `enable_studio_mode`(): Enable Studio mode for the current project so review-room tools can create submissions, review rounds, and public share links.
 
+## frame
+
+- `frame_paint`(**asset_id**, **frame**, **regions**, donor_asset_id, donor_frame): Clone existing pixels into explicit polygons on one video frame, free, without changing the cut.
+
 ## generation
 
 - `generation_batch_submit`(**requests**, quote_only): Submit up to ten PR0TA generation requests, including speech, sound effects, music, 3D, and Lipsync jobs, and return queued tasks.

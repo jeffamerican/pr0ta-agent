@@ -51,6 +51,15 @@ Generated from the live MCP server; do not edit. The index is `mcp-tools.md`.
 
 - `save_scene_shotlist`(**scene_number**, stylistic_approach, shots, replace, revision, refresh_scene_context): Save or update a scene's director shotlist (after a shotlist the user accepts).
 
+## scene
+
+- `scene_cuts_link_video`(**scene_number**, **cut_id**, **request**): Link or clear a ready project video of the exact conformed cut for Timeline reference playback.
+- `scene_cuts_list`(**scene_number**): List registered external scene cuts and the current official_cut_id.
+- `scene_cuts_preview`(**scene_number**, **cut_id**): Inspect FCP7 XML sequences, track geometry, source ranges, rates and warnings.
+- `scene_cuts_read_text`(**scene_number**, **cut_id**, offset, max_chars): Read a bounded page of an external cut's XML/EDL/ALE/OTIO text for reference.
+- `scene_cuts_register_asset`(**scene_number**, **request**): Register a ready project document attachment against a scene without re-uploading.
+- `scene_cuts_select`(**scene_number**, **request**): Select a registered scene cut as official, or clear selection with cut_id=null.
+
 ## score
 
 - `score_bible_get`(): Read the project's score bible: the musical concept, the style core and exclude core every cue's prompt starts from, palette, key centers, tempo fami…

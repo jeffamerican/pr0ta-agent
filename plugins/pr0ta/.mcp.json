@@ -78,6 +78,7 @@
         "document_read",
         "documents_list",
         "enable_studio_mode",
+        "frame_paint",
         "generation_batch_submit",
         "generation_submit",
         "get_breakdown_element_review",

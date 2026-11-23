@@ -21,6 +21,7 @@ Before a major pass, call `memory_context_pack` with a `task_intent` and the seq
 | Link picture and sound | `post_clips_link` | `POST /timeline/links` |
 | Analyze and list problems | `post_sequence_analyze`, `post_sequence_debug_report` | `GET /timeline/analysis`, `GET /timeline/debug-report` |
 | Look at frames | `post_frames_get` | |
+| Clone pixels on one frame | `frame_paint` | |
 | Is the latest render current? | `post_sequence_analyze` (`no_verification_render`) | `GET /timeline/verification?sequence_id=` |
 | Approve, request changes, reopen | none: people only | `POST /timeline/review?sequence_id=` (signed-in user in the app) |
 | Preview render | `post_render_start` (`from`, `to`, `quality`) | `POST /render`, `GET /preview?from=&to=&quality=low` |
@@ -42,6 +43,8 @@ Relative REST paths sit under the post-production prefix, as in `GET /api/post-p
 3. Change only the clips you mean to change and send everything else exactly as you read it.
 
 Every save answers with `validationWarnings` (`deliveryWarnings`: letterboxed sources, doubled audio, missing captions, same-source slices; fix before rendering) and `changedJoins` (cuts it made: look at each).
+
+**Frame Paint.** See `reference/frame-paint.md` for donor selection, review and placement of a one-frame patch.
 
 
 REST clients use the clip and track routes for targeted edits and the MCP tools for reads, whole-sequence saves, checks, renders and exports. The user opens the same sequence at `https://app.pr0ta.com/timeline?sequence_id={sequence_id}`.

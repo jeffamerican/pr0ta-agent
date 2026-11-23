@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "skills_version": "6.24.14",
-  "released_at": "2026-11-20",
-  "source_revision": "v6.24.14",
-  "minimum_platform_version": "1.29.72",
+  "skills_version": "6.24.15",
+  "released_at": "2026-11-23",
+  "source_revision": "v6.24.15",
+  "minimum_platform_version": "1.29.77",
   "distribution_repository": "https://github.com/jeffamerican/pr0ta-agent",
   "mcp_endpoint": "https://app.pr0ta.com/api/mcp/mcp",
   "documentation_url": "https://www.protafilmmaker.com/downloads/skills/",
@@ -12,8 +12,8 @@
     "claude": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta.plugin",
     "universal": "https://github.com/jeffamerican/pr0ta-agent/releases/latest/download/pr0ta-skills.zip"
   },
-  "platform_revision": "pr0ta-platform-07451-guj",
-  "bundle_sha256": "d9d75555202492e095a256e9b4b32703630df5b888add3a135d9385726a93cd7",
+  "platform_revision": "pr0ta-platform-07481-gif",
+  "bundle_sha256": "619c7e75a029b1fe914c7804a863dc8135ead1c11060a0a256595cfbbd97bfdd",
   "skills": [
     {
       "name": "pr0ta",
@@ -29,7 +29,7 @@
     {
       "name": "pr0ta-api",
       "description": "PR0TA MCP and REST contract reference: connecting and auth, project_id handling, model resolution with models_preferred, the unified generation request, task lifecycle, polling and cancel, completion subscriptions, errors, rate limits, development and Operator mission endpoints, and an index of route references (assets, timeline, narration, voices, review rooms). Read when a workflow skill does not give the exact contract or when debugging an API failure.",
-      "content_sha256": "f3f52298161f3b559785101f8f1d3fba7be893041b064b2fc127014839f9f1da",
+      "content_sha256": "2aff6e780d473762bb29917fd0a8582e2a68c793dd00cd23b7d41e6da90c83d9",
       "documents": [
         {
           "path": "SKILL.md",
@@ -77,11 +77,11 @@
         },
         {
           "path": "reference/mcp-tools-1.md",
-          "sha256": "c31639ee9a6c4d0e22d7c5d8f036a54e761c168d0f1833718ea6dc2ce4d73825"
+          "sha256": "d7d8c8c0220fd522bef3006d14b2d3c7636110d30aa76f936d59962dc8b35749"
         },
         {
           "path": "reference/mcp-tools-2.md",
-          "sha256": "f1b70572ca16ba947fd7da161983e4573cc2423320be422fb98b31dfe6a8d993"
+          "sha256": "246dc11701bc2ee5feacef965ba72370a681360dcb2dbd7689167605c6e0e0ba"
         },
         {
           "path": "reference/mcp-tools-3.md",
@@ -89,7 +89,7 @@
         },
         {
           "path": "reference/mcp-tools.md",
-          "sha256": "602ea11525f12da08c07dc92f41750b8042c1d66c1feb91f289170d8b59a943f"
+          "sha256": "72023d4af49d292fccb3d2b676fe8388d31a31ce356cafd50546b8fffc85f57f"
         },
         {
           "path": "reference/music-analysis.md",
@@ -424,11 +424,15 @@
     {
       "name": "pr0ta-timeline",
       "description": "PR0TA post-production timeline: sequences and tracks, probing sources, framing with fit (contain, cover, stretch) and transforms, 16:9 to 9:16 reframing, text and caption clips, clip editing, Ken Burns, audio mix, linking picture to its sound, transitions, frame-accurate cuts, trims, snapshots, cut provenance and review status, the verification loop (low-quality render, frame contact sheets, loudness, analysis), and final export. Read when assembling, editing, mixing, checking, or exporting a cut.",
-      "content_sha256": "62c9c9fb47efc0e1a77ead93d56ed1ea1cb02718993aa364a7be3e775982c614",
+      "content_sha256": "36271345660b860aad6a06b05cdc083e21b2562c343c09c6051cea3841629ea0",
       "documents": [
         {
           "path": "SKILL.md",
-          "sha256": "93b7bb3b41eca95f991e8fabb358f5c940ff1a3b4271e0cf6e902044d82eb283"
+          "sha256": "10d73fc13273874d8167322a3898a8dbf382920847c3a3f16e918c46a5b2fea8"
+        },
+        {
+          "path": "reference/frame-paint.md",
+          "sha256": "cf92b6f41ea78892ee11540e78aaaf66a1464f25257d332259b6af1931e2f49b"
         },
         {
           "path": "reference/repairs-and-diagnostics.md",
@@ -607,6 +611,7 @@
     "document_read",
     "documents_list",
     "enable_studio_mode",
+    "frame_paint",
     "generation_batch_submit",
     "generation_submit",
     "get_breakdown_element_review",
@@ -791,5 +796,5 @@
     "voices_speech_to_speech",
     "world_generation_submit"
   ],
-  "mcp_connector_tools_sha256": "d1d0e8e0985d028f82892926bc9a9c010f546e987e2fa5be425150a76d1b6a80"
+  "mcp_connector_tools_sha256": "3b72f0e1c1b052331653ace4f885feb8e03c8d0260bee88b7aa1c2431f81615c"
 }
